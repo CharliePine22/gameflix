@@ -4,4 +4,5 @@
 
 .App {
   background-color: #111;
+  user-select: none;
 }

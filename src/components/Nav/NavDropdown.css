@@ -8,6 +8,7 @@
   top: 65px;
   padding: 0;
   border: 1px solid hsla(0, 0%, 100%, 0.15);
+  cursor: pointer;
 }
 
 .dropdown__arrow {
@@ -35,7 +36,7 @@
   display: flex;
   align-items: center;
   padding: 5px 10px;
-  width: 100%;
+  width: 85%;
   cursor: pointer;
 }
 

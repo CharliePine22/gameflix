@@ -6,12 +6,16 @@
 
 .row__poster {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  max-width: 248px;
+  object-fit: cover;
   max-height: 140px;
   margin-right: 15px;
   transition: transform 400ms;
   cursor: pointer;
+}
+
+.row__poster_name {
+  left: 0;
 }
 
 .row__poster:hover {
@@ -42,4 +46,15 @@
 
 .row__posters::-webkit-scrollbar {
   display: none;
+}
+
+.row__posters_container {
+  display: flex;
+  width: 100%;
+}
+
+@media screen and (min-width: 320px) and (max-width: 500px) {
+  .row__posters {
+    padding: 20px 20px 20px 5px;
+  }
 }

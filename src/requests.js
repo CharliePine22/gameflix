@@ -2,21 +2,43 @@
 const API_KEY = 'c69737aae4e04ce8ad8613ba04c2be9f';
 
 // Get date object for finding release dates
-let todaysDate = new Date();
-const offset = todaysDate.getTimezoneOffset();
-todaysDate = new Date(todaysDate.getTime() - offset * 60 * 1000);
-const todaysDateFormatted = todaysDate.toISOString().split('T')[0];
+const currentYear = new Date().getFullYear();
+const dayAndMonth = (type) => {
+  let value;
+  if (type === 'month') {
+    value = new Date().getMonth() + 1;
+  } else if (type === 'day') {
+    value = new Date().getDate();
+  }
+  if (value < 10) {
+    return `0${value}`;
+  } else {
+    return value;
+  }
+};
+const currentMonth = dayAndMonth('month');
+const currentDay = dayAndMonth('day');
+const nextYear = `${currentYear + 1}-${currentMonth}-${currentDay}`;
+const endYear = `${currentYear}-12-31`;
+const startCurrentYear = `${currentYear}-01-01`;
+
+let todayDate = new Date();
+const offset = todayDate.getTimezoneOffset();
+todayDate = new Date(todayDate.getTime() - offset * 60 * 1000);
+const currentDate = todayDate.toISOString().split('T')[0];
+
+console.log(currentDate.getFullYear);
 
 const requests = [
   {
-    requestId: 'fetchNewTitles',
-    url: `games?ordering=released&key=${API_KEY}`,
-    title: 'NEW RELEASES',
-    todaysDate: todaysDateFormatted,
+    requestId: 'fetchUpcomingTitles',
+    url: `games?dates=${currentDate},${nextYear}&ordering=-added&key=${API_KEY}`,
+    title: 'COMING SOON',
+    todaysDate: currentDate,
   },
   {
     requestId: 'fetchPopularTitles',
-    url: `games?key=${API_KEY}&ordering=-metacritic`,
+    url: `games?dates=${startCurrentYear},${currentDate}&ordering=rating_count&key=${API_KEY}`,
     title: 'POPULAR TITLES',
   },
   {

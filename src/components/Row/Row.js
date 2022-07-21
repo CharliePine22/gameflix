@@ -22,12 +22,16 @@ function Row({ title, fetchURL, todaysDate }) {
         {games.map(
           (game) =>
             game.background_image !== null && (
-              <img
-                key={game.id}
-                className={todaysDate ? 'row__main_poster' : 'row__poster'}
-                src={game.background_image}
-                alt={game.name}
-              />
+              <>
+                {/* <p className='row__poster_name' key={game.id}>
+                  {game.name}
+                </p> */}
+                <img
+                  className={todaysDate ? 'row__main_poster' : 'row__poster'}
+                  src={game.background_image}
+                  alt={game.name}
+                />
+              </>
             )
         )}
       </div>

@@ -1,9 +1,11 @@
 import './App.css';
+import { useState } from 'react';
 import Row from './components/Row/Row';
 import requests from './requests';
 import Banner from './components/Banner/Banner';
 import Nav from './components/Nav/Nav';
 import MainRow from './components/MainRow/MainRow';
+import Loading from './components/LoadingAnimation/Loading';
 
 function App() {
   // const [accessToken, setAccessToken] = useState(localStorage.getItem('token'));
@@ -18,9 +20,15 @@ function App() {
   //     const data = await response.json();
   //     setAccessToken(data['access_token']);
   //     localStorage.setItem('token', accessToken);
+  //     console.log(accessToken);
   //   };
   //   generateTwitchToken();
   // }, []);
+
+  const [loading, setLoading] = useState(false);
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className='App'>

@@ -10,7 +10,7 @@ const MainRow = () => {
   const [changingFilter, setChangingFilter] = useState(false);
 
   useEffect(() => {
-    // Grab games from each genre
+    // Grab upcoming games based on current date filter
     async function fetchData() {
       const request = await rawgClient.get(
         requests[0][`${currentFilter.toLowerCase()}Url`]
@@ -58,8 +58,8 @@ const MainRow = () => {
         {games.map(
           (game) =>
             game.background_image !== null && (
-              <div className='main_row__poster_container'>
-                <span className='row__poster_name'>{game.name}</span>
+              <div className='main_row__poster_container' key={game.name}>
+                <span className='main__poster_name'>{game.name}</span>
                 <img
                   key={game.id}
                   className='main_poster'

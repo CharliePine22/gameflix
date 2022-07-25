@@ -5,9 +5,10 @@
 }
 
 .row__poster {
-  max-width: 260px;
+  max-width: 300px;
   object-fit: cover;
   height: 100%;
+  max-height: 168px;
   cursor: pointer;
 }
 
@@ -26,7 +27,8 @@
 
 .row__poster_name {
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
+  left: 5px;
   text-transform: uppercase;
   font-weight: 600;
 }

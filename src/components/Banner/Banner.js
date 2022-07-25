@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import rawgClient from '../../axios';
 import requests from '../../requests';
+import Loading from '../LoadingAnimation/Loading';
 import './Banner.css';
 
 function Banner() {
@@ -39,8 +40,10 @@ function Banner() {
   // Once the random game is selected, fetch the details for the game.
   useEffect(() => {
     async function fetchGameDetails() {
+      setLoading(true);
       const request = await rawgClient.get(`games/${game?.id}?key=${API_KEY}`);
       setGameDetails(request.data);
+      setLoading(false);
       return request;
     }
     fetchGameDetails();
@@ -51,8 +54,8 @@ function Banner() {
     return str?.length > n ? str.substr(0, n - 1) + '...' : str;
   };
 
-  if (!game && loading) {
-    return 'Loading...';
+  if (loading) {
+    return <Loading />;
   } else {
     return (
       <header

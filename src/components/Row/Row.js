@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import rawgClient from '../../axios';
+import GameDetails from './GameDetails/GameDetails';
 import './Row.css';
+import youtubeAPI from '../../youtubeAPI';
 
-function Row({ title, fetchURL, todaysDate }) {
+function Row({ title, fetchURL }) {
   const [games, setGames] = useState([]);
+  const [youtubeGame, setYoutubeGame] = useState('');
   const [displayDetails, setDisplayDetails] = useState(false);
 
   useEffect(() => {
@@ -16,8 +19,22 @@ function Row({ title, fetchURL, todaysDate }) {
     fetchData();
   }, [fetchURL]);
 
+  const fetchGameTrailer = async (game) => {
+    console.log(game);
+    // const request = await youtubeAPI.get('/search', {
+    //   params: {
+    //     q: game,
+    //   },
+    // });
+    // console.log(request);
+  };
+
   return (
-    <div className='row' key={title}>
+    <div
+      className='row'
+      key={title}
+      onMouseOver={() => setDisplayDetails(true)}
+    >
       <h2>{title}</h2>
       <div className='row__posters'>
         {games.map(
@@ -26,16 +43,18 @@ function Row({ title, fetchURL, todaysDate }) {
               <React.Fragment key={game.name}>
                 <div
                   className='row__poster_container'
-                  onMouseOver={() => setDisplayDetails(true)}
+                  onClick={() => fetchGameTrailer(game.name)}
                 >
                   <span className='row__poster_name'>{game.name}</span>
                   <img
-                    key={game.name}
+                    onMouseOver={() => setDisplayDetails(true)}
+                    onMouseLeave={() => setDisplayDetails(false)}
                     className='row__poster'
                     src={game.background_image}
                     alt={game.name}
                   />
                 </div>
+                {/* {displayDetails && <GameDetails />} */}
               </React.Fragment>
             )
         )}

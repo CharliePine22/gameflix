@@ -1,5 +1,4 @@
 .dropdown {
-  /* height: 300px; */
   width: 180px;
   background-color: #000000e6;
   line-height: 21px;
@@ -13,18 +12,18 @@
 
 .dropdown__arrow {
   position: absolute;
-  left: 148px;
+  left: 134px;
   top: -35px;
   color: #e5e5e5;
   font-size: 1.6rem;
   padding-top: 20px;
+  padding-left: 20px;
 }
 
 .dropdown__profiles {
   border-bottom: 1px solid white;
   height: auto;
   padding: 10px 0 10px;
-  /* padding: 10px 0 5px; */
 }
 
 .dropdown__profiles_list {

@@ -1,19 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import './GameDetails.css';
-import requests from '../../../requests';
 import rawgClient from '../../../axios';
+import youtubeAPI from '../../../youtubeAPI';
 
-const GameDetails = ({ id }) => {
+const GameDetails = () => {
   const [gameDetails, setGameDetails] = useState([]);
+  // const fetchGameDetails = async (id) => {
+  //   const request = await rawgClient.get(`games/${id}`);
+  //   console.log(request.data);
+  // };
+
+  // fetchGameDetails(id);
 
   useEffect(() => {
-    const fetchGameDetails = async (id) => {
-      const request = await rawgClient.get(`games/${id}`);
-      console.log(request.data);
-    };
+    const fetchGameTrailer = async () => {
+      const request = await youtubeAPI.get('/search', {
+        params: {
+          q: 'test',
+        },
+      });
 
-    fetchGameDetails(id);
-  }, [id]);
+      console.log(request);
+    };
+    fetchGameTrailer();
+  }, []);
 
   return (
     <div className='game-details'>

@@ -1,44 +1,68 @@
 // Rawg Credentials
 const API_KEY = 'c69737aae4e04ce8ad8613ba04c2be9f';
 
-// Get date object for finding release dates
-const currentYear = new Date().getFullYear();
-const dayAndMonth = (type) => {
-  let value;
-  if (type === 'month') {
-    value = new Date().getMonth() + 1;
-  } else if (type === 'day') {
-    value = new Date().getDate();
-  }
-  if (value < 10) {
-    return `0${value}`;
-  } else {
-    return value;
-  }
-};
-const currentMonth = dayAndMonth('month');
-const currentDay = dayAndMonth('day');
-const nextYear = `${currentYear + 1}-${currentMonth}-${currentDay}`;
-const endYear = `${currentYear}-12-31`;
-const startCurrentYear = `${currentYear}-01-01`;
-
+// Get todays date based off current timezone
 let todayDate = new Date();
 const offset = todayDate.getTimezoneOffset();
 todayDate = new Date(todayDate.getTime() - offset * 60 * 1000);
+// Date formatted in YYYY-MM-DD format
 const currentDate = todayDate.toISOString().split('T')[0];
 
-console.log(currentDate.getFullYear);
+// * Create different date objects for filtering new games based off of current week, month, and year
+// 1 year from current dates
+const nextYear = currentDate.replace(
+  todayDate.getFullYear(),
+  todayDate.getFullYear() + 1
+);
+
+// Date months start at 0, so add 1 for current month and 2 for next month
+const nextMonth = currentDate.replace(
+  todayDate.getMonth() + 1,
+  todayDate.getMonth() + 2
+);
+
+// Format into 2 digits for raw api endpoint
+const formatMonth = (month) => {
+  return month < 10 ? '0' + month : '' + month;
+};
+
+// Determine how many days are in current month and if week overlaps with new month
+// EX: Week differnce for:  2022-07-25 --> 2022-08-01
+const determineDateCutoff = (month) => {
+  const totalDays = new Date(todayDate.getFullYear(), month, 0).getDate();
+  const nextWeek = todayDate.getDate() + 7;
+  const difference = nextWeek - totalDays;
+
+  // If the difference is positive, it means a new month has occured
+  if (difference > 0) {
+    const formattedMonth = formatMonth(todayDate.getMonth() + 2);
+    return `${todayDate.getFullYear()}-${formattedMonth}-0${difference}`;
+  }
+  // If the end of the week is still in the same month, return the date
+  else {
+    const formattedMonth = formatMonth(todayDate.getMonth() + 1);
+    return `${todayDate.getFullYear()}-${formattedMonth}-${nextWeek}`;
+  }
+};
+
+// First and Last days of the current year
+const startYearDate = `${todayDate.getFullYear()}-01-01`;
+const endYearDate = `${todayDate.getFullYear()}-12-31`;
 
 const requests = [
   {
     requestId: 'fetchUpcomingTitles',
-    url: `games?dates=${currentDate},${nextYear}&ordering=-added&key=${API_KEY}`,
+    yearUrl: `games?dates=${currentDate},${nextYear}&ordering=-added&key=${API_KEY}`,
+    monthUrl: `games?dates=${currentDate},${nextMonth}&ordering=-added&key=${API_KEY}`,
+    weekUrl: `games?dates=${currentDate},${determineDateCutoff(
+      todayDate.getMonth() + 1
+    )}&ordering=-added&key=${API_KEY}`,
     title: 'COMING SOON',
     todaysDate: currentDate,
   },
   {
     requestId: 'fetchPopularTitles',
-    url: `games?dates=${startCurrentYear},${currentDate}&ordering=rating_count&key=${API_KEY}`,
+    url: `games?dates=${startYearDate},${currentDate}&ordering=rating_count&key=${API_KEY}`,
     title: 'POPULAR TITLES',
   },
   {

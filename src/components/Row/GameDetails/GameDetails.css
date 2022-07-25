@@ -1,0 +1,11 @@
+.game-details {
+  width: 269px;
+  top: 479px;
+  left: -12px;
+  transform-origin: center center;
+  transform: translateX(45px) translateY(0px) scaleX(1) scaleY(1)
+    translateZ(0px);
+  z-index: 3;
+  opacity: 1;
+  box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
+}

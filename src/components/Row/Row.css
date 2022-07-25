@@ -1,40 +1,34 @@
 .row {
   margin-left: 20px;
-  text-align: left;
   color: #fff;
+  position: relative;
 }
 
 .row__poster {
-  width: 100%;
-  max-width: 248px;
+  max-width: 260px;
   object-fit: cover;
-  max-height: 140px;
-  margin-right: 15px;
-  transition: transform 400ms;
+  height: 100%;
   cursor: pointer;
 }
 
-.row__poster_name {
-  left: 0;
-}
-
-.row__poster:hover {
+.row__poster_container:hover {
   transform: scale(1.08);
   opacity: 1;
 }
 
-.row__main_poster {
+.row__poster_container {
   width: 100%;
-  /* max-width: 20%; */
-  /* object-fit: contain; */
-  height: 250px;
-  margin-right: 10px;
-  transition: transform 400ms;
   cursor: pointer;
+  position: relative;
+  margin-right: 15px;
+  transition: transform 400ms;
 }
 
-.row__main_poster:hover {
-  transform: scale(1.09);
+.row__poster_name {
+  position: absolute;
+  bottom: 0;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .row__posters {

@@ -4,6 +4,7 @@ import './Row.css';
 
 function Row({ title, fetchURL, todaysDate }) {
   const [games, setGames] = useState([]);
+  const [displayDetails, setDisplayDetails] = useState(false);
 
   useEffect(() => {
     // Grab games from each genre
@@ -22,16 +23,20 @@ function Row({ title, fetchURL, todaysDate }) {
         {games.map(
           (game) =>
             game.background_image !== null && (
-              <>
-                {/* <p className='row__poster_name' key={game.id}>
-                  {game.name}
-                </p> */}
-                <img
-                  className={todaysDate ? 'row__main_poster' : 'row__poster'}
-                  src={game.background_image}
-                  alt={game.name}
-                />
-              </>
+              <React.Fragment key={game.name}>
+                <div
+                  className='row__poster_container'
+                  onMouseOver={() => setDisplayDetails(true)}
+                >
+                  <span className='row__poster_name'>{game.name}</span>
+                  <img
+                    key={game.name}
+                    className='row__poster'
+                    src={game.background_image}
+                    alt={game.name}
+                  />
+                </div>
+              </React.Fragment>
             )
         )}
       </div>

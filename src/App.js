@@ -3,6 +3,7 @@ import Row from './components/Row/Row';
 import requests from './requests';
 import Banner from './components/Banner/Banner';
 import Nav from './components/Nav/Nav';
+import MainRow from './components/MainRow/MainRow';
 
 function App() {
   // const [accessToken, setAccessToken] = useState(localStorage.getItem('token'));
@@ -25,14 +26,18 @@ function App() {
     <div className='App'>
       <Nav />
       <Banner />
-      {requests.map((request) => (
-        <Row
-          key={request.requestId}
-          title={request.title}
-          fetchURL={request.url}
-          todaysDate={request.todaysDate}
-        />
-      ))}
+      <MainRow />
+      {requests.map(
+        (request) =>
+          request.title !== 'COMING SOON' && (
+            <Row
+              key={request.requestId}
+              title={request.title}
+              fetchURL={request.url}
+              todaysDate={request.todaysDate}
+            />
+          )
+      )}
     </div>
   );
 }

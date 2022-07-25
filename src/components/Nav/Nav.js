@@ -63,11 +63,13 @@ function Nav() {
             onClick={() => setDisplaySearch(!displaySearch)}
           />
         </div>
-        <div className='nav__actions'>
+        <div
+          className='nav__actions'
+          onMouseLeave={() => setDisplayDropdown(false)}
+        >
           <div
             className='nav__avatar_container'
             onMouseOver={() => setDisplayDropdown(true)}
-            // onMouseLeave={() => setDisplayDropdown(false)}
           >
             <img className='nav__avatar' src={avatar} alt="User's avatar" />
           </div>

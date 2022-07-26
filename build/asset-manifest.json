@@ -1,19 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.5ad6472e.css",
-    "main.js": "/static/js/main.843dae88.js",
+    "main.css": "/static/css/main.352674ac.css",
+    "main.js": "/static/js/main.fbafa07f.js",
     "static/js/787.b18a59c4.chunk.js": "/static/js/787.b18a59c4.chunk.js",
     "static/media/roxas-icon.png": "/static/media/roxas-icon.e65c74980722ce835a7b.png",
+    "static/media/xbox-logo.png": "/static/media/xbox-logo.1470ebd18d88807af6fe.png",
     "static/media/lion-icon.png": "/static/media/lion-icon.ba820f87e910d659c2f3.png",
+    "static/media/android-logo.png": "/static/media/android-logo.c738080d9145c162601f.png",
+    "static/media/apple-logo.png": "/static/media/apple-logo.984030b66746dc4582fb.png",
+    "static/media/steam-logo.png": "/static/media/steam-logo.ae35c358ce32663bcab0.png",
     "static/media/kairi-icon.png": "/static/media/kairi-icon.dd3f432a85965f383fa7.png",
+    "static/media/nintendo-logo.png": "/static/media/nintendo-logo.14c4d5793bf79874cb08.png",
     "static/media/org-icon.png": "/static/media/org-icon.8f0cb355d8f2bbe7bffe.png",
+    "static/media/playstation-logo.png": "/static/media/playstation-logo.630dfedda6273efed3a8.png",
     "index.html": "/index.html",
-    "main.5ad6472e.css.map": "/static/css/main.5ad6472e.css.map",
-    "main.843dae88.js.map": "/static/js/main.843dae88.js.map",
+    "main.352674ac.css.map": "/static/css/main.352674ac.css.map",
+    "main.fbafa07f.js.map": "/static/js/main.fbafa07f.js.map",
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5ad6472e.css",
-    "static/js/main.843dae88.js"
+    "static/css/main.352674ac.css",
+    "static/js/main.fbafa07f.js"
   ]
 }

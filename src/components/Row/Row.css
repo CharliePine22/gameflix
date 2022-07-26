@@ -1,7 +1,6 @@
 .row {
   margin-left: 20px;
   color: #fff;
-  position: relative;
 }
 
 .row__poster {
@@ -10,11 +9,18 @@
   height: 100%;
   max-height: 168px;
   cursor: pointer;
+  box-shadow: 0px 3px 10px #000;
+  transition: box-shadow 400ms;
+  border-radius: 6px;
 }
 
 .row__poster_container:hover {
   transform: scale(1.08);
   opacity: 1;
+}
+
+.row__poster_container:hover .row__poster {
+  box-shadow: 0px 10px 10px #000;
 }
 
 .row__poster_container {

@@ -1,0 +1,6 @@
+.trailer {
+  box-shadow: 0 2px 1px lightgray;
+  border: 1px solid lightgray;
+  border-radius: 2px;
+  margin: 20px 0;
+}

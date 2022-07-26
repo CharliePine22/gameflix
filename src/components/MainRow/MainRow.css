@@ -21,6 +21,7 @@
 }
 
 .main__poster_name {
+  z-index: 1;
   position: absolute;
   bottom: 2px;
   left: 5px;
@@ -34,7 +35,10 @@
 
 .main_poster {
   height: 100%;
+  border-radius: 6px;
   margin-right: 10px;
+  -webkit-filter: drop-shadow(3px 4px 3px #000);
+  filter: drop-shadow(3px 4px 3px #000);
 }
 
 .main_row__poster_container:hover {

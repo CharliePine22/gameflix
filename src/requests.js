@@ -1,5 +1,5 @@
 // Rawg Credentials
-const API_KEY = 'c69737aae4e04ce8ad8613ba04c2be9f';
+const API_KEY = 'df0a614ea95743f7a9e2008a796b5249';
 
 // Get todays date based off current timezone
 let todayDate = new Date();

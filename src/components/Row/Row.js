@@ -6,7 +6,8 @@ import youtubeAPI from '../../youtubeAPI';
 
 function Row({ title, fetchURL }) {
   const [games, setGames] = useState([]);
-  const [youtubeGame, setYoutubeGame] = useState('');
+  const [youtubeGame, setYoutubeGame] = useState(null);
+  const [currentGame, setCurrentGame] = useState('');
   const [displayDetails, setDisplayDetails] = useState(false);
 
   useEffect(() => {
@@ -19,22 +20,20 @@ function Row({ title, fetchURL }) {
     fetchData();
   }, [fetchURL]);
 
+  // Grab trailer video from selected game
   const fetchGameTrailer = async (game) => {
-    console.log(game);
     // const request = await youtubeAPI.get('/search', {
     //   params: {
-    //     q: game,
+    //     q: game + ' Trailer',
     //   },
     // });
-    // console.log(request);
+    // setYoutubeGame(request.data.items[0]);
+    setDisplayDetails(!displayDetails);
+    setCurrentGame(game);
   };
 
   return (
-    <div
-      className='row'
-      key={title}
-      onMouseOver={() => setDisplayDetails(true)}
-    >
+    <div className='row' key={title}>
       <h2>{title}</h2>
       <div className='row__posters'>
         {games.map(
@@ -43,20 +42,24 @@ function Row({ title, fetchURL }) {
               <React.Fragment key={game.name}>
                 <div
                   className='row__poster_container'
-                  onClick={() => fetchGameTrailer(game.name)}
+                  onClick={() => fetchGameTrailer(game)}
                 >
                   <span className='row__poster_name'>{game.name}</span>
                   <img
-                    onMouseOver={() => setDisplayDetails(true)}
-                    onMouseLeave={() => setDisplayDetails(false)}
                     className='row__poster'
                     src={game.background_image}
                     alt={game.name}
                   />
                 </div>
-                {/* {displayDetails && <GameDetails />} */}
               </React.Fragment>
             )
+        )}
+        {displayDetails && (
+          <GameDetails
+            game={currentGame}
+            videoId={youtubeGame}
+            hideDetails={() => setDisplayDetails(false)}
+          />
         )}
       </div>
     </div>

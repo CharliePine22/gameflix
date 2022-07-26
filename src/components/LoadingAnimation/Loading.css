@@ -8,13 +8,9 @@
 .loading {
   height: 0px;
   width: 0px;
-  /* background-color: black;
-  border-radius: 50%; */
-  position: relative;
   border: 100px solid transparent;
-  /* border-bottom-color: black; */
-  position: relative;
-  top: -50px;
+  position: absolute;
+  top: 80px;
   left: 43%;
   display: flex;
   justify-content: center;
@@ -30,7 +26,6 @@
   width: 0;
   height: 0;
   border: 100px solid transparent;
-  /* border-top-color: black; */
 }
 
 .loading__button {
@@ -38,7 +33,6 @@
   width: 25px;
   background-color: white;
   transform: rotate(45deg);
-  /* border-radius: 50%; */
   z-index: 1;
 }
 /* .loading__button {

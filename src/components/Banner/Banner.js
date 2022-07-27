@@ -35,7 +35,7 @@ function Banner() {
     fetchData();
   }, []);
 
-  // If the game description is longer thatn 150 characters, replace the reaminder with the ellipsis '...'
+  // If the game description is longer that 150 characters, replace the reaminder with the ellipsis '...'
   const truncate = (str, n) => {
     return str?.length > n ? str.substr(0, n - 1) + '...' : str;
   };

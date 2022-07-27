@@ -47,28 +47,53 @@ const MainRow = () => {
         {changingFilter && (
           <div className='filter_options'>
             <ul>
-              <li onClick={changeFilterDate}>Week</li>
-              <li onClick={changeFilterDate}>Month</li>
-              <li onClick={changeFilterDate}>Year</li>
+              <li
+                style={{
+                  backgroundColor: currentFilter == 'Week' ? 'white' : '',
+                  color: currentFilter == 'Week' ? 'black' : '',
+                }}
+                onClick={changeFilterDate}
+              >
+                Week
+              </li>
+              <li
+                style={{
+                  backgroundColor: currentFilter == 'Month' ? 'white' : '',
+                  color: currentFilter == 'Month' ? 'black' : '',
+                }}
+                onClick={changeFilterDate}
+              >
+                Month
+              </li>
+              <li
+                style={{
+                  backgroundColor: currentFilter == 'Year' ? 'white' : '',
+                  color: currentFilter == 'Year' ? 'black' : '',
+                }}
+                onClick={changeFilterDate}
+              >
+                Year
+              </li>
             </ul>
           </div>
         )}
       </div>
       <div className='main_row__row_posters'>
-        {games.map(
-          (game) =>
-            game.background_image !== null && (
-              <div className='main_row__poster_container' key={game.name}>
-                <span className='main__poster_name'>{game.name}</span>
-                <img
-                  key={game.id}
-                  className='main_poster'
-                  src={game.background_image}
-                  alt={game.name}
-                />
-              </div>
-            )
-        )}
+        {games &&
+          games.map(
+            (game) =>
+              game.background_image !== null && (
+                <div className='main_row__poster_container' key={game.name}>
+                  <span className='main__poster_name'>{game.name}</span>
+                  <img
+                    key={game.id}
+                    className='main_poster'
+                    src={game.background_image}
+                    alt={game.name}
+                  />
+                </div>
+              )
+          )}
       </div>
     </div>
   );

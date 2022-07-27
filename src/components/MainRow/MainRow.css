@@ -58,10 +58,12 @@
 }
 
 .filters_filter {
+  display: flex;
   color: rgba(255, 255, 255, 0.4);
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   cursor: pointer;
+  align-items: center;
 }
 
 .arrow,
@@ -81,10 +83,10 @@
   position: absolute;
   background-color: #000000e6;
   width: 6rem;
-  height: 6rem;
+  height: 6.5rem;
   left: 170px;
   top: 30px;
-  border-radius: 5px;
+  border-radius: 6px;
   z-index: 2;
 }
 
@@ -103,9 +105,31 @@
   width: 100%;
   text-align: center;
   font-weight: 500;
+  padding: 7px 0;
+}
+
+.filter_options ul li:nth-child(1) {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.filter_options ul li:nth-child(3) {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 
 .filter_options ul li:hover {
   background-color: white;
   color: black;
+}
+
+/* Mobile Devices */
+@media screen and (min-width: 320px) and (max-width: 500px) {
+  .main_row__row_posters {
+    padding: 20px 20px 20px 5px;
+  }
+
+  .main_poster {
+    max-width: 380px;
+  }
 }

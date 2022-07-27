@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import './GameDetails.css';
+import React, { useEffect, useState } from 'react';
 import youtubeAPI from '../../../youtubeAPI';
+import useFetchDetails from '../../../hooks/useFetchDetails';
+import Loading from '../../LoadingAnimation/Loading';
+import ReactPlayer from 'react-player/lazy';
+import './GameDetails.css';
+
+// Game Platform Logo Images
 import playstationLogo from '../../../assets/images/playstation-logo.png';
 import nintendoLogo from '../../../assets/images/nintendo-logo.png';
 import xboxLogo from '../../../assets/images/xbox-logo.png';
 import steamLogo from '../../../assets/images/steam-logo.png';
 import iosLogo from '../../../assets/images/apple-logo.png';
 import androidLogo from '../../../assets/images/android-logo.png';
-import useFetchDetails from '../../../hooks/useFetchDetails';
-import { AxiosError } from 'axios';
 
-const GameDetails = ({ game, videoId, hideDetails }) => {
+const GameDetails = ({ game, hideDetails, displayDetails }) => {
   const { isLoading, gameDetails, serverError } = useFetchDetails(game);
+  const [youtubeTrailer, setYoutubeTrailer] = useState(null);
+  const [unmounting, setUnmounting] = useState(false);
 
   // Convert name of platforms into pulisher icon
   const displayConsoleIcons = (platform) => {
@@ -45,9 +50,29 @@ const GameDetails = ({ game, videoId, hideDetails }) => {
     window.open(url, '_blank');
   };
 
+  const closeDetails = () => {
+    setUnmounting(true);
+    setTimeout(function () {
+      hideDetails();
+    }, 150);
+  };
+
+  // Fetch trailer when component renders
   useEffect(() => {
-    console.log(gameDetails);
+    const fetchYoutubeTrailer = async () => {
+      const request = await youtubeAPI.get('/search', {
+        params: {
+          q: gameDetails?.name + ' Trailer',
+        },
+      });
+      setYoutubeTrailer(request.data.items[0]);
+    };
+    // fetchYoutubeTrailer();
   }, [gameDetails]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   // Convert the YYYY-MM-DD to Month, Day, Year
   const convertDate = (date) => {
@@ -84,6 +109,7 @@ const GameDetails = ({ game, videoId, hideDetails }) => {
       case 23:
         formattedDay = currentDay + 'rd';
         break;
+      // Most days have the th ending (28th) so set as default
       default:
         formattedDay = currentDay + 'th';
         break;
@@ -92,19 +118,29 @@ const GameDetails = ({ game, videoId, hideDetails }) => {
       months[now.getMonth()] + ' ' + formattedDay + ', ' + now.getFullYear()
     );
   };
-  // onMouseLeave={hideDetails}
+
   return (
-    <div className='game-details'>
+    <div
+      className={`game-details ${unmounting && 'hide'}`}
+      onMouseLeave={closeDetails}
+    >
+      {/* Container for Game Trailer */}
       <div className='game-details__trailer'>
-        {videoId !== null ? (
-          <iframe className='trailer' />
-        ) : (
-          <img
-            className='trailer_placeholder'
-            src={gameDetails?.background_image}
-          />
-        )}
+        <ReactPlayer
+          url={`https://www.youtube.com/embed/${youtubeTrailer?.id.videoId}`}
+          className='trailer'
+          width='342px'
+          height='192px'
+          playing={true}
+          light={gameDetails?.background_image}
+        />
+        {/* <img
+          className='trailer_placeholder'
+          src={gameDetails?.background_image}
+        /> */}
       </div>
+
+      {/* Game Details Container */}
       <div className='game-details__container'>
         <div className='game-details__details'>
           <h3
@@ -113,6 +149,13 @@ const GameDetails = ({ game, videoId, hideDetails }) => {
           >
             {gameDetails?.name}
           </h3>
+          <ul className='game-details__publishers'>
+            {gameDetails?.publishers.map((publisher) => (
+              <li className='game-details__publisher' key={publisher.id}>
+                {publisher.name}
+              </li>
+            ))}
+          </ul>
           <p className='game-details__released'>
             Release Date: {convertDate(gameDetails?.released)}
           </p>

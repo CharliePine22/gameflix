@@ -24,7 +24,7 @@ function Banner() {
   // Grab a random game from the list to display as the main banner
   useEffect(() => {
     async function fetchData() {
-      const request = await rawgClient.get(requests[1].url + '&page_size=40');
+      const request = await rawgClient.get(requests[2].url + '&page_size=40');
       setGame(
         request.data.results[
           Math.floor(Math.random() * request.data.results.length - 1)
@@ -63,8 +63,8 @@ function Banner() {
           {truncate(gameDetails?.description_raw, 150)}
         </h1>
       </div>
-
       <div className='banner--fadeBottom' />
+      {<BiRefresh size={35} className='banner__refresh_icon' />}
     </header>
   );
 }

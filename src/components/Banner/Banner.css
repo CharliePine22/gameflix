@@ -54,6 +54,19 @@
   );
 }
 
+.banner__refresh_icon {
+  cursor: pointer;
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+  transition: all 200ms ease-in;
+  opacity: 0.5;
+}
+
+.banner__refresh_icon:hover {
+  opacity: 1;
+}
+
 @keyframes fadeInBannerContent {
   0% {
     transform: translateX(-20px);

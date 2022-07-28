@@ -16,7 +16,7 @@ function Nav() {
   };
 
   useEffect(() => {
-    // If the user scrolls down from the top, add a black background to the nav
+    // If the user scrolls down from the top of page, add a black background to the nav
     const scrollNavListener = () => {
       window.addEventListener('scroll', () => {
         if (window.scrollY > 100) {
@@ -36,9 +36,7 @@ function Nav() {
     const handleEsc = (event) => {
       if (event.keyCode === 27) {
         // If the search input is open, close it
-        if (displaySearch) {
-          setDisplaySearch(false);
-        }
+        setDisplaySearch(false);
       }
     };
     window.addEventListener('keydown', handleEsc);

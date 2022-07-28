@@ -5,6 +5,7 @@ const API_KEY = 'df0a614ea95743f7a9e2008a796b5249';
 let todayDate = new Date();
 const offset = todayDate.getTimezoneOffset();
 todayDate = new Date(todayDate.getTime() - offset * 60 * 1000);
+
 // Date formatted in YYYY-MM-DD format
 const currentDate = todayDate.toISOString().split('T')[0];
 
@@ -26,6 +27,8 @@ const formatMonth = (month) => {
   return month < 10 ? '0' + month : '' + month;
 };
 
+// const endYearDate = `${todayDate.getFullYear()}-12-31`;
+
 // Determine how many days are in current month and if week overlaps with new month
 // EX: Week differnce for:  2022-07-25 --> 2022-08-01
 const determineDateCutoff = (month) => {
@@ -45,14 +48,20 @@ const determineDateCutoff = (month) => {
   }
 };
 
-// First and Last days of the current year
-const startYearDate = `${todayDate.getFullYear()}-01-01`;
-const endYearDate = `${todayDate.getFullYear()}-12-31`;
+// Grab past 3 months to filter the most popular games in the past 3 months
+const previousQuarter = `${todayDate.getFullYear()}-${String(
+  todayDate.getMonth() - 2
+).padStart(2, '0')}-${todayDate.getDate()}`;
+
+// Grab next 3 months to filter the most popular games in the past 3 months
+const nextQuarter = `${todayDate.getFullYear()}-${String(
+  todayDate.getMonth() + 2
+).padStart(2, '0')}-${todayDate.getDate()}`;
 
 const requests = [
   {
     requestId: 'fetchUpcomingTitles',
-    yearUrl: `games?dates=${currentDate},${nextYear}&ordering=-added&key=${API_KEY}`,
+    yearUrl: `games?dates=${nextQuarter},${nextYear}&ordering=-added&key=${API_KEY}`,
     monthUrl: `games?dates=${currentDate},${nextMonth}&ordering=-added&key=${API_KEY}`,
     weekUrl: `games?dates=${currentDate},${determineDateCutoff(
       todayDate.getMonth() + 1
@@ -62,8 +71,13 @@ const requests = [
   },
   {
     requestId: 'fetchPopularTitles',
-    url: `games?dates=${startYearDate},${currentDate}&ordering=rating_count&key=${API_KEY}`,
+    url: `games?dates=${previousQuarter},${currentDate}&ordering=rating_count&key=${API_KEY}`,
     title: 'POPULAR TITLES',
+  },
+  {
+    requestId: 'fetchGOATTitles',
+    url: `games?dates=2000-01-01,${currentDate}&ordering=-added&page_size=30&key=${API_KEY}`,
+    title: 'G.O.A.Ts',
   },
   {
     requestId: 'fetchActionTitles',
@@ -89,11 +103,6 @@ const requests = [
     requestId: 'fetchCasualTitles',
     url: `games?genres=40&key=${API_KEY}`,
     title: 'CASUAL TITLES',
-  },
-  {
-    requestId: 'fetchEducationalTitles',
-    url: `games?genres=34&key=${API_KEY}`,
-    title: 'EDUCATIONAL TITLES',
   },
   {
     requestId: 'fetchFamilyTitles',

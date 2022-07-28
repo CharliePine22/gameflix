@@ -15,6 +15,7 @@ import androidLogo from '../../../assets/images/android-logo.png';
 
 const GameDetails = ({ game, hideDetails, displayDetails }) => {
   const { isLoading, gameDetails, serverError } = useFetchDetails(game);
+  const [loading, setLoading] = useState(false);
   const [youtubeTrailer, setYoutubeTrailer] = useState(null);
   const [unmounting, setUnmounting] = useState(false);
 
@@ -59,6 +60,7 @@ const GameDetails = ({ game, hideDetails, displayDetails }) => {
 
   // Fetch trailer when component renders
   useEffect(() => {
+    setLoading(true);
     const fetchYoutubeTrailer = async () => {
       const request = await youtubeAPI.get('/search', {
         params: {
@@ -66,13 +68,10 @@ const GameDetails = ({ game, hideDetails, displayDetails }) => {
         },
       });
       setYoutubeTrailer(request.data.items[0]);
+      setLoading(false);
     };
     // fetchYoutubeTrailer();
   }, [gameDetails]);
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   // Convert the YYYY-MM-DD to Month, Day, Year
   const convertDate = (date) => {
@@ -90,7 +89,7 @@ const GameDetails = ({ game, hideDetails, displayDetails }) => {
       'November',
       'December',
     ];
-    let now = new Date(date);
+    let now = new Date(date?.replace(/-/g, '/'));
     let currentDay = now.getDate();
     let formattedDay;
 
@@ -119,6 +118,10 @@ const GameDetails = ({ game, hideDetails, displayDetails }) => {
     );
   };
 
+  if (!gameDetails) {
+    return null;
+  }
+
   return (
     <div
       className={`game-details ${unmounting && 'hide'}`}
@@ -126,18 +129,20 @@ const GameDetails = ({ game, hideDetails, displayDetails }) => {
     >
       {/* Container for Game Trailer */}
       <div className='game-details__trailer'>
-        <ReactPlayer
-          url={`https://www.youtube.com/embed/${youtubeTrailer?.id.videoId}`}
-          className='trailer'
-          width='342px'
-          height='192px'
-          playing={true}
-          light={gameDetails?.background_image}
-        />
-        {/* <img
-          className='trailer_placeholder'
-          src={gameDetails?.background_image}
-        /> */}
+        {!isLoading && youtubeTrailer?.id.videoId !== undefined ? (
+          <ReactPlayer
+            url={`https://www.youtube.com/embed/${youtubeTrailer?.id.videoId}`}
+            className='trailer'
+            width='342px'
+            height='192px'
+            playing={true}
+          />
+        ) : (
+          <img
+            className='trailer_placeholder'
+            src={gameDetails?.background_image}
+          />
+        )}
       </div>
 
       {/* Game Details Container */}

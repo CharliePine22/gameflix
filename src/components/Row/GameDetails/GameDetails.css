@@ -2,13 +2,12 @@
   background-color: #111;
   position: absolute;
   border-radius: 6px;
-  color: #fff;
   font-size: 16px;
   /* overflow: hidden; */
   width: 342px;
   height: 370px;
-  top: -5px;
-  left: -33px;
+  top: -38px;
+  left: -45px;
   transform-origin: center center;
   animation: growBox 150ms ease-in forwards;
   backface-visibility: hidden;
@@ -17,6 +16,10 @@
   box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
   will-change: transform;
   perspective: 1px;
+}
+
+.game-details:hover {
+  transform: scale(1);
 }
 
 .hide {

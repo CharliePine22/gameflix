@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.dc65eacb.css",
-    "main.js": "/static/js/main.89606fd4.js",
+    "main.css": "/static/css/main.6614a8c7.css",
+    "main.js": "/static/js/main.0aaa2fb8.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -16,6 +16,7 @@
     "reactPlayerFilePlayer.js": "/static/js/reactPlayerFilePlayer.d0b4ef83.chunk.js",
     "reactPlayerPreview.js": "/static/js/reactPlayerPreview.c2567d43.chunk.js",
     "static/js/787.b18a59c4.chunk.js": "/static/js/787.b18a59c4.chunk.js",
+    "static/media/success.wav": "/static/media/success.691f932eabcba96fbd39.wav",
     "static/media/roxas-icon.png": "/static/media/roxas-icon.e65c74980722ce835a7b.png",
     "static/media/xbox-logo.png": "/static/media/xbox-logo.1470ebd18d88807af6fe.png",
     "static/media/lion-icon.png": "/static/media/lion-icon.ba820f87e910d659c2f3.png",
@@ -27,8 +28,8 @@
     "static/media/org-icon.png": "/static/media/org-icon.8f0cb355d8f2bbe7bffe.png",
     "static/media/playstation-logo.png": "/static/media/playstation-logo.630dfedda6273efed3a8.png",
     "index.html": "/index.html",
-    "main.dc65eacb.css.map": "/static/css/main.dc65eacb.css.map",
-    "main.89606fd4.js.map": "/static/js/main.89606fd4.js.map",
+    "main.6614a8c7.css.map": "/static/css/main.6614a8c7.css.map",
+    "main.0aaa2fb8.js.map": "/static/js/main.0aaa2fb8.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -45,7 +46,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.dc65eacb.css",
-    "static/js/main.89606fd4.js"
+    "static/css/main.6614a8c7.css",
+    "static/js/main.0aaa2fb8.js"
   ]
 }

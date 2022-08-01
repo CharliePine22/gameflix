@@ -47,16 +47,23 @@ const GameDetails = ({ game, hideDetails, displayDetails }) => {
     }
   };
 
+  // Go to the game website
   const goToGameWebsite = (url) => {
     window.open(url, '_blank');
   };
 
+  // Wait for animation to finish before closing details
   const closeDetails = () => {
     setUnmounting(true);
     setTimeout(function () {
       hideDetails();
     }, 150);
   };
+
+  // If game has no metacritic, calculate average score users gave the game
+  const calculateRating = (game) => {
+
+  }
 
   // Fetch trailer when component renders
   useEffect(() => {

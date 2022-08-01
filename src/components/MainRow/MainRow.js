@@ -7,7 +7,7 @@ import Loading from '../LoadingAnimation/Loading';
 
 const MainRow = () => {
   const [games, setGames] = useState([]);
-  const [currentFilter, setCurrentFilter] = useState('Month');
+  const [currentFilter, setCurrentFilter] = useState('Year');
   const [changingFilter, setChangingFilter] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -23,6 +23,7 @@ const MainRow = () => {
       return request;
     }
     fetchData();
+    console.log(games);
   }, [currentFilter]);
 
   // Handler to change the filter type (Week, Month, Year)

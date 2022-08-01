@@ -33,7 +33,7 @@ const formatMonth = (month) => {
 // EX: Week differnce for:  2022-07-25 --> 2022-08-01
 const determineDateCutoff = (month) => {
   const totalDays = new Date(todayDate.getFullYear(), month, 0).getDate();
-  const nextWeek = todayDate.getDate() + 7;
+  const nextWeek = String(todayDate.getDate() + 7).padStart(2, '0');
   const difference = nextWeek - totalDays;
 
   // If the difference is positive, it means a new month has occured
@@ -51,13 +51,14 @@ const determineDateCutoff = (month) => {
 // Grab past 3 months to filter the most popular games in the past 3 months
 const previousQuarter = `${todayDate.getFullYear()}-${String(
   todayDate.getMonth() - 2
-).padStart(2, '0')}-${todayDate.getDate()}`;
+).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
 
 // Grab next 3 months to filter the most popular games in the past 3 months
 const nextQuarter = `${todayDate.getFullYear()}-${String(
   todayDate.getMonth() + 2
-).padStart(2, '0')}-${todayDate.getDate()}`;
+).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
 
+// List of endpoints for the Rawg.io API
 const requests = [
   {
     requestId: 'fetchUpcomingTitles',

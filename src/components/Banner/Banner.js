@@ -7,6 +7,7 @@ import useFetchDetails from '../../hooks/useFetchDetails';
 import { BiRefresh } from 'react-icons/bi';
 
 function Banner() {
+  const [gameList, setGameList] = useState([]);
   const [game, setGame] = useState([]);
   const { isLoading, gameDetails, serverError } = useFetchDetails(game);
 
@@ -21,19 +22,21 @@ function Banner() {
   //   };
   // }, []);
 
-  // Grab a random game from the list to display as the main banner
+  // Fetch and return list of games from endpoint
   useEffect(() => {
     async function fetchData() {
       const request = await rawgClient.get(requests[2].url + '&page_size=40');
-      setGame(
-        request.data.results[
-          Math.floor(Math.random() * request.data.results.length - 1)
-        ]
-      );
+      setGameList(request.data.results);
+      setGame(gameList[Math.floor(Math.random() * gameList.length - 1)]);
       return request;
     }
     fetchData();
   }, []);
+
+  // Return a different game from the games list to highlight
+  const getNewGame = () => {
+    setGame(gameList[Math.floor(Math.random() * gameList.length - 1)]);
+  };
 
   // If the game description is longer that 150 characters, replace the reaminder with the ellipsis '...'
   const truncate = (str, n) => {
@@ -64,7 +67,13 @@ function Banner() {
         </h1>
       </div>
       <div className='banner--fadeBottom' />
-      {<BiRefresh size={35} className='banner__refresh_icon' />}
+      {
+        <BiRefresh
+          size={35}
+          className='banner__refresh_icon'
+          onClick={() => getNewGame()}
+        />
+      }
     </header>
   );
 }

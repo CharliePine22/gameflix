@@ -4,8 +4,13 @@ import requests from './requests';
 import Banner from './components/Banner/Banner';
 import Nav from './components/Nav/Nav';
 import MainRow from './components/MainRow/MainRow';
+import Login from './components/Login/Login';
 
 function App() {
+  let flag = true;
+  if (flag) {
+    return <Login />;
+  }
   return (
     <div className='App'>
       <Nav />

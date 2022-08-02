@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { FaSistrix, FaAngleUp } from 'react-icons/fa';
 import NavDropdown from './NavDropdown';
 
-function Nav() {
+function Nav(props) {
   const [displayNav, setDisplayNav] = useState(false);
   const [displayDropdown, setDisplayDropdown] = useState(false);
   const [displaySearch, setDisplaySearch] = useState(false);
@@ -74,7 +74,10 @@ function Nav() {
           <FaAngleUp className='nav__avatar_arrow' />
           {/* <NavDropdown /> */}
           {displayDropdown && (
-            <NavDropdown closeNavDropdown={closeNavDropdown} />
+            <NavDropdown
+              logoutHandler={props.onLogout}
+              closeNavDropdown={closeNavDropdown}
+            />
           )}
         </div>
       </div>

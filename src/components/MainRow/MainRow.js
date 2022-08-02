@@ -23,7 +23,6 @@ const MainRow = () => {
       return request;
     }
     fetchData();
-    console.log(games);
   }, [currentFilter]);
 
   // Handler to change the filter type (Week, Month, Year)
@@ -75,6 +74,8 @@ const MainRow = () => {
       'December',
     ];
 
+    // Replace hypens with dashes to get correct date
+    // Hypens returned the date previous from current due to some weird Date bug
     let now = new Date(date.replace(/-/g, '/'));
     let currentDay = now.getDate();
     let formattedDay;
@@ -107,6 +108,7 @@ const MainRow = () => {
   // If the games are loaded or data isnt fetched
   if (!games || loading) return <Loading />;
 
+  // Sort games by release date
   games.sort((a, b) => new Date(a.released) - new Date(b.released));
 
   return (

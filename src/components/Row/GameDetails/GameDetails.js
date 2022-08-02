@@ -61,9 +61,7 @@ const GameDetails = ({ game, hideDetails, displayDetails }) => {
   };
 
   // If game has no metacritic, calculate average score users gave the game
-  const calculateRating = (game) => {
-
-  }
+  const calculateRating = (game) => {};
 
   // Fetch trailer when component renders
   useEffect(() => {

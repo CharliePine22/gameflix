@@ -70,6 +70,7 @@ function Row({ title, fetchURL }) {
                   >
                     <span className='row__poster_name'>{game?.name}</span>
                     <img
+                      loading='lazy'
                       className='row__poster'
                       src={game.background_image}
                       alt={game.name}

@@ -104,7 +104,9 @@ const NavDropdown = (props) => {
         </div>
       </div>
       <div className='dropdown__settings_links'>
-        <a className='dropdown__settings_link'>Sign out of GameFlix</a>
+        <a className='dropdown__settings_link' onClick={props.logoutHandler}>
+          Sign out of GameFlix
+        </a>
       </div>
     </div>
   );

@@ -43,6 +43,12 @@ function Banner() {
     return str?.length > n ? str.substr(0, n - 1) + '...' : str;
   };
 
+  if (!gameDetails) {
+    return 'Loading...';
+  }
+
+  console.log(gameDetails);
+
   return (
     <header
       className='banner'

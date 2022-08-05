@@ -112,3 +112,18 @@
     cursor: default;
   }
 }
+
+@media screen and (max-width: 450px) {
+  .nav {
+    padding-left: 5px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .nav__avatar_container {
+    height: 35px;
+    width: 35px;
+    position: relative;
+    right: 30px;
+  }
+}

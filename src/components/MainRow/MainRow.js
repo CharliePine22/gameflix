@@ -3,7 +3,7 @@ import './MainRow.css';
 import rawgClient from '../../axios';
 import requests from '../../requests';
 import { FaAngleUp } from 'react-icons/fa';
-import Loading from '../LoadingAnimation/Loading';
+import Placeholder from '../Placeholder/Placeholder';
 
 const MainRow = () => {
   const [games, setGames] = useState([]);
@@ -106,7 +106,13 @@ const MainRow = () => {
   };
 
   // If the games are loaded or data isnt fetched
-  if (!games || loading) return <Loading />;
+  // if (loading) {
+  //   return (
+  //     <div className='main_row__loading'>
+  //       <div className='main_row__spinner' />
+  //     </div>
+  //   );
+  // }
 
   // Sort games by release date
   games.sort((a, b) => new Date(a.released) - new Date(b.released));
@@ -166,7 +172,7 @@ const MainRow = () => {
       <div className='main_row__row_posters'>
         {games &&
           games.map(
-            (game) =>
+            (game, i) =>
               game.background_image !== null &&
               filterOutAdult(game) == true && (
                 <div
@@ -174,18 +180,24 @@ const MainRow = () => {
                   onClick={() => console.log(game)}
                   key={game.name}
                 >
-                  <div className='poster__gradient_top' />
-                  <div className='poster__gradient_bottom' />
-                  <span className='main__poster_released'>
-                    {convertDate(game.released)}
-                  </span>
-                  <span className='main__poster_name'>{game.name}</span>
-                  <img
-                    key={game.id}
-                    className='main_poster'
-                    src={game.background_image}
-                    alt={game.name}
-                  />
+                  {!loading ? (
+                    <>
+                      <div className='poster__gradient_top' />
+                      <div className='poster__gradient_bottom' />
+                      <span className='main__poster_released'>
+                        {convertDate(game.released)}
+                      </span>
+                      <span className='main__poster_name'>{game.name}</span>
+                      <img
+                        key={game.id}
+                        className='main_poster'
+                        src={game.background_image}
+                        alt={game.name}
+                      />
+                    </>
+                  ) : (
+                    <Placeholder delay={i} />
+                  )}
                 </div>
               )
           )}

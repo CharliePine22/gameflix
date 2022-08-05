@@ -45,6 +45,7 @@ const Login = (props) => {
     const value = e.target.value.trim().toLowerCase();
     const isValidEmail = re.test(value);
   };
+
   // Email input error blur error handler
   const emailBlurHandler = (e) => {
     const value = e.target.value.trim().toLowerCase();
@@ -63,8 +64,7 @@ const Login = (props) => {
   // Password input error blur error handler
   const passwordBlurHandler = (e) => {
     const value = e.target.value.trim().toLowerCase();
-    const isValidPassword =
-      e.target.value.length > 0 && e.target.value.length <= 8;
+    const isValidPassword = value.length > 3 && value.length <= 8;
     setHasPasswordError(!isValidPassword);
     setCurrentFocus(null);
   };
@@ -72,24 +72,12 @@ const Login = (props) => {
   // Submit user information to match authentication
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    // Set verification flags for data
-    let emailFlag = false;
-    let passwordFlag = false;
-
     // Data values
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
-    // Verify email data
-    if (email.trim().length > 0 && email.includes('@')) {
-      emailFlag = true;
-    }
-    // Verify password data
-    if (password.trim().length > 3 && password.trim().length < 10) {
-      passwordFlag = true;
-    }
     // If the data has no errors, submit the information
-    if (emailFlag && passwordFlag) props.onLogin(email, password);
+    if (!hasEmailError && !hasPasswordError) props.onLogin(email, password);
   };
 
   return (
@@ -116,10 +104,11 @@ const Login = (props) => {
                       type='email'
                     />
                     <span
+                      style={{
+                        color: emailRef && !hasEmailError ? 'green' : '',
+                      }}
                       className={`form_actions_placeholder ${
-                        currentFocus == 'email' || emailRef.current.value
-                          ? 'focused'
-                          : ''
+                        currentFocus == 'email' || emailRef ? 'focused' : ''
                       }`}
                     >
                       Email
@@ -138,8 +127,20 @@ const Login = (props) => {
                       type='password'
                     />
                     <span
+                      style={{
+                        color:
+                          passwordRef?.current.length > 0 && !hasPasswordError
+                            ? 'green'
+                            : passwordRef?.current.length > 0 &&
+                              hasPasswordError
+                            ? 'red'
+                            : passwordRef?.current.length > 0 &&
+                              hasPasswordError
+                            ? 'white'
+                            : '',
+                      }}
                       className={`form_actions_placeholder ${
-                        currentFocus == 'password' || passwordRef.current.value
+                        currentFocus == 'password' || passwordRef
                           ? 'focused'
                           : ''
                       }`}

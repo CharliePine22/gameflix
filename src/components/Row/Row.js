@@ -3,6 +3,7 @@ import rawgClient from '../../axios';
 import GameDetails from './GameDetails/GameDetails';
 import './Row.css';
 import youtubeAPI from '../../youtubeAPI';
+import Placeholder from '../Placeholder/Placeholder';
 
 function Row({ title, fetchURL }) {
   const [games, setGames] = useState([]);
@@ -10,12 +11,15 @@ function Row({ title, fetchURL }) {
   const [displayDetails, setDisplayDetails] = useState(false);
   const [currentlyOpen, setCurrentlyOpen] = useState(null);
   const [imgsLoaded, setImgsLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Grab games from each genre
+    setLoading(true);
     async function fetchData() {
       const request = await rawgClient.get(fetchURL);
       setGames(request.data.results);
+      setLoading(false);
       return request;
     }
     fetchData();
@@ -59,7 +63,7 @@ function Row({ title, fetchURL }) {
 
       <div className='row__posters'>
         {games.map(
-          (game) =>
+          (game, i) =>
             game.background_image !== null && (
               <React.Fragment key={game.name}>
                 <div className='row__poster_wrapper'>
@@ -68,13 +72,20 @@ function Row({ title, fetchURL }) {
                     // onMouseEnter={() => fetchGameDetails(game)}
                     onClick={() => fetchGameDetails(game)}
                   >
-                    <span className='row__poster_name'>{game?.name}</span>
-                    <img
-                      loading='lazy'
-                      className='row__poster'
-                      src={game.background_image}
-                      alt={game.name}
-                    />
+                    {' '}
+                    {!loading ? (
+                      <>
+                        <span className='row__poster_name'>{game?.name}</span>
+                        <img
+                          loading='lazy'
+                          className='row__poster'
+                          src={game.background_image}
+                          alt={game.name}
+                        />
+                      </>
+                    ) : (
+                      <Placeholder delay={i} />
+                    )}
                   </div>
                   {currentlyOpen === game.name && (
                     <GameDetails

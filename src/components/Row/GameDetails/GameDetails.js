@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import youtubeAPI from '../../../youtubeAPI';
 import useFetchDetails from '../../../hooks/useFetchDetails';
-import Loading from '../../LoadingAnimation/Loading';
 import ReactPlayer from 'react-player/lazy';
 import './GameDetails.css';
 

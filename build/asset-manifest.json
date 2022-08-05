@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.85e42e3a.css",
-    "main.js": "/static/js/main.dac7c1b3.js",
+    "main.css": "/static/css/main.1dd04d85.css",
+    "main.js": "/static/js/main.3c483878.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -28,8 +28,8 @@
     "static/media/org-icon.png": "/static/media/org-icon.8f0cb355d8f2bbe7bffe.png",
     "static/media/playstation-logo.png": "/static/media/playstation-logo.630dfedda6273efed3a8.png",
     "index.html": "/index.html",
-    "main.85e42e3a.css.map": "/static/css/main.85e42e3a.css.map",
-    "main.dac7c1b3.js.map": "/static/js/main.dac7c1b3.js.map",
+    "main.1dd04d85.css.map": "/static/css/main.1dd04d85.css.map",
+    "main.3c483878.js.map": "/static/js/main.3c483878.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -46,7 +46,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.85e42e3a.css",
-    "static/js/main.dac7c1b3.js"
+    "static/css/main.1dd04d85.css",
+    "static/js/main.3c483878.js"
   ]
 }

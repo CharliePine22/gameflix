@@ -1,9 +1,10 @@
 .banner {
   color: #fff;
   object-fit: contain;
-  height: 448px;
+  min-height: 448px;
   animation: fadeInBannerContent 1.75s cubic-bezier(0.165, 0.84, 0.44, 1)
     forwards;
+  position: relative;
 }
 
 .banner__button {
@@ -54,6 +55,24 @@
   );
 }
 
+.banner__loading {
+  position: relative;
+  height: 448px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.banner__spinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: #3d5af1 transparent #3d5af1 transparent;
+  border-radius: 50%;
+  animation: spin-anim 1.2s linear infinite;
+}
+
 .banner__refresh_icon {
   cursor: pointer;
   position: absolute;
@@ -84,6 +103,11 @@
     padding-top: 70px;
     position: relative;
     top: 15px;
+    margin-left: 10px;
+  }
+
+  .banner__description {
+    max-width: 90%;
   }
 
   .banner--fadeBottom {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './Nav.css';
 import logo from '../../assets/images/gameflix-logo.png';
 import avatar from '../../assets/images/roxas-icon.png';
@@ -10,9 +10,31 @@ function Nav(props) {
   const [displayNav, setDisplayNav] = useState(false);
   const [displayDropdown, setDisplayDropdown] = useState(false);
   const [displaySearch, setDisplaySearch] = useState(false);
+  const searchRef = useRef('');
 
   const closeNavDropdown = () => {
     setDisplayDropdown(false);
+  };
+
+  const closeSearch = () => {
+    if (searchRef.current.value.length > 0) {
+      return;
+    }
+    setDisplaySearch(false);
+  };
+
+  const determineSearch = () => {
+    if (searchRef.current.value == 0) {
+      props.closeSearchResults();
+    }
+  };
+
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
+    const searchValue = searchRef.current.value.trim();
+    if (searchValue.length == 0) return;
+    console.log(searchValue);
+    props.fetchSubmittedGame(searchValue);
   };
 
   useEffect(() => {
@@ -52,8 +74,15 @@ function Nav(props) {
       <div className='nav__right'>
         <div className='nav__search'>
           {displaySearch && (
-            <form className='nav__search_form'>
-              <input type='text' placeholder='Titles, publishers, genres' />
+            <form className='nav__search_form' onSubmit={formSubmitHandler}>
+              <input
+                ref={searchRef}
+                autoFocus
+                type='text'
+                placeholder='Titles, publishers, genres'
+                onBlur={closeSearch}
+                onChange={determineSearch}
+              />
             </form>
           )}
           <FaSistrix

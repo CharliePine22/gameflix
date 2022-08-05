@@ -77,7 +77,7 @@ const Login = (props) => {
     const password = passwordRef.current.value;
 
     // If the data has no errors, submit the information
-    if (!hasEmailError && !hasPasswordError) props.onLogin(email, password);
+    props.onLogin(email, password);
   };
 
   return (
@@ -104,9 +104,6 @@ const Login = (props) => {
                       type='email'
                     />
                     <span
-                      style={{
-                        color: emailRef && !hasEmailError ? 'green' : '',
-                      }}
                       className={`form_actions_placeholder ${
                         currentFocus == 'email' || emailRef ? 'focused' : ''
                       }`}
@@ -127,18 +124,6 @@ const Login = (props) => {
                       type='password'
                     />
                     <span
-                      style={{
-                        color:
-                          passwordRef?.current.length > 0 && !hasPasswordError
-                            ? 'green'
-                            : passwordRef?.current.length > 0 &&
-                              hasPasswordError
-                            ? 'red'
-                            : passwordRef?.current.length > 0 &&
-                              hasPasswordError
-                            ? 'white'
-                            : '',
-                      }}
                       className={`form_actions_placeholder ${
                         currentFocus == 'password' || passwordRef
                           ? 'focused'

@@ -34,8 +34,10 @@ function App() {
   const loginAuthentication = (email, password) => {
     setIsLoading(true);
     localStorage.setItem('user', email);
+    localStorage.setItem('password', password);
     setTimeout(() => {
       setIsLoading(false);
+      setLoggedUser(email);
       audio.play();
     }, 2000);
   };

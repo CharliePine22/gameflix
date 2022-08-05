@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './Login.css';
-import gameflixBrand from '../../assets/images/gameflix-brand.png';
-import requests from '../../requests';
-import rawgClient from '../../axios';
+import React, { useState, useEffect, useRef } from "react";
+import "./Login.css";
+import gameflixBrand from "../../assets/images/gameflix-brand.png";
+import requests from "../../requests";
+import rawgClient from "../../axios";
 
 const Login = (props) => {
   // States
@@ -13,8 +13,8 @@ const Login = (props) => {
   const [currentFocus, setCurrentFocus] = useState(null);
 
   // Refs
-  const emailRef = useRef('');
-  const passwordRef = useRef('');
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
   const counter = useRef(0);
 
   // Regex for email validity
@@ -24,7 +24,7 @@ const Login = (props) => {
   // Fetch games to display and create background image
   useEffect(() => {
     async function fetchData() {
-      const request = await rawgClient.get(requests[2].url + '&page_size=40');
+      const request = await rawgClient.get(requests[2].url + "&page_size=40");
       setGameList(request.data.results);
       return request;
     }
@@ -76,69 +76,82 @@ const Login = (props) => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
+    // console.log(email);
+
     // If the data has no errors, submit the information
     props.onLogin(email, password);
   };
 
   return (
     <div
-      className='login__wrapper'
-      style={{ display: imgsLoading ? 'none' : 'block' }}
+      className="login__wrapper"
+      style={{ display: imgsLoading ? "none" : "block" }}
     >
-      <div className='login'>
-        <img src={gameflixBrand} className='login__brand' />
-        <div className='login__form_wrapper'>
-          <div className='login__form_container'>
-            <form className='login__form' onSubmit={formSubmitHandler}>
+      <div className="login">
+        <img src={gameflixBrand} className="login__brand" />
+        <div className="login__form_wrapper">
+          <div className="login__form_container">
+            <form className="login__form" onSubmit={formSubmitHandler}>
               {!props.loading ? (
                 <>
                   <h1>Sign In</h1>
-                  <div className='login__form_actions'>
-                    <label className='form_label' htmlFor='email' />
+                  <div className="login__form_actions">
+                    <label className="form_label" htmlFor="email" />
                     <input
                       ref={emailRef}
-                      onFocus={() => setCurrentFocus('email')}
+                      onFocus={() => setCurrentFocus("email")}
                       onChange={checkEmailValidity}
                       onBlur={emailBlurHandler}
-                      className={`form_input ${hasEmailError ? 'error' : ''}`}
-                      type='email'
+                      className={`form_input ${
+                        hasEmailError && emailRef.current.value !== ""
+                          ? "error"
+                          : ""
+                      }`}
+                      type="email"
                     />
                     <span
                       className={`form_actions_placeholder ${
-                        currentFocus == 'email' ? 'focused' : ''
+                        currentFocus == "email" || emailRef.current.value !== ""
+                          ? "focused"
+                          : ""
                       }`}
                     >
                       Email
                     </span>
                   </div>
-                  <div className='login__form_actions'>
-                    <label className='form_label' htmlFor='email' />
+                  <div className="login__form_actions">
+                    <label className="form_label" htmlFor="email" />
                     <input
                       ref={passwordRef}
-                      onFocus={() => setCurrentFocus('password')}
+                      onFocus={() => setCurrentFocus("password")}
                       onChange={checkPasswordValidity}
                       onBlur={passwordBlurHandler}
                       className={`form_input ${
-                        hasPasswordError ? 'error' : ''
+                        hasPasswordError && passwordRef.current.value !== ""
+                          ? "error"
+                          : ""
                       }`}
-                      type='password'
+                      type="password"
                     />
                     <span
                       className={`form_actions_placeholder ${
-                        currentFocus == 'password' ? 'focused' : ''
+                        currentFocus == "password" ||
+                        passwordRef.current.value !== ""
+                          ? "focused"
+                          : ""
                       }`}
                     >
                       Password
                     </span>
                   </div>
-                  <button className='form__submit_btn'>Sign In</button>
-                  <p className='form__create_account'>
+                  <button className="form__submit_btn">Sign In</button>
+                  <p className="form__create_account">
                     Don't have an account? <span>Create one now</span>.
                   </p>
                 </>
               ) : (
-                <div className='login__loading'>
-                  <div className='loading_spinner' />
+                <div className="login__loading">
+                  <div className="loading_spinner" />
                 </div>
               )}
             </form>
@@ -147,12 +160,12 @@ const Login = (props) => {
       </div>
       {/* Container for background with game images */}
       {/* Consider adding video game name */}
-      <div className='login__background'>
+      <div className="login__background">
         {gameList.map((game) => (
           <React.Fragment key={game.name}>
-            <span className='login__name'>{game?.name.split(':')[0]}</span>
+            <span className="login__name">{game?.name.split(":")[0]}</span>
             <img
-              className='login__img'
+              className="login__img"
               src={game?.background_image}
               onLoad={imageLoaded}
             />

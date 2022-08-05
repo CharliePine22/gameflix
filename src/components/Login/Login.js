@@ -105,7 +105,7 @@ const Login = (props) => {
                     />
                     <span
                       className={`form_actions_placeholder ${
-                        currentFocus == 'email' || emailRef ? 'focused' : ''
+                        currentFocus == 'email' ? 'focused' : ''
                       }`}
                     >
                       Email
@@ -125,9 +125,7 @@ const Login = (props) => {
                     />
                     <span
                       className={`form_actions_placeholder ${
-                        currentFocus == 'password' || passwordRef
-                          ? 'focused'
-                          : ''
+                        currentFocus == 'password' ? 'focused' : ''
                       }`}
                     >
                       Password

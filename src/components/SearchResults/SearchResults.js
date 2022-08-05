@@ -6,8 +6,8 @@ const SearchResults = ({ searchedGame }) => {
   const [remainderGames, setRemainderGames] = useState([]);
 
   useEffect(() => {
-    setTopGames(searchedGame.slice(0, 3));
-    setRemainderGames(searchedGame.slice(3));
+    setTopGames(searchedGame?.slice(0, 3));
+    setRemainderGames(searchedGame?.slice(3));
   }, [searchedGame]);
 
   const determinePublisherIcon = (publisher) => {
@@ -24,7 +24,7 @@ const SearchResults = ({ searchedGame }) => {
         {/* Top 3 Search Results */}
         <div className='top_results_row'>
           {topGames?.slice(0, 3).map((game) => (
-            <div className='top_result_container'>
+            <div className='top_result_container' key={game.name}>
               <div className='top_result_upper'>
                 <div
                   className='result_publisher'
@@ -55,8 +55,8 @@ const SearchResults = ({ searchedGame }) => {
         {/* Remaining Games */}
         <div className='remainder_results'>
           <h2>Results</h2>
-          {remainderGames.map((game) => (
-            <div className='results_container'>
+          {remainderGames?.map((game) => (
+            <div className='results_container' key={game.name}>
               <div
                 className='results_container_img'
                 style={{

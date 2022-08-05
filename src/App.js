@@ -20,6 +20,7 @@ function App() {
 
   const closeSearchResults = () => {
     setSearchSubmitted(false);
+    setSearchedGame(null);
   };
 
   const fetchSubmittedGame = async (game) => {

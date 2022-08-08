@@ -34,12 +34,12 @@
   margin-right: 10px;
   transition: all 400ms;
   z-index: 1;
-  max-width: 14.5rem;
-  min-width: 14.5rem;
+  max-width: 12rem;
+  min-width: 12rem;
   object-fit: cover;
   height: 100%;
-  min-height: 310px;
-  max-height: 310px;
+  min-height: 300px;
+  max-height: 300px;
 }
 
 /* .row__poster_container:hover {

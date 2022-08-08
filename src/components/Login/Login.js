@@ -78,7 +78,13 @@ const Login = (props) => {
 
     // If the data has no errors, submit the information
     props.onLogin(email, password);
+    emailRef.current.value = '';
+    passwordRef.current.value = '';
   };
+
+  if (passwordRef.current == null || emailRef.current == null) {
+    console.log('none');
+  }
 
   return (
     <div
@@ -100,12 +106,18 @@ const Login = (props) => {
                       onFocus={() => setCurrentFocus('email')}
                       onChange={checkEmailValidity}
                       onBlur={emailBlurHandler}
-                      className={`form_input ${hasEmailError ? 'error' : ''}`}
+                      className={`form_input ${
+                        emailRef.current.value !== '' && hasEmailError
+                          ? 'error'
+                          : ''
+                      }`}
                       type='email'
                     />
                     <span
                       className={`form_actions_placeholder ${
-                        currentFocus == 'email' ? 'focused' : ''
+                        emailRef.current.value !== '' || currentFocus == 'email'
+                          ? 'focused'
+                          : ''
                       }`}
                     >
                       Email
@@ -119,13 +131,20 @@ const Login = (props) => {
                       onChange={checkPasswordValidity}
                       onBlur={passwordBlurHandler}
                       className={`form_input ${
-                        hasPasswordError ? 'error' : ''
+                        passwordRef.current.value !== undefined &&
+                        hasPasswordError &&
+                        passwordRef.current.value.length > 0
+                          ? 'error'
+                          : ''
                       }`}
                       type='password'
                     />
                     <span
                       className={`form_actions_placeholder ${
-                        currentFocus == 'password' ? 'focused' : ''
+                        passwordRef.current.value !== '' ||
+                        currentFocus == 'password'
+                          ? 'focused'
+                          : ''
                       }`}
                     >
                       Password

@@ -7,7 +7,6 @@
   top: 65px;
   padding: 0;
   border: 1px solid hsla(0, 0%, 100%, 0.15);
-  cursor: pointer;
 }
 
 .dropdown__arrow {
@@ -49,10 +48,19 @@
   width: 32px;
   border-radius: 4px;
   margin-right: 10px;
+  object-fit: cover;
+  object-position: 50% 10%;
+  background: whitesmoke;
+}
+
+.dropdown__profiles_manage {
+  color: #fff;
+  margin-right: 15px;
+  margin-left: 5px;
 }
 
 .dropdown__profile_name {
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .dropdown__settings {

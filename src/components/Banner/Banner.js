@@ -39,8 +39,8 @@ function Banner() {
   };
 
   // Wait for game deatils to finish loading or the game name shows up undefined
-  // Undefined is a dataset and will display jibberish
-  if (isLoading || gameDetails?.name == 'UNDEFINED') {
+  // Undefined is a game name apart of the dataset and will display jibberish
+  if (isLoading || game == false || gameDetails?.name == 'UNDEFINED') {
     return (
       <div className='banner__loading'>
         <div className='banner__spinner' />

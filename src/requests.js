@@ -58,12 +58,20 @@ const nextQuarter = `${todayDate.getFullYear()}-${String(
   todayDate.getMonth() + 2
 ).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
 
+const nextWeek = new Date(
+  todayDate.getFullYear(),
+  todayDate.getMonth(),
+  todayDate.getDate() + 7
+)
+  .toISOString()
+  .split('T')[0];
+
 // List of endpoints for the Rawg.io API
 const requests = [
   {
     requestId: 'fetchUpcomingTitles',
     yearUrl: `games?dates=${nextQuarter},${nextYear}&ordering=-added&key=${API_KEY}`,
-    monthUrl: `games?dates=${currentDate},${nextMonth}&ordering=-added&key=${API_KEY}`,
+    monthUrl: `games?dates=${nextWeek},${nextMonth}&ordering=-added&key=${API_KEY}`,
     weekUrl: `games?dates=${currentDate},${determineDateCutoff(
       todayDate.getMonth() + 1
     )}&ordering=-added&key=${API_KEY}`,

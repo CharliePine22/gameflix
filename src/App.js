@@ -9,12 +9,15 @@ import Login from './components/Login/Login';
 import loginAudio from './assets/sounds/success.wav';
 import SearchResults from './components/SearchResults/SearchResults';
 import rawgClient from './axios';
+import ProfilesPage from './components/Login/Profiles/ProfilesPage';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
+  const [changingUser, setChangingUser] = useState(false);
   const [loggedUser, setLoggedUser] = useState(null);
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState(null);
+  const [selectedProfile, setSelectedProfile] = useState(null);
 
   let audio = new Audio(loginAudio);
 
@@ -37,8 +40,8 @@ function App() {
     localStorage.setItem('user', email);
     localStorage.setItem('password', password);
     setTimeout(() => {
-      setIsLoading(false);
       setLoggedUser(email);
+      setIsLoading(false);
       audio.play();
     }, 2000);
   };
@@ -49,6 +52,15 @@ function App() {
     window.location.reload();
   };
 
+  // Choose active profile
+  const changeProfile = (user) => {
+    setChangingUser(true);
+    setSelectedProfile(user);
+    setTimeout(() => {
+      setChangingUser(false);
+    }, 2000);
+  };
+
   // Check to see if user is logged in
   useEffect(() => {
     const loggedInUser = localStorage.getItem('user');
@@ -57,22 +69,35 @@ function App() {
     }
   }, []);
 
-  // useEffect(() => {
-  // if(!searchSubmitted) return null;
-  //   const fetchSubmittedGame = async (game) => {};
-  //   fetchSubmittedGame;
-  // }, []);
-
+  // Display login page if app detects sign out or sign in
   if (!loggedUser) {
     return <Login loading={isLoading} onLogin={loginAuthentication} />;
+  }
+
+  // After login redirect to select user profile
+  if (!selectedProfile) {
+    return <ProfilesPage selectProfile={(user) => setSelectedProfile(user)} />;
+  }
+
+  if (changingUser) {
+    return (
+      <div className='loading_profile__container'>
+        <div className='loading_profile'>
+          <img src={selectedProfile.avatar} alt='current user avatar' />
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className='App'>
       <Nav
+        currentUser={selectedProfile}
+        changeUser={changeProfile}
         onLogout={logoutHandler}
         fetchSubmittedGame={fetchSubmittedGame}
         closeSearchResults={closeSearchResults}
+        toProfilePage={() => setSelectedProfile(null)}
       />
       {!searchSubmitted ? (
         <>

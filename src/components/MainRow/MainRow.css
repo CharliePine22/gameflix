@@ -11,13 +11,13 @@
 }
 
 .main_row__poster_container {
-  max-width: 28rem;
-  min-width: 28rem;
+  max-width: 30rem;
+  min-width: 30rem;
   cursor: pointer;
   position: relative;
   margin-right: 15px;
-  height: 18rem;
-  transition: transform 400ms;
+  height: 20rem;
+  transition: transform 300ms;
   /* perspective: 1000px; */
 }
 

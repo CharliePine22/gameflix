@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import './Nav.css';
 import logo from '../../assets/images/gameflix-logo.png';
-import avatar from '../../assets/images/roxas-icon.png';
 import { useEffect, useState } from 'react';
 import { FaSistrix, FaAngleUp } from 'react-icons/fa';
 import NavDropdown from './NavDropdown';
@@ -98,14 +97,28 @@ function Nav(props) {
             className='nav__avatar_container'
             onMouseOver={() => setDisplayDropdown(true)}
           >
-            <img className='nav__avatar' src={avatar} alt="User's avatar" />
+            <img
+              className='nav__avatar'
+              src={props.currentUser?.avatar}
+              alt="User's avatar"
+            />
           </div>
-          <FaAngleUp className='nav__avatar_arrow' />
+          <FaAngleUp
+            className='nav__avatar_arrow'
+            style={{
+              transform: `${
+                displayDropdown ? 'rotate(180deg)' : 'rotate(0deg)'
+              }`,
+            }}
+          />
           {/* <NavDropdown /> */}
           {displayDropdown && (
             <NavDropdown
+              changeProfile={props.changeUser}
+              currentUser={props.currentUser}
               logoutHandler={props.onLogout}
               closeNavDropdown={closeNavDropdown}
+              toProfilePage={props.toProfilePage}
             />
           )}
         </div>

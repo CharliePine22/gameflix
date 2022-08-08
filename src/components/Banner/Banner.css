@@ -78,7 +78,7 @@
   position: absolute;
   right: 25px;
   bottom: 25px;
-  transition: all 200ms ease-in;
+  transition: all 50ms ease-in-out;
   opacity: 0.5;
 }
 

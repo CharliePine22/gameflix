@@ -37,11 +37,14 @@ const MainRow = () => {
     const gameTags = game.tags;
     const gamePlatforms = game.parent_platforms;
 
+    if (gameTags == null) return false;
+
     // If the only platform it's available on is PC, flag it for Indie as ost larger games come
     // out on at least 2 systems, It should also be avaialble for Xbox
     if (gamePlatforms.length == 1 && gamePlatforms[0].platform.name == 'PC') {
       return false;
     }
+
     // Loop through tag names to look for unwanted tags
     for (let tag of gameTags) {
       if (
@@ -50,9 +53,8 @@ const MainRow = () => {
         tag.name == 'Для взрослых' ||
         tag.name == 'Sexual Content' ||
         tag.name == 'Сексуальный контент'
-      ) {
+      )
         return false;
-      }
     }
     return true;
   };

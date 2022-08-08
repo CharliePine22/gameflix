@@ -76,6 +76,8 @@ const Login = (props) => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
+    // console.log(email);
+
     // If the data has no errors, submit the information
     props.onLogin(email, password);
     emailRef.current.value = '';

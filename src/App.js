@@ -18,6 +18,7 @@ function App() {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState(null);
   const [selectedProfile, setSelectedProfile] = useState(null);
+  const [rowsLoaded, setRowsLoaded] = useState(false);
 
   let audio = new Audio(loginAudio);
 
@@ -56,6 +57,7 @@ function App() {
   const changeProfile = (user) => {
     setChangingUser(true);
     setSelectedProfile(user);
+    localStorage.setItem('profile', JSON.stringify(user));
     setTimeout(() => {
       setChangingUser(false);
     }, 2000);
@@ -69,6 +71,14 @@ function App() {
     }
   }, []);
 
+  // Check to see which profile is active
+  useEffect(() => {
+    const userProfile = localStorage.getItem('profile');
+    if (userProfile) {
+      setSelectedProfile(userProfile);
+    }
+  }, []);
+
   // Display login page if app detects sign out or sign in
   if (!loggedUser) {
     return <Login loading={isLoading} onLogin={loginAuthentication} />;
@@ -79,6 +89,7 @@ function App() {
     return <ProfilesPage selectProfile={(user) => setSelectedProfile(user)} />;
   }
 
+  // Loading screen for profile change
   if (changingUser) {
     return (
       <div className='loading_profile__container'>

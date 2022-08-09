@@ -16,6 +16,30 @@
   opacity: 1;
 }
 
+.edit_btn {
+  background-color: white;
+  color: black;
+  border: 1px solid transparent;
+  opacity: 1;
+}
+
+.edit_btn:hover {
+  background-color: blue;
+  color: white;
+  font-weight: 600;
+}
+
+.edit-icon {
+  color: #fff;
+  position: absolute;
+  height: 100%;
+  /* width: 40%; */
+  width: 5vw;
+  left: 30%;
+  top: -13px;
+  z-index: 1;
+}
+
 .profile__container {
   display: flex;
   align-items: center;
@@ -58,6 +82,11 @@
   flex-direction: column;
   margin: 0 15px;
   cursor: pointer;
+  position: relative;
+}
+
+.editing {
+  opacity: 0.35;
 }
 
 .profile__user:hover > .profile__user_avatar {
@@ -70,8 +99,12 @@
 }
 
 .profile__user_avatar {
-  height: 100px;
-  width: 100px;
+  max-width: 200px;
+  min-width: 73px;
+  width: 15vw;
+  min-height: 100px;
+  max-height: 250px;
+  height: 15vh;
   border-radius: 6px;
   border: 2px solid transparent;
   object-fit: cover;
@@ -98,6 +131,9 @@
 }
 
 @media screen and (max-width: 600px) {
+  .edit-icon {
+    left: 25px;
+  }
   .profile__actions {
     margin-top: 30px;
   }
@@ -106,6 +142,6 @@
     width: 80px;
   }
   .profile__user {
-    margin: 0 5px;
+    margin: 0 3px;
   }
 }

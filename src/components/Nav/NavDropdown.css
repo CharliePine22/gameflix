@@ -11,12 +11,12 @@
 
 .dropdown__arrow {
   position: absolute;
-  left: 134px;
+  left: 50px;
   top: -35px;
   color: #e5e5e5;
   font-size: 1.6rem;
   padding-top: 20px;
-  padding-left: 20px;
+  padding-left: 100px;
 }
 
 .dropdown__profiles {

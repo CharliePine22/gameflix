@@ -11,6 +11,8 @@ function Nav(props) {
   const [displaySearch, setDisplaySearch] = useState(false);
   const searchRef = useRef('');
 
+  const profile = JSON.parse(localStorage.getItem('profile'));
+
   const closeNavDropdown = () => {
     setDisplayDropdown(false);
   };
@@ -32,7 +34,6 @@ function Nav(props) {
     e.preventDefault();
     const searchValue = searchRef.current.value.trim();
     if (searchValue.length == 0) return;
-    console.log(searchValue);
     props.fetchSubmittedGame(searchValue);
   };
 
@@ -99,7 +100,7 @@ function Nav(props) {
           >
             <img
               className='nav__avatar'
-              src={props.currentUser?.avatar}
+              src={profile.avatar}
               alt="User's avatar"
             />
           </div>
@@ -115,7 +116,7 @@ function Nav(props) {
           {displayDropdown && (
             <NavDropdown
               changeProfile={props.changeUser}
-              currentUser={props.currentUser}
+              currentUser={profile}
               logoutHandler={props.onLogout}
               closeNavDropdown={closeNavDropdown}
               toProfilePage={props.toProfilePage}

@@ -80,8 +80,8 @@ const requests = [
   },
   {
     requestId: 'fetchPopularTitles',
-    url: `games?dates=${previousQuarter},${currentDate}&ordering=rating_count&key=${API_KEY}`,
-    title: 'POPULAR TITLES',
+    url: `games?dates=${previousQuarter},${currentDate}&page_size=10&ordering=rating_count&key=${API_KEY}`,
+    title: 'TRENDING TITLES',
   },
   {
     requestId: 'fetchGOATTitles',

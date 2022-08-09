@@ -73,7 +73,7 @@ function Row({ title, fetchURL }) {
                     onClick={() => fetchGameDetails(game)}
                   >
                     {' '}
-                    {!loading ? (
+                    {!loading && (
                       <>
                         <span className='row__poster_name'>{game?.name}</span>
                         <img
@@ -83,8 +83,6 @@ function Row({ title, fetchURL }) {
                           alt={game.name}
                         />
                       </>
-                    ) : (
-                      <Placeholder delay={i} />
                     )}
                   </div>
                   {currentlyOpen === game.name && (
@@ -97,6 +95,15 @@ function Row({ title, fetchURL }) {
                 </div>
               </React.Fragment>
             )
+        )}
+        {loading && (
+          <div className='row__loading_container'>
+            {[...Array(10)].map((item, i) => (
+              <div key={i} className='row__placeholder__wrapper'>
+                <Placeholder key={i} delay={i} />
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

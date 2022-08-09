@@ -8,10 +8,12 @@ import { BiRefresh } from 'react-icons/bi';
 function Banner() {
   const [gameList, setGameList] = useState([]);
   const [game, setGame] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const { isLoading, gameDetails, serverError } = useFetchDetails(game);
 
   // Fetch and return list of games from endpoint
   useEffect(() => {
+    setRefresh(false);
     async function fetchData() {
       try {
         const request = await rawgClient.get(requests[2].url + '&page_size=40');
@@ -26,7 +28,7 @@ function Banner() {
       }
     }
     fetchData();
-  }, []);
+  }, [refresh]);
 
   // Return a different game from the games list to highlight
   const getNewGame = () => {
@@ -46,6 +48,10 @@ function Banner() {
         <div className='banner__spinner' />
       </div>
     );
+  }
+
+  if (!isLoading && gameDetails?.name == 'UNDEFINED') {
+    setRefresh(true);
   }
 
   return (

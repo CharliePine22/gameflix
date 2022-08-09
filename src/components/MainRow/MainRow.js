@@ -9,7 +9,7 @@ const MainRow = () => {
   const [games, setGames] = useState([]);
   const [currentFilter, setCurrentFilter] = useState('Year');
   const [changingFilter, setChangingFilter] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Grab upcoming games based on current date filter
@@ -107,15 +107,6 @@ const MainRow = () => {
     );
   };
 
-  // If the games are loaded or data isnt fetched
-  // if (loading) {
-  //   return (
-  //     <div className='main_row__loading'>
-  //       <div className='main_row__spinner' />
-  //     </div>
-  //   );
-  // }
-
   // Sort games by release date
   games.sort((a, b) => new Date(a.released) - new Date(b.released));
 
@@ -173,6 +164,7 @@ const MainRow = () => {
       </div>
       <div className='main_row__row_posters'>
         {games &&
+          !loading &&
           games.map(
             (game, i) =>
               game.background_image !== null &&
@@ -182,27 +174,30 @@ const MainRow = () => {
                   onClick={() => console.log(game)}
                   key={game.name}
                 >
-                  {!loading ? (
-                    <>
-                      <div className='poster__gradient_top' />
-                      <div className='poster__gradient_bottom' />
-                      <span className='main__poster_released'>
-                        {convertDate(game.released)}
-                      </span>
-                      <span className='main__poster_name'>{game.name}</span>
-                      <img
-                        key={game.id}
-                        className='main_poster'
-                        src={game.background_image}
-                        alt={game.name}
-                      />
-                    </>
-                  ) : (
-                    <Placeholder delay={i} />
-                  )}
+                  <div className='poster__gradient_top' />
+                  <div className='poster__gradient_bottom' />
+                  <span className='main__poster_released'>
+                    {convertDate(game.released)}
+                  </span>
+                  <span className='main__poster_name'>{game.name}</span>
+                  <img
+                    key={game.id}
+                    className='main_poster'
+                    src={game.background_image}
+                    alt={game.name}
+                  />
                 </div>
               )
           )}
+        {loading && (
+          <div className='main_row__loading_container'>
+            {[...Array(4)].map((item, i) => (
+              <div key={i} className='main_row__placeholder__wrapper'>
+                <Placeholder key={i} delay={i} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

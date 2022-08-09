@@ -5,8 +5,8 @@
 .App {
   background-color: #111;
   user-select: none;
-  overflow-y: hidden;
-  overflow-x: scroll;
+  /* overflow-y: hidden;
+  overflow-x: scroll; */
 }
 
 .loading_profile__container {

@@ -4,8 +4,11 @@ import jessAvatar from '../../../assets/images/kairi-icon.png';
 import yunaAvatar from '../../../assets/images/yuna-icon.png';
 import banditAvatar from '../../../assets/images/lion-icon.png';
 import cjAvatar from '../../../assets/images/roxas-icon.png';
+import { MdEdit } from 'react-icons/md';
 
 const ProfilesPage = (props) => {
+  const [editingProfiles, setEditingProfiles] = useState(false);
+
   const [dummyData, setDummyData] = useState([
     { name: 'Cj', avatar: cjAvatar },
     {
@@ -23,6 +26,7 @@ const ProfilesPage = (props) => {
   ]);
 
   const chooseCurrentProfile = (user) => {
+    localStorage.setItem('profile', JSON.stringify(user));
     props.selectProfile(user);
   };
 
@@ -37,13 +41,24 @@ const ProfilesPage = (props) => {
               className='profile__user'
               onClick={() => chooseCurrentProfile(user)}
             >
-              <img className='profile__user_avatar' src={user.avatar} />
+              {editingProfiles && <MdEdit className='edit-icon' />}
+              <img
+                className={`profile__user_avatar ${
+                  editingProfiles && 'editing'
+                }`}
+                src={user.avatar}
+              />
               <span className='profile__user_name'>{user.name}</span>
             </li>
           ))}
         </ul>
         <div className='profile__actions'>
-          <button className='profile__manage_btn'>Manage Profiles</button>
+          <button
+            className={`profile__manage_btn ${editingProfiles && 'edit_btn'}`}
+            onClick={() => setEditingProfiles(!editingProfiles)}
+          >
+            {editingProfiles ? 'Done' : 'Manage Profiles'}
+          </button>
         </div>
       </div>
     </div>

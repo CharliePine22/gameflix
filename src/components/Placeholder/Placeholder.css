@@ -10,9 +10,11 @@
   background-size: 200% 200%;
   background-repeat: no-repeat;
   height: 100%;
+  min-height: 100%;
   width: 100%;
   animation: moveShine 1.25s infinite linear;
   cursor: default;
+  margin-right: 15px;
 }
 
 @keyframes moveShine {

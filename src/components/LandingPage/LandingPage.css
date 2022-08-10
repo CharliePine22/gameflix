@@ -1,0 +1,11 @@
+.landing_page {
+    height:100%;
+    width:100%;
+    position: relative;
+    background-color: black;
+}
+
+.landing_nav {
+    width:100%;
+    display:flex;
+}

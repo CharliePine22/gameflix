@@ -50,6 +50,7 @@ function App() {
   // Logout the user
   const logoutHandler = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('profile');
     window.location.reload();
   };
 

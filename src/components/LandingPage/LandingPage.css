@@ -1,11 +1,189 @@
+.btn_arrow {
+  margin-left: 5px;
+}
+
+.email_placeholder {
+  position: absolute;
+  color: grey;
+  transform: translate(15px, 13px);
+  font-size: 1.25rem;
+  transition: transform 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.focused {
+  font-size: 0.85rem;
+  font-weight: 500;
+  transform: translate(10px, 2px);
+  transition: transform 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.landing_banner {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  height: 700px;
+  z-index: 2;
+  border-bottom: 8px solid #222;
+}
+
+.landing_banner__background {
+  opacity: 0.4;
+  position: absolute;
+  /* transform: perspective(667px) rotateX(16deg); */
+  /* transform: perspective(667px) rotateX(-4deg) rotateY(-5deg) rotateZ(12deg)
+    translate(-314px, 0px); */
+  /* transform: perspective(1000px) rotateX(16deg) rotateY(5deg) rotateZ(5deg); */
+  height: 300%;
+  width: 180%;
+  z-index: -1;
+}
+
+.landing_banner__content {
+  position: relative;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.landing_banner__content h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  text-align: center;
+  max-width: 85%;
+}
+
+.landing_banner__content h3 {
+  font-size: 1.75rem;
+  margin: 1rem auto;
+  font-weight: 500;
+}
+
+.landing_banner__content p {
+  font-weight: 500;
+  padding-bottom: 20px;
+}
+
+.landing_banner__fade_bottom {
+  position: fixed;
+  top: 580px;
+  height: 7.5rem;
+  width: 100%;
+  background-image: linear-gradient(
+    180deg,
+    transparent,
+    rgba(37, 37, 37, 0.61),
+    #111
+  );
+  z-index: 5;
+}
+
+.landing_banner__fade_top {
+  position: relative;
+  height: 7.5rem;
+  background-image: linear-gradient(
+    0deg,
+    transparent,
+    rgba(37, 37, 37, 0.61),
+    #111
+  );
+}
+
+.landing__form {
+  display: flex;
+  max-width: 950px;
+  padding-top: 0.85rem;
+}
+
+.landing__form button {
+  padding: 0 20px;
+  background: blue;
+  color: #fff;
+  cursor: pointer;
+  border: 0;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.landing__form button:hover {
+  background: rgb(0, 26, 255);
+}
+
+.landing__form input {
+  height: 38px !important;
+  min-width: 400px;
+  outline: 0;
+  font-size: 1.2rem;
+  padding-top: 15px;
+  padding-left: 10px;
+  padding-bottom: 0px;
+}
+
+.landing_banner__img {
+  height: 100%;
+  min-height: 12rem;
+  max-height: 12rem;
+  width: 20rem;
+  /* width: 15rem; */
+  margin: 0;
+  border: 3px solid transparent;
+}
+
+.landing_banner__name {
+  color: black;
+  font-weight: 900;
+  text-transform: uppercase;
+  position: absolute;
+  width: 100%;
+  margin-left: 5px;
+  opacity: 0.5;
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 4px;
+}
+
 .landing_page {
-    height:100%;
-    width:100%;
-    position: relative;
-    background-color: black;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background-color: black;
+  color: #fff;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .landing_nav {
-    width:100%;
-    display:flex;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  position: absolute;
+  top: 0;
+}
+
+.nav_badge {
+  color: #fff;
+  font-size: 2rem;
+}
+
+.nav_left {
+  margin-left: 5px;
+}
+.nav_right {
+  margin-right: 5px;
+}
+
+.sign_in_btn {
+  border: 0;
+  padding: 0.4rem;
+  background: blue;
+  color: white;
+  cursor: pointer;
 }

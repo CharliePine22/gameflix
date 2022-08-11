@@ -1,0 +1,130 @@
+.trending_row__loading_container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.trending_row {
+  margin-left: 20px;
+  color: #fff;
+  z-index: 0;
+  padding-bottom: 30px;
+}
+
+.hide-trending_row {
+  z-index: 0;
+  overflow: visible;
+}
+
+.trending_row::-webkit-scrollbar {
+  display: none;
+}
+
+.trending_row__poster {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  box-shadow: -3px 3px 10px #000;
+  transition: all 250ms ease-in-out;
+  border-radius: 6px;
+}
+
+.trending_row__poster_container {
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  margin-right: 50px;
+  margin-left: 50px;
+  transition: all 400ms;
+  z-index: 1;
+  max-width: 18rem;
+  min-width: 18rem;
+  object-fit: cover;
+  height: 100%;
+  min-height: 210px;
+  max-height: 210px;
+}
+
+.trending_row__placeholder__wrapper {
+  max-width: 12rem;
+  min-width: 12rem;
+  min-height: 300px;
+  max-height: 300px;
+  margin-right: 10px;
+}
+
+.trending_row__poster_container:hover .trending_row__poster {
+  box-shadow: -5px 7px 10px #000;
+  transform: translate3d(1px, -3px, 0px);
+}
+
+.trending_row__poster_container:hover > .trending_row__poster_name {
+  transform: translate3d(1px, -3px, 0px);
+}
+
+.trending_row__poster_name {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  width: 95%;
+  z-index: 1;
+  transition: all 400ms;
+}
+
+.trending_row__posters {
+  display: flex;
+  padding: 10px 20px 20px;
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+.trending_row__rank {
+  position: absolute;
+  z-index: 1;
+  font-size: 15rem;
+  top: -30px;
+  left: -40px;
+  font-family: 'Games', sans-serif;
+  color: white;
+  /* width: 50rem; */
+  text-shadow: 10px 10px 10px black;
+  height: 100%;
+}
+
+.trending_row__rank:nth-child(-1) {
+}
+
+.trending_row__poster_wrapper {
+  position: relative;
+}
+
+.trending_row__posters::-webkit-scrollbar {
+  display: none;
+}
+
+.trending_row__posters_container {
+  display: flex;
+  width: 100%;
+}
+
+/* Mobile Devices */
+@media screen and (min-width: 320px) and (max-width: 500px) {
+  .trending_row {
+    padding-bottom: 10px;
+  }
+
+  .trending_row__posters {
+    padding: 10px 20px 20px 5px;
+  }
+
+  .trending_row__poster_container {
+    max-width: 11rem;
+    min-width: 11rem;
+    min-height: 240px;
+    max-height: 240px;
+  }
+}

@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+// Component Imports
 import Row from './components/Row/Row';
-import requests from './requests';
 import Banner from './components/Banner/Banner';
 import Nav from './components/Nav/Nav';
 import MainRow from './components/MainRow/MainRow';
 import Login from './components/Login/Login';
-import loginAudio from './assets/sounds/success.wav';
-import SearchResults from './components/SearchResults/SearchResults';
-import rawgClient from './axios';
+import LandingPage from './components/LandingPage/LandingPage';
 import ProfilesPage from './components/Login/Profiles/ProfilesPage';
+import TrendingRow from './components/TrendingRow/TrendingRow';
+import SearchResults from './components/SearchResults/SearchResults';
+
+// Asset Imports
+import requests from './requests';
+import loginAudio from './assets/sounds/success.wav';
+import rawgClient from './axios';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +23,7 @@ function App() {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState(null);
   const [selectedProfile, setSelectedProfile] = useState(null);
+  const [toLanding, setToLanding] = useState(true);
   const [rowsLoaded, setRowsLoaded] = useState(false);
 
   let audio = new Audio(loginAudio);
@@ -27,6 +33,7 @@ function App() {
     setSearchedGame(null);
   };
 
+  // Search for the game, publisher, or developer that the user types in from nav
   const fetchSubmittedGame = async (game) => {
     setSearchSubmitted(true);
     const request = await rawgClient.get(
@@ -81,8 +88,20 @@ function App() {
   }, []);
 
   // Display login page if app detects sign out or sign in
-  if (!loggedUser) {
-    return <Login loading={isLoading} onLogin={loginAuthentication} />;
+  if (!loggedUser && !toLanding) {
+    return (
+      <Login
+        toLanding={() => setToLanding(true)}
+        landing={toLanding}
+        loading={isLoading}
+        onLogin={loginAuthentication}
+      />
+    );
+  }
+
+  // If
+  if (toLanding) {
+    return <LandingPage />;
   }
 
   // After login redirect to select user profile
@@ -115,9 +134,11 @@ function App() {
         <>
           <Banner />
           <MainRow />
+          <TrendingRow />
           {requests.map(
             (request) =>
-              request.title !== 'COMING SOON' && (
+              request.title !== 'COMING SOON' &&
+              request.title !== 'TRENDING TITLES' && (
                 <Row
                   key={request.requestId}
                   title={request.title}

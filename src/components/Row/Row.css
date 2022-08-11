@@ -8,8 +8,6 @@
   margin-left: 20px;
   color: #fff;
   z-index: 0;
-  overflow-y: hidden;
-  overflow-x: scroll;
   padding-bottom: 30px;
 }
 
@@ -91,6 +89,8 @@
   display: flex;
   padding: 10px 20px 20px;
   position: relative;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
 .row__poster_wrapper {

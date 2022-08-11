@@ -69,6 +69,10 @@ const Login = (props) => {
     setCurrentFocus(null);
   };
 
+  const toLandingPage = () => {
+    props.toLanding();
+  };
+
   // Submit user information to match authentication
   const formSubmitHandler = (e) => {
     e.preventDefault();
@@ -154,7 +158,8 @@ const Login = (props) => {
                   </div>
                   <button className='form__submit_btn'>Sign In</button>
                   <p className='form__create_account'>
-                    Don't have an account? <span>Create one now</span>.
+                    Don't have an account?{' '}
+                    <span onClick={toLandingPage}>Create one now</span>.
                   </p>
                 </>
               ) : (

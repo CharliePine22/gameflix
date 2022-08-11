@@ -69,7 +69,6 @@ function Row({ title, fetchURL }) {
                 <div className='row__poster_wrapper'>
                   <div
                     className='row__poster_container'
-                    // onMouseEnter={() => fetchGameDetails(game)}
                     onClick={() => fetchGameDetails(game)}
                   >
                     {' '}

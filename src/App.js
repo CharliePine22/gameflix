@@ -101,7 +101,7 @@ function App() {
 
   // If
   if (toLanding) {
-    return <LandingPage />;
+    return <LandingPage toSignIn={() => setToLanding(false)} />;
   }
 
   // After login redirect to select user profile

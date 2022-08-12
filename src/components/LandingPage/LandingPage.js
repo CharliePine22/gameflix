@@ -1,10 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
+// File Imports
 import './LandingPage.css';
 import requests from '../../requests';
 import rawgClient from '../../axios';
+// Package Imports
 import { FaAngleRight } from 'react-icons/fa';
+import ReactPlayer from 'react-player/lazy';
+// Asset Imports
+import pcScreen from '../../assets/images/computer_screen.png';
+import tvScreen from '../../assets/images/retro-tv.png';
+import ff7Cloud from '../../assets/images/ff7-cloud.png';
+import mario from '../../assets/images/mario.png';
+import masterChief from '../../assets/images/master-chief.png';
+import lozLink from '../../assets/images/loz-link.png';
+import spyro from '../../assets/images/spyro.png';
+import demoVideo from '../../assets/videos/gameflix-demo.webm';
 
-const LandingPage = () => {
+const LandingPage = (props) => {
   const [gameList, setGameList] = useState([]);
   const [imgsLoading, setImgsLoading] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
@@ -32,12 +44,17 @@ const LandingPage = () => {
     fetchData();
   }, []);
 
+  // If there is a value in the input field, leave placeholder above value
   const inputBlurHandler = () => {
     if (signUpRef.current.value !== '') {
       return;
     } else {
       setInputFocused(setInputFocused(false));
     }
+  };
+
+  const toLoginHandler = () => {
+    props.toSignIn();
   };
 
   const formSubmitHandler = (e) => {
@@ -48,7 +65,7 @@ const LandingPage = () => {
 
   return (
     <div className='landing_page'>
-      {/* Banner */}
+      {/* BANNER */}
       <div className='landing_banner'>
         <div className='landing_banner__fade_top' />
         <div className='landing_nav'>
@@ -56,15 +73,20 @@ const LandingPage = () => {
             <h3 className='nav_badge'>GAMEFLIX</h3>
           </div>
           <div className='nav_right'>
-            <button className='sign_in_btn'>Sign In</button>
+            <button className='sign_in_btn' onClick={toLoginHandler}>
+              Sign In
+            </button>
           </div>
         </div>
         <div className='landing_banner__content'>
           <h1>
             Looking for a big title, a taste of nostalgia, or a hidden gem?
           </h1>
-          <h3>Find old or new games.</h3>
-          <p>Discover your favorites and thousands more now!</p>
+          <h3>Watch trailers. Listen to OSTs.</h3>
+          <p>
+            Discover your favorites plus thousands more! Enter your email to get
+            started.
+          </p>
           <form className='landing__form' onSubmit={formSubmitHandler}>
             <input
               type='email'
@@ -72,7 +94,9 @@ const LandingPage = () => {
               onFocus={() => setInputFocused(true)}
               onBlur={inputBlurHandler}
             />
-            <span className={`email_placeholder ${inputFocused && 'focused'}`}>
+            <span
+              className={`email_placeholder ${inputFocused && 'email_focused'}`}
+            >
               Email address
             </span>
             <button>
@@ -96,8 +120,50 @@ const LandingPage = () => {
         </div>
         <div className='landing_banner__fade_bottom' />
       </div>
-      {/* Demo */}
-      <div className='landing_page__demo'></div>
+      {/* DEMO */}
+      <div className='landing__demo'>
+        <div className='demo_left'>
+          <h1 className='demo_left_title'>Endless Choices</h1>
+          <p className='demo_left_description'>
+            Discover multiple games from different genres. Or search for your
+            favorites.
+          </p>
+        </div>
+        <div className='demo_right'>
+          <div className='demo_video_container'>
+            <ReactPlayer
+              url={demoVideo}
+              className='demo_video'
+              playing={true}
+              muted={true}
+              loop={true}
+            />
+          </div>
+          <img src={pcScreen} className='demo_pc_img' />
+        </div>
+      </div>
+      {/* INFORMATION */}
+      <div className='landing__information'>
+        <div className='information_left'>
+          <img src={tvScreen} className='information_tv_img' />
+          <div className='information_characters'>
+            <img className='chief-img' src={masterChief} />
+            <img className='cloud-img' src={ff7Cloud} />
+            <img className='mario-img' src={mario} />
+            <img className='link-img' src={lozLink} />
+            <img className='spyro-img' src={spyro} />
+          </div>
+        </div>
+        <div className='information_right'>
+          <h1 className='information_right_title'>
+            Reexperience your Childhood
+          </h1>
+          <p className='information_right_description'>
+            Discover multiple games from different genres. Or search for your
+            favorites.
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

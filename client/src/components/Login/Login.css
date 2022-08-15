@@ -1,0 +1,283 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  margin: 0 auto -236px;
+  min-height: 100vh;
+  background-color: transparent;
+  max-width: 450px;
+  overflow: hidden;
+}
+
+.login__brand {
+  position: absolute;
+  top: -170px;
+  left: -130px;
+  z-index: 2;
+}
+
+.login__loading {
+  position: relative;
+  top: 170px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.loading_spinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: #3d5af1 transparent #3d5af1 transparent;
+  border-radius: 50%;
+  animation: spin-anim 1.2s linear infinite;
+}
+
+.login__wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.form__create_account {
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.form__create_account > span:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.form_input {
+  border: 0;
+  border-radius: 4px;
+  color: #fff;
+  height: 10px;
+  line-height: 50px;
+  padding: 12px 14px 12px;
+  outline: 0;
+  background: #323232;
+}
+
+.error {
+  border-bottom: 2px solid rgba(255, 0, 0, 0.55);
+  position: relative;
+}
+
+.form_input:focus {
+  background: #434343;
+}
+
+.form_label {
+  margin-bottom: 5px;
+}
+
+.form__submit_btn {
+  width: 100%;
+  padding: 15px;
+  margin: 3rem 0 1rem;
+  cursor: pointer;
+  color: #fff;
+  background-color: blue;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 0;
+  font-size: 1.1rem;
+}
+
+.login__form_actions {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 20px;
+  position: relative;
+}
+
+.form_actions_placeholder {
+  position: absolute;
+  top: 13px;
+  left: 13px;
+  font-size: 0.8rem;
+  color: grey;
+  transition: all 150ms ease-in;
+}
+
+.focused {
+  transition: all 150ms ease-in;
+  transform: scale(0.8) translate(-6px, -40px);
+  font-size: 1rem;
+  color: #fff;
+}
+
+.login__form_container {
+  background-color: rgba(0, 0, 0, 0.85);
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  margin-bottom: 0px;
+  width: 100%;
+  min-height: 525px;
+  padding: 60px 68px 40px;
+  box-shadow: rgb(0 0 0 / 80%) 0px 3px 8px;
+}
+
+.login__form_container h1 {
+  margin-bottom: 40px;
+}
+
+.login__form_wrapper {
+  width: 100%;
+  z-index: 2;
+  width: 90%;
+}
+
+.login__background {
+  position: absolute;
+  z-index: 1;
+  top: -130px;
+  left: -300px;
+  opacity: 0.7;
+  /* transform: perspective(1000px) rotateX(4deg) rotateY(-16deg) rotateZ(4deg); */
+  transform: perspective(1000px) rotateX(6deg) rotateY(-11deg) rotateZ(4deg);
+  width: 125%;
+  mix-blend-mode: exclusion;
+}
+
+.login__img {
+  height: 100%;
+  min-height: 12rem;
+  max-height: 12rem;
+  width: 15rem;
+  margin: 0;
+  border: 3px solid transparent;
+}
+
+.login__name {
+  color: black;
+  font-weight: 900;
+  text-transform: uppercase;
+  position: absolute;
+  width: 100%;
+  margin-left: 5px;
+  opacity: 0.5;
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 4px;
+}
+
+/* Mobile Devices */
+@media screen and (max-width: 750px) {
+  .form__create_account {
+    font-size: 0.85rem;
+  }
+
+  .form__submit_btn {
+    margin: 2rem 0 1rem;
+  }
+
+  .login__img {
+    height: 100%;
+    min-height: 10rem;
+    max-height: 10rem;
+    width: 12rem;
+    margin: 0;
+    border: 3px solid transparent;
+  }
+
+  .login__name {
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+
+  .login__background {
+    top: -200px;
+    left: -150px;
+    width: 150%;
+  }
+}
+
+@keyframes spin-anim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* For smaller mobile devices, remove background images */
+@media screen and (max-width: 375px) {
+  .login {
+    background: black;
+  }
+  .login__background {
+    display: none;
+  }
+
+  .login__brand {
+    left: -90px;
+  }
+
+  .login__form_container {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    margin-bottom: 0px;
+    width: 100%;
+    min-height: 560px;
+    padding: 10px 8px 10px;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .login__background {
+    top: -480px;
+    left: -160px;
+    width: 270%;
+  }
+
+  .login__img {
+    height: 100%;
+    min-height: 12rem;
+    max-height: 12rem;
+    width: 17rem;
+    margin: 0;
+    border: 3px solid transparent;
+  }
+}
+
+/* Tablets to laptops */
+@media screen and (min-width: 751px) and (max-width: 1280px) {
+  .login__background {
+    width: 170%;
+    top: -170px;
+    left: -278px;
+  }
+
+  .login__img {
+    min-height: 14rem;
+    max-height: 14rem;
+    width: 15rem;
+  }
+}
+
+/* For larger screens and desktops, increease image sizes */
+@media screen and (min-width: 1510px) {
+  .login__background {
+    top: -180px;
+    left: -400px;
+  }
+
+  .login__img {
+    min-height: 15rem;
+    max-height: 15rem;
+    width: 18rem;
+  }
+}

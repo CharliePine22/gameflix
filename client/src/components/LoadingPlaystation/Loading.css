@@ -1,0 +1,135 @@
+:root {
+  --square-bg-color: #de88d2;
+  --triangle-bg-color: #5ebba9;
+  --circle-bg-color: #ff5b55;
+  --x-bg-color: #90bdf5;
+}
+
+.loading {
+  height: 0px;
+  width: 0px;
+  border: 100px solid transparent;
+  position: absolute;
+  top: 80px;
+  left: 43%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+.loading:after {
+  content: '';
+  position: absolute;
+  left: -100px;
+  top: 100px;
+  width: 0;
+  height: 0;
+  border: 100px solid transparent;
+}
+
+.loading__button {
+  height: 25px;
+  width: 25px;
+  background-color: white;
+  transform: rotate(45deg);
+  z-index: 1;
+}
+/* .loading__button {
+  height: 32px;
+  width: 32px;
+  background-color: white;
+  border-radius: 50%;
+  top: 85px;
+  z-index: 1;
+} */
+
+/* SQUARE */
+.loading__button:nth-child(1) {
+  position: absolute;
+  right: 5px;
+  top: 30px;
+  /* animation: flashingSquare 1s ease-in-out infinite; */
+  background-color: var(--square-bg-color);
+}
+/* TRIANGLE */
+.loading__button:nth-child(2) {
+  position: absolute;
+  top: 12px;
+  /* animation: flashingTriangle 1s cubic-bezier(0.47, 0, 0.745, 0.715) infinite; */
+  background-color: var(--triangle-bg-color);
+}
+/* X */
+.loading__button:nth-child(3) {
+  position: absolute;
+  top: 48px;
+  /* animation: flashingX 1s cubic-bezier(0.47, 0, 0.745, 0.715) infinite; */
+  background-color: var(--x-bg-color);
+}
+/* CIRCLE */
+.loading__button:nth-child(4) {
+  position: absolute;
+  left: 6px;
+  top: 30px;
+  /* animation: flashingCircle 1s cubic-bezier(0.47, 0, 0.745, 0.715) 2s infinite; */
+  background-color: var(--circle-bg-color);
+}
+
+@keyframes flashingSquare {
+  0%,
+  100% {
+    opacity: 0;
+    background-color: var(--square-bg-color);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes flashingCircle {
+  0%,
+  100% {
+    opacity: 0;
+    background-color: var(--circle-bg-color);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes flashingTriangle {
+  0%,
+  100% {
+    opacity: 0;
+    background-color: var(--triangle-bg-color);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes flashingX {
+  0%,
+  100% {
+    opacity: 0;
+    background-color: var(--x-bg-color);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes delay-animation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  50.01% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}

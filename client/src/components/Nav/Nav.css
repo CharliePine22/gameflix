@@ -1,0 +1,137 @@
+.nav {
+  width: 100%;
+  height: 65px;
+  position: fixed;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 20px;
+  z-index: 2;
+  transition-timing-function: ease-in;
+  transition: all 0.5s;
+}
+
+.nav__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 3.1rem;
+  position: relative;
+}
+
+.nav__avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 10%;
+}
+
+.nav__avatar_container {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  width: 32px;
+  background-color: black;
+  border-radius: 6px;
+}
+
+.nav__avatar_container:hover + svg {
+  transform: rotate(180deg);
+}
+
+.nav__avatar_arrow {
+  color: #fff;
+  transition: transform 0.25s;
+}
+
+.nav__hide {
+  background-color: #111;
+}
+
+.nav__logo {
+  width: 46px;
+  object-fit: contain;
+}
+
+.nav__right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* width: 6.5rem; */
+}
+
+.nav__search {
+  display: flex;
+  align-items: center;
+}
+
+.nav__search_form input {
+  font-size: 14px;
+  padding: 7px 14px 7px 35px;
+  background-color: #000000e6;
+  animation: extendSearchbar 500ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+  color: #fff;
+  border: 1px solid white;
+  margin-right: 10px;
+}
+
+.nav__search_icon {
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.25rem;
+  margin-right: 20px;
+}
+
+.nav__search_icon:active {
+  transform: scale(1.05);
+}
+
+.search_active {
+  position: absolute;
+  animation: moveSearchIcon 500ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+}
+
+@keyframes extendSearchbar {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 13.5rem;
+  }
+}
+
+@keyframes moveSearchIcon {
+  0% {
+    right: 0;
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    right: 298px;
+    cursor: default;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .nav {
+    padding-left: 10px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .nav__avatar_container {
+    height: 35px;
+    width: 35px;
+    position: relative;
+    right: 30px;
+  }
+}

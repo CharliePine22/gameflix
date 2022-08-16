@@ -16,10 +16,21 @@ const newUserTemplate = new mongoose.Schema({
     type: String,
     required: true,
   },
+  color: {
+    type: String,
+    default: 'black',
+  },
+  avatar: {
+    type: String,
+  },
+  profiles: {
+    type: Array,
+    default: [],
+  },
   date: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = mongoose.model('gameflix', newUserTemplate);
+module.exports = mongoose.model('users', newUserTemplate);

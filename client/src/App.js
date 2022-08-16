@@ -99,9 +99,14 @@ function App() {
     );
   }
 
-  // If
+  // If a new user show landing page
   if (toLanding) {
-    return <LandingPage toSignIn={() => setToLanding(false)} />;
+    return (
+      <LandingPage
+        loginAuthentication={loginAuthentication}
+        toSignIn={() => setToLanding(false)}
+      />
+    );
   }
 
   // After login redirect to select user profile

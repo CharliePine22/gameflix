@@ -68,8 +68,18 @@ const LandingPage = (props) => {
     // signUpRef.current.value = '';
   };
 
+  const toWelcomeScreen = (email, password) => {
+    props.loginAuthentication(email, password);
+    props.toSignIn();
+  };
+
   if (creatingNewUser) {
-    return <NewUser email={signUpRef.current.value} />;
+    return (
+      <NewUser
+        toWelcomeScreen={toWelcomeScreen}
+        email={signUpRef.current?.value}
+      />
+    );
   }
 
   return (

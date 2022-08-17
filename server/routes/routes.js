@@ -5,6 +5,7 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 
+// Transform upload file into DB Object String
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads');
@@ -16,9 +17,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+const newAccountValidation = async (email) => {
+  const result = await newUserModel.findOne({ email: email });
+  console.log(result);
+  return result == null;
+};
+
 // Sign Up Route
 router.post('/signup', upload.single('avatar'), (req, res) => {
-  console.log(req.file);
   const avatar = req.file.destination + '/' + req.file.filename;
   const newUser = new newUserModel({
     firstName: req.body.firstName,
@@ -28,14 +34,35 @@ router.post('/signup', upload.single('avatar'), (req, res) => {
     color: req.body.color,
     avatar: avatar,
   });
-  newUser
-    .save()
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((error) => {
-      res.json(error);
-    });
+
+  newUser.insertOne({
+    profiles: { username: req.body.firstName, profile_pic: avatar },
+  });
+
+  newAccountValidation(req.body.email).then(function (valid) {
+    if (valid) {
+      newUser
+        .save()
+        .then((data) => {
+          res.json(data);
+        })
+        .catch((error) => {
+          res.json(error);
+        });
+    } else {
+      res.status(400).send({ message: 'Email is already in use!' });
+    }
+  });
+});
+
+router.post('/email_verification', (req, res) => {
+  newAccountValidation(req.body.email).then(function (valid) {
+    if (valid) {
+      res.status(200).send({ status: 'success' });
+    } else {
+      res.status(400).send({ message: 'Email is already in use!' });
+    }
+  });
 });
 
 module.exports = router;

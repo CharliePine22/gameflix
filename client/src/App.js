@@ -23,7 +23,7 @@ function App() {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState(null);
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const [toLanding, setToLanding] = useState(true);
+  const [toLanding, setToLanding] = useState(false);
   const [rowsLoaded, setRowsLoaded] = useState(false);
 
   let audio = new Audio(loginAudio);
@@ -104,7 +104,10 @@ function App() {
     return (
       <LandingPage
         loginAuthentication={loginAuthentication}
-        toSignIn={() => setToLanding(false)}
+        toSignIn={() => {
+          setToLanding(false);
+          setChangingUser(true);
+        }}
       />
     );
   }

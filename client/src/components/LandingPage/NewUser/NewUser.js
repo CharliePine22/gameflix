@@ -6,13 +6,14 @@ import axios from 'axios';
 
 const NewUser = (props) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [error, setError] = useState(null);
   // Color Picker States
   const [color, setColor] = useState('');
   const [pickingColor, setPickingColor] = useState(false);
 
   // Step 1 Refs
   const [stepOneData, setStepOneData] = useState(null);
-  const emailRef = useRef(props.email);
+  const emailRef = useRef('');
   const passwordRef = useRef('');
   // Step 2 Refs
   const [stepTwoData, setStepTwoData] = useState(null);
@@ -33,6 +34,22 @@ const NewUser = (props) => {
   // Handler to go back and edit forms in previous steps
   const backStepHandler = () => {
     setCurrentStep(currentStep - 1);
+  };
+
+  useEffect(() => {
+    if (error) emailRef.current.focus();
+  }, []);
+
+  const validateEmail = (data) => {
+    let flag = false;
+    axios
+      .post('http://localhost:5000/app/signup', data)
+      .then((response) => console.log(response.data))
+      .catch((e) => {
+        setError(e.response.data.message);
+        flag = true;
+      });
+    console.log(flag);
   };
 
   const formSubmitHandler = (e) => {
@@ -62,18 +79,25 @@ const NewUser = (props) => {
       formData.append('color', color.hex);
       formData.append('avatar', imgFile);
 
-      axios
-        .post('http://localhost:5000/app/signup', formData)
-        .then((response) => console.log(response.data));
+      validateEmail(formData);
 
-      props.toWelcomeScreen(stepOneData.email, stepOneData.password);
+      if (!error) {
+        props.toWelcomeScreen(stepOneData.email, stepOneData.password);
+        console.log('Successful');
+      } else {
+        setCurrentStep(1);
+        emailRef.current.value = stepOneData.email;
+        setError(null);
+      }
     }
   };
 
   return (
     <div className='new_user__page'>
       <div className='new_user__header'>
-        <h1 className='header_brand'>GAMEFLIX</h1>
+        <h1 className='header_brand' onClick={() => props.returnToLanding()}>
+          GAMEFLIX
+        </h1>
         <button className='header_btn'>Sign In</button>
       </div>
 
@@ -103,11 +127,13 @@ const NewUser = (props) => {
               <>
                 <input
                   ref={emailRef}
-                  className='form_text_input'
+                  className={`form_text_input ${error && 'input_error'}`}
                   type='email'
-                  defaultValue={props.email}
+                  onBlur={() => error && setError(null)}
+                  defaultValue={!error ? props.email : stepOneData.email}
                 />
                 <span className='form_placeholder__email'>Email</span>
+                {error && <p className='user_email_error'>{error}</p>}
                 <input
                   ref={passwordRef}
                   className='form_text_input'

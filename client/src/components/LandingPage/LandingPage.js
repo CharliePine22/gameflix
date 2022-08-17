@@ -4,6 +4,7 @@ import './LandingPage.css';
 import requests from '../../requests';
 import rawgClient from '../../axios';
 // Package Imports
+import axios from 'axios';
 import { FaAngleRight } from 'react-icons/fa';
 import ReactPlayer from 'react-player/lazy';
 // Asset Imports
@@ -19,6 +20,7 @@ import logos from '../../assets/images/console-logos.jpg';
 import NewUser from './NewUser/NewUser';
 
 const LandingPage = (props) => {
+  const [error, setError] = useState(null);
   const [gameList, setGameList] = useState([]);
   const [imgsLoading, setImgsLoading] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
@@ -64,7 +66,22 @@ const LandingPage = (props) => {
   const formSubmitHandler = (e) => {
     e.preventDefault();
     const email = signUpRef.current.value.toLowerCase().trim();
-    setCreatingNewUser(true);
+    if (email == '') {
+      setError('Please enter a valid email.');
+      return;
+    }
+    axios
+      .post('http://localhost:5000/app/email_verification', { email })
+      .then((response) => {
+        console.log(response);
+        setCreatingNewUser(true);
+        setInputFocused(false);
+      })
+      .catch((e) => {
+        setError(e.response.data.message);
+        signUpRef.current.blur();
+      });
+
     // signUpRef.current.value = '';
   };
 
@@ -73,11 +90,20 @@ const LandingPage = (props) => {
     props.toSignIn();
   };
 
-  if (creatingNewUser) {
+  const inputFocusHandler = () => {
+    setInputFocused(true);
+    if (error) {
+      signUpRef.current.value = '';
+      setError(null);
+    }
+  };
+
+  if (creatingNewUser && !error) {
     return (
       <NewUser
         toWelcomeScreen={toWelcomeScreen}
         email={signUpRef.current?.value}
+        returnToLanding={() => setCreatingNewUser(false)}
       />
     );
   }
@@ -109,8 +135,9 @@ const LandingPage = (props) => {
           <form className='landing__form' onSubmit={formSubmitHandler}>
             <input
               type='email'
+              className={`landing__email ${error && 'email_error'}`}
               ref={signUpRef}
-              onFocus={() => setInputFocused(true)}
+              onFocus={inputFocusHandler}
               onBlur={inputBlurHandler}
             />
             <span
@@ -118,6 +145,7 @@ const LandingPage = (props) => {
             >
               Email address
             </span>
+            {error && <p className='sign_up_error'>{error}</p>}
             <button>
               Get Started <FaAngleRight className='btn_arrow' />
             </button>

@@ -8,6 +8,7 @@ import { MdEdit } from 'react-icons/md';
 
 const ProfilesPage = (props) => {
   const [editingProfiles, setEditingProfiles] = useState(false);
+  const [hoveringNewUser, setHoveringNewUser] = useState(false);
 
   const [dummyData, setDummyData] = useState([
     { name: 'Cj', avatar: cjAvatar },
@@ -51,6 +52,17 @@ const ProfilesPage = (props) => {
               <span className='profile__user_name'>{user.name}</span>
             </li>
           ))}
+          {/* {dummyData.length < 5 && (
+            <li
+              className='profile__user add'
+              onMouseOver={() => setHoveringNewUser(true)}
+              onMouseOut={() => setHoveringNewUser(false)}
+            >
+              <span className={`add_content ${hoveringNewUser && 'hovering'}`}>
+                {hoveringNewUser ? 'New Profile' : '+'}
+              </span>
+            </li>
+          )} */}
         </ul>
         <div className='profile__actions'>
           <button

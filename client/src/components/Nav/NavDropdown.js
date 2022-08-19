@@ -12,6 +12,8 @@ import banditAvatar from '../../assets/images/lion-icon.png';
 
 const NavDropdown = (props) => {
   // Profile dummy data until account creation is incorporated
+  console.log(props.currentUser);
+  const allProfiles = props.allProfiles;
   const dummyData = [
     { name: 'Cj', avatar: cjAvatar },
     {
@@ -47,15 +49,15 @@ const NavDropdown = (props) => {
     props.changeProfile(user);
   };
 
-  dummyData.sort((a, b) => (a.name - b.name ? 1 : -1));
+  allProfiles.sort((a, b) => (a.name - b.name ? 1 : -1));
 
   return (
     <div className='dropdown'>
       <FaSortUp className='dropdown__arrow' />
       <div className='dropdown__profiles'>
         <ul className='dropdown__profiles_list'>
-          {dummyData.map((user) => {
-            if (user.name !== props.currentUser.name) {
+          {allProfiles.map((user) => {
+            if (user.name !== props.activeProfile.name) {
               return (
                 <li
                   className='dropdown__profiles_item'
@@ -66,6 +68,7 @@ const NavDropdown = (props) => {
                     src={user.avatar}
                     className='dropdown__profile_icon'
                     alt={`${user.name} avatar icon`}
+                    style={{ backgroundColor: user.color }}
                   />
                   <p className='dropdown__profile_name'>{user.name}</p>
                 </li>

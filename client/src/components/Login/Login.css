@@ -20,7 +20,7 @@
 
 .login__loading {
   position: relative;
-  top: 170px;
+  top: 130px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,6 +112,15 @@
   color: #fff;
 }
 
+.login__auth_error {
+  position: absolute;
+  top: 43px;
+  left: 3px;
+  font-size: 0.9rem;
+  color: red;
+  font-weight: 700;
+}
+
 .login__form_container {
   background-color: rgba(0, 0, 0, 0.85);
   border-radius: 4px;
@@ -121,7 +130,7 @@
   margin: 0;
   margin-bottom: 0px;
   width: 100%;
-  min-height: 525px;
+  min-height: 475px;
   padding: 60px 68px 40px;
   box-shadow: rgb(0 0 0 / 80%) 0px 3px 8px;
 }

@@ -19,8 +19,12 @@ const upload = multer({ storage: storage });
 
 const newAccountValidation = async (email) => {
   const result = await newUserModel.findOne({ email: email });
-  console.log(result);
   return result == null;
+};
+
+const findUser = async (email) => {
+  const result = await newUserModel.findOne({ email: email });
+  return result;
 };
 
 // Sign Up Route
@@ -35,12 +39,13 @@ router.post('/signup', upload.single('avatar'), (req, res) => {
     avatar: avatar,
   });
 
-  newUser.insertOne({
-    profiles: { username: req.body.firstName, profile_pic: avatar },
-  });
-
   newAccountValidation(req.body.email).then(function (valid) {
     if (valid) {
+      newUser.profiles.push({
+        name: req.body.firstName,
+        avatar: avatar,
+        color: req.body.color,
+      });
       newUser
         .save()
         .then((data) => {
@@ -55,6 +60,7 @@ router.post('/signup', upload.single('avatar'), (req, res) => {
   });
 });
 
+// Landing Page Email Verification
 router.post('/email_verification', (req, res) => {
   newAccountValidation(req.body.email).then(function (valid) {
     if (valid) {
@@ -63,6 +69,24 @@ router.post('/email_verification', (req, res) => {
       res.status(400).send({ message: 'Email is already in use!' });
     }
   });
+});
+
+// Sign In Route
+router.post('/signin', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  findUser(email).then(function (user) {
+    if (user && password == user.password) {
+      res.status(200).send({ message: 'User logged in successfully!', user });
+    } else {
+      res.status(400).send({ message: 'Incorrect email or password!' });
+    }
+  });
+});
+
+router.get('/profiles', (req, res) => {
+  // findUser(email)
+  console.log(req.body);
 });
 
 module.exports = router;

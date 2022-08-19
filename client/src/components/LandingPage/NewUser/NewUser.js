@@ -1,12 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
-import './NewUser.css';
 import defaultAvatar from '../../../assets/images/basic_avatar.png';
 import { SketchPicker } from 'react-color';
 import axios from 'axios';
+import './NewUser.css';
 
 const NewUser = (props) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [error, setError] = useState(null);
+
   // Color Picker States
   const [color, setColor] = useState('');
   const [pickingColor, setPickingColor] = useState(false);
@@ -43,7 +44,7 @@ const NewUser = (props) => {
   const validateEmail = (data) => {
     let flag = false;
     axios
-      .post('http://localhost:5000/app/signup', data)
+      .post('/app/signup', data)
       .then((response) => console.log(response.data))
       .catch((e) => {
         setError(e.response.data.message);

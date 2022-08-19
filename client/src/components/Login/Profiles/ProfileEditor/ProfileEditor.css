@@ -1,0 +1,121 @@
+.cancel_btn {
+  opacity: 0.5;
+  background: transparent;
+  border: 1px solid grey;
+  color: white;
+}
+
+.cancel_btn:hover {
+  opacity: 1;
+}
+
+.current_avatar {
+  width: 90px;
+  height: 86px;
+  border-radius: 6px;
+}
+
+.form_actions {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+
+.form_actions button {
+  margin: 0 10px;
+  padding: 7px 18px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.form_avatar_container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 90px;
+  margin-top: 20px;
+}
+
+.form_container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+}
+
+.form_right {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile_edit__container {
+  position: relative;
+  height: 100%;
+  background: transparent;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile_edit__form_wrapper {
+  padding: 200px 200px 20px;
+  height: 460px;
+  width: 400px;
+  animation: displayProfile 150ms ease-in forwards;
+}
+
+.profile_edit__form_wrapper h3 {
+  color: white;
+  font-size: 2.1rem;
+  font-weight: 500;
+
+  margin-bottom: 8px;
+}
+
+.profile_edit__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.7) 10%,
+    transparent
+  );
+  width: 100%;
+}
+
+.profile_edit__header h3 {
+  color: blue;
+  margin: 10px;
+  font-size: 2rem;
+}
+
+.save_btn {
+  background-color: white;
+  color: black;
+  border: 0;
+  font-weight: 600;
+}
+
+.save_btn:hover {
+  background-color: blue;
+  color: white;
+}
+
+@keyframes displayProfile {
+  0% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

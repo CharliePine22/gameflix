@@ -14,4 +14,5 @@ mongoose.connect(process.env.MONGODB_ACCESS, () =>
 app.use(express.json());
 app.use(cors());
 app.use('/app', routesUrls);
+app.use('/uploads', express.static('uploads'));
 app.listen(5000, () => console.log('Server is up and running!'));

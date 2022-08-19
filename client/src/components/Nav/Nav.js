@@ -11,7 +11,7 @@ function Nav(props) {
   const [displaySearch, setDisplaySearch] = useState(false);
   const searchRef = useRef('');
 
-  const profile = JSON.parse(localStorage.getItem('profile'));
+  const profile = props.activeProfile;
 
   const closeNavDropdown = () => {
     setDisplayDropdown(false);
@@ -100,7 +100,8 @@ function Nav(props) {
           >
             <img
               className='nav__avatar'
-              src={profile.avatar}
+              src={`http://localhost:5000/${profile.avatar}`}
+              style={{ backgroundColor: profile.color }}
               alt="User's avatar"
             />
           </div>
@@ -116,7 +117,8 @@ function Nav(props) {
           {displayDropdown && (
             <NavDropdown
               changeProfile={props.changeUser}
-              currentUser={profile}
+              activeProfile={profile}
+              allProfiles={props.currentUser.profiles}
               logoutHandler={props.onLogout}
               closeNavDropdown={closeNavDropdown}
               toProfilePage={props.toProfilePage}

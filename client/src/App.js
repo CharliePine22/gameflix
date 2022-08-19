@@ -11,13 +11,14 @@ import ProfilesPage from './components/Login/Profiles/ProfilesPage';
 import TrendingRow from './components/TrendingRow/TrendingRow';
 import SearchResults from './components/SearchResults/SearchResults';
 
-// Asset Imports
+// File Imports
 import requests from './requests';
 import loginAudio from './assets/sounds/success.wav';
 import rawgClient from './axios';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [changingUser, setChangingUser] = useState(false);
   const [loggedUser, setLoggedUser] = useState(null);
   const [searchSubmitted, setSearchSubmitted] = useState(false);
@@ -43,21 +44,17 @@ function App() {
   };
 
   // Login user if verification succeeds.
-  const loginAuthentication = (email, password) => {
-    setIsLoading(true);
-    localStorage.setItem('user', email);
-    localStorage.setItem('password', password);
-    setTimeout(() => {
-      setLoggedUser(email);
-      setIsLoading(false);
-      audio.play();
-    }, 2000);
+  const loginAuthentication = (user) => {
+    localStorage.setItem('user', JSON.stringify(user));
+    setLoggedUser(user);
+    audio.play();
   };
 
   // Logout the user
   const logoutHandler = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('profile');
+    localStorage.removeItem('password');
     window.location.reload();
   };
 
@@ -73,7 +70,7 @@ function App() {
 
   // Check to see if user is logged in
   useEffect(() => {
-    const loggedInUser = localStorage.getItem('user');
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
     if (loggedInUser) {
       setLoggedUser(loggedInUser);
     }
@@ -83,7 +80,7 @@ function App() {
   useEffect(() => {
     const userProfile = localStorage.getItem('profile');
     if (userProfile) {
-      setSelectedProfile(userProfile);
+      setSelectedProfile(JSON.parse(userProfile));
     }
   }, []);
 
@@ -91,6 +88,7 @@ function App() {
   if (!loggedUser && !toLanding) {
     return (
       <Login
+        error={error}
         toLanding={() => setToLanding(true)}
         landing={toLanding}
         loading={isLoading}
@@ -114,7 +112,12 @@ function App() {
 
   // After login redirect to select user profile
   if (!selectedProfile) {
-    return <ProfilesPage selectProfile={(user) => setSelectedProfile(user)} />;
+    return (
+      <ProfilesPage
+        currentUser={loggedUser}
+        selectProfile={(user) => setSelectedProfile(user)}
+      />
+    );
   }
 
   // Loading screen for profile change
@@ -131,7 +134,8 @@ function App() {
   return (
     <div className='App'>
       <Nav
-        currentUser={selectedProfile}
+        currentUser={loggedUser}
+        activeProfile={selectedProfile}
         changeUser={changeProfile}
         onLogout={logoutHandler}
         fetchSubmittedGame={fetchSubmittedGame}

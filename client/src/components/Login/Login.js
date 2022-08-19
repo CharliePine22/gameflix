@@ -3,6 +3,7 @@ import './Login.css';
 import gameflixBrand from '../../assets/images/gameflix-brand.png';
 import requests from '../../requests';
 import rawgClient from '../../axios';
+import axios from 'axios';
 
 const Login = (props) => {
   // States
@@ -11,6 +12,8 @@ const Login = (props) => {
   const [hasEmailError, setHasEmailError] = useState(false);
   const [hasPasswordError, setHasPasswordError] = useState(false);
   const [currentFocus, setCurrentFocus] = useState(null);
+  const [authError, setAuthError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   // Refs
   const emailRef = useRef('');
@@ -73,23 +76,35 @@ const Login = (props) => {
     props.toLanding();
   };
 
+  const authenticateUser = async (email, password) => {
+    try {
+      const response = await axios.post('/app/signin', { email, password });
+      setAuthError('');
+      props.onLogin(response.data.user);
+    } catch (e) {
+      setAuthError(e.response.data.message);
+      emailRef.current.value = email;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Submit user information to match authentication
   const formSubmitHandler = (e) => {
     e.preventDefault();
+    setLoading(true);
     // Data values
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-
-    // If the data has no errors, submit the information
-    emailRef.current.value = '';
-    passwordRef.current.value = '';
-    setCurrentFocus('null');
-    props.onLogin(email, password);
+    emailRef.current.blur();
+    passwordRef.current.blur();
+    setCurrentFocus('');
+    authenticateUser(email, password);
   };
 
-  if (passwordRef.current == null || emailRef.current == null) {
-    console.log('none');
-  }
+  // if (passwordRef.current == null || emailRef.current == null) {
+  //   console.log('none');
+  // }
 
   return (
     <div
@@ -101,7 +116,7 @@ const Login = (props) => {
         <div className='login__form_wrapper'>
           <div className='login__form_container'>
             <form className='login__form' onSubmit={formSubmitHandler}>
-              {!props.loading ? (
+              {!loading ? (
                 <>
                   <h1>Sign In</h1>
                   <div className='login__form_actions'>
@@ -112,7 +127,7 @@ const Login = (props) => {
                       onChange={checkEmailValidity}
                       onBlur={emailBlurHandler}
                       className={`form_input ${
-                        emailRef.current.value !== '' && hasEmailError
+                        emailRef.current?.value !== '' && hasEmailError
                           ? 'error'
                           : ''
                       }`}
@@ -120,7 +135,7 @@ const Login = (props) => {
                     />
                     <span
                       className={`form_actions_placeholder ${
-                        emailRef.current.value !== '' || currentFocus == 'email'
+                        emailRef.current?.value || currentFocus == 'email'
                           ? 'focused'
                           : ''
                       }`}
@@ -136,7 +151,7 @@ const Login = (props) => {
                       onChange={checkPasswordValidity}
                       onBlur={passwordBlurHandler}
                       className={`form_input ${
-                        passwordRef.current.value !== undefined &&
+                        passwordRef.current?.value !== undefined &&
                         hasPasswordError &&
                         passwordRef.current.value.length > 0
                           ? 'error'
@@ -146,14 +161,16 @@ const Login = (props) => {
                     />
                     <span
                       className={`form_actions_placeholder ${
-                        passwordRef.current.value !== '' ||
-                        currentFocus == 'password'
+                        passwordRef.current?.value || currentFocus == 'password'
                           ? 'focused'
                           : ''
                       }`}
                     >
                       Password
                     </span>
+                    {authError && (
+                      <p className='login__auth_error'>{authError}</p>
+                    )}
                   </div>
                   <button className='form__submit_btn'>Sign In</button>
                   <p className='form__create_account'>

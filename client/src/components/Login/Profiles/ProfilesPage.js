@@ -13,18 +13,26 @@ const ProfilesPage = (props) => {
   const [profiles, setProfiles] = useState(null);
 
   const [dummyData, setDummyData] = useState([
-    { name: 'Cj', avatar: cjAvatar },
+    { name: 'Cj', avatar: cjAvatar, color: 'blue' },
     {
       name: 'Jessica',
       avatar: jessAvatar,
+      color: 'pink',
     },
     {
       name: 'Yuna',
       avatar: yunaAvatar,
+      color: 'purple',
     },
     {
       name: 'Bandit',
       avatar: banditAvatar,
+      color: 'silver',
+    },
+    {
+      name: 'Ryan',
+      avatar: banditAvatar,
+      color: 'gold',
     },
   ]);
 
@@ -97,7 +105,7 @@ const ProfilesPage = (props) => {
           >
             {editingProfiles ? 'Done' : 'Manage Profiles'}
           </button>
-          {dummyData.length < 5 && (
+          {profiles.length < 5 && (
             <button
               className='profile__new_btn'
               onClick={() => setCreatingProfile(true)}

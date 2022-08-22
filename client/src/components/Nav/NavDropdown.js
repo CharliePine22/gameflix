@@ -12,7 +12,6 @@ import banditAvatar from '../../assets/images/lion-icon.png';
 
 const NavDropdown = (props) => {
   // Profile dummy data until account creation is incorporated
-  console.log(props.currentUser);
   const allProfiles = props.allProfiles;
   const dummyData = [
     { name: 'Cj', avatar: cjAvatar },

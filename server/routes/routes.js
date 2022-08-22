@@ -84,9 +84,8 @@ router.post('/signin', (req, res) => {
   });
 });
 
-router.get('/profiles', (req, res) => {
-  // findUser(email)
-  console.log(req.body);
+// Update Profile Route
+router.post('/update_profile', (req, res) => {
+  findUser(email).then(function (user) {});
 });
-
 module.exports = router;

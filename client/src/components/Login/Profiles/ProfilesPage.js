@@ -63,6 +63,7 @@ const ProfilesPage = (props) => {
       <ProfileEditor
         currentProfile={creatingProfile}
         viewAllProfiles={() => setCreatingProfile(null)}
+        userEmail={props.currentUser.email}
       />
     );
   }

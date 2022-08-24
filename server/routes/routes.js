@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const newUserModel = require('../models/NewUserModels');
+const userModel = require('../models/newUserModels');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
@@ -18,19 +18,19 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const newAccountValidation = async (email) => {
-  const result = await newUserModel.findOne({ email: email });
+  const result = await userModel.findOne({ email: email });
   return result == null;
 };
 
 const findUser = async (email) => {
-  const result = await newUserModel.findOne({ email: email });
+  const result = await userModel.findOne({ email: email });
   return result;
 };
 
 // Sign Up Route
 router.post('/signup', upload.single('avatar'), (req, res) => {
   const avatar = req.file.destination + '/' + req.file.filename;
-  const newUser = new newUserModel({
+  const newUser = new userModel({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
@@ -85,7 +85,24 @@ router.post('/signin', (req, res) => {
 });
 
 // Update Profile Route
-router.post('/update_profile', (req, res) => {
-  findUser(email).then(function (user) {});
+router.post('/update_profile', upload.single('avatar'), (req, res) => {
+  const email = req.body.email;
+  const name = req.body.name;
+  const avatar = req.file.destination + '/' + req.file.filename;
+
+  userModel.findOneAndUpdate(
+    { email: email, profiles: { $elemMatch: { name: name } } },
+    {
+      $set: {
+        'profiles.$.name': name,
+        'profiles.$.avatar': avatar,
+      },
+    }, // list fields you like to change
+    { new: true, safe: true, upsert: true },
+    function (error) {
+      console.log(error);
+    }
+  );
 });
+
 module.exports = router;

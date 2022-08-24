@@ -198,9 +198,11 @@
     margin-top: 30px;
   }
   .edit-icon {
-    left: 320px;
+    right: 317px;
     width: 2.5rem;
-    top: -38px;
+    bottom: -16px;
+    left: 0;
+    top: 15px;
   }
   .profile__actions {
     margin-top: 0px;

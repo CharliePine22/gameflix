@@ -7,6 +7,9 @@ import { FaAngleDown } from 'react-icons/fa';
 import { AiOutlineEnter } from 'react-icons/ai';
 
 const ProfileEditor = (props) => {
+  const currentProfile = props.currentProfile;
+  const [loading, setLoading] = useState(false);
+  // Current Profile Name
   const [nameValue, setNameValue] = useState(props.currentProfile.name);
   // Title Input State and Ref
   const titleRef = useRef('');
@@ -20,7 +23,7 @@ const ProfileEditor = (props) => {
   const [changingAvatar, setChangingAvatar] = useState(false);
   // Color states
   const [changingColor, setChangingColor] = useState(false);
-  const [color, setColor] = useState('');
+  const [color, setColor] = useState(currentProfile.color);
   // Genre states
   const genreRef = useRef('');
   const [changingGenre, setChangingGenre] = useState(false);
@@ -43,7 +46,7 @@ const ProfileEditor = (props) => {
     'Strategy',
   ];
 
-  const colorChangeHandler = (color) => setColor(color);
+  const colorChangeHandler = (color) => setColor(color.hex);
   const genreChangeHandler = (genre) => {
     setCurrentGenre(genre);
     setChangingGenre(false);
@@ -89,29 +92,51 @@ const ProfileEditor = (props) => {
   }, [genreRef]);
 
   // Avatar profile image handling
-  const updateAvatar = (e, method) => {
+  const updateAvatar = async (e, method) => {
+    setLoading(true);
     const data = new FormData();
     // Append email and profile name to find correct profile to update
     data.append('email', props.userEmail);
-    data.append('name', nameValue);
+    data.append('name', props.currentProfile.name);
     // User uploads image
     if (method == 'file') {
       data.append('avatar', e.target.files[0]);
       setImgFile(e.target.files[0]);
-      axios
-        .post('/app/update_profile', data)
-        .then((response) => console.log(response));
+      try {
+        const request = await axios.post('/app/update_profile', data);
+        console.log(request);
+      } catch (e) {
+        console.log(e);
+      }
+
       setImgFile(null);
     }
     // If user uses a link to an image
     else {
       console.log(e.target);
     }
+    setLoading(false);
   };
 
   const updateProfile = (e) => {
     e.preventDefault();
   };
+
+  // Loading spinner
+  if (loading) {
+    return (
+      <div className='profile_edit__container'>
+        <div className='profile_edit__header'>
+          <h3>GAMEFLIX</h3>
+        </div>
+        <div className='profile_edit__form_wrapper'>
+          <div className='profile__loading'>
+            <div className='profile__loading_spinner' />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='profile_edit__container'>
@@ -128,14 +153,12 @@ const ProfileEditor = (props) => {
           }`}
         >
           {/* USER AVATAR CONTAINER */}
-          <div
-            className={`form_avatar_container ${
-              changingAvatar && 'avatar_select'
-            }`}
-          >
+          <div className='form_avatar_container'>
             <img
-              className='current_avatar'
-              style={{ backgroundColor: props.currentProfile.color }}
+              className={`current_avatar ${changingAvatar && 'avatar_select'}`}
+              style={{
+                backgroundColor: color ? color : props.currentProfile.color,
+              }}
               src={`http://localhost:5000/${props.currentProfile.avatar}`}
             />
             {!changingAvatar && (
@@ -163,27 +186,19 @@ const ProfileEditor = (props) => {
                 <input
                   className='color_input'
                   style={{
-                    color: color == '' ? props.currentProfile.color : color,
+                    color: color,
                     fontWeight: '500',
                   }}
-                  defaultValue={props.currentProfile.color}
+                  onChange={(e) => setColor(e.target.value)}
+                  value={color}
                 />
                 <button
                   type='button'
-                  onClick={() => setChangingColor(true)}
+                  onClick={() => setChangingColor(!changingColor)}
                   style={{
-                    backgroundColor:
-                      color == '' ? props.currentProfile.color : color.hex,
+                    backgroundColor: color,
                   }}
                 />
-                {changingColor && (
-                  <span
-                    onClick={() => setChangingColor(false)}
-                    className='close_color_palette'
-                  >
-                    X
-                  </span>
-                )}
                 {changingColor && (
                   <SketchPicker
                     color={color}
@@ -200,7 +215,7 @@ const ProfileEditor = (props) => {
               <h4
                 style={{
                   textAlign: changingAvatar ? 'center' : 'left',
-                  marginTop: changingAvatar ? '0px' : '10px',
+                  marginTop: changingAvatar ? '-26px' : '10px',
                 }}
               >
                 {!changingAvatar ? 'Your Playstyle' : 'Current'}
@@ -208,32 +223,33 @@ const ProfileEditor = (props) => {
               {/* AVATAR FILE */}
               {changingAvatar && (
                 <>
-                  <input
-                    className='upload_file_input'
-                    type='file'
-                    accept='image/*'
-                    style={{ display: 'none' }}
-                    multiple={false}
-                    ref={fileInputRef}
-                    onChange={(e) => updateAvatar(e, 'file')}
-                  />
-                  <button onClick={() => fileInputRef.current.click()}>
-                    Upload
-                  </button>
-                  <p>OR</p>
-                </>
-              )}
-              {/* AVATAR URL */}
-              {changingAvatar && (
-                <>
-                  <input
-                    className={`console_input ${changingAvatar && 'img_input'}`}
-                    placeholder={'Enter link to image or gif'}
-                  />
-                  <AiOutlineEnter className='link_submit' />
-                </>
-              )}
+                  <div className='upload_avatar_actions'>
+                    <input
+                      className='upload_file_input'
+                      type='file'
+                      accept='image/*'
+                      style={{ display: 'none' }}
+                      multiple={false}
+                      ref={fileInputRef}
+                      onChange={(e) => updateAvatar(e, 'file')}
+                    />
 
+                    <button onClick={() => fileInputRef.current.click()}>
+                      Upload
+                    </button>
+                    <p>OR</p>
+                    {/* AVATAR URL */}
+                    <button>Enter link</button>
+                    {/* <input
+                      className={`console_input ${
+                        changingAvatar && 'img_input'
+                      }`}
+                      placeholder={'Enter link to image or gif'}
+                    /> */}
+                    {/* <AiOutlineEnter className='link_submit' /> */}
+                  </div>
+                </>
+              )}
               {/* CONSOLE */}
               {!changingAvatar && (
                 <>

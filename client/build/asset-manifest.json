@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.e1ad9044.css",
-    "main.js": "/static/js/main.32dd64b3.js",
+    "main.css": "/static/css/main.5c30023c.css",
+    "main.js": "/static/js/main.a64866e6.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -21,6 +21,7 @@
     "static/media/mario.png": "/static/media/mario.859de03787befacd320b.png",
     "static/media/master-chief.png": "/static/media/master-chief.e6dd88dfce063e57eda4.png",
     "static/media/success.wav": "/static/media/success.691f932eabcba96fbd39.wav",
+    "static/media/ff9-zidane.png": "/static/media/ff9-zidane.f591db862f46fbe2c3f2.png",
     "static/media/loz-link.png": "/static/media/loz-link.4c290163c8a52fcdb236.png",
     "static/media/roxas-icon.png": "/static/media/roxas-icon.e65c74980722ce835a7b.png",
     "static/media/yuna-icon.png": "/static/media/yuna-icon.c835ebfee99a688f78c7.png",
@@ -37,8 +38,8 @@
     "static/media/nintendo-logo.png": "/static/media/nintendo-logo.14c4d5793bf79874cb08.png",
     "static/media/playstation-logo.png": "/static/media/playstation-logo.630dfedda6273efed3a8.png",
     "index.html": "/index.html",
-    "main.e1ad9044.css.map": "/static/css/main.e1ad9044.css.map",
-    "main.32dd64b3.js.map": "/static/js/main.32dd64b3.js.map",
+    "main.5c30023c.css.map": "/static/css/main.5c30023c.css.map",
+    "main.a64866e6.js.map": "/static/js/main.a64866e6.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -55,7 +56,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e1ad9044.css",
-    "static/js/main.32dd64b3.js"
+    "static/css/main.5c30023c.css",
+    "static/js/main.a64866e6.js"
   ]
 }

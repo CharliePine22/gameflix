@@ -85,24 +85,32 @@ router.post('/signin', (req, res) => {
 });
 
 // Update Profile Route
-router.post('/update_profile', upload.single('avatar'), (req, res) => {
-  const email = req.body.email;
-  const name = req.body.name;
-  const avatar = req.file.destination + '/' + req.file.filename;
-
-  userModel.findOneAndUpdate(
-    { email: email, profiles: { $elemMatch: { name: name } } },
-    {
-      $set: {
-        'profiles.$.name': name,
-        'profiles.$.avatar': avatar,
-      },
-    }, // list fields you like to change
-    { new: true, safe: true, upsert: true },
-    function (error) {
-      console.log(error);
+router.post(
+  '/update_profile',
+  upload.single('avatar'),
+  async function (req, res) {
+    const email = req.body.email;
+    const name = req.body.name;
+    const avatar = req.file.destination + '/' + req.file.filename;
+    try {
+      const request = await userModel.findOneAndUpdate(
+        { email: email, profiles: { $elemMatch: { name: name } } },
+        {
+          $set: {
+            'profiles.$.avatar': avatar,
+          },
+        }, // list fields you like to change
+        { new: true, setDefaultsOnInsert: false, upsert: true }
+      );
+      const response = await request;
+      console.log(response);
+      res.json(response);
+    } catch (error) {
+      res.status(400, {
+        message: 'There was an error with your request, please try again.',
+      });
     }
-  );
-});
+  }
+);
 
 module.exports = router;

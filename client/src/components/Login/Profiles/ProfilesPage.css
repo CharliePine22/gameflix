@@ -189,14 +189,17 @@
     height: 70px !important;
     width: 69% !important;
   }
+
   .add_content {
     font-size: 5rem;
     margin-top: -18px;
   }
+
   .hovering {
     font-size: 2.5rem;
     margin-top: 30px;
   }
+
   .edit-icon {
     right: 317px;
     width: 2.5rem;
@@ -204,12 +207,14 @@
     left: 0;
     top: 15px;
   }
+
   .profile__actions {
     margin-top: 0px;
     flex-direction: column;
     position: relative;
     bottom: 12px;
   }
+
   .profile__actions button {
     margin: 0px 0 5px;
     width: 10rem;
@@ -221,9 +226,13 @@
 
   .profile__container h3 {
     color: #fff;
-    margin: 60px 0 10px !important;
-    font-size: 2rem;
+    margin: 42px 0 10px !important;
+    font-size: 1.8rem;
     font-weight: 500;
+  }
+
+  .profile_edit__header h3 {
+    font-size: 1.25rem;
   }
 
   .profile__list {
@@ -235,11 +244,13 @@
     flex-direction: column;
     align-items: center;
   }
+
   .profile__user_avatar {
     height: 80%;
     width: 100%;
     opacity: 0.55;
   }
+
   .profile__user {
     margin: 0 3px;
     min-width: 12vh;
@@ -250,6 +261,7 @@
     align-items: center;
     min-height: 0;
   }
+
   .profile__user:hover > .profile__user_avatar {
     outline: 2px inset #fff;
     outline-offset: -2px;

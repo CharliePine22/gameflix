@@ -1,5 +1,10 @@
 import React, { useRef } from 'react';
 import './Nav.css';
+import jessAvatar from '../../assets/images/kairi-icon.png';
+import yunaAvatar from '../../assets/images/yuna-icon.png';
+import cloudAvatar from '../../assets/images/ff7-cloud.png';
+import zidaneAvatar from '../../assets/images/ff9-zidane.png';
+import cjAvatar from '../../assets/images/roxas-icon.png';
 import logo from '../../assets/images/gameflix-logo.png';
 import { useEffect, useState } from 'react';
 import { FaSistrix, FaAngleUp } from 'react-icons/fa';
@@ -12,6 +17,30 @@ function Nav(props) {
   const searchRef = useRef('');
 
   const profile = props.activeProfile;
+
+  const dummyData = [
+    { name: 'Roxas', dummyAvatar: cjAvatar, color: 'blue' },
+    {
+      name: 'Kairi',
+      dummyAvatar: jessAvatar,
+      color: 'pink',
+    },
+    {
+      name: 'Yuna',
+      dummyAvatar: yunaAvatar,
+      color: 'purple',
+    },
+    {
+      name: 'Cloud',
+      dummyAvatar: cloudAvatar,
+      color: 'silver',
+    },
+    {
+      name: 'Zidane',
+      dummyAvatar: zidaneAvatar,
+      color: 'gold',
+    },
+  ];
 
   const closeNavDropdown = () => {
     setDisplayDropdown(false);

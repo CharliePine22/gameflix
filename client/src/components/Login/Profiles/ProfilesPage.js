@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './ProfilesPage.css';
 import jessAvatar from '../../../assets/images/kairi-icon.png';
 import yunaAvatar from '../../../assets/images/yuna-icon.png';
-import banditAvatar from '../../../assets/images/lion-icon.png';
+import cloudAvatar from '../../../assets/images/ff7-cloud.png';
+import zidaneAvatar from '../../../assets/images/ff9-zidane.png';
 import cjAvatar from '../../../assets/images/roxas-icon.png';
 import { MdEdit } from 'react-icons/md';
 import ProfileEditor from './ProfileEditor/ProfileEditor';
@@ -12,29 +13,29 @@ const ProfilesPage = (props) => {
   const [creatingProfile, setCreatingProfile] = useState(null);
   const [profiles, setProfiles] = useState(null);
 
-  const [dummyData, setDummyData] = useState([
-    { name: 'Cj', avatar: cjAvatar, color: 'blue' },
+  const dummyData = [
+    { name: 'Roxas', dummyAvatar: cjAvatar, color: 'blue' },
     {
-      name: 'Jessica',
-      avatar: jessAvatar,
+      name: 'Kairi',
+      dummyAvatar: jessAvatar,
       color: 'pink',
     },
     {
       name: 'Yuna',
-      avatar: yunaAvatar,
+      dummyAvatar: yunaAvatar,
       color: 'purple',
     },
     {
-      name: 'Bandit',
-      avatar: banditAvatar,
+      name: 'Cloud',
+      dummyAvatar: cloudAvatar,
       color: 'silver',
     },
     {
-      name: 'Ryan',
-      avatar: banditAvatar,
+      name: 'Zidane',
+      dummyAvatar: zidaneAvatar,
       color: 'gold',
     },
-  ]);
+  ];
 
   // Set active profile
   const chooseCurrentProfile = (user) => {
@@ -51,7 +52,9 @@ const ProfilesPage = (props) => {
   };
 
   useEffect(() => {
-    setProfiles(props.currentUser.profiles);
+    if (props.currentUser.email == 'test@test.com') {
+      setProfiles(dummyData);
+    } else setProfiles(props.currentUser.profiles);
   }, [props.currentUser]);
 
   if (profiles == null) {
@@ -67,6 +70,8 @@ const ProfilesPage = (props) => {
       />
     );
   }
+
+  console.log(profiles);
 
   return (
     <div className='profile__page'>
@@ -93,7 +98,11 @@ const ProfilesPage = (props) => {
                   editingProfiles && 'editing'
                 }`}
                 style={{ backgroundColor: user.color }}
-                src={`http://localhost:5000/${user.avatar}`}
+                src={
+                  user.avatar
+                    ? `http://localhost:5000/${user.avatar}`
+                    : user.dummyAvatar
+                }
               />
               <span className='profile__user_name'>{user.name}</span>
             </li>

@@ -232,7 +232,7 @@
   }
 
   .profile_edit__header h3 {
-    font-size: 1.25rem;
+    font-size: 1.15rem !important;
   }
 
   .profile__list {

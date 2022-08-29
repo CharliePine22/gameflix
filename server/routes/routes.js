@@ -27,6 +27,7 @@ const findUser = async (email) => {
   return result;
 };
 
+// Fetch user information
 router.get('/get_user', async (req, res) => {
   const email = req.body.email;
   try {
@@ -142,6 +143,52 @@ router.post('/update_avatar_link', async function (req, res) {
       message: 'There was an error with your request, please try again.',
     });
   }
+});
+
+router.post('/update_user_profile', async (req, res) => {
+  const email = req.body.email;
+  const originalName = req.body.originalName;
+  const newName = req.body.newName;
+  const gameTitle = req.body.favoriteGame;
+  const gameConsole = req.body.favoriteConsole;
+  const color = req.body.newColor;
+  const genre = req.body.favoriteGenre;
+
+  // Determine if user changed name or not
+  let name;
+  if (newName === originalName) {
+    name = originalName;
+  } else {
+    name = newName;
+  }
+
+  try {
+    const request = await userModel.findOneAndUpdate(
+      { email: email, profiles: { $elemMatch: { name: originalName } } },
+      {
+        $set: {
+          'profiles.$.color': color,
+          'profiles.$.name': name,
+          'profiles.$.favorite_game': gameTitle,
+          'profiles.$.favorite_console': gameConsole,
+          'profiles.$.favorite_genre': genre,
+        },
+      }, // list fields you like to change
+      { new: true, setDefaultsOnInsert: false, upsert: true }
+    );
+    res.status(200, { message: 'Sucessfully updated avatar' });
+  } catch (error) {
+    res.status(400, {
+      message: 'There was an error with your request, please try again.',
+    });
+  }
+});
+
+router.post('/create_new_profile', async (req, res) => {
+  console.log(req.body.email);
+  // try {
+  //   findUser()
+  // }
 });
 
 module.exports = router;

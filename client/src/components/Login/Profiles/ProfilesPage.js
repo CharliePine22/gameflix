@@ -7,11 +7,13 @@ import zidaneAvatar from '../../../assets/images/ff9-zidane.png';
 import cjAvatar from '../../../assets/images/roxas-icon.png';
 import { MdEdit } from 'react-icons/md';
 import ProfileEditor from './ProfileEditor/ProfileEditor';
+import NewProfileEditor from './ProfileEditor/NewProfileEditor';
 
 const ProfilesPage = (props) => {
   const [editingProfiles, setEditingProfiles] = useState(false);
   const [creatingProfile, setCreatingProfile] = useState(null);
   const [profiles, setProfiles] = useState(null);
+  console.log(creatingProfile);
 
   const dummyData = [
     { name: 'Roxas', dummyAvatar: cjAvatar, color: 'blue' },
@@ -57,21 +59,25 @@ const ProfilesPage = (props) => {
     } else setProfiles(props.currentUser.profiles);
   }, [props.currentUser]);
 
-  const updateProfiles = (e, data) => {
-    e.preventDefault();
-  };
-
   if (profiles == null) {
     return;
   }
 
-  if (creatingProfile !== null) {
+  if (creatingProfile !== null && creatingProfile !== 'new') {
     return (
       <ProfileEditor
         currentProfile={creatingProfile}
         viewAllProfiles={() => setCreatingProfile(null)}
         userEmail={props.currentUser.email}
-        saveUpdate={updateProfiles}
+      />
+    );
+  }
+
+  if (creatingProfile !== null && creatingProfile == 'new') {
+    return (
+      <NewProfileEditor
+        userEmail={props.currentUser.email}
+        viewAllProfiles={() => setCreatingProfile(null)}
       />
     );
   }
@@ -90,12 +96,7 @@ const ProfilesPage = (props) => {
               className='profile__user'
               onClick={() => profileSelectHandler(user)}
             >
-              {editingProfiles && (
-                <MdEdit
-                  className='edit-icon'
-                  onClick={() => console.log('Clicked')}
-                />
-              )}
+              {editingProfiles && <MdEdit className='edit-icon' />}
               <img
                 className={`profile__user_avatar ${
                   editingProfiles && 'editing'
@@ -117,7 +118,7 @@ const ProfilesPage = (props) => {
           {profiles.length < 5 && (
             <button
               className='profile__new_btn'
-              onClick={() => setCreatingProfile(true)}
+              onClick={() => setCreatingProfile('new')}
             >
               New Profile
             </button>

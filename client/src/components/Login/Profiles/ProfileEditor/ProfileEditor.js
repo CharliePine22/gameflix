@@ -10,13 +10,15 @@ const ProfileEditor = (props) => {
   const currentProfile = props.currentProfile;
   const [loading, setLoading] = useState(false);
   // Current Profile Name
-  const [nameValue, setNameValue] = useState(props.currentProfile.name);
+  const [nameValue, setNameValue] = useState(currentProfile.name);
   // Title Input State and Ref
   const titleRef = useRef('');
-  const [titleValue, setTitleValue] = useState('');
+  const [titleValue, setTitleValue] = useState(currentProfile.favorite_game);
   // Console Input State and Ref
   const consoleRef = useRef('');
-  const [consoleValue, setConsoleValue] = useState('');
+  const [consoleValue, setConsoleValue] = useState(
+    currentProfile.favorite_console
+  );
   // Profile avatar states
   const [currentAvatar, setCurrentAvatar] = useState(currentProfile.avatar);
   const [imgFilePreview, setImgFilePreview] = useState(null);
@@ -30,7 +32,9 @@ const ProfileEditor = (props) => {
   // Genre states
   const genreRef = useRef('');
   const [changingGenre, setChangingGenre] = useState(false);
-  const [currentGenre, setCurrentGenre] = useState('');
+  const [currentGenre, setCurrentGenre] = useState(
+    currentProfile.favorite_genre
+  );
   const genreList = [
     'Action',
     'Adventure',
@@ -141,7 +145,25 @@ const ProfileEditor = (props) => {
     }
   };
 
-  const saveUserData = () => {};
+  const saveUserData = async (e) => {
+    e.preventDefault();
+    const userData = {
+      email: props.userEmail,
+      originalName: currentProfile.name,
+      newName: nameValue.trim(),
+      newColor: color,
+      favoriteGenre: currentGenre.trim(),
+      favoriteGame: titleValue.trim(),
+      favoriteConsole: consoleValue.trim(),
+    };
+
+    try {
+      const request = await axios.post('/app/update_user_profile', userData);
+      console.log(request);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   // Loading spinner
   if (loading) {
@@ -239,7 +261,6 @@ const ProfileEditor = (props) => {
               <h4
                 style={{
                   textAlign: changingAvatar ? 'center' : 'left',
-                  marginTop: changingAvatar ? '0px' : '10px',
                 }}
               >
                 {!changingAvatar ? 'Your Playstyle' : 'Current'}

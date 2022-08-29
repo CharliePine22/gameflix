@@ -1,3 +1,52 @@
+.avatar_file_option,
+.avatar_link_option {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.avatar_link_option svg {
+  height: 40%;
+  width: 40%;
+  fill: cornflowerblue;
+  cursor: pointer;
+}
+
+.avatar_link_modal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  height: 52%;
+  width: 340px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.95);
+  color: white;
+  z-index: 2;
+  top: 100px;
+  left: 40px;
+  border: 2px solid white;
+  align-items: center;
+  animation: displayModal 500ms forwards;
+  box-shadow: 0 3px 7px rgba(255, 255, 255, 0.3);
+}
+
+.avatar_link_modal h3 {
+  font-size: 2.3rem;
+  margin: 20px 0 25px;
+}
+
+.avatar_file_option svg {
+  height: 40%;
+  width: 48%;
+  fill: cornflowerblue;
+  cursor: pointer;
+}
+
+.avatar_file_option svg:hover,
+.avatar_link_option svg:hover {
+  fill: rgb(142, 182, 255);
+}
+
 .avatar_select_container {
   flex-direction: column;
   justify-content: flex-start !important;
@@ -39,7 +88,7 @@
   padding: 3px 2px;
   border: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-  width: 45%;
+  width: 50%;
   margin-right: 8px;
 }
 
@@ -53,11 +102,10 @@
 }
 
 .current_avatar {
-  width: 107px;
-  height: 105px;
+  padding: 5px;
+  width: 97px;
+  height: 95px;
   object-fit: contain;
-  /* width: 90px;
-  height: 86px; */
   margin-top: 15px;
   border-radius: 6px;
   transform: translateX(0);
@@ -116,7 +164,10 @@
   /* border-bottom: 1px solid grey; */
   margin: 10px 0px 0px 20px;
   position: relative;
-  height: 200px;
+  height: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .form_personal_console {
@@ -139,8 +190,9 @@
 
 .form_personal h4 {
   color: rgb(255, 255, 255);
-  font-size: 1.2rem;
-  /* margin-bottom: 15px; */
+  font-size: 1.4rem;
+  margin-bottom: 14px;
+  text-transform: uppercase;
   font-weight: 600;
 }
 
@@ -148,7 +200,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  transition: all 700ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: transform 700ms cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .genre_arrow {
@@ -163,7 +215,7 @@
   position: relative;
   min-width: 88px;
   width: auto;
-  padding: 3px 20px 3px 5px;
+  padding: 4px 20px 4px 5px;
   background: black;
   color: white;
   border: 1px solid white;
@@ -242,13 +294,71 @@
   color: black;
 }
 
+.modal_content {
+  display: flex;
+  flex-direction: column;
+  height: 66%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal_content p {
+  max-width: 80%;
+  font-size: 1.1rem;
+  text-align: center;
+  font-weight: 300;
+}
+
+.modal_form {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-around; */
+  height: 170px;
+  align-items: center;
+}
+
+.modal_form button {
+  padding: 10px 30px;
+  color: white;
+  background: transparent;
+  border: 1px solid white;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  width: 140px;
+  cursor: pointer;
+}
+
+.modal_form button:hover {
+  color: black;
+  background: white;
+  border: 1px solid black;
+}
+
+.modal_form input {
+  border: 1px solid white;
+  background: transparent;
+  padding: 8px 12px;
+  outline: 0;
+  color: white;
+  width: 275px;
+  margin-bottom: 45px;
+}
+
+.modal_hidden {
+  animation: hideModal 500ms forwards;
+}
+
 .name_input {
   background: grey;
   border: 0;
   outline: 0;
   color: white;
-  padding: 5px 5px;
+  padding: 6px 5px;
   width: 85%;
+}
+
+.name_input::placeholder {
+  color: rgb(255, 255, 255);
 }
 
 .personal_avatar {
@@ -260,7 +370,7 @@
   align-items: center;
   justify-content: space-between;
   height: 155px;
-  transition: all 700ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: transform 700ms cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .personal_avatar button {
@@ -279,6 +389,16 @@
 .personal_avatar p:first-of-type {
   font-weight: 600;
   font-size: 1rem;
+}
+
+.profile_avatar_actions {
+  height: 60%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 45px;
 }
 
 .profile_color_palette {
@@ -303,7 +423,7 @@
   border-bottom: 1px solid grey;
   margin: 20px 0px 0px 20px;
   position: relative;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 }
 
 .profile_edit__form button {
@@ -407,6 +527,8 @@
   /* width: 29%; */
 }
 
+/*! !!!!!!!!!!!!!!!!!!!ANIMATIONS!!!!!!!!!!!!!!!!!!!! */
+
 @keyframes spin-anim {
   0% {
     transform: rotate(0deg);
@@ -427,10 +549,55 @@
   }
 }
 
+@keyframes displayModal {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(75px);
+  }
+}
+
+@keyframes hideModal {
+  0% {
+    transform: translateY(75px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+    z-index: 0;
+  }
+}
+
+/* !!!!!!!!!!!!!!!! MOBILE VIEW !!!!!!!!!!!!!!!!!!!!!!!! */
 @media screen and (max-width: 500px) {
   .avatar_select {
     transform: translateX(95px) !important;
     margin-top: 0px;
+  }
+
+  .avatar_file_option,
+  .avatar_link_option {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+
+  .avatar_link_option svg {
+    height: 40%;
+    width: 32%;
+    fill: cornflowerblue;
+  }
+
+  .avatar_file_option svg {
+    height: 40%;
+    width: 40%;
+    fill: cornflowerblue;
   }
 
   .close_color_palette {
@@ -441,17 +608,24 @@
 
   .current_avatar {
     border-radius: 6px;
-    margin-top: 25px;
+    margin-top: 30px;
+    width: 97px;
+    height: 95px;
+    padding: 5px;
   }
 
   .current_avatar_edit {
-    width: 26px;
-    height: 26px;
-    top: 98px;
+    width: 28px;
+    height: 28px;
+    top: 104px;
   }
 
   .form_avatar_container {
-    top: -10px;
+    top: -8px;
+  }
+
+  .form_container {
+    height: 93%;
   }
 
   .form_personal {
@@ -461,21 +635,21 @@
 
   .form_personal_console {
     color: rgba(255, 255, 255, 0.85);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     margin-bottom: 3px;
   }
 
   .form_personal_genre {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 
   .form_personal_title {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 
   .form_personal h4 {
-    font-size: 1.2rem;
-    margin: 0px 0 14px;
+    font-size: 1.25rem;
+    margin: 7px 0 10px;
     text-transform: uppercase;
     font-weight: 600;
   }
@@ -498,7 +672,7 @@
   }
 
   .genre_dropdown button {
-    font-size: 0.75rem;
+    font-size: 0.736rem;
   }
 
   .link_submit {
@@ -512,14 +686,24 @@
     margin-top: 5px;
   }
 
+  .profile_avatar_actions {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 45px;
+  }
+
   .profile_edit__form_wrapper {
-    padding: 145px 0px 20px;
+    padding: 145px 0px 0px;
     width: 300px;
   }
 
   .profile_edit__form p {
     color: rgba(255, 255, 255, 0.75);
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     margin: 16px 2px 1px;
   }
 

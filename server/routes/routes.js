@@ -27,6 +27,15 @@ const findUser = async (email) => {
   return result;
 };
 
+router.get('/get_user', async (req, res) => {
+  const email = req.body.email;
+  try {
+    findUser(email);
+  } catch (e) {
+    res.status(400, { message: 'An error occured.' });
+  }
+});
+
 // Sign Up Route
 router.post('/signup', upload.single('avatar'), (req, res) => {
   const avatar = req.file.destination + '/' + req.file.filename;
@@ -84,9 +93,9 @@ router.post('/signin', (req, res) => {
   });
 });
 
-// Update Profile Route
+// Update Avatar Route if it's a file
 router.post(
-  '/update_profile',
+  '/update_avatar_file',
   upload.single('avatar'),
   async function (req, res) {
     const email = req.body.email;
@@ -102,9 +111,8 @@ router.post(
         }, // list fields you like to change
         { new: true, setDefaultsOnInsert: false, upsert: true }
       );
-      const response = await request;
-      console.log(response);
-      res.json(response);
+      res.status(200, { message: 'Sucessfully updated avatar' });
+      res.json(request);
     } catch (error) {
       res.status(400, {
         message: 'There was an error with your request, please try again.',
@@ -112,5 +120,28 @@ router.post(
     }
   }
 );
+
+// Update Avatar Route if it's a link
+router.post('/update_avatar_link', async function (req, res) {
+  const email = req.body.email;
+  const name = req.body.name;
+  const avatar = req.body.avatar;
+  try {
+    const request = await userModel.findOneAndUpdate(
+      { email: email, profiles: { $elemMatch: { name: name } } },
+      {
+        $set: {
+          'profiles.$.avatar': avatar,
+        },
+      }, // list fields you like to change
+      { new: true, setDefaultsOnInsert: false, upsert: true }
+    );
+    res.status(200, { message: 'Sucessfully updated avatar' });
+  } catch (error) {
+    res.status(400, {
+      message: 'There was an error with your request, please try again.',
+    });
+  }
+});
 
 module.exports = router;

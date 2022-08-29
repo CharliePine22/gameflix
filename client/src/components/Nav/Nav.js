@@ -129,7 +129,7 @@ function Nav(props) {
           >
             <img
               className='nav__avatar'
-              src={`http://localhost:5000/${profile.avatar}`}
+              src={profile.avatar}
               style={{ backgroundColor: profile.color }}
               alt="User's avatar"
             />

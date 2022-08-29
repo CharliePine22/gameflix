@@ -15,15 +15,19 @@ import SearchResults from './components/SearchResults/SearchResults';
 import requests from './requests';
 import loginAudio from './assets/sounds/success.wav';
 import rawgClient from './axios';
+import axios from 'axios';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  // User states
   const [changingUser, setChangingUser] = useState(false);
+  const [updatingUser, setUpdatingUser] = useState(false);
   const [loggedUser, setLoggedUser] = useState(null);
+  const [selectedProfile, setSelectedProfile] = useState(null);
+  // Search States
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState(null);
-  const [selectedProfile, setSelectedProfile] = useState(null);
   const [toLanding, setToLanding] = useState(false);
   const [rowsLoaded, setRowsLoaded] = useState(false);
 
@@ -67,6 +71,13 @@ function App() {
       setChangingUser(false);
     }, 2000);
   };
+
+  // Refetch user data if any changes are made
+  useEffect(() => {
+    const updateUser = async () => {
+      const request = await axios.get('/get_user', loggedUser.email);
+    };
+  }, [updatingUser]);
 
   // Check to see if user is logged in
   useEffect(() => {
@@ -114,6 +125,7 @@ function App() {
   if (!selectedProfile) {
     return (
       <ProfilesPage
+        updatingUser={() => setUpdatingUser(true)}
         currentUser={loggedUser}
         selectProfile={(user) => setSelectedProfile(user)}
       />

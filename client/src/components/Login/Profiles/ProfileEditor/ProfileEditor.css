@@ -1,12 +1,13 @@
 .avatar_select_container {
   flex-direction: column;
-  justify-content: flex-end !important;
-  height: 85% !important;
+  justify-content: flex-start !important;
+  height: 75% !important;
   transition: transform 250ms;
+  margin-top: 0 !important;
 }
 
 .avatar_select {
-  transform: translateX(118px);
+  transform: translateX(114px) !important;
   transition: transform 700ms cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
@@ -54,8 +55,10 @@
 .current_avatar {
   width: 107px;
   height: 105px;
+  object-fit: contain;
   /* width: 90px;
   height: 86px; */
+  margin-top: 15px;
   border-radius: 6px;
   transform: translateX(0);
   transition: all 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -64,13 +67,13 @@
 .current_avatar_edit {
   color: white;
   position: absolute;
-  top: 75px;
+  top: 85px;
   left: 4px;
   border-radius: 50%;
   background: rgba(11, 11, 11, 0.85);
   font-size: 1rem;
-  width: 24px;
-  height: 23px;
+  width: 28px;
+  height: 27px;
   text-align: center;
   box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.5);
   cursor: pointer;
@@ -137,8 +140,8 @@
 .form_personal h4 {
   color: rgb(255, 255, 255);
   font-size: 1.2rem;
-  margin-bottom: 15px;
-  font-weight: 400;
+  /* margin-bottom: 15px; */
+  font-weight: 600;
 }
 
 .form_right {
@@ -211,13 +214,15 @@
 }
 
 .img_input {
-  width: 70%;
+  width: 85%;
   background: transparent;
   border: 0;
-  /* border-bottom: 1px solid white; */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
   padding-left: 5px;
-  margin-right: 60px;
+}
+
+.img_link_actions {
+  flex-direction: column-reverse;
 }
 
 .link_submit {
@@ -254,7 +259,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  /* height: 240px; */
+  height: 155px;
   transition: all 700ms cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
@@ -424,7 +429,7 @@
 
 @media screen and (max-width: 500px) {
   .avatar_select {
-    transform: translateX(95px);
+    transform: translateX(95px) !important;
     margin-top: 0px;
   }
 
@@ -436,6 +441,13 @@
 
   .current_avatar {
     border-radius: 6px;
+    margin-top: 25px;
+  }
+
+  .current_avatar_edit {
+    width: 26px;
+    height: 26px;
+    top: 98px;
   }
 
   .form_avatar_container {
@@ -444,7 +456,7 @@
 
   .form_personal {
     margin: 0px 0px 0px 20px;
-    justify-content: space-around;
+    /* justify-content: space-around; */
   }
 
   .form_personal_console {
@@ -489,10 +501,6 @@
     font-size: 0.75rem;
   }
 
-  .img_input {
-    width: 75%;
-  }
-
   .link_submit {
     bottom: 44px;
     right: 15px;
@@ -513,5 +521,10 @@
     color: rgba(255, 255, 255, 0.75);
     font-size: 0.65rem;
     margin: 16px 2px 1px;
+  }
+
+  .upload_avatar_actions {
+    position: relative;
+    bottom: 16px;
   }
 }

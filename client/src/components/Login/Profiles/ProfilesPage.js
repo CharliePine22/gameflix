@@ -57,6 +57,10 @@ const ProfilesPage = (props) => {
     } else setProfiles(props.currentUser.profiles);
   }, [props.currentUser]);
 
+  const updateProfiles = (e, data) => {
+    e.preventDefault();
+  };
+
   if (profiles == null) {
     return;
   }
@@ -67,11 +71,10 @@ const ProfilesPage = (props) => {
         currentProfile={creatingProfile}
         viewAllProfiles={() => setCreatingProfile(null)}
         userEmail={props.currentUser.email}
+        saveUpdate={updateProfiles}
       />
     );
   }
-
-  console.log(profiles);
 
   return (
     <div className='profile__page'>
@@ -98,11 +101,7 @@ const ProfilesPage = (props) => {
                   editingProfiles && 'editing'
                 }`}
                 style={{ backgroundColor: user.color }}
-                src={
-                  user.avatar
-                    ? `http://localhost:5000/${user.avatar}`
-                    : user.dummyAvatar
-                }
+                src={user.avatar ? `${user.avatar}` : user.dummyAvatar}
               />
               <span className='profile__user_name'>{user.name}</span>
             </li>

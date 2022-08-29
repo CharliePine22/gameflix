@@ -18,8 +18,11 @@ const ProfileEditor = (props) => {
   const consoleRef = useRef('');
   const [consoleValue, setConsoleValue] = useState('');
   // Profile avatar states
+  const [currentAvatar, setCurrentAvatar] = useState(currentProfile.avatar);
+  const [imgFilePreview, setImgFilePreview] = useState(null);
   const fileInputRef = useRef('');
-  const [imgFile, setImgFile] = useState(null);
+  const [imgLink, setImgLink] = useState('');
+  const [usingImgLink, setUsingImgLink] = useState(false);
   const [changingAvatar, setChangingAvatar] = useState(false);
   // Color states
   const [changingColor, setChangingColor] = useState(false);
@@ -57,6 +60,7 @@ const ProfileEditor = (props) => {
     // If user is changing avatars, return to editing profile
     if (changingAvatar) {
       setChangingAvatar(false);
+      setUsingImgLink(false);
     }
     // If the user is editing profile, return to all profiles
     else {
@@ -94,33 +98,50 @@ const ProfileEditor = (props) => {
   // Avatar profile image handling
   const updateAvatar = async (e, method) => {
     setLoading(true);
-    const data = new FormData();
     // Append email and profile name to find correct profile to update
+    const data = new FormData();
     data.append('email', props.userEmail);
     data.append('name', props.currentProfile.name);
     // User uploads image
     if (method == 'file') {
       data.append('avatar', e.target.files[0]);
-      setImgFile(e.target.files[0]);
       try {
-        const request = await axios.post('/app/update_profile', data);
+        const request = await axios.post('/app/update_avatar_file', data);
         console.log(request);
+        setCurrentAvatar(URL.createObjectURL(e.target.files[0]));
+      } catch (e) {
+        console.log(e);
+      }
+      setLoading(false);
+    }
+    // If user uses a link to an image
+    else {
+      const data = {
+        email: props.userEmail,
+        name: props.currentProfile.name,
+        avatar: imgLink,
+      };
+      try {
+        const request = await axios.post('/app/update_avatar_link', data);
+        console.log(request);
+        setCurrentAvatar(imgLink);
       } catch (e) {
         console.log(e);
       }
 
-      setImgFile(null);
+      setLoading(false);
     }
-    // If user uses a link to an image
-    else {
-      console.log(e.target);
-    }
-    setLoading(false);
   };
 
-  const updateProfile = (e) => {
-    e.preventDefault();
+  const determineLinkAction = (e) => {
+    if (!usingImgLink) {
+      setUsingImgLink(true);
+    } else {
+      updateAvatar(e, 'link');
+    }
   };
+
+  const saveUserData = () => {};
 
   // Loading spinner
   if (loading) {
@@ -153,20 +174,23 @@ const ProfileEditor = (props) => {
           }`}
         >
           {/* USER AVATAR CONTAINER */}
-          <div className='form_avatar_container'>
+          <div
+            style={{ paddingTop: changingAvatar && '10px' }}
+            className='form_avatar_container'
+          >
             <img
               className={`current_avatar ${changingAvatar && 'avatar_select'}`}
               style={{
                 backgroundColor: color ? color : props.currentProfile.color,
               }}
-              src={`http://localhost:5000/${props.currentProfile.avatar}`}
+              src={currentAvatar}
             />
             {!changingAvatar && (
-              <span className='current_avatar_edit'>
-                <MdEdit
-                  style={{ height: '100%' }}
-                  onClick={() => setChangingAvatar(true)}
-                />
+              <span
+                className='current_avatar_edit'
+                onClick={() => setChangingAvatar(true)}
+              >
+                <MdEdit style={{ height: '100%' }} />
               </span>
             )}
           </div>
@@ -215,7 +239,7 @@ const ProfileEditor = (props) => {
               <h4
                 style={{
                   textAlign: changingAvatar ? 'center' : 'left',
-                  marginTop: changingAvatar ? '-26px' : '10px',
+                  marginTop: changingAvatar ? '0px' : '10px',
                 }}
               >
                 {!changingAvatar ? 'Your Playstyle' : 'Current'}
@@ -223,7 +247,11 @@ const ProfileEditor = (props) => {
               {/* AVATAR FILE */}
               {changingAvatar && (
                 <>
-                  <div className='upload_avatar_actions'>
+                  <div
+                    className={`upload_avatar_actions ${
+                      usingImgLink && 'img_link_actions'
+                    }`}
+                  >
                     <input
                       className='upload_file_input'
                       type='file'
@@ -234,19 +262,28 @@ const ProfileEditor = (props) => {
                       onChange={(e) => updateAvatar(e, 'file')}
                     />
 
-                    <button onClick={() => fileInputRef.current.click()}>
-                      Upload
-                    </button>
-                    <p>OR</p>
+                    {!usingImgLink && (
+                      <>
+                        <button onClick={() => fileInputRef.current.click()}>
+                          Upload
+                        </button>
+                        <p>OR</p>
+                      </>
+                    )}
                     {/* AVATAR URL */}
-                    <button>Enter link</button>
-                    {/* <input
-                      className={`console_input ${
-                        changingAvatar && 'img_input'
-                      }`}
-                      placeholder={'Enter link to image or gif'}
-                    /> */}
-                    {/* <AiOutlineEnter className='link_submit' /> */}
+                    <button onClick={determineLinkAction}>
+                      {!usingImgLink ? 'Enter link' : 'Submit'}
+                    </button>
+                    {usingImgLink && (
+                      <input
+                        className={`console_input ${
+                          changingAvatar && 'img_input'
+                        }`}
+                        placeholder={'Enter link to image or gif'}
+                        value={imgLink}
+                        onChange={(e) => setImgLink(e.target.value)}
+                      />
+                    )}
                   </div>
                 </>
               )}
@@ -313,7 +350,11 @@ const ProfileEditor = (props) => {
         </div>
         {/* FORM ACTIONS */}
         <div className='form_actions'>
-          <button className='save_btn'>Save</button>
+          {!changingAvatar && (
+            <button className='save_btn' onClick={saveUserData}>
+              Save
+            </button>
+          )}
           <button className='cancel_btn' onClick={cancelButtonHandler}>
             {!changingAvatar ? 'Cancel' : 'Back'}
           </button>

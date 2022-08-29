@@ -106,10 +106,6 @@ const Login = (props) => {
     authenticateUser(email, password);
   };
 
-  // if (passwordRef.current == null || emailRef.current == null) {
-  //   console.log('none');
-  // }
-
   return (
     <div
       className='login__wrapper'

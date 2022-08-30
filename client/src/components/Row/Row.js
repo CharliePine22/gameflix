@@ -4,6 +4,7 @@ import GameDetails from './GameDetails/GameDetails';
 import './Row.css';
 import youtubeAPI from '../../youtubeAPI';
 import Placeholder from '../Placeholder/Placeholder';
+import { SiApplemusic } from 'react-icons/si';
 
 function Row({ title, fetchURL }) {
   const [games, setGames] = useState([]);
@@ -57,6 +58,11 @@ function Row({ title, fetchURL }) {
     setCurrentGame(null);
   };
 
+  const viewGameSoundtrack = (e) => {
+    e.stopPropagation();
+    console.log('Clicked');
+  };
+
   return (
     <div className='row' key={title}>
       <h2>{title}</h2>
@@ -74,6 +80,10 @@ function Row({ title, fetchURL }) {
                     {' '}
                     {!loading && (
                       <>
+                        <SiApplemusic
+                          onClick={viewGameSoundtrack}
+                          className='row__poster_music_icon'
+                        />
                         <span className='row__poster_name'>{game?.name}</span>
                         <img
                           loading='lazy'

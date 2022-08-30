@@ -23,6 +23,7 @@ function App() {
   // User states
   const [changingUser, setChangingUser] = useState(false);
   const [updatingUser, setUpdatingUser] = useState(false);
+  const [editingUser, setEditingUser] = useState(false);
   const [loggedUser, setLoggedUser] = useState(null);
   const [selectedProfile, setSelectedProfile] = useState(null);
   // Search States
@@ -75,8 +76,15 @@ function App() {
   // Refetch user data if any changes are made
   useEffect(() => {
     const updateUser = async () => {
-      const request = await axios.get('/get_user', loggedUser.email);
+      const request = await axios.get('/app/get_user', {
+        params: {
+          email: loggedUser?.email,
+        },
+      });
+      localStorage.setItem('user', JSON.stringify(request.data));
     };
+    updateUser();
+    setUpdatingUser(false);
   }, [updatingUser]);
 
   // Check to see if user is logged in
@@ -85,7 +93,8 @@ function App() {
     if (loggedInUser) {
       setLoggedUser(loggedInUser);
     }
-  }, []);
+    setEditingUser(false);
+  }, [editingUser]);
 
   // Check to see which profile is active
   useEffect(() => {
@@ -93,7 +102,7 @@ function App() {
     if (userProfile) {
       setSelectedProfile(JSON.parse(userProfile));
     }
-  }, []);
+  }, [updatingUser]);
 
   // Display login page if app detects sign out or sign in
   if (!loggedUser && !toLanding) {
@@ -126,6 +135,8 @@ function App() {
     return (
       <ProfilesPage
         updatingUser={() => setUpdatingUser(true)}
+        saveEdit={() => setEditingUser(true)}
+        updateUser={updatingUser}
         currentUser={loggedUser}
         selectProfile={(user) => setSelectedProfile(user)}
       />

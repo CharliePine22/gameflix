@@ -22,16 +22,27 @@ const newAccountValidation = async (email) => {
   return result == null;
 };
 
+// Find user helper function
 const findUser = async (email) => {
   const result = await userModel.findOne({ email: email });
   return result;
 };
 
+const deleteProfile = async (name) => {
+  const query = { name: name };
+  const request = userModel.findOneAndUpdate(query, {
+    $pull: { profiles: { field: { $exists: true } } },
+  });
+
+  console.log(request);
+};
+
 // Fetch user information
 router.get('/get_user', async (req, res) => {
-  const email = req.body.email;
+  const email = req.query.email;
   try {
-    findUser(email);
+    const result = await findUser(email);
+    res.send(result);
   } catch (e) {
     res.status(400, { message: 'An error occured.' });
   }
@@ -137,7 +148,12 @@ router.post('/update_avatar_link', async function (req, res) {
       }, // list fields you like to change
       { new: true, setDefaultsOnInsert: false, upsert: true }
     );
-    res.status(200, { message: 'Sucessfully updated avatar' });
+    res.send({
+      code: 200,
+      status: 'OK',
+      data: request,
+      message: 'Sucessfully updated avatar',
+    });
   } catch (error) {
     res.status(400, {
       message: 'There was an error with your request, please try again.',
@@ -145,6 +161,7 @@ router.post('/update_avatar_link', async function (req, res) {
   }
 });
 
+// Update one of the user profiles
 router.post('/update_user_profile', async (req, res) => {
   const email = req.body.email;
   const originalName = req.body.originalName;
@@ -176,19 +193,50 @@ router.post('/update_user_profile', async (req, res) => {
       }, // list fields you like to change
       { new: true, setDefaultsOnInsert: false, upsert: true }
     );
-    res.status(200, { message: 'Sucessfully updated avatar' });
+    res.send({
+      code: 200,
+      status: 'OK',
+      message: 'Profile updated!',
+      data: {
+        request,
+      },
+    });
   } catch (error) {
+    console.log(error);
     res.status(400, {
       message: 'There was an error with your request, please try again.',
     });
   }
 });
 
+// ROUTE TO CREATE A NEW PROFILE
 router.post('/create_new_profile', async (req, res) => {
-  console.log(req.body.email);
-  // try {
-  //   findUser()
-  // }
+  const userEmail = req.body.email;
+  console.log(req.body);
+  try {
+    const user = await findUser(userEmail);
+    user.profiles.push({
+      name: req.body.name,
+      avatar: req.body.avatar,
+      color: req.body.color,
+      favorite_console: req.body.favoriteConsole,
+      favorite_genre: req.body.favoriteGenre,
+      favorite_game: req.body.favoriteGame,
+    });
+    user.save();
+    res.send({
+      code: 200,
+      status: 'OK',
+      message: 'Profile created!',
+      data: {
+        user,
+      },
+    });
+  } catch (e) {
+    res.status(400, { message: 'An error occured, please try again later!' });
+  }
 });
+
+// ROUTE TO DELETE EXISTING PROFILE
 
 module.exports = router;

@@ -13,7 +13,6 @@ const ProfilesPage = (props) => {
   const [editingProfiles, setEditingProfiles] = useState(false);
   const [creatingProfile, setCreatingProfile] = useState(null);
   const [profiles, setProfiles] = useState(null);
-  console.log(creatingProfile);
 
   const dummyData = [
     { name: 'Roxas', dummyAvatar: cjAvatar, color: 'blue' },
@@ -45,6 +44,11 @@ const ProfilesPage = (props) => {
     props.selectProfile(user);
   };
 
+  // Handler to update application if user edits or creates a profile
+  const updateProfiles = () => {
+    props.updatingUser();
+  };
+
   // Handler to determine click function when editing profiles or not
   const profileSelectHandler = (user) => {
     if (!editingProfiles) chooseCurrentProfile(user);
@@ -53,6 +57,7 @@ const ProfilesPage = (props) => {
     }
   };
 
+  // Determine what user is selected and grab their profiles
   useEffect(() => {
     if (props.currentUser.email == 'test@test.com') {
       setProfiles(dummyData);
@@ -66,6 +71,7 @@ const ProfilesPage = (props) => {
   if (creatingProfile !== null && creatingProfile !== 'new') {
     return (
       <ProfileEditor
+        saveEdit={props.saveEdit}
         currentProfile={creatingProfile}
         viewAllProfiles={() => setCreatingProfile(null)}
         userEmail={props.currentUser.email}
@@ -76,6 +82,7 @@ const ProfilesPage = (props) => {
   if (creatingProfile !== null && creatingProfile == 'new') {
     return (
       <NewProfileEditor
+        updateUser={updateProfiles}
         userEmail={props.currentUser.email}
         viewAllProfiles={() => setCreatingProfile(null)}
       />
@@ -90,11 +97,11 @@ const ProfilesPage = (props) => {
       <div className='profile__container'>
         <h3>Who's gaming?</h3>
         <ul className='profile__list'>
-          {profiles.map((user) => (
+          {profiles.map((user, i) => (
             <li
               key={user.name}
               className='profile__user'
-              onClick={() => profileSelectHandler(user)}
+              onClick={() => profileSelectHandler(user, i)}
             >
               {editingProfiles && <MdEdit className='edit-icon' />}
               <img

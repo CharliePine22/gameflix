@@ -11,6 +11,9 @@ const NewProfileEditor = (props) => {
   const [changingColor, setChangingColor] = useState(false);
   const [color, setColor] = useState('');
   // Form States
+  const [error, setError] = useState('');
+  const [hasError, setHasError] = useState(false);
+  const [typeError, setTypeError] = useState(null);
   const [nameValue, setNameValue] = useState('');
   const [consoleValue, setConsoleValue] = useState('');
   const [titleValue, setTitleValue] = useState('');
@@ -88,6 +91,16 @@ const NewProfileEditor = (props) => {
 
   const saveUserData = async (e) => {
     e.preventDefault();
+
+    if (nameValue.trim() == '') {
+      setHasError(true);
+      setError('Please enter a valid name!');
+      return;
+    } else if (consoleValue.trim() == '') {
+      setHasError(true);
+      setError('Please enter a valid game console!');
+    }
+
     const userData = {
       email: props.userEmail,
       avatar: currentAvatar,
@@ -100,7 +113,8 @@ const NewProfileEditor = (props) => {
 
     try {
       const request = await axios.post('/app/create_new_profile', userData);
-      console.log(request);
+      console.log(request.data);
+      props.updateUser();
     } catch (e) {
       console.log(e);
     }
@@ -109,7 +123,9 @@ const NewProfileEditor = (props) => {
   return (
     <>
       {/* MODAL */}
-      <div className={`avatar_link_modal ${!usingLink && 'modal_hidden'}`}>
+      <div
+        className={`avatar_link_modal ${usingLink == false && 'modal_hidden'}`}
+      >
         <h3>Avatar Link</h3>
         <div className='modal_content'>
           <p>Please enter the link to any image or gif below.</p>
@@ -176,7 +192,10 @@ const NewProfileEditor = (props) => {
                 <input
                   className='name_input'
                   placeholder='Name'
-                  onChange={(e) => setNameValue(e.target.value)}
+                  onChange={(e) => {
+                    setNameValue(e.target.value);
+                    setHasError(false);
+                  }}
                   value={nameValue}
                   autoFocus
                 />
@@ -263,6 +282,7 @@ const NewProfileEditor = (props) => {
               Cancel
             </button>
           </div>
+          {hasError && <p className='create_profile_error'>{error}</p>}
         </div>
       </div>
     </>

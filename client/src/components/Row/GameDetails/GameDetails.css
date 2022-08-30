@@ -44,8 +44,8 @@
 
 .game-details__name {
   will-change: transform;
-  font-size: 1.25rem;
-  padding-bottom: 10px;
+  font-size: 1.15rem;
+  padding-bottom: 5px;
   line-height: 20px;
   text-shadow: 3px 4px 5px #000;
   cursor: pointer;
@@ -186,12 +186,12 @@
 
 @media screen and (max-width: 600px) {
   .game-details__trailer {
-    height: 9.7rem;
+    height: 8.5rem;
   }
   .game-details {
-    width: 19rem;
-    height: 19rem;
-    top: -42px;
+    width: 16.8rem;
+    height: 16.6rem;
+    top: -7px;
     left: -50px;
   }
   .game-details__details {

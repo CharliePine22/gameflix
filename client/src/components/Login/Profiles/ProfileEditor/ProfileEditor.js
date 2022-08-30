@@ -111,13 +111,14 @@ const ProfileEditor = (props) => {
       data.append('avatar', e.target.files[0]);
       try {
         const request = await axios.post('/app/update_avatar_file', data);
-        console.log(request);
+        console.log(request.data);
         setCurrentAvatar(URL.createObjectURL(e.target.files[0]));
       } catch (e) {
         console.log(e);
       }
       setLoading(false);
     }
+
     // If user uses a link to an image
     else {
       const data = {
@@ -127,7 +128,7 @@ const ProfileEditor = (props) => {
       };
       try {
         const request = await axios.post('/app/update_avatar_link', data);
-        console.log(request);
+        console.log(request.data);
         setCurrentAvatar(imgLink);
       } catch (e) {
         console.log(e);
@@ -147,6 +148,7 @@ const ProfileEditor = (props) => {
 
   const saveUserData = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const userData = {
       email: props.userEmail,
       originalName: currentProfile.name,
@@ -159,10 +161,12 @@ const ProfileEditor = (props) => {
 
     try {
       const request = await axios.post('/app/update_user_profile', userData);
-      console.log(request);
-    } catch (e) {
-      console.log(e);
+      localStorage.setItem('user', JSON.stringify(request.data.data.request));
+      props.saveEdit();
+    } catch (error) {
+      console.log(error);
     }
+    setLoading(false);
   };
 
   // Loading spinner
@@ -233,7 +237,6 @@ const ProfileEditor = (props) => {
                   className='color_input'
                   style={{
                     color: color,
-                    fontWeight: '500',
                   }}
                   onChange={(e) => setColor(e.target.value)}
                   value={color}

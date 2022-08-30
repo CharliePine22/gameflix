@@ -90,15 +90,23 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
   width: 50%;
   margin-right: 8px;
+  font-weight: 400;
 }
 
 .console_input {
   background: black;
   outline: 0;
   color: white;
-  padding: 3px 3px;
+  padding: 3px 5px;
   border: 1px solid white;
   margin-bottom: 15px;
+}
+
+.create_profile_error {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.1rem;
+  color: red;
 }
 
 .current_avatar {
@@ -164,7 +172,7 @@
   /* border-bottom: 1px solid grey; */
   margin: 10px 0px 0px 20px;
   position: relative;
-  height: 65%;
+  /* height: 65%; */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -215,7 +223,7 @@
   position: relative;
   min-width: 88px;
   width: auto;
-  padding: 4px 20px 4px 5px;
+  padding: 3px 20px 3px 5px;
   background: black;
   color: white;
   border: 1px solid white;
@@ -226,7 +234,7 @@
 }
 
 .genre_dropdown button:hover {
-  background-color: rgba(66, 66, 66, 0.75);
+  background: rgba(66, 66, 66, 0.75);
 }
 
 .genre_dropdown {
@@ -346,6 +354,11 @@
 
 .modal_hidden {
   animation: hideModal 500ms forwards;
+  /* animation: none;
+  transform: translateY(0);
+  opacity: 0;
+  z-index: 0;
+  transition: transform 1s ease-in; */
 }
 
 .name_input {
@@ -419,11 +432,11 @@
 }
 
 .profile_edit__form {
-  height: 100px;
+  /* height: 100px; */
   border-bottom: 1px solid grey;
   margin: 20px 0px 0px 20px;
   position: relative;
-  padding-bottom: 20px;
+  padding-bottom: 25px;
 }
 
 .profile_edit__form button {
@@ -510,7 +523,7 @@
   outline: 0;
   border: 1px solid white;
   color: white;
-  padding: 3px 3px;
+  padding: 3px 5px;
   margin-bottom: 15px;
 }
 
@@ -625,7 +638,7 @@
   }
 
   .form_container {
-    height: 93%;
+    height: 95%;
   }
 
   .form_personal {
@@ -649,7 +662,7 @@
 
   .form_personal h4 {
     font-size: 1.25rem;
-    margin: 7px 0 10px;
+    margin: 7px 0 13px;
     text-transform: uppercase;
     font-weight: 600;
   }

@@ -4,10 +4,10 @@ import axios from 'axios';
 import { MdEdit } from 'react-icons/md';
 import { SketchPicker } from 'react-color';
 import { FaAngleDown } from 'react-icons/fa';
-import { AiOutlineEnter } from 'react-icons/ai';
 
 const ProfileEditor = (props) => {
   const currentProfile = props.currentProfile;
+  const isAdmin = currentProfile.isAdmin;
   const [loading, setLoading] = useState(false);
   // Current Profile Name
   const [nameValue, setNameValue] = useState(currentProfile.name);
@@ -19,7 +19,8 @@ const ProfileEditor = (props) => {
   const [consoleValue, setConsoleValue] = useState(
     currentProfile.favorite_console
   );
-  // Profile avatar states
+  // Profile form states
+  const [statusMessage, setStatusMessage] = useState('');
   const [currentAvatar, setCurrentAvatar] = useState(currentProfile.avatar);
   const [imgFilePreview, setImgFilePreview] = useState(null);
   const fileInputRef = useRef('');
@@ -72,6 +73,22 @@ const ProfileEditor = (props) => {
     }
   };
 
+  // Delete single profile
+  const deleteProfileHandler = async () => {
+    setLoading(true);
+    try {
+      const request = await axios.delete('/app/delete_profile', {
+        data: { email: props.userEmail, name: currentProfile.name },
+      });
+      console.log(request);
+      props.saveEdit();
+      props.viewAllProfiles();
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
   // Listen for escape key press to close out color palette
   useEffect(() => {
     const handleEsc = (event) => {
@@ -105,13 +122,12 @@ const ProfileEditor = (props) => {
     // Append email and profile name to find correct profile to update
     const data = new FormData();
     data.append('email', props.userEmail);
-    data.append('name', props.currentProfile.name);
+    data.append('name', currentProfile.name);
     // User uploads image
     if (method == 'file') {
       data.append('avatar', e.target.files[0]);
       try {
         const request = await axios.post('/app/update_avatar_file', data);
-        console.log(request.data);
         setCurrentAvatar(URL.createObjectURL(e.target.files[0]));
       } catch (e) {
         console.log(e);
@@ -123,7 +139,7 @@ const ProfileEditor = (props) => {
     else {
       const data = {
         email: props.userEmail,
-        name: props.currentProfile.name,
+        name: currentProfile.name,
         avatar: imgLink,
       };
       try {
@@ -133,11 +149,12 @@ const ProfileEditor = (props) => {
       } catch (e) {
         console.log(e);
       }
-
       setLoading(false);
     }
   };
 
+  // If user isn't using the link, display the link modal
+  // Or else submit the link url and close the modal
   const determineLinkAction = (e) => {
     if (!usingImgLink) {
       setUsingImgLink(true);
@@ -146,6 +163,7 @@ const ProfileEditor = (props) => {
     }
   };
 
+  // Update Profile in Mongo Database
   const saveUserData = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -161,10 +179,12 @@ const ProfileEditor = (props) => {
 
     try {
       const request = await axios.post('/app/update_user_profile', userData);
-      localStorage.setItem('user', JSON.stringify(request.data.data.request));
+      localStorage.setItem('user', JSON.stringify(request.data.response));
+      setStatusMessage(request.data.message);
       props.saveEdit();
+      props.viewAllProfiles();
     } catch (error) {
-      console.log(error);
+      setStatusMessage(error);
     }
     setLoading(false);
   };
@@ -191,9 +211,7 @@ const ProfileEditor = (props) => {
         <h3>GAMEFLIX</h3>
       </div>
       <div className='profile_edit__form_wrapper'>
-        <h3>
-          {props.currentProfile !== true ? 'Edit Profile' : 'Create Profile'}
-        </h3>
+        <h3>{currentProfile !== true ? 'Edit Profile' : 'Create Profile'}</h3>
         <div
           className={`form_container ${
             changingAvatar && 'avatar_select_container'
@@ -207,7 +225,7 @@ const ProfileEditor = (props) => {
             <img
               className={`current_avatar ${changingAvatar && 'avatar_select'}`}
               style={{
-                backgroundColor: color ? color : props.currentProfile.color,
+                backgroundColor: color ? color : currentProfile.color,
               }}
               src={currentAvatar}
             />
@@ -382,6 +400,14 @@ const ProfileEditor = (props) => {
           <button className='cancel_btn' onClick={cancelButtonHandler}>
             {!changingAvatar ? 'Cancel' : 'Back'}
           </button>
+          {!isAdmin && (
+            <button
+              className='delete_profile_btn justify-start'
+              onClick={deleteProfileHandler}
+            >
+              Delete Profile
+            </button>
+          )}
         </div>
       </div>
     </div>

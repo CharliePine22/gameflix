@@ -44,6 +44,30 @@
   height: 100%;
   min-height: 300px;
   max-height: 300px;
+  transform-style: preserve-3d;
+}
+
+.row__poster_front,
+.row__poster_back {
+  height: 100%;
+  width: 100%;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* .row__poster_front::before {
+  content: '';
+  position: absolute;
+  top: 0.25em;
+  bottom: 0.25em;
+  left: 0.25em;
+  right: 0.25em;
+  border: 3px solid currentColor;
+  transform: translateZ(3rem);
+} */
+
+.row__poster_back {
+  transform: rotateY(0.5turn);
 }
 
 .row__poster_music_icon {
@@ -75,11 +99,11 @@
   transform: translate3d(1px, -3px, 0px);
 }
 
-.row__poster_container:hover > .row__poster_name {
+.row__poster_front:hover > .row__poster_name {
   transform: translate3d(1px, -3px, 0px);
 }
 
-.row__poster_container:hover > .row__poster_music_icon {
+.row__poster_front:hover > .row__poster_music_icon {
   transform: translate3d(1px, -3px, 0px);
 }
 
@@ -104,6 +128,8 @@
 
 .row__poster_wrapper {
   position: relative;
+  transform-style: preserve-3d;
+  transition: transform 3s;
 }
 
 .row__posters::-webkit-scrollbar {

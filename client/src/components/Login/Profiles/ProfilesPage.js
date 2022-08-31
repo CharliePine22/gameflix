@@ -5,9 +5,10 @@ import yunaAvatar from '../../../assets/images/yuna-icon.png';
 import cloudAvatar from '../../../assets/images/ff7-cloud.png';
 import zidaneAvatar from '../../../assets/images/ff9-zidane.png';
 import cjAvatar from '../../../assets/images/roxas-icon.png';
+import defaultAvatar from '../../../assets/images/basic_avatar.png';
 import { MdEdit } from 'react-icons/md';
 import ProfileEditor from './ProfileEditor/ProfileEditor';
-import NewProfileEditor from './ProfileEditor/NewProfileEditor';
+import ProfileCreation from './ProfileEditor/ProfileCreation';
 
 const ProfilesPage = (props) => {
   const [editingProfiles, setEditingProfiles] = useState(false);
@@ -61,7 +62,10 @@ const ProfilesPage = (props) => {
   useEffect(() => {
     if (props.currentUser.email == 'test@test.com') {
       setProfiles(dummyData);
-    } else setProfiles(props.currentUser.profiles);
+    } else {
+      setProfiles(props.currentUser.profiles);
+      console.log('Profiles Updating');
+    }
   }, [props.currentUser]);
 
   if (profiles == null) {
@@ -81,7 +85,7 @@ const ProfilesPage = (props) => {
 
   if (creatingProfile !== null && creatingProfile == 'new') {
     return (
-      <NewProfileEditor
+      <ProfileCreation
         updateUser={updateProfiles}
         userEmail={props.currentUser.email}
         viewAllProfiles={() => setCreatingProfile(null)}
@@ -97,20 +101,20 @@ const ProfilesPage = (props) => {
       <div className='profile__container'>
         <h3>Who's gaming?</h3>
         <ul className='profile__list'>
-          {profiles.map((user, i) => (
+          {profiles.map((user) => (
             <li
               key={user.name}
               className='profile__user'
-              onClick={() => profileSelectHandler(user, i)}
+              onClick={() => profileSelectHandler(user)}
             >
-              {editingProfiles && <MdEdit className='edit-icon' />}
               <img
                 className={`profile__user_avatar ${
                   editingProfiles && 'editing'
                 }`}
                 style={{ backgroundColor: user.color }}
-                src={user.avatar ? `${user.avatar}` : user.dummyAvatar}
+                src={user.avatar !== null ? `${user.avatar}` : defaultAvatar}
               />
+              {editingProfiles && <MdEdit className='edit-icon' />}
               <span className='profile__user_name'>{user.name}</span>
             </li>
           ))}

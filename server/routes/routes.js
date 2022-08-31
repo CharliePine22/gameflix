@@ -17,6 +17,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Determine whether or not email exists in database
 const newAccountValidation = async (email) => {
   const result = await userModel.findOne({ email: email });
   return result == null;
@@ -26,15 +27,6 @@ const newAccountValidation = async (email) => {
 const findUser = async (email) => {
   const result = await userModel.findOne({ email: email });
   return result;
-};
-
-const deleteProfile = async (name) => {
-  const query = { name: name };
-  const request = userModel.findOneAndUpdate(query, {
-    $pull: { profiles: { field: { $exists: true } } },
-  });
-
-  console.log(request);
 };
 
 // Fetch user information
@@ -66,6 +58,7 @@ router.post('/signup', upload.single('avatar'), (req, res) => {
         name: req.body.firstName,
         avatar: avatar,
         color: req.body.color,
+        isAdmin: true,
       });
       newUser
         .save()
@@ -105,7 +98,7 @@ router.post('/signin', (req, res) => {
   });
 });
 
-// Update Avatar Route if it's a file
+// Update Avatar File Route
 router.post(
   '/update_avatar_file',
   upload.single('avatar'),
@@ -197,9 +190,7 @@ router.post('/update_user_profile', async (req, res) => {
       code: 200,
       status: 'OK',
       message: 'Profile updated!',
-      data: {
-        request,
-      },
+      response: request,
     });
   } catch (error) {
     console.log(error);
@@ -212,7 +203,6 @@ router.post('/update_user_profile', async (req, res) => {
 // ROUTE TO CREATE A NEW PROFILE
 router.post('/create_new_profile', async (req, res) => {
   const userEmail = req.body.email;
-  console.log(req.body);
   try {
     const user = await findUser(userEmail);
     user.profiles.push({
@@ -222,21 +212,58 @@ router.post('/create_new_profile', async (req, res) => {
       favorite_console: req.body.favoriteConsole,
       favorite_genre: req.body.favoriteGenre,
       favorite_game: req.body.favoriteGame,
+      isAdmin: false,
     });
     user.save();
     res.send({
       code: 200,
       status: 'OK',
       message: 'Profile created!',
-      data: {
-        user,
-      },
+      response: user,
     });
   } catch (e) {
     res.status(400, { message: 'An error occured, please try again later!' });
   }
 });
 
+// Delete a single profile helper function
+const deleteProfile = async (name, email) => {
+  const query = { email: email };
+  try {
+    const request = await userModel.findOneAndUpdate(
+      query,
+      {
+        $pull: { profiles: { name: name } },
+      },
+      { safe: true, upsert: true }
+    );
+    return request;
+  } catch (error) {
+    return error;
+  }
+};
+
 // ROUTE TO DELETE EXISTING PROFILE
+router.delete('/delete_profile', async (req, res) => {
+  const name = req.body.name;
+  const email = req.body.email;
+
+  try {
+    const request = await deleteProfile(name, email);
+    res.send({
+      code: 200,
+      status: 'OK',
+      response: request,
+      message: 'Profile successfully erased',
+    });
+  } catch (error) {
+    res.send({
+      code: 400,
+      status: 'ERROR',
+      response: error,
+      message: 'Something went wrong',
+    });
+  }
+});
 
 module.exports = router;

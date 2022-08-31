@@ -22,6 +22,42 @@
   justify-content: center;
 }
 
+.editing {
+  opacity: 0.3;
+}
+
+.editing:hover + .edit-icon {
+  opacity: 1;
+}
+
+.edit_btn {
+  display: inline-block;
+  background-color: white;
+  color: black;
+  border: 1px solid transparent;
+  opacity: 1;
+  letter-spacing: 0.239px;
+}
+
+.edit_btn:hover {
+  background-color: blue;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.edit-icon {
+  color: #fff;
+  position: absolute;
+  height: 28%;
+  width: 3.5rem;
+  left: 29%;
+  top: 31px;
+  cursor: pointer;
+  opacity: 0.5;
+  /* z-index: 1; */
+}
+
 .hovering {
   margin-top: 58px;
   font-size: 2.5rem;
@@ -64,29 +100,6 @@
 
 .profile__new_btn:hover {
   opacity: 1;
-}
-
-.edit_btn {
-  background-color: white;
-  color: black;
-  border: 1px solid transparent;
-  opacity: 1;
-}
-
-.edit_btn:hover {
-  background-color: blue;
-  color: white;
-  font-weight: 600;
-}
-
-.edit-icon {
-  color: #fff;
-  position: absolute;
-  height: 100%;
-  width: 3.5rem;
-  left: 32%;
-  top: -40px;
-  z-index: 1;
 }
 
 .profile__container {
@@ -134,25 +147,11 @@
   display: flex;
   flex-direction: column;
   margin: 0 10px;
-  cursor: pointer;
   position: relative;
   width: 17vw;
   height: 100%;
   max-width: 130px;
   min-height: 179px;
-}
-
-.editing {
-  opacity: 0.35;
-}
-
-.profile__user:hover > .profile__user_avatar {
-  outline: 2px inset #fff;
-  outline-offset: -2px;
-}
-
-.profile__user:hover > .profile__user_name {
-  opacity: 1;
 }
 
 .profile__user_avatar {
@@ -163,6 +162,22 @@
   background: rgb(5, 5, 5);
   height: 60%;
   width: 100%;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.profile__user_avatar:hover {
+  outline: 2px inset #fff;
+  outline-offset: -2px;
+  opacity: 0.75;
+}
+
+.profile__user_avatar:hover ~ .profile__user_name {
+  opacity: 1;
+}
+
+.profile__user_avatar:hover ~ .edit-icon {
+  opacity: 1;
 }
 
 .profile__user_name {
@@ -184,7 +199,7 @@
 }
 
 /* Mobile Devices */
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 500px) {
   .add {
     height: 70px !important;
     width: 69% !important;
@@ -201,11 +216,11 @@
   }
 
   .edit-icon {
-    right: 317px;
-    width: 2.5rem;
-    bottom: -16px;
-    left: 0;
-    top: 15px;
+    width: 2.6rem;
+    left: 0px;
+    top: 60px;
+    z-index: 1;
+    opacity: 1;
   }
 
   .profile__actions {

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import rawgClient from '../../axios';
 import GameDetails from './GameDetails/GameDetails';
 import './Row.css';
-import youtubeAPI from '../../youtubeAPI';
 import Placeholder from '../Placeholder/Placeholder';
 import { SiApplemusic } from 'react-icons/si';
 
@@ -13,6 +12,7 @@ function Row({ title, fetchURL }) {
   const [currentlyOpen, setCurrentlyOpen] = useState(null);
   const [imgsLoaded, setImgsLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
 
   useEffect(() => {
     // Grab games from each genre
@@ -60,7 +60,7 @@ function Row({ title, fetchURL }) {
 
   const viewGameSoundtrack = (e) => {
     e.stopPropagation();
-    console.log('Clicked');
+    setViewingSoundtrack(true);
   };
 
   return (
@@ -69,7 +69,7 @@ function Row({ title, fetchURL }) {
 
       <div className='row__posters'>
         {games.map(
-          (game, i) =>
+          (game) =>
             game.background_image !== null && (
               <React.Fragment key={game.name}>
                 <div className='row__poster_wrapper'>
@@ -80,17 +80,20 @@ function Row({ title, fetchURL }) {
                     {' '}
                     {!loading && (
                       <>
-                        <SiApplemusic
-                          onClick={viewGameSoundtrack}
-                          className='row__poster_music_icon'
-                        />
-                        <span className='row__poster_name'>{game?.name}</span>
-                        <img
-                          loading='lazy'
-                          className='row__poster'
-                          src={game.background_image}
-                          alt={game.name}
-                        />
+                        <div className='row__poster_front'>
+                          <SiApplemusic
+                            onClick={viewGameSoundtrack}
+                            className='row__poster_music_icon'
+                          />
+                          <span className='row__poster_name'>{game?.name}</span>
+                          <img
+                            loading='lazy'
+                            className='row__poster'
+                            src={game.background_image}
+                            alt={game.name}
+                          />
+                        </div>
+                        <div className='row__poster_back'></div>
                       </>
                     )}
                   </div>

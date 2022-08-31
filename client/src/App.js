@@ -84,8 +84,7 @@ function App() {
       localStorage.setItem('user', JSON.stringify(request.data));
     };
     updateUser();
-    setUpdatingUser(false);
-  }, [updatingUser]);
+  }, []);
 
   // Check to see if user is logged in
   useEffect(() => {
@@ -94,7 +93,8 @@ function App() {
       setLoggedUser(loggedInUser);
     }
     setEditingUser(false);
-  }, [editingUser]);
+    setUpdatingUser(false);
+  }, [editingUser, updatingUser]);
 
   // Check to see which profile is active
   useEffect(() => {
@@ -102,7 +102,7 @@ function App() {
     if (userProfile) {
       setSelectedProfile(JSON.parse(userProfile));
     }
-  }, [updatingUser]);
+  }, []);
 
   // Display login page if app detects sign out or sign in
   if (!loggedUser && !toLanding) {

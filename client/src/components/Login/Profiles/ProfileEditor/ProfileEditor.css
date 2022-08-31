@@ -12,7 +12,7 @@
   cursor: pointer;
 }
 
-.avatar_link_modal {
+/* .avatar_link_modal {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -28,11 +28,35 @@
   align-items: center;
   animation: displayModal 500ms forwards;
   box-shadow: 0 3px 7px rgba(255, 255, 255, 0.3);
+} */
+
+.avatar_link_modal {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+  width: 450px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.95);
+  color: white;
+  z-index: 2;
+  top: 122px;
+  left: 100px;
+  border: 2px solid white;
+  align-items: center;
+  animation: displayModal 500ms forwards;
+  box-shadow: 0 3px 7px rgb(255 255 255 / 30%);
+}
+
+.avatar_link_modal_launch {
+  height: 0px;
+  width: 0px;
+  display: none;
 }
 
 .avatar_link_modal h3 {
   font-size: 2.3rem;
-  margin: 20px 0 25px;
+  margin: 20px 0 25px !important;
 }
 
 .avatar_file_option svg {
@@ -60,14 +84,16 @@
   transition: transform 700ms cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-.cancel_btn {
+.cancel_btn,
+.delete_profile_btn {
   opacity: 0.5;
   background: transparent;
   border: 1px solid grey;
   color: white;
 }
 
-.cancel_btn:hover {
+.cancel_btn:hover,
+.delete_profile_btn:hover {
   opacity: 1;
 }
 
@@ -133,6 +159,11 @@
   text-align: center;
   box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.5);
   cursor: pointer;
+}
+
+.justify-start {
+  margin-left: auto !important;
+  margin-right: 0 !important;
 }
 
 .form_actions {
@@ -305,14 +336,14 @@
 .modal_content {
   display: flex;
   flex-direction: column;
-  height: 66%;
+  height: 63%;
   justify-content: space-between;
   align-items: center;
 }
 
 .modal_content p {
   max-width: 80%;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   text-align: center;
   font-weight: 300;
 }
@@ -348,7 +379,7 @@
   padding: 8px 12px;
   outline: 0;
   color: white;
-  width: 275px;
+  width: 335px;
   margin-bottom: 45px;
 }
 
@@ -367,7 +398,7 @@
   outline: 0;
   color: white;
   padding: 6px 5px;
-  width: 85%;
+  width: 92%;
 }
 
 .name_input::placeholder {
@@ -594,6 +625,11 @@
     margin-top: 0px;
   }
 
+  .avatar_link_modal {
+    width: 340px;
+    left: -20px;
+  }
+
   .avatar_file_option,
   .avatar_link_option {
     width: 100%;
@@ -697,6 +733,18 @@
 
   .name_input {
     margin-top: 5px;
+  }
+
+  .modal_content {
+    height: 61%;
+  }
+
+  .modal_content p {
+    font-size: 1.05rem;
+  }
+
+  .modal_form input {
+    width: 270px;
   }
 
   .profile_avatar_actions {

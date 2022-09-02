@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import rawgClient from '../../axios';
 import GameDetails from './GameDetails/GameDetails';
 import './Row.css';
+import axios from 'axios';
 import Placeholder from '../Placeholder/Placeholder';
 import { SiApplemusic } from 'react-icons/si';
 
-function Row({ title, fetchURL }) {
+function Row({ title, fetchURL, spotifyToken }) {
   const [games, setGames] = useState([]);
   const [currentGame, setCurrentGame] = useState('');
+  const [currentSoundtrack, setCurrentSoundtrack] = useState(null);
   const [displayDetails, setDisplayDetails] = useState(false);
   const [currentlyOpen, setCurrentlyOpen] = useState(null);
   const [imgsLoaded, setImgsLoaded] = useState(false);
@@ -26,29 +28,24 @@ function Row({ title, fetchURL }) {
     fetchData();
   }, [fetchURL]);
 
-  // useEffect(() => {
-  //   const loadImage = image => {
-  //     return new Promise((resolve, reject) => {
-  //       const loadImg = new Image()
-  //       loadImg.src = image.url
-  //       // wait 2 seconds to simulate loading time
-  //       loadImg.onload = () =>
-  //         setTimeout(() => {
-  //           resolve(image.url)
-  //         }, 2000)
-
-  //       loadImg.onerror = err => reject(err)
-  //     })
-  //   }
-
-  //   Promise.all(IMAGES.map(image => loadImage(image)))
-  //     .then(() => setImgsLoaded(true))
-  //     .catch(err => console.log("Failed to load images", err))
-  // }, [])
+  const fetchGameOST = async (game) => {
+    try {
+      const request = await axios.get('/app/spotify_playlist', {
+        params: {
+          game,
+          token: spotifyToken,
+        },
+      });
+      console.log(request.data);
+      setCurrentSoundtrack(request.data.tracks);
+      setViewingSoundtrack(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Grab trailer video from selected game
   const fetchGameDetails = (game) => {
-    console.log(game);
     setCurrentlyOpen(game.name);
     setCurrentGame(game);
   };
@@ -58,9 +55,17 @@ function Row({ title, fetchURL }) {
     setCurrentGame(null);
   };
 
-  const viewGameSoundtrack = (e) => {
+  const viewGameSoundtrack = (e, game) => {
     e.stopPropagation();
-    setViewingSoundtrack(true);
+
+    fetchGameOST(game.name);
+    setCurrentGame(game.name);
+  };
+
+  const closeGameSoundtrack = (e) => {
+    e.stopPropagation();
+    setCurrentGame(null);
+    setViewingSoundtrack(false);
   };
 
   return (
@@ -74,15 +79,20 @@ function Row({ title, fetchURL }) {
               <React.Fragment key={game.name}>
                 <div className='row__poster_wrapper'>
                   <div
-                    className='row__poster_container'
+                    className={`row__poster_container ${
+                      viewingSoundtrack && currentGame == game.name
+                        ? 'flip'
+                        : ''
+                    }`}
                     onClick={() => fetchGameDetails(game)}
                   >
                     {' '}
                     {!loading && (
                       <>
+                        {/* FRONT OF POSTER */}
                         <div className='row__poster_front'>
                           <SiApplemusic
-                            onClick={viewGameSoundtrack}
+                            onClick={(e) => viewGameSoundtrack(e, game)}
                             className='row__poster_music_icon'
                           />
                           <span className='row__poster_name'>{game?.name}</span>
@@ -93,7 +103,28 @@ function Row({ title, fetchURL }) {
                             alt={game.name}
                           />
                         </div>
-                        <div className='row__poster_back'></div>
+                        {/* BACK OF POSTER */}
+                        <div
+                          className='row__poster_back'
+                          onClick={closeGameSoundtrack}
+                        >
+                          <h3>{game?.name} OST</h3>
+                          <img
+                            loading='lazy'
+                            className='row__poster_back_img'
+                            src={game.background_image}
+                            alt={game.name}
+                          />
+                          <div className='soundtrack_container'>
+                            <ul className='soundtracks'>
+                              {currentSoundtrack?.map((track) => (
+                                <li key={track.track.id} className='soundtrack'>
+                                  {track.track.name}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
                       </>
                     )}
                   </div>
@@ -112,7 +143,9 @@ function Row({ title, fetchURL }) {
           <div className='row__loading_container'>
             {[...Array(10)].map((item, i) => (
               <div key={i} className='row__placeholder__wrapper'>
-                <Placeholder key={i} delay={i} />
+                <div className='row__poster_container'>
+                  <Placeholder key={i} delay={i} />
+                </div>
               </div>
             ))}
           </div>

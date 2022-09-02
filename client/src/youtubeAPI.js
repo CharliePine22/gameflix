@@ -11,4 +11,14 @@ const youtubeAPI = axios.create({
   headers: {},
 });
 
-export default youtubeAPI;
+const youtubePlaylistAPI = axios.create({
+  baseURL: 'https://www.googleapis.com/youtube/v3/playlistItems',
+  params: {
+    part: 'snippet',
+    maxResults: 10,
+    key: 'AIzaSyCFUurYVGCQLT1LTk5JxppB6Zqzypo_TVw',
+  },
+  headers: {},
+});
+
+export default { youtubeAPI, youtubePlaylistAPI };

@@ -20,6 +20,7 @@ import axios from 'axios';
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [spotifyToken, setSpotifyToken] = useState(null);
   // User states
   const [changingUser, setChangingUser] = useState(false);
   const [updatingUser, setUpdatingUser] = useState(false);
@@ -72,6 +73,18 @@ function App() {
       setChangingUser(false);
     }, 2000);
   };
+
+  // Refetch user data if any changes are made
+  useEffect(() => {
+    const fetchSpotifyToken = async () => {
+      const request = await axios.post('app/spotify_authentication');
+      setSpotifyToken(request.data.tokenData.access_token);
+    };
+    if (loggedUser) fetchSpotifyToken();
+    else {
+      return;
+    }
+  }, [loggedUser]);
 
   // Refetch user data if any changes are made
   useEffect(() => {
@@ -175,6 +188,7 @@ function App() {
               request.title !== 'COMING SOON' &&
               request.title !== 'TRENDING TITLES' && (
                 <Row
+                  spotifyToken={spotifyToken}
                   key={request.requestId}
                   title={request.title}
                   fetchURL={request.url}

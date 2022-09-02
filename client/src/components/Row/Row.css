@@ -31,28 +31,49 @@
   border-radius: 6px;
 }
 
+.row__poster_back_img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  box-shadow: -3px 3px 10px #000;
+  transition: all 250ms ease-in-out;
+  border-radius: 6px;
+  opacity: 0.25;
+}
+
 .row__poster_container {
   width: 100%;
   cursor: pointer;
   position: relative;
   margin-right: 10px;
-  transition: all 400ms;
+  transition: all 250ms;
   z-index: 1;
-  max-width: 12rem;
-  min-width: 12rem;
+  max-width: 14rem;
+  min-width: 14rem;
   object-fit: cover;
   height: 100%;
-  min-height: 300px;
-  max-height: 300px;
+  min-height: 350px;
+  max-height: 350px;
   transform-style: preserve-3d;
+}
+
+.row__poster_container.flip {
+  transform: rotateY(0.5turn);
 }
 
 .row__poster_front,
 .row__poster_back {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 100%;
   width: 100%;
   backface-visibility: hidden;
   transform-style: preserve-3d;
+  transition: all 150ms ease-in-out;
 }
 
 /* .row__poster_front::before {
@@ -68,6 +89,15 @@
 
 .row__poster_back {
   transform: rotateY(0.5turn);
+  box-shadow: -5px 7px 10px #000;
+}
+
+.row__poster_back h3 {
+  position: absolute;
+  z-index: 1;
+  text-align: center;
+  width: 100%;
+  font-size: 1.25rem;
 }
 
 .row__poster_music_icon {
@@ -80,6 +110,7 @@
   transition: transform 250ms ease-in-out, opacity 100ms ease-in-out;
   color: black;
   opacity: 0.5;
+  backface-visibility: hidden;
 }
 
 .row__poster_music_icon:hover {
@@ -94,16 +125,16 @@
   margin-right: 10px;
 }
 
-.row__poster_container:hover .row__poster {
+.row__poster_container:hover .row__poster_front {
   box-shadow: -5px 7px 10px #000;
   transform: translate3d(1px, -3px, 0px);
 }
 
-.row__poster_front:hover > .row__poster_name {
+.row__poster_container:hover > .row__poster_name {
   transform: translate3d(1px, -3px, 0px);
 }
 
-.row__poster_front:hover > .row__poster_music_icon {
+.row__poster_container:hover > .row__poster_music_icon {
   transform: translate3d(1px, -3px, 0px);
 }
 
@@ -116,6 +147,7 @@
   width: 95%;
   z-index: 1;
   transition: all 400ms;
+  backface-visibility: hidden;
 }
 
 .row__posters {
@@ -139,6 +171,27 @@
 .row__posters_container {
   display: flex;
   width: 100%;
+}
+
+.soundtrack_container {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+.soundtracks {
+  list-style: none;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.soundtrack {
+  margin: 5px 0 0;
 }
 
 /* Mobile Devices */

@@ -193,7 +193,7 @@
   height: 38px !important;
   min-width: 400px;
   outline: 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   padding-top: 18px;
   padding-left: 10px;
   padding-bottom: 0px;
@@ -494,11 +494,11 @@
     align-items: center;
   }
   .landing__email {
-    height: 6px !important;
+    height: 0px !important;
     padding-bottom: 15px;
     min-width: 360px;
     margin-bottom: 25px;
-    padding-top: 25px;
+    padding-top: 32px;
   }
   .landing__form button {
     width: 145px;

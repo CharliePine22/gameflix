@@ -34,6 +34,7 @@ function App() {
   const [rowsLoaded, setRowsLoaded] = useState(false);
 
   let audio = new Audio(loginAudio);
+  // "proxy": "http://localhost:5000"
 
   const closeSearchResults = () => {
     setSearchSubmitted(false);
@@ -77,7 +78,7 @@ function App() {
   // Refetch user data if any changes are made
   useEffect(() => {
     const fetchSpotifyToken = async () => {
-      const request = await axios.post('app/spotify_authentication');
+      const request = await axios.post('/app/spotify_authentication');
       setSpotifyToken(request.data.tokenData.access_token);
     };
     if (loggedUser) fetchSpotifyToken();

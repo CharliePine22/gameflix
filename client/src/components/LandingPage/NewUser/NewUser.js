@@ -1,29 +1,27 @@
 import React, { useRef, useState, useEffect } from 'react';
 import defaultAvatar from '../../../assets/images/basic_avatar.png';
-import { SketchPicker } from 'react-color';
+import { TwitterPicker } from 'react-color';
 import axios from 'axios';
 import './NewUser.css';
 
 const NewUser = (props) => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   // Color Picker States
   const [color, setColor] = useState('');
-  const [pickingColor, setPickingColor] = useState(false);
 
   // Step 1 Refs
-  const [stepOneData, setStepOneData] = useState(null);
+  const [stepOneData, setStepOneData] = useState({});
   const emailRef = useRef('');
   const passwordRef = useRef('');
   // Step 2 Refs
-  const [stepTwoData, setStepTwoData] = useState(null);
+  const [stepTwoData, setStepTwoData] = useState({});
   const firstNameRef = useRef('');
   const lastNameRef = useRef('');
   // Step 3 Refs
   const [imgFile, setImgFile] = useState(null);
   const [imgPreview, setImgPreview] = useState(null);
-  const usernameRef = useRef('');
 
   const fileUploadHandler = (e) => {
     setImgPreview(URL.createObjectURL(e.target.files[0]));
@@ -43,32 +41,49 @@ const NewUser = (props) => {
 
   const validateEmail = (data) => {
     let flag = false;
-    axios
+    const request = axios
       .post('/app/signup', data)
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        return response;
+      })
       .catch((e) => {
         setError(e.response.data.message);
         flag = true;
       });
-    console.log(flag);
+
+    return request;
   };
 
-  const formSubmitHandler = (e) => {
+  const formSubmitHandler = async (e) => {
     e.preventDefault();
     // Go throuh the steps until user gets to last step (3), then submit data
     // Step 1
     if (currentStep == 1) {
-      const email = emailRef.current.value;
-      const password = passwordRef.current.value;
-      setStepOneData({ email, password });
-      setCurrentStep(currentStep + 1);
+      const email = emailRef.current.value.trim();
+      const password = passwordRef.current.value.trim();
+      if (email == '' || !email.includes('@')) {
+        setError('Please enter a valid email');
+      } else if (password == '' || password.length > 10) {
+        setError(
+          'Please enter a valid password that is 10 characters or less!'
+        );
+      } else {
+        setStepOneData({ email, password });
+        setCurrentStep(currentStep + 1);
+        setError(false);
+      }
     }
     // Step 2
     else if (currentStep == 2) {
       const firstName = firstNameRef.current.value;
       const lastName = lastNameRef.current.value;
-      setStepTwoData({ firstName, lastName });
-      setCurrentStep(currentStep + 1);
+      if (firstName.trim() == '' || lastName.trim() == '') {
+        setError("Please don't leave name fields empty!");
+      } else {
+        setStepTwoData({ firstName, lastName });
+        setCurrentStep(currentStep + 1);
+        setError(false);
+      }
     }
     // Step 3
     else {
@@ -80,12 +95,14 @@ const NewUser = (props) => {
       formData.append('color', color.hex);
       formData.append('avatar', imgFile);
 
-      validateEmail(formData);
+      const result = await validateEmail(formData);
+      console.log(result);
 
-      if (!error) {
-        props.toWelcomeScreen(stepOneData.email, stepOneData.password);
-        console.log('Successful');
+      if (!error && !result.data.message && result !== null) {
+        localStorage.setItem('user', JSON.stringify(result.data));
+        window.location.reload();
       } else {
+        console.log('issue');
         setCurrentStep(1);
         emailRef.current.value = stepOneData.email;
         setError(null);
@@ -151,6 +168,7 @@ const NewUser = (props) => {
                   defaultValue={stepTwoData?.firstName}
                   className='form_text_input'
                 />
+                {error && <p className='step_two__error'>{error}</p>}
                 <span className='form_placeholder__first_name'>First Name</span>
                 <input
                   ref={lastNameRef}
@@ -182,31 +200,11 @@ const NewUser = (props) => {
                     />
                     {/* <img src={imgPreview} /> */}
                   </div>
-                </div>
-                <div className='form_input_selections'>
-                  <input
-                    style={{ margin: '20px 0' }}
-                    ref={usernameRef}
-                    className='form_text_input_username'
-                  />
-                  <div
-                    className='color_picker_btn'
-                    style={{ background: color.hex }}
-                    onClick={() => setPickingColor(!pickingColor)}
-                  />
-                  <span
-                    style={{ color: color.hex }}
-                    className='form_placeholder__username'
-                  >
-                    Username
-                  </span>
                   <div className='color_picker_container'>
-                    {pickingColor && (
-                      <SketchPicker
-                        color={color}
-                        onChangeComplete={colorChangeHandler}
-                      />
-                    )}
+                    <TwitterPicker
+                      color={color}
+                      onChangeComplete={colorChangeHandler}
+                    />
                   </div>
                 </div>
               </>

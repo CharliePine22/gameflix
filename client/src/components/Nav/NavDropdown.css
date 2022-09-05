@@ -74,12 +74,18 @@
   align-items: center;
   font-size: 13px;
   line-height: 16px;
-  padding: 7px 10px;
+  padding: 7px 0px 7px 5px;
   color: #fff;
   cursor: pointer;
 }
 
-.dropdown__settings_item:hover > p {
+.dropdown__settings_item a {
+  text-decoration: none;
+  color: white;
+}
+
+.dropdown__settings_item:hover > p,
+.dropdown__settings_item:hover > a {
   text-decoration: underline;
 }
 

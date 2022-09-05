@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './NavDropdown.css';
 // React Icons
-import { FaSortUp, FaUserEdit } from 'react-icons/fa';
+import { FaSortUp, FaSpotify, FaUserEdit } from 'react-icons/fa';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { MdEdit } from 'react-icons/md';
 // Dummy Image Imports
@@ -9,6 +9,8 @@ import jessAvatar from '../../assets/images/kairi-icon.png';
 import yunaAvatar from '../../assets/images/yuna-icon.png';
 import cjAvatar from '../../assets/images/roxas-icon.png';
 import banditAvatar from '../../assets/images/lion-icon.png';
+
+const SPOTIFY_AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=http://localhost:3000&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state`;
 
 const NavDropdown = (props) => {
   // Profile dummy data until account creation is incorporated
@@ -42,6 +44,8 @@ const NavDropdown = (props) => {
       window.removeEventListener('keydown', handleEsc);
     };
   }, []);
+
+  const spotifyAuthHandler = () => {};
 
   // Change current user
   const changeUserHandler = (user) => {
@@ -94,6 +98,15 @@ const NavDropdown = (props) => {
             <IoSettingsOutline size={18} />
           </span>
           <p>Account Settings</p>
+        </div>
+        <div className='dropdown__settings_item'>
+          <span className='dropdown__settings_item_icon'>
+            <FaSpotify
+              size={18}
+              style={{ color: props.spotifyToken ? '#1DB954' : '#FFF' }}
+            />
+          </span>
+          <a href={SPOTIFY_AUTH_URL}>Spotify Authentication</a>
         </div>
       </div>
       <div className='dropdown__settings_links'>

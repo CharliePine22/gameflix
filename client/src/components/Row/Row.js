@@ -5,16 +5,17 @@ import './Row.css';
 import axios from 'axios';
 import Placeholder from '../Placeholder/Placeholder';
 import { SiApplemusic } from 'react-icons/si';
+import { FaPlay } from 'react-icons/fa';
 
-function Row({ title, fetchURL, spotifyToken }) {
+function Row({ title, fetchURL, spotifyToken, playTrack }) {
   const [games, setGames] = useState([]);
   const [currentGame, setCurrentGame] = useState('');
-  const [currentSoundtrack, setCurrentSoundtrack] = useState(null);
+  const [currentPlaylist, setCurrentPlaylist] = useState([]);
+  const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [displayDetails, setDisplayDetails] = useState(false);
   const [currentlyOpen, setCurrentlyOpen] = useState(null);
   const [imgsLoaded, setImgsLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
 
   useEffect(() => {
     // Grab games from each genre
@@ -29,6 +30,7 @@ function Row({ title, fetchURL, spotifyToken }) {
   }, [fetchURL]);
 
   const fetchGameOST = async (game) => {
+    if (!spotifyToken) return;
     try {
       const request = await axios.get('/app/spotify_playlist', {
         params: {
@@ -36,11 +38,11 @@ function Row({ title, fetchURL, spotifyToken }) {
           token: spotifyToken,
         },
       });
+      setCurrentPlaylist(request.data.tracks);
       console.log(request.data);
-      setCurrentSoundtrack(request.data.tracks);
       setViewingSoundtrack(true);
     } catch (error) {
-      console.log(error);
+      console.log('OST FETCH ISSUE');
     }
   };
 
@@ -57,7 +59,6 @@ function Row({ title, fetchURL, spotifyToken }) {
 
   const viewGameSoundtrack = (e, game) => {
     e.stopPropagation();
-
     fetchGameOST(game.name);
     setCurrentGame(game.name);
   };
@@ -66,6 +67,11 @@ function Row({ title, fetchURL, spotifyToken }) {
     e.stopPropagation();
     setCurrentGame(null);
     setViewingSoundtrack(false);
+  };
+
+  const selectTrackHandler = (e, track) => {
+    e.stopPropagation();
+    playTrack(track);
   };
 
   return (
@@ -117,9 +123,18 @@ function Row({ title, fetchURL, spotifyToken }) {
                           />
                           <div className='soundtrack_container'>
                             <ul className='soundtracks'>
-                              {currentSoundtrack?.map((track) => (
-                                <li key={track.track.id} className='soundtrack'>
-                                  {track.track.name}
+                              {currentPlaylist?.map((track) => (
+                                <li
+                                  key={track.track.id}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className='soundtrack'
+                                >
+                                  <p>{track.track.name}</p>
+                                  <FaPlay
+                                    onClick={(e) =>
+                                      selectTrackHandler(e, track.track)
+                                    }
+                                  />
                                 </li>
                               ))}
                             </ul>

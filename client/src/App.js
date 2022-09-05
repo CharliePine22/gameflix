@@ -16,25 +16,32 @@ import requests from './requests';
 import loginAudio from './assets/sounds/success.wav';
 import rawgClient from './axios';
 import axios from 'axios';
+import SpotifyPlayback from './components/SpotifyPlayback/SpotifyPlayback';
+import useSpotifyAuth from './hooks/useSpotifyAuth';
+
+const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [spotifyToken, setSpotifyToken] = useState(null);
+  const [currentTrack, setCurrentTrack] = useState('');
   // User states
   const [changingUser, setChangingUser] = useState(false);
   const [updatingUser, setUpdatingUser] = useState(false);
   const [editingUser, setEditingUser] = useState(false);
   const [loggedUser, setLoggedUser] = useState(null);
-  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [selectedProfile, setSelectedProfile] = useState({});
   // Search States
   const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const [searchedGame, setSearchedGame] = useState(null);
+  const [searchedGame, setSearchedGame] = useState('');
   const [toLanding, setToLanding] = useState(false);
   const [rowsLoaded, setRowsLoaded] = useState(false);
 
   let audio = new Audio(loginAudio);
   // "proxy": "http://localhost:5000"
+  // "proxy": "https://gameflixx-server.herokuapp.com/",
+
+  const spotifyAccessToken = useSpotifyAuth(code);
 
   const closeSearchResults = () => {
     setSearchSubmitted(false);
@@ -62,10 +69,11 @@ function App() {
     localStorage.removeItem('user');
     localStorage.removeItem('profile');
     localStorage.removeItem('password');
-    window.location.reload();
+    setSelectedProfile(null);
+    setLoggedUser(null);
+    window.location = '/';
   };
 
-  // Choose active profile
   const changeProfile = (user) => {
     setChangingUser(true);
     setSelectedProfile(user);
@@ -75,24 +83,17 @@ function App() {
     }, 2000);
   };
 
-  // Refetch user data if any changes are made
-  useEffect(() => {
-    const fetchSpotifyToken = async () => {
-      const request = await axios.post('/app/spotify_authentication');
-      setSpotifyToken(request.data.tokenData.access_token);
-    };
-    if (loggedUser) fetchSpotifyToken();
-    else {
-      return;
-    }
-  }, [loggedUser]);
+  const playTrack = (track) => {
+    setCurrentTrack(track);
+  };
 
   // Refetch user data if any changes are made
   useEffect(() => {
     const updateUser = async () => {
+      if (!loggedUser) return null;
       const request = await axios.get('/app/get_user', {
         params: {
-          email: loggedUser?.email,
+          email: loggedUser.email,
         },
       });
       localStorage.setItem('user', JSON.stringify(request.data));
@@ -178,6 +179,7 @@ function App() {
         fetchSubmittedGame={fetchSubmittedGame}
         closeSearchResults={closeSearchResults}
         toProfilePage={() => setSelectedProfile(null)}
+        spotifyToken={spotifyAccessToken}
       />
       {!searchSubmitted ? (
         <>
@@ -189,17 +191,24 @@ function App() {
               request.title !== 'COMING SOON' &&
               request.title !== 'TRENDING TITLES' && (
                 <Row
-                  spotifyToken={spotifyToken}
+                  spotifyToken={spotifyAccessToken}
                   key={request.requestId}
                   title={request.title}
                   fetchURL={request.url}
                   todaysDate={request.todaysDate}
+                  playTrack={playTrack}
                 />
               )
           )}
         </>
       ) : (
         <SearchResults searchedGame={searchedGame} />
+      )}
+      {code && (
+        <SpotifyPlayback
+          token={spotifyAccessToken}
+          trackUri={currentTrack?.uri}
+        />
       )}
     </div>
   );

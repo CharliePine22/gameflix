@@ -151,6 +151,7 @@ function Nav(props) {
               logoutHandler={props.onLogout}
               closeNavDropdown={closeNavDropdown}
               toProfilePage={props.toProfilePage}
+              spotifyToken={props.spotifyToken}
             />
           )}
         </div>

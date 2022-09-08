@@ -18,6 +18,8 @@ import rawgClient from './axios';
 import axios from 'axios';
 import SpotifyPlayback from './components/SpotifyPlayback/SpotifyPlayback';
 import useSpotifyAuth from './hooks/useSpotifyAuth';
+import useTwitchAuth from './hooks/useTwitchAuth';
+import UserLibrary from './components/UserLibrary/UserLibrary';
 
 const code = new URLSearchParams(window.location.search).get('code');
 
@@ -25,6 +27,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [currentTrack, setCurrentTrack] = useState('');
+  const [playAudio, setPlayAudio] = useState(false);
   // User states
   const [changingUser, setChangingUser] = useState(false);
   const [updatingUser, setUpdatingUser] = useState(false);
@@ -42,6 +45,7 @@ function App() {
   // "proxy": "https://gameflixx-server.herokuapp.com/",
 
   const spotifyAccessToken = useSpotifyAuth(code);
+  const twitchAccessToken = useTwitchAuth(code);
 
   const closeSearchResults = () => {
     setSearchSubmitted(false);
@@ -56,6 +60,10 @@ function App() {
     );
     setSearchedGame(request.data.results);
   };
+
+  const fetchUserCollection = async () => {};
+
+  fetchUserCollection();
 
   // Login user if verification succeeds.
   const loginAuthentication = (user) => {
@@ -186,17 +194,23 @@ function App() {
           <Banner />
           <MainRow />
           <TrendingRow />
+          <UserLibrary activeProfile={selectedProfile} />
           {requests.map(
             (request) =>
               request.title !== 'COMING SOON' &&
-              request.title !== 'TRENDING TITLES' && (
+              request.title !== 'TRENDING' && (
                 <Row
                   spotifyToken={spotifyAccessToken}
+                  twitchToken={twitchAccessToken}
                   key={request.requestId}
                   title={request.title}
                   fetchURL={request.url}
                   todaysDate={request.todaysDate}
                   playTrack={playTrack}
+                  currentTrack={currentTrack}
+                  isPlaying={playAudio}
+                  pausePlayback={(e) => setPlayAudio(false)}
+                  resumePlayback={(e) => setPlayAudio(true)}
                 />
               )
           )}
@@ -206,6 +220,9 @@ function App() {
       )}
       {code && (
         <SpotifyPlayback
+          playAudio={playAudio}
+          beginPlayback={(e) => setPlayAudio(true)}
+          pausePlayback={(e) => setPlayAudio(false)}
           token={spotifyAccessToken}
           trackUri={currentTrack?.uri}
         />

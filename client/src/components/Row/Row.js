@@ -5,9 +5,19 @@ import './Row.css';
 import axios from 'axios';
 import Placeholder from '../Placeholder/Placeholder';
 import { SiApplemusic } from 'react-icons/si';
-import { FaPlay } from 'react-icons/fa';
+import { FaPlay, FaPause } from 'react-icons/fa';
 
-function Row({ title, fetchURL, spotifyToken, playTrack }) {
+function Row({
+  title,
+  fetchURL,
+  spotifyToken,
+  twitchToken,
+  playTrack,
+  currentTrack,
+  resumePlayback,
+  pausePlayback,
+  isPlaying,
+}) {
   const [games, setGames] = useState([]);
   const [currentGame, setCurrentGame] = useState('');
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
@@ -29,8 +39,27 @@ function Row({ title, fetchURL, spotifyToken, playTrack }) {
     fetchData();
   }, [fetchURL]);
 
+  // useEffect(() => {
+  //   if (!twitchToken) return;
+  //   const fetchIGDB = async () => {
+  //     try {
+  //       const request = await axios.post('/app/search', {
+  //         token: twitchToken,
+  //         clientId: process.env.REACT_APP_IGDB_CLIENT_ID,
+  //       });
+  //       console.log(request);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchIGDB();
+  // }, [twitchToken]);
+
   const fetchGameOST = async (game) => {
-    if (!spotifyToken) return;
+    if (!spotifyToken) {
+      console.log('Please connect to Spotify!');
+      return;
+    }
     try {
       const request = await axios.get('/app/spotify_playlist', {
         params: {
@@ -39,7 +68,6 @@ function Row({ title, fetchURL, spotifyToken, playTrack }) {
         },
       });
       setCurrentPlaylist(request.data.tracks);
-      console.log(request.data);
       setViewingSoundtrack(true);
     } catch (error) {
       console.log('OST FETCH ISSUE');
@@ -71,6 +99,9 @@ function Row({ title, fetchURL, spotifyToken, playTrack }) {
 
   const selectTrackHandler = (e, track) => {
     e.stopPropagation();
+    if (track.name == currentTrack.name) {
+      resumePlayback();
+    }
     playTrack(track);
   };
 
@@ -114,7 +145,7 @@ function Row({ title, fetchURL, spotifyToken, playTrack }) {
                           className='row__poster_back'
                           onClick={closeGameSoundtrack}
                         >
-                          <h3>{game?.name} OST</h3>
+                          <h3>{game?.name} Spotify OST</h3>
                           <img
                             loading='lazy'
                             className='row__poster_back_img'
@@ -129,12 +160,30 @@ function Row({ title, fetchURL, spotifyToken, playTrack }) {
                                   onClick={(e) => e.stopPropagation()}
                                   className='soundtrack'
                                 >
-                                  <p>{track.track.name}</p>
-                                  <FaPlay
-                                    onClick={(e) =>
-                                      selectTrackHandler(e, track.track)
-                                    }
-                                  />
+                                  <p
+                                    style={{
+                                      color:
+                                        currentTrack.name == track.track.name
+                                          ? 'green'
+                                          : 'white',
+                                      fontWeight:
+                                        currentTrack.name == track.track.name
+                                          ? '600'
+                                          : '400',
+                                    }}
+                                  >
+                                    {track.track.name}
+                                  </p>
+                                  {currentTrack.name !== track.track.name ||
+                                  !isPlaying ? (
+                                    <FaPlay
+                                      onClick={(e) =>
+                                        selectTrackHandler(e, track.track)
+                                      }
+                                    />
+                                  ) : (
+                                    <FaPause onClick={(e) => pausePlayback()} />
+                                  )}
                                 </li>
                               ))}
                             </ul>

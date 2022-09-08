@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { FaDoorClosed } from 'react-icons/fa';
 import SpotifyPlayer from 'react-spotify-web-playback';
 import SpotifyWebApi from 'spotify-web-api-node';
 import './SpotifyPlayback.css';
@@ -8,15 +7,19 @@ const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
 });
 
-const SpotifyPlayback = ({ token, trackUri }) => {
-  const [play, setPlay] = useState(false);
-
+const SpotifyPlayback = ({
+  token,
+  trackUri,
+  playAudio,
+  beginPlayback,
+  pausePlayback,
+}) => {
   useEffect(() => {
     spotifyApi.setAccessToken(token);
   }, [token]);
 
   useEffect(() => {
-    setPlay(true);
+    beginPlayback();
   }, [trackUri]);
 
   if (!token) return;
@@ -26,10 +29,10 @@ const SpotifyPlayback = ({ token, trackUri }) => {
         <SpotifyPlayer
           token={token}
           callback={(state) => {
-            if (!state.isPlaying) setPlay(false);
+            if (!state.isPlaying) pausePlayback();
           }}
           uris={trackUri ? [trackUri] : []}
-          play={play}
+          play={playAudio}
           styles={{
             color: 'white',
             bgColor: 'rgba(0,0,0,0.8)',

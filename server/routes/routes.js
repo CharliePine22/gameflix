@@ -5,6 +5,7 @@ const multer = require('multer');
 const spotifyWebApi = require('spotify-web-api-node');
 const fs = require('fs');
 const path = require('path');
+const fetch = require('cross-fetch');
 const { connected } = require('process');
 
 // Transform upload file into DB Object String
@@ -151,7 +152,36 @@ router.get('/spotify_album', async (req, res) => {
   }
 });
 
-//! Sign Up Route
+//! IGDB API ROUTES
+//* IGDB GAME SEARCH
+router.post('/search', async (req, res) => {
+  const token = req.body.token;
+  const clientId = req.body.clientId;
+
+  const headers = {
+    'Client-ID': clientId,
+    Authorization: `Bearer ${token}`,
+  };
+  const url = 'https://api.igdb.com/v4/search';
+  try {
+    const request = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+      data: {
+        fields: '*',
+        limit: 1,
+        search: 'The Legend of Zelda: Ocarina of Time',
+      },
+    });
+    const result = await request.json();
+    const gameId = result[0].id;
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//! SIGN UP
 router.post('/signup', upload.single('avatar'), (req, res) => {
   const avatar = req.file.destination + '/' + req.file.filename;
   const newUser = new userModel({
@@ -185,7 +215,7 @@ router.post('/signup', upload.single('avatar'), (req, res) => {
   });
 });
 
-//! Landing Page Email Verification
+//! EMAIL VERIFICATION
 router.post('/email_verification', (req, res) => {
   newAccountValidation(req.body.email).then(function (valid) {
     if (valid) {
@@ -196,7 +226,7 @@ router.post('/email_verification', (req, res) => {
   });
 });
 
-//! Sign In Route
+//! SIGN IN
 router.post('/signin', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -209,7 +239,7 @@ router.post('/signin', (req, res) => {
   });
 });
 
-//! Update Avatar File Route
+//! UPDATE AVATAR FILE
 router.post(
   '/update_avatar_file',
   upload.single('avatar'),
@@ -237,7 +267,7 @@ router.post(
   }
 );
 
-//! Update Avatar Route if it's a link
+//! UPDATE AVATAR LINK
 router.post('/update_avatar_link', async function (req, res) {
   const email = req.body.email;
   const name = req.body.name;
@@ -265,7 +295,7 @@ router.post('/update_avatar_link', async function (req, res) {
   }
 });
 
-// Update one of the user profiles
+//! UPDATE A PROFILE IN USER ACCOUNT
 router.post('/update_user_profile', async (req, res) => {
   const email = req.body.email;
   const originalName = req.body.originalName;
@@ -293,6 +323,7 @@ router.post('/update_user_profile', async (req, res) => {
           'profiles.$.favorite_game': gameTitle,
           'profiles.$.favorite_console': gameConsole,
           'profiles.$.favorite_genre': genre,
+          'profiles.$.collection': [gameTitle],
         },
       }, // list fields you like to change
       { new: true, setDefaultsOnInsert: false, upsert: true }
@@ -311,7 +342,7 @@ router.post('/update_user_profile', async (req, res) => {
   }
 });
 
-//! ROUTE TO CREATE A NEW PROFILE
+//! CREATE A NEW PROFILE
 router.post('/create_new_profile', async (req, res) => {
   const userEmail = req.body.email;
   try {
@@ -354,7 +385,7 @@ const deleteProfile = async (name, email) => {
   }
 };
 
-//! ROUTE TO DELETE EXISTING PROFILE
+//! DELETE EXISTING PROFILE
 router.delete('/delete_profile', async (req, res) => {
   const name = req.body.name;
   const email = req.body.email;

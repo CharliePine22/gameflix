@@ -81,7 +81,7 @@ const requests = [
   {
     requestId: 'fetchPopularTitles',
     url: `games?dates=${previousQuarter},${currentDate}&page_size=10&ordering=rating_count&key=${API_KEY}`,
-    title: 'TRENDING TITLES',
+    title: 'TRENDING',
   },
   {
     requestId: 'fetchGOATTitles',
@@ -91,87 +91,87 @@ const requests = [
   {
     requestId: 'fetchActionTitles',
     url: `games?genres=4&key=${API_KEY}`,
-    title: 'ACTION TITLES',
+    title: 'ACTION',
   },
   {
     requestId: 'fetchAdventureTitles',
     url: `games?genres=3&key=${API_KEY}`,
-    title: 'ADVENTURE TITLES',
+    title: 'ADVENTURE',
   },
   {
     requestId: 'fetchArcadeTitles',
     url: `games?genres=11&key=${API_KEY}`,
-    title: 'ARCADE TITLES',
+    title: 'ARCADE',
   },
   {
     requestId: 'fetchCardTitles',
     url: `games?genres=17&key=${API_KEY}`,
-    title: 'CARD TITLES',
+    title: 'CARD',
   },
   {
     requestId: 'fetchCasualTitles',
     url: `games?genres=40&key=${API_KEY}`,
-    title: 'CASUAL TITLES',
+    title: 'CASUAL',
   },
   {
     requestId: 'fetchFamilyTitles',
     url: `games?genres=19&key=${API_KEY}`,
-    title: 'FAMILY TITLES',
+    title: 'FAMILY',
   },
   {
     requestId: 'fetchFightingTitles',
     url: `games?genres=6&key=${API_KEY}`,
-    title: 'FIGHTING TITLES',
+    title: 'FIGHTING',
   },
   {
     requestId: 'fetchIndieTitles',
     url: `games?genres=51&key=${API_KEY}`,
-    title: 'INDIE TITLES',
+    title: 'INDIE',
   },
   {
     requestId: 'fetchMassivelyMultiplayerTitles',
     url: `games?genres=59&key=${API_KEY}`,
-    title: 'MASSIVELY MULTIPLAYER TITLES',
+    title: 'MASSIVELY MULTIPLAYER',
   },
   {
     requestId: 'fetchPlatformerTitles',
     url: `games?genres=83&key=${API_KEY}`,
-    title: 'PLATFORMER TITLES',
+    title: 'PLATFORMER',
   },
   {
     requestId: 'fetchPuzzleTitles',
     url: `games?genres=7&key=${API_KEY}`,
-    title: 'PUZZLE TITLES',
+    title: 'PUZZLE',
   },
   {
     requestId: 'fetchRacingTitles',
     url: `games?genres=1&key=${API_KEY}`,
-    title: 'RACING TITLES',
+    title: 'RACING',
   },
   {
     requestId: 'fetchRPGTitles',
     url: `games?genres=5&key=${API_KEY}`,
-    title: 'RPG TITLES',
+    title: 'RPG',
   },
   {
     requestId: 'fetchShooterTitles',
     url: `games?genres=2&key=${API_KEY}`,
-    title: 'SHOOTER TITLES',
+    title: 'SHOOTER',
   },
   {
     requestId: 'fetchSimulationTitles',
     url: `games?genres=14&key=${API_KEY}`,
-    title: 'SIMULATION TITLES',
+    title: 'SIMULATION',
   },
   {
     requestId: 'fetchSportsTitles',
     url: `games?genres=15&key=${API_KEY}`,
-    title: 'SPORTS TITLES',
+    title: 'SPORTS',
   },
   {
     requestId: 'fetchStrategy',
     url: `games?genres=10&key=${API_KEY}`,
-    title: 'STRATEGY TITLES',
+    title: 'STRATEGY',
   },
 ];
 

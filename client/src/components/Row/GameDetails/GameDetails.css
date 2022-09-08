@@ -4,14 +4,14 @@
   border-radius: 6px;
   font-size: 16px;
   /* overflow: hidden; */
-  width: 25rem;
-  height: 23rem;
-  top: -38px;
+  width: 24rem;
+  height: 22rem;
+  top: 0px;
   left: -45px;
   transform-origin: center center;
   animation: growBox 150ms ease-in forwards;
   backface-visibility: hidden;
-  z-index: 3;
+  z-index: 10;
   opacity: 1;
   box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
   will-change: transform;
@@ -34,7 +34,7 @@
   font-size: 16px;
   overflow: hidden;
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
 
 .game-details__details {

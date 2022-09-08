@@ -9,6 +9,7 @@
   color: #fff;
   z-index: 0;
   padding-bottom: 30px;
+  z-index: 3;
 }
 
 .hide-row {
@@ -50,7 +51,7 @@
   margin-right: 10px;
   /* FLIP CARD TRANSITION */
   transition: all 250ms;
-  z-index: 1;
+  z-index: -1;
   max-width: 14rem;
   min-width: 14rem;
   object-fit: cover;
@@ -68,6 +69,7 @@
 .row__poster_front,
 .row__poster_back {
   position: absolute;
+  z-index: 0;
   top: 0;
   bottom: 0;
   left: 0;

@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.62edf43b.css",
-    "main.js": "/static/js/main.e1dafa1e.js",
+    "main.css": "/static/css/main.d83d33a3.css",
+    "main.js": "/static/js/main.e7d3d10c.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -36,10 +36,11 @@
     "static/media/steam-logo.png": "/static/media/steam-logo.ae35c358ce32663bcab0.png",
     "static/media/basic_avatar.png": "/static/media/basic_avatar.28e44cb7f5d2425541e5.png",
     "static/media/nintendo-logo.png": "/static/media/nintendo-logo.14c4d5793bf79874cb08.png",
+    "static/media/rexlia_rg.otf": "/static/media/rexlia_rg.d297770693345b764564.otf",
     "static/media/playstation-logo.png": "/static/media/playstation-logo.630dfedda6273efed3a8.png",
     "index.html": "/index.html",
-    "main.62edf43b.css.map": "/static/css/main.62edf43b.css.map",
-    "main.e1dafa1e.js.map": "/static/js/main.e1dafa1e.js.map",
+    "main.d83d33a3.css.map": "/static/css/main.d83d33a3.css.map",
+    "main.e7d3d10c.js.map": "/static/js/main.e7d3d10c.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -56,7 +57,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.62edf43b.css",
-    "static/js/main.e1dafa1e.js"
+    "static/css/main.d83d33a3.css",
+    "static/js/main.e7d3d10c.js"
   ]
 }

@@ -125,6 +125,11 @@ router.get('/spotify_playlist', async (req, res) => {
 
 //* GET ALBUM ROUTE
 router.get('/spotify_album', async (req, res) => {
+  const spotifyApi = new spotifyWebApi({
+    redirectUri: 'http://localhost:3000',
+    clientId: '05e6f02e47724a63b635cfdac09fc991',
+    clientSecret: 'eb21ac786045448285ae40cc89db9ad6',
+  });
   const game = req.query.game;
   const spotifyToken = req.query.token;
   spotifyApi.setAccessToken(spotifyToken);
@@ -341,6 +346,9 @@ router.post('/update_user_profile', async (req, res) => {
     });
   }
 });
+
+//! UPDATE PROFILE GAME COLLECTIONS
+router.post('/update_collection', async (req, res) => {});
 
 //! CREATE A NEW PROFILE
 router.post('/create_new_profile', async (req, res) => {

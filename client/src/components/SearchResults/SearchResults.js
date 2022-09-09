@@ -17,9 +17,6 @@ const SearchResults = ({ searchedGame }) => {
     }
   };
 
-  // console.log(topGames[0].platforms);
-  console.log(remainderGames);
-
   // Filter out any games with adult content/themes or smaller indie games
   const filterOutAdult = (game) => {
     // Grab game tags and game platforms lists
@@ -61,64 +58,66 @@ const SearchResults = ({ searchedGame }) => {
         <h2>Top Results</h2>
         {/* Top 3 Search Results */}
         <div className='top_results_row'>
-          {topGames?.slice(0, 3).map(
-            (game) =>
-              filterOutAdult(game) == true && (
-                <div className='top_result_container' key={game.name}>
-                  <div className='top_result_upper'>
+          {topGames &&
+            topGames?.slice(0, 3).map(
+              (game) =>
+                filterOutAdult(game) == true && (
+                  <div className='top_result_container' key={game.name}>
+                    <div className='top_result_upper'>
+                      <div
+                        className='result_publisher'
+                        style={{
+                          backgroundSize: 'cover',
+                          backgroundImage: `url(${game.background_image})`,
+                          backgroundPosition: 'center',
+                        }}
+                      />
+                      <img src={game.background_image} />
+                    </div>
+                    <div className='top_result_lower'>
+                      <div className='result_lower_contents'>
+                        <h3 className='game_name'>{game.name}</h3>
+                      </div>
+                    </div>
                     <div
-                      className='result_publisher'
+                      className='game_cover'
                       style={{
                         backgroundSize: 'cover',
                         backgroundImage: `url(${game.background_image})`,
                         backgroundPosition: 'center',
                       }}
                     />
-                    <img src={game.background_image} />
                   </div>
-                  <div className='top_result_lower'>
-                    <div className='result_lower_contents'>
-                      <h3 className='game_name'>{game.name}</h3>
-                    </div>
-                  </div>
-                  <div
-                    className='game_cover'
-                    style={{
-                      backgroundSize: 'cover',
-                      backgroundImage: `url(${game.background_image})`,
-                      backgroundPosition: 'center',
-                    }}
-                  />
-                </div>
-              )
-          )}
+                )
+            )}
         </div>
         {/* Remaining Games */}
         <div className='remainder_results'>
           <h2>Results</h2>
-          {remainderGames?.map(
-            (game) =>
-              filterOutAdult(game) == true &&
-              game.background_image !== null && (
-                <div className='results_container' key={game.name}>
-                  <div
-                    className='results_container_img'
-                    style={{
-                      backgroundSize: 'cover',
-                      backgroundImage: `url(${game.background_image})`,
-                      backgroundPosition: 'center',
-                    }}
-                  />
-                  <div className='results_container_content'>
-                    <h3 className='game_name_remainder'>{game.name}</h3>
-                    {/* <p>{game.publisher}</p> */}
-                    <p className='game_playtime'>
-                      Playtime: {game.playtime}hrs
-                    </p>
+          {remainderGames &&
+            remainderGames?.map(
+              (game) =>
+                filterOutAdult(game) == true &&
+                game.background_image !== null && (
+                  <div className='results_container' key={game.name}>
+                    <div
+                      className='results_container_img'
+                      style={{
+                        backgroundSize: 'cover',
+                        backgroundImage: `url(${game.background_image})`,
+                        backgroundPosition: 'center',
+                      }}
+                    />
+                    <div className='results_container_content'>
+                      <h3 className='game_name_remainder'>{game.name}</h3>
+                      {/* <p>{game.publisher}</p> */}
+                      <p className='game_playtime'>
+                        Playtime: {game.playtime}hrs
+                      </p>
+                    </div>
                   </div>
-                </div>
-              )
-          )}
+                )
+            )}
         </div>
       </div>
     </div>

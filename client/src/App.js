@@ -58,12 +58,9 @@ function App() {
     const request = await rawgClient.get(
       `/games?key=df0a614ea95743f7a9e2008a796b5249&search=${game}&ordering=-added&search_exact=true`
     );
-    setSearchedGame(request.data.results);
+    const result = await request.data.results;
+    setSearchedGame(result);
   };
-
-  const fetchUserCollection = async () => {};
-
-  fetchUserCollection();
 
   // Login user if verification succeeds.
   const loginAuthentication = (user) => {
@@ -194,7 +191,15 @@ function App() {
           <Banner />
           <MainRow />
           <TrendingRow />
-          <UserLibrary activeProfile={selectedProfile} />
+          <UserLibrary
+            activeProfile={selectedProfile}
+            playTrack={playTrack}
+            currentTrack={currentTrack}
+            isPlaying={playAudio}
+            pausePlayback={() => setPlayAudio(false)}
+            resumePlayback={() => setPlayAudio(true)}
+            spotifyToken={spotifyAccessToken}
+          />
           {requests.map(
             (request) =>
               request.title !== 'COMING SOON' &&

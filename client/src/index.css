@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Rexlia';
+  src: local('Rexlia'), url(./assets/fonts/rexlia_rg.otf) format('opentype');
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,6 +16,10 @@ body {
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+}
+
+h2 {
+  font-family: Rexlia;
 }
 
 code {

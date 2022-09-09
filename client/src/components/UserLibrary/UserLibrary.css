@@ -1,2 +1,75 @@
-.user_library_wrapper {
+.user_library_add {
+  border: 3px double white;
+  background-color: transparent;
+  width: 100%;
+  max-width: 14rem;
+  min-width: 14rem;
+  height: 100%;
+  min-height: 350px;
+  max-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 250ms ease;
+  border-radius: 6px;
+}
+
+.user_library_add:hover {
+  opacity: 1;
+  border: 3px solid white;
+}
+
+.user_library_arrow {
+  font-size: 1.3rem;
+  cursor: pointer;
+  transform: translateX(75px);
+}
+
+.user_library_add span {
+  font-size: 6rem;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.user_library_expand_container {
+  display: flex;
+  align-items: center;
+}
+
+.user_library_expand_container:hover .user_library_view_all {
+  opacity: 1;
+}
+
+.user_library__row {
+  margin-left: 20px;
+  color: #fff;
+  z-index: 0;
+  padding-bottom: 30px;
+  height: auto;
+}
+
+.user_library_title {
+  display: flex;
+  align-items: center;
+  width: 355px;
+  cursor: pointer;
+}
+
+.user_library_title:hover .user_library_view_all {
+  opacity: 1;
+}
+
+.user_library_title p {
+  font-size: 1rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.user_library_view_all {
+  opacity: 0;
+  transform: translateX(0);
 }

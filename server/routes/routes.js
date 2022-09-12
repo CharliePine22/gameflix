@@ -348,7 +348,34 @@ router.post('/update_user_profile', async (req, res) => {
 });
 
 //! UPDATE PROFILE GAME COLLECTIONS
-router.post('/update_collection', async (req, res) => {});
+router.post('/update_collection', async (req, res) => {
+  const email = req.body.email;
+  const gameTitle = req.body.gameTitle;
+  const name = req.body.currentProfile;
+
+  try {
+    const request = await userModel.findOneAndUpdate(
+      { email: email, profiles: { $elemMatch: { name } } },
+      {
+        $push: {
+          'profiles.$.collection': gameTitle,
+        },
+      }, // list fields you like to change
+      { new: true, setDefaultsOnInsert: false, upsert: true }
+    );
+    res.send({
+      code: 200,
+      status: 'OK',
+      message: 'Profile updated!',
+      response: request,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400, {
+      message: 'There was an error with your request, please try again.',
+    });
+  }
+});
 
 //! CREATE A NEW PROFILE
 router.post('/create_new_profile', async (req, res) => {

@@ -7,11 +7,11 @@ import Placeholder from '../Placeholder/Placeholder';
 import { SiApplemusic } from 'react-icons/si';
 import { FaPlay, FaPause } from 'react-icons/fa';
 
+const spotifyToken = localStorage.getItem('spotify_token');
+
 function Row({
   title,
   fetchURL,
-  spotifyToken,
-  twitchToken,
   playTrack,
   currentTrack,
   resumePlayback,
@@ -61,7 +61,7 @@ function Row({
       return;
     }
     try {
-      const request = await axios.get('/app/spotify_playlist', {
+      const request = await axios.get('/app/spotify_album', {
         params: {
           game,
           token: spotifyToken,
@@ -103,6 +103,10 @@ function Row({
       resumePlayback();
     }
     playTrack(track);
+  };
+
+  const formatTrackTitle = (title) => {
+    return title.split('-')[0];
   };
 
   return (
@@ -163,22 +167,24 @@ function Row({
                                   <p
                                     style={{
                                       color:
+                                        currentTrack &&
                                         currentTrack.name == track.track.name
                                           ? 'green'
                                           : 'white',
                                       fontWeight:
+                                        currentTrack &&
                                         currentTrack.name == track.track.name
                                           ? '600'
                                           : '400',
                                     }}
                                   >
-                                    {track.track.name}
+                                    {formatTrackTitle(track.track.name)}
                                   </p>
                                   {currentTrack.name !== track.track.name ||
                                   !isPlaying ? (
                                     <FaPlay
                                       onClick={(e) =>
-                                        selectTrackHandler(e, track.track)
+                                        selectTrackHandler(e, track)
                                       }
                                     />
                                   ) : (

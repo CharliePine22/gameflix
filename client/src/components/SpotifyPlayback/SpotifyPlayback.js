@@ -7,27 +7,28 @@ const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
 });
 
+const spotifyToken = localStorage.getItem('spotify_token');
+
 const SpotifyPlayback = ({
-  token,
   trackUri,
   playAudio,
   beginPlayback,
   pausePlayback,
 }) => {
   useEffect(() => {
-    spotifyApi.setAccessToken(token);
-  }, [token]);
+    spotifyApi.setAccessToken(spotifyToken);
+  }, [spotifyToken]);
 
   useEffect(() => {
     beginPlayback();
   }, [trackUri]);
 
-  if (!token) return;
+  if (!spotifyToken) return;
   return (
     <>
       <div className='playback_container'>
         <SpotifyPlayer
-          token={token}
+          token={spotifyToken}
           callback={(state) => {
             if (!state.isPlaying) pausePlayback();
           }}

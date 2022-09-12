@@ -20,20 +20,21 @@ import SpotifyPlayback from './components/SpotifyPlayback/SpotifyPlayback';
 import useSpotifyAuth from './hooks/useSpotifyAuth';
 import useTwitchAuth from './hooks/useTwitchAuth';
 import UserLibrary from './components/UserLibrary/UserLibrary';
+import { MdSignalCellularNull } from 'react-icons/md';
 
 const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState('');
+  const [currentTrack, setCurrentTrack] = useState(null);
   const [playAudio, setPlayAudio] = useState(false);
   // User states
   const [changingUser, setChangingUser] = useState(false);
   const [updatingUser, setUpdatingUser] = useState(false);
   const [editingUser, setEditingUser] = useState(false);
   const [loggedUser, setLoggedUser] = useState(null);
-  const [selectedProfile, setSelectedProfile] = useState({});
+  const [selectedProfile, setSelectedProfile] = useState(null);
   // Search States
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState('');
@@ -74,6 +75,7 @@ function App() {
     localStorage.removeItem('user');
     localStorage.removeItem('profile');
     localStorage.removeItem('password');
+    localStorage.removeItem('spotify_token');
     setSelectedProfile(null);
     setLoggedUser(null);
     window.location = '/';
@@ -89,6 +91,7 @@ function App() {
   };
 
   const playTrack = (track) => {
+    console.log(track);
     setCurrentTrack(track);
   };
 
@@ -104,7 +107,7 @@ function App() {
       localStorage.setItem('user', JSON.stringify(request.data));
     };
     updateUser();
-  }, []);
+  }, [updatingUser]);
 
   // Check to see if user is logged in
   useEffect(() => {
@@ -199,6 +202,8 @@ function App() {
             pausePlayback={() => setPlayAudio(false)}
             resumePlayback={() => setPlayAudio(true)}
             spotifyToken={spotifyAccessToken}
+            updatingUser={() => setUpdatingUser(true)}
+            finishUpdatingUser={() => setUpdatingUser(false)}
           />
           {requests.map(
             (request) =>
@@ -228,7 +233,6 @@ function App() {
           playAudio={playAudio}
           beginPlayback={(e) => setPlayAudio(true)}
           pausePlayback={(e) => setPlayAudio(false)}
-          token={spotifyAccessToken}
           trackUri={currentTrack?.uri}
         />
       )}

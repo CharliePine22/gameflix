@@ -5,8 +5,8 @@
   max-width: 14rem;
   min-width: 14rem;
   height: 100%;
-  min-height: 350px;
-  max-height: 350px;
+  min-height: 345px;
+  max-height: 345px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,9 +22,16 @@
 }
 
 .user_library_arrow {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   cursor: pointer;
-  transform: translateX(75px);
+  transform: translateX(0);
+  transition: transform 250ms ease-in;
+  color: lightblue;
+}
+
+.extended {
+  transform: translateX(50px);
+  transition: transform 250ms ease-in;
 }
 
 .user_library_add span {
@@ -44,6 +51,34 @@
   opacity: 1;
 }
 
+.user_library_modal {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 35%;
+  width: 330px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.95);
+  color: white;
+  z-index: 2;
+  top: 122px;
+  left: 30vw;
+  border: 2px solid white;
+  align-items: center;
+  animation: displayModal 500ms forwards;
+  box-shadow: 0 3px 7px rgb(255 255 255 / 30%);
+}
+
+.user_library_modal input {
+  width: 200px;
+}
+
+.user_library_modal h3 {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
 .user_library__row {
   margin-left: 20px;
   color: #fff;
@@ -59,17 +94,66 @@
   cursor: pointer;
 }
 
-.user_library_title:hover .user_library_view_all {
+.user_library_title h2 {
+  opacity: 0.95;
+}
+
+.user_library_title:hover .user_library_title h2 {
   opacity: 1;
 }
 
-.user_library_title p {
-  font-size: 1rem;
-  text-decoration: underline;
-  cursor: pointer;
+.user_library_title:hover .user_library_view_all {
+  opacity: 1;
+  transform: translateX(-12px);
+}
+
+.user_library_upload_icon {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  height: 22px;
+  width: 22px;
+  z-index: 2;
+  transition: transform 250ms ease-in-out, opacity 100ms ease-in-out;
+  color: black;
+  opacity: 0.5;
+  backface-visibility: hidden;
+}
+
+.user_library_upload_icon:hover {
+  opacity: 1;
 }
 
 .user_library_view_all {
+  color: lightblue;
+  cursor: pointer;
+  font-size: 0.8rem;
   opacity: 0;
-  transform: translateX(0);
+  transform: translateX(-12px);
+  transition: opacity 300ms ease-in;
+}
+
+@keyframes displayModal {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(75px);
+  }
+}
+
+@keyframes hideModal {
+  0% {
+    transform: translateY(75px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+    z-index: 0;
+  }
 }

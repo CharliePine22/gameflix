@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import rawgClient from '../../axios';
 import axios from 'axios';
-import { FaPause, FaPlay } from 'react-icons/fa';
+import { FaPause, FaPlay, FaUpload } from 'react-icons/fa';
 import { SiApplemusic } from 'react-icons/si';
 import './UserLibrary.css';
 import '../Row/Row.css';
@@ -14,15 +14,25 @@ const UserLibrary = ({
   isPlaying,
   pausePlayback,
   resumePlayback,
-  spotifyToken,
+  updatingUser,
+  finishUpdatingUser,
 }) => {
   const [collection, setCollection] = useState([]);
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentGame, setCurrentGame] = useState('');
+  const [gameName, setGameName] = useState('');
+  const [imageLink, setImageLink] = useState('');
+  const [updatingCollection, setUpdatingCollection] = useState(false);
+  const [updatingImage, setUpdatingImage] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [expandTitle, setExpandTitle] = useState(false);
+  const loggedInUser = JSON.parse(localStorage.getItem('user'));
 
+  // MongoDB Query Creds
+  const userEmail = JSON.parse(localStorage.getItem('user')).email;
+  const userProfile = JSON.parse(localStorage.getItem('profile')).name;
+  const spotifyToken = localStorage.getItem('spotify_token');
   const fetchGameOST = async (game) => {
     if (!spotifyToken) {
       console.log('Please connect to Spotify!');
@@ -35,7 +45,6 @@ const UserLibrary = ({
           token: spotifyToken,
         },
       });
-      console.log(request.data.tracks);
       setCurrentPlaylist(request.data.tracks);
       setViewingSoundtrack(true);
     } catch (error) {
@@ -57,10 +66,49 @@ const UserLibrary = ({
 
   const selectTrackHandler = (e, track) => {
     e.stopPropagation();
-    if (track.name == currentTrack.name) {
+    if (currentTrack !== null && track.name == currentTrack.name) {
       resumePlayback();
+    } else {
+      playTrack(track);
     }
-    playTrack(track);
+  };
+
+  // Add game to collection or upload custom game image
+  const updateCollectionHandler = (method) => {
+    if (method == 'update') {
+      setUpdatingCollection(true);
+    } else {
+      setUpdatingImage(true);
+    }
+  };
+
+  const addGameHandler = async (e, game) => {
+    e.preventDefault();
+    updatingUser();
+    if (collection.includes(game)) {
+      console.log('GAME IN LIBRARY');
+      return;
+    }
+    try {
+      await axios.post('/app/update_collection', {
+        email: userEmail,
+        currentProfile: userProfile,
+        gameTitle: game,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    setUpdatingCollection(false);
+    finishUpdatingUser();
+    const currentProfile = loggedInUser.profiles.filter((obj) => {
+      return obj.name === activeProfile.name;
+    });
+    localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
+    setCollection(currentProfile[0].collection);
+  };
+
+  const formatTrackTitle = (title) => {
+    return title.split('-')[0].split('(')[0];
   };
 
   useEffect(() => {
@@ -79,11 +127,19 @@ const UserLibrary = ({
     fetchUserCollection();
   }, [activeProfile]);
 
+  collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+
   return (
     <div className='user_library__row'>
-      <div className='user_library_title'>
+      <div
+        className='user_library_title'
+        onMouseOver={() => setExpandTitle(true)}
+        onMouseOut={() => setExpandTitle(false)}
+      >
         <h2 style={{ color: activeProfile.color }}>YOUR COLLECTION</h2>
-        <MdKeyboardArrowRight className='user_library_arrow' />
+        <MdKeyboardArrowRight
+          className={`user_library_arrow ${expandTitle ? 'extended' : ''}`}
+        />
         <p className='user_library_view_all'>View All</p>
       </div>
       <div className='row__posters'>
@@ -102,6 +158,10 @@ const UserLibrary = ({
                     <SiApplemusic
                       onClick={(e) => viewGameSoundtrack(e, game)}
                       className='row__poster_music_icon'
+                    />
+                    <FaUpload
+                      className='user_library_upload_icon'
+                      onClick={() => updateCollectionHandler('upload')}
                     />
                     <span
                       className='row__poster_name'
@@ -139,22 +199,24 @@ const UserLibrary = ({
                             <p
                               style={{
                                 color:
-                                  currentTrack?.name == track.name
+                                  currentTrack !== null &&
+                                  currentTrack.name == track.name
                                     ? 'green'
                                     : 'white',
                                 fontWeight:
-                                  currentTrack?.name == track.name
+                                  currentTrack !== null &&
+                                  currentTrack.name == track.name
                                     ? '600'
                                     : '400',
                               }}
                             >
-                              {track.name}
+                              {formatTrackTitle(track.name)}
                             </p>
-                            {currentTrack.name !== track.name || !isPlaying ? (
+                            {(currentTrack !== null &&
+                              currentTrack.name !== track.name) ||
+                            !isPlaying ? (
                               <FaPlay
-                                onClick={(e) =>
-                                  selectTrackHandler(e, track.track)
-                                }
+                                onClick={(e) => selectTrackHandler(e, track)}
                               />
                             ) : (
                               <FaPause onClick={pausePlayback} />
@@ -169,9 +231,47 @@ const UserLibrary = ({
             </div>
           </div>
         ))}
-        <div className='user_library_add'>
+
+        {/* COLLECTION UPDATE */}
+        <div
+          className='user_library_add'
+          onClick={() => updateCollectionHandler('update')}
+        >
           <span>+</span>
         </div>
+        {updatingCollection && (
+          <div
+            className={`user_library_modal ${
+              !updatingCollection || !updatingImage ? 'modal_hidden' : ''
+            }`}
+          >
+            <h3>{updatingCollection ? 'GAME NAME' : 'IMAGE LINK'}</h3>
+            <div className='modal_content'>
+              <div className='modal_form'>
+                <input
+                  value={updatingCollection ? gameName : imageLink}
+                  onChange={(e) =>
+                    updatingCollection
+                      ? setGameName(e.target.value)
+                      : setImageLink(e.target.value)
+                  }
+                />
+                <button onClick={(e) => addGameHandler(e, gameName)}>
+                  Submit
+                </button>
+                <button
+                  onClick={() =>
+                    updatingCollection
+                      ? setUpdatingCollection(false)
+                      : setUpdatingImage(false)
+                  }
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

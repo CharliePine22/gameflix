@@ -78,6 +78,7 @@
   width: 100%;
   backface-visibility: hidden;
   transform-style: preserve-3d;
+  border-radius: 6px;
   /* CARD MOVING UP TRANSITION */
   transition: transform 300ms;
 }

@@ -98,11 +98,14 @@ function App() {
   useEffect(() => {
     const updateUser = async () => {
       if (!loggedUser) return null;
-      const request = await axios.get('/app/get_user', {
-        params: {
-          email: loggedUser.email,
-        },
-      });
+      const request = await axios.get(
+        'https://gameflixx-server.herokuapp.com/get_user',
+        {
+          params: {
+            email: loggedUser.email,
+          },
+        }
+      );
       localStorage.setItem('user', JSON.stringify(request.data));
     };
     updateUser();

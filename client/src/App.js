@@ -91,7 +91,6 @@ function App() {
   };
 
   const playTrack = (track) => {
-    console.log(track);
     setCurrentTrack(track);
   };
 
@@ -107,7 +106,7 @@ function App() {
       localStorage.setItem('user', JSON.stringify(request.data));
     };
     updateUser();
-  }, [updatingUser]);
+  }, []);
 
   // Check to see if user is logged in
   useEffect(() => {

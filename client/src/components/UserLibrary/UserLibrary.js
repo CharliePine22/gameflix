@@ -85,26 +85,22 @@ const UserLibrary = ({
   const addGameHandler = async (e, game) => {
     e.preventDefault();
     updatingUser();
-    if (collection.includes(game)) {
-      console.log('GAME IN LIBRARY');
-      return;
-    }
     try {
       await axios.post('/app/update_collection', {
         email: userEmail,
         currentProfile: userProfile,
         gameTitle: game,
       });
+      const currentProfile = loggedInUser.profiles.filter((obj) => {
+        return obj.name === activeProfile.name;
+      });
+      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
+      setCollection(currentProfile[0].collection);
     } catch (error) {
       console.log(error);
     }
     setUpdatingCollection(false);
     finishUpdatingUser();
-    const currentProfile = loggedInUser.profiles.filter((obj) => {
-      return obj.name === activeProfile.name;
-    });
-    localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
-    setCollection(currentProfile[0].collection);
   };
 
   const formatTrackTitle = (title) => {

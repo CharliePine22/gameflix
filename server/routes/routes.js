@@ -147,12 +147,10 @@ router.get('/spotify_album', async (req, res) => {
       tracks: albumTracks.body.items,
     });
   } catch (error) {
-    console.log(error);
     res.send({
       code: 400,
       status: 'ERROR',
-      message: 'Something went wrong, please try again!',
-      error,
+      message: error,
     });
   }
 });

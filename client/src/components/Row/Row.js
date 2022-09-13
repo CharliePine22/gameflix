@@ -67,9 +67,16 @@ function Row({
           token: spotifyToken,
         },
       });
-      setCurrentPlaylist(request.data.tracks);
-      setViewingSoundtrack(true);
+      console.log(request.data);
+      if (request.data.status !== 'OK') {
+        window.location = '/';
+        localStorage.removeItem('spotify_token');
+      } else {
+        setCurrentPlaylist(request.data.tracks);
+        setViewingSoundtrack(true);
+      }
     } catch (error) {
+      console.log(error);
       console.log('OST FETCH ISSUE');
     }
   };
@@ -99,14 +106,14 @@ function Row({
 
   const selectTrackHandler = (e, track) => {
     e.stopPropagation();
-    if (track.name == currentTrack.name) {
+    if (currentTrack !== null && track.name == currentTrack.name) {
       resumePlayback();
     }
     playTrack(track);
   };
 
   const formatTrackTitle = (title) => {
-    return title.split('-')[0];
+    return title.split('-')[0].split('(')[0];
   };
 
   return (
@@ -160,27 +167,28 @@ function Row({
                             <ul className='soundtracks'>
                               {currentPlaylist?.map((track) => (
                                 <li
-                                  key={track.track.id}
+                                  key={track.id}
                                   onClick={(e) => e.stopPropagation()}
                                   className='soundtrack'
                                 >
                                   <p
                                     style={{
                                       color:
-                                        currentTrack &&
-                                        currentTrack.name == track.track.name
+                                        currentTrack !== null &&
+                                        currentTrack.name == track.name
                                           ? 'green'
                                           : 'white',
                                       fontWeight:
-                                        currentTrack &&
-                                        currentTrack.name == track.track.name
+                                        currentTrack !== null &&
+                                        currentTrack.name == track.name
                                           ? '600'
                                           : '400',
                                     }}
                                   >
-                                    {formatTrackTitle(track.track.name)}
+                                    {formatTrackTitle(track.name)}
                                   </p>
-                                  {currentTrack.name !== track.track.name ||
+                                  {(currentTrack !== null &&
+                                    currentTrack.name !== track.name) ||
                                   !isPlaying ? (
                                     <FaPlay
                                       onClick={(e) =>

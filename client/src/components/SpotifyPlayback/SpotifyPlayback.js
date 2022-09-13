@@ -8,6 +8,7 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 const spotifyToken = localStorage.getItem('spotify_token');
+const activeProfile = JSON.parse(localStorage.getItem('profile'));
 
 const SpotifyPlayback = ({
   trackUri,
@@ -37,9 +38,9 @@ const SpotifyPlayback = ({
           styles={{
             color: 'white',
             bgColor: 'rgba(0,0,0,0.8)',
-            sliderColor: '#1cb954',
+            sliderColor: activeProfile.color,
             trackArtistColor: 'white',
-            trackNameColor: '#1cb954',
+            trackNameColor: activeProfile.color,
           }}
         />
       </div>

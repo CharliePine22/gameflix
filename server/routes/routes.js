@@ -326,7 +326,9 @@ router.post('/update_user_profile', async (req, res) => {
           'profiles.$.favorite_game': gameTitle,
           'profiles.$.favorite_console': gameConsole,
           'profiles.$.favorite_genre': genre,
-          'profiles.$.collection': [gameTitle],
+        },
+        $push: {
+          'profiles.$.collection': gameTitle,
         },
       }, // list fields you like to change
       { new: true, setDefaultsOnInsert: false, upsert: true }
@@ -346,6 +348,7 @@ router.post('/update_user_profile', async (req, res) => {
 });
 
 //! UPDATE PROFILE GAME COLLECTIONS
+//* ADD GAME
 router.post('/update_collection', async (req, res) => {
   const email = req.body.email;
   const gameTitle = req.body.gameTitle;
@@ -355,16 +358,47 @@ router.post('/update_collection', async (req, res) => {
     const request = await userModel.findOneAndUpdate(
       { email: email, profiles: { $elemMatch: { name } } },
       {
-        $push: {
+        $addToSet: {
           'profiles.$.collection': gameTitle,
         },
       }, // list fields you like to change
       { new: true, setDefaultsOnInsert: false, upsert: true }
     );
+
     res.send({
       code: 200,
       status: 'OK',
-      message: 'Profile updated!',
+      message: 'Game added to collection!',
+      response: request,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400, {
+      message: 'There was an error with your request, please try again.',
+    });
+  }
+});
+
+//* REMOVE GAME
+router.put('/remove_game', async (req, res) => {
+  const email = req.body.email;
+  const gameTitle = req.body.gameTitle;
+  const name = req.body.currentProfile;
+
+  try {
+    const request = await userModel.findOneAndUpdate(
+      { email: email, profiles: { $elemMatch: { name } } },
+      {
+        $pull: {
+          'profiles.$.collection': gameTitle,
+        },
+      }, // list fields you like to change
+      { new: true, upsert: false }
+    );
+    res.send({
+      code: 200,
+      status: 'OK',
+      message: 'Game remove from collection!',
       response: request,
     });
   } catch (error) {

@@ -112,6 +112,13 @@
   color: #fff;
 }
 
+.password_focused {
+  transition: all 150ms ease-in;
+  transform: scale(0.8) translate(-9px, -40px);
+  font-size: 1rem;
+  color: #fff;
+}
+
 .login__auth_error {
   position: absolute;
   top: 43px;
@@ -164,6 +171,11 @@
   width: 15rem;
   margin: 0;
   border: 3px solid transparent;
+}
+
+.login__image_loading {
+  height: 100vh;
+  width: 100vw;
 }
 
 .login__name {

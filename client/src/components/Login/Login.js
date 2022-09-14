@@ -26,6 +26,7 @@ const Login = (props) => {
 
   // Fetch games to display and create background image
   useEffect(() => {
+    setImgsLoading(true);
     async function fetchData() {
       const request = await rawgClient.get(requests[2].url + '&page_size=40');
       setGameList(request.data.results);
@@ -82,10 +83,11 @@ const Login = (props) => {
       return;
     }
     try {
-      const response = await axios.post(
-        'https://gameflixx-server.herokuapp.com/app/signin',
-        { email, password }
-      );
+      const response = await axios.post('/app/signin', { email, password });
+      // const response = await axios.post(
+      //   'https://gameflixx-server.herokuapp.com/app/signin',
+      //   { email, password }
+      // );
       setAuthError('');
       props.onLogin(response.data.user);
     } catch (e) {
@@ -114,6 +116,15 @@ const Login = (props) => {
       className='login__wrapper'
       style={{ display: imgsLoading ? 'none' : 'block' }}
     >
+      {/* {imgsLoading && (
+        <div className='login__image_loading'>
+          <div className='image_loading__dots'>
+            <div className='loading_dot'></div>
+            <div className='loading_dot'></div>
+            <div className='loading_dot'></div>
+          </div>
+        </div>
+      )} */}
       <div className='login'>
         <img src={gameflixBrand} className='login__brand' />
         <div className='login__form_wrapper'>
@@ -165,7 +176,7 @@ const Login = (props) => {
                     <span
                       className={`form_actions_placeholder ${
                         passwordRef.current?.value || currentFocus == 'password'
-                          ? 'focused'
+                          ? 'password_focused'
                           : ''
                       }`}
                     >

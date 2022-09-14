@@ -139,7 +139,7 @@
   padding: 5px;
   width: 97px;
   height: 95px;
-  object-fit: contain;
+  object-fit: cover;
   margin-top: 15px;
   border-radius: 6px;
   transform: translateX(0);

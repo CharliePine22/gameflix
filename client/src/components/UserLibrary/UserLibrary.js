@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import rawgClient from '../../axios';
 import axios from 'axios';
-import { FaPause, FaPlay, FaUpload } from 'react-icons/fa';
+import { FaPause, FaPlay, FaUpload, FaTrash } from 'react-icons/fa';
 import { SiApplemusic } from 'react-icons/si';
 import './UserLibrary.css';
 import '../Row/Row.css';
 import { MdKeyboardArrowRight } from 'react-icons/md';
+import GameList from './GameList';
 
 const UserLibrary = ({
   activeProfile,
@@ -14,8 +15,7 @@ const UserLibrary = ({
   isPlaying,
   pausePlayback,
   resumePlayback,
-  updatingUser,
-  finishUpdatingUser,
+  setGameList,
 }) => {
   const [collection, setCollection] = useState([]);
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
@@ -23,11 +23,11 @@ const UserLibrary = ({
   const [currentGame, setCurrentGame] = useState('');
   const [gameName, setGameName] = useState('');
   const [imageLink, setImageLink] = useState('');
+  const [alteringCollection, setAlteringCollection] = useState(false);
   const [updatingCollection, setUpdatingCollection] = useState(false);
   const [updatingImage, setUpdatingImage] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [expandTitle, setExpandTitle] = useState(false);
-  const loggedInUser = JSON.parse(localStorage.getItem('user'));
 
   // MongoDB Query Creds
   const userEmail = JSON.parse(localStorage.getItem('user')).email;
@@ -76,31 +76,54 @@ const UserLibrary = ({
   // Add game to collection or upload custom game image
   const updateCollectionHandler = (method) => {
     if (method == 'update') {
-      setUpdatingCollection(true);
+      setAlteringCollection(true);
     } else {
       setUpdatingImage(true);
     }
   };
 
+  const searchGameHandler = async (e, game) => {
+    e.preventDefault();
+    const searchResults = await rawgClient.get(
+      `/games?key=${process.env.REACT_APP_RAWG_API_KEY}&search=${game}&page_size=50`
+    );
+    setGameList(searchResults.data.results);
+  };
+
   const addGameHandler = async (e, game) => {
     e.preventDefault();
-    updatingUser();
+    setUpdatingCollection(true);
     try {
-      await axios.post('/app/update_collection', {
+      const request = await axios.post('/app/update_collection', {
         email: userEmail,
         currentProfile: userProfile,
         gameTitle: game,
       });
-      const currentProfile = loggedInUser.profiles.filter((obj) => {
+      localStorage.setItem('user', JSON.stringify(request.data.response));
+      const currentProfile = request.data.response.profiles.filter((obj) => {
         return obj.name === activeProfile.name;
       });
-      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
       setCollection(currentProfile[0].collection);
     } catch (error) {
       console.log(error);
     }
     setUpdatingCollection(false);
-    finishUpdatingUser();
+    setAlteringCollection(false);
+  };
+
+  const removeGameHandler = async (game) => {
+    setUpdatingCollection(true);
+    try {
+      const request = await axios.put('/app/remove_game', {
+        email: userEmail,
+        currentProfile: userProfile,
+        gameTitle: game.name,
+      });
+      console.log(request);
+    } catch (error) {
+      console.log(error);
+    }
+    setUpdatingCollection(false);
   };
 
   const formatTrackTitle = (title) => {
@@ -121,7 +144,8 @@ const UserLibrary = ({
       setLoading(false);
     };
     fetchUserCollection();
-  }, [activeProfile]);
+    return () => setCollection([]);
+  }, [updatingCollection]);
 
   collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
@@ -159,6 +183,10 @@ const UserLibrary = ({
                       className='user_library_upload_icon'
                       onClick={() => updateCollectionHandler('upload')}
                     />
+                    <FaTrash
+                      className='user_library_trash_icon'
+                      onClick={() => removeGameHandler(game)}
+                    />
                     <span
                       className='row__poster_name'
                       style={{ color: activeProfile.color, fontWeight: 800 }}
@@ -177,7 +205,7 @@ const UserLibrary = ({
                     className='row__poster_back'
                     onClick={closeGameSoundtrack}
                   >
-                    <h3>{game.name} Spotify OST</h3>
+                    <h3>Spotify OST</h3>
                     <img
                       loading='lazy'
                       className='row__poster_back_img'
@@ -235,30 +263,30 @@ const UserLibrary = ({
         >
           <span>+</span>
         </div>
-        {updatingCollection && (
+        {alteringCollection && (
           <div
             className={`user_library_modal ${
-              !updatingCollection || !updatingImage ? 'modal_hidden' : ''
+              !alteringCollection || !updatingImage ? 'modal_hidden' : ''
             }`}
           >
-            <h3>{updatingCollection ? 'GAME NAME' : 'IMAGE LINK'}</h3>
+            <h3>{alteringCollection ? 'GAME NAME' : 'IMAGE LINK'}</h3>
             <div className='modal_content'>
               <div className='modal_form'>
                 <input
-                  value={updatingCollection ? gameName : imageLink}
+                  value={alteringCollection ? gameName : imageLink}
                   onChange={(e) =>
-                    updatingCollection
+                    alteringCollection
                       ? setGameName(e.target.value)
                       : setImageLink(e.target.value)
                   }
                 />
-                <button onClick={(e) => addGameHandler(e, gameName)}>
+                <button onClick={(e) => searchGameHandler(e, gameName)}>
                   Submit
                 </button>
                 <button
                   onClick={() =>
-                    updatingCollection
-                      ? setUpdatingCollection(false)
+                    alteringCollection
+                      ? setAlteringCollection(false)
                       : setUpdatingImage(false)
                   }
                 >

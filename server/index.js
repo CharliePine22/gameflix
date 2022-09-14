@@ -12,13 +12,8 @@ mongoose.connect(process.env.MONGODB_ACCESS, () =>
   console.log('Database Connected!')
 );
 
-var corsOptions = {
-  origin: 'https://gameflixx.netlify.app',
-  credentials: true,
-};
-
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
 app.use('/app', routesUrls);
 app.use('/uploads', express.static('uploads'));
 app.listen(process.env.PORT || 5000, () =>

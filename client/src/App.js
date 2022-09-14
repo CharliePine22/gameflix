@@ -21,6 +21,7 @@ import useSpotifyAuth from './hooks/useSpotifyAuth';
 import useTwitchAuth from './hooks/useTwitchAuth';
 import UserLibrary from './components/UserLibrary/UserLibrary';
 import { MdSignalCellularNull } from 'react-icons/md';
+import GameList from './components/UserLibrary/GameList';
 
 const code = new URLSearchParams(window.location.search).get('code');
 
@@ -38,6 +39,7 @@ function App() {
   // Search States
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState('');
+  const [gameList, setGameList] = useState([]);
   const [toLanding, setToLanding] = useState(false);
   const [rowsLoaded, setRowsLoaded] = useState(false);
 
@@ -98,14 +100,19 @@ function App() {
   useEffect(() => {
     const updateUser = async () => {
       if (!loggedUser) return null;
-      const request = await axios.get(
-        'https://gameflixx-server.herokuapp.com/get_user',
-        {
-          params: {
-            email: loggedUser.email,
-          },
-        }
-      );
+      const request = await axios.get('/app/get_user', {
+        params: {
+          email: loggedUser.email,
+        },
+      });
+      // const request = await axios.get(
+      //   'https://gameflixx-server.herokuapp.com/get_user',
+      //   {
+      //     params: {
+      //       email: loggedUser.email,
+      //     },
+      //   }
+      // );
       localStorage.setItem('user', JSON.stringify(request.data));
     };
     updateUser();
@@ -179,6 +186,10 @@ function App() {
     );
   }
 
+  if (gameList.length > 0) {
+    return <GameList list={gameList} exitSearch={() => setGameList([])} />;
+  }
+
   return (
     <div className='App'>
       <Nav
@@ -204,8 +215,7 @@ function App() {
             pausePlayback={() => setPlayAudio(false)}
             resumePlayback={() => setPlayAudio(true)}
             spotifyToken={spotifyAccessToken}
-            updatingUser={() => setUpdatingUser(true)}
-            finishUpdatingUser={() => setUpdatingUser(false)}
+            setGameList={(list) => setGameList(list)}
           />
           {requests.map(
             (request) =>

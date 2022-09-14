@@ -93,6 +93,9 @@ const ProfilesPage = (props) => {
     );
   }
 
+  profiles.sort((a, b) => (a.isAdmin ? -1 : b.isAdmin ? 1 : 0));
+  // collection.sort((a, b) => (a.name ? 1 : b.name ? -1 : 0));
+
   return (
     <div className='profile__page'>
       <div className='profile_edit__header'>

@@ -9,8 +9,7 @@
   box-sizing: border-box;
   padding: 20px;
   z-index: 2;
-  transition-timing-function: ease-in;
-  transition: all 0.5s;
+  transition: all 0.25s ease-in;
 }
 
 .nav__actions {

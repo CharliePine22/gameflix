@@ -351,15 +351,14 @@ router.post('/update_user_profile', async (req, res) => {
 //* ADD GAME
 router.post('/update_collection', async (req, res) => {
   const email = req.body.email;
-  const gameTitle = req.body.gameTitle;
+  const games = req.body.games;
   const name = req.body.currentProfile;
-
   try {
     const request = await userModel.findOneAndUpdate(
       { email: email, profiles: { $elemMatch: { name } } },
       {
         $addToSet: {
-          'profiles.$.collection': gameTitle,
+          'profiles.$.collection': { $each: games },
         },
       }, // list fields you like to change
       { new: true, setDefaultsOnInsert: false, upsert: true }
@@ -374,7 +373,7 @@ router.post('/update_collection', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400, {
-      message: 'There was an error with your request, please try again.',
+      message: 'There was an error adding games, please try again.',
     });
   }
 });

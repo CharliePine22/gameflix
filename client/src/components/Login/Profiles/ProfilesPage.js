@@ -64,7 +64,6 @@ const ProfilesPage = (props) => {
       setProfiles(dummyData);
     } else {
       setProfiles(props.currentUser.profiles);
-      console.log('Profiles Updating');
     }
   }, [props.currentUser]);
 

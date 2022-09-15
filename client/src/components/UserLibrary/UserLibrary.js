@@ -6,7 +6,6 @@ import { SiApplemusic } from 'react-icons/si';
 import './UserLibrary.css';
 import '../Row/Row.css';
 import { MdKeyboardArrowRight } from 'react-icons/md';
-import GameList from './GameList';
 
 const UserLibrary = ({
   activeProfile,
@@ -16,15 +15,17 @@ const UserLibrary = ({
   pausePlayback,
   resumePlayback,
   setGameList,
+  collection,
+  setSelectedProfile,
+  spotifyToken,
 }) => {
-  const [collection, setCollection] = useState([]);
+  // const [collection, setCollection] = useState([]);
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentGame, setCurrentGame] = useState('');
   const [gameName, setGameName] = useState('');
   const [imageLink, setImageLink] = useState('');
   const [alteringCollection, setAlteringCollection] = useState(false);
-  const [updatingCollection, setUpdatingCollection] = useState(false);
   const [updatingImage, setUpdatingImage] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [expandTitle, setExpandTitle] = useState(false);
@@ -32,7 +33,6 @@ const UserLibrary = ({
   // MongoDB Query Creds
   const userEmail = JSON.parse(localStorage.getItem('user')).email;
   const userProfile = JSON.parse(localStorage.getItem('profile')).name;
-  const spotifyToken = localStorage.getItem('spotify_token');
   const fetchGameOST = async (game) => {
     if (!spotifyToken) {
       console.log('Please connect to Spotify!');
@@ -90,62 +90,25 @@ const UserLibrary = ({
     setGameList(searchResults.data.results);
   };
 
-  const addGameHandler = async (e, game) => {
-    e.preventDefault();
-    setUpdatingCollection(true);
-    try {
-      const request = await axios.post('/app/update_collection', {
-        email: userEmail,
-        currentProfile: userProfile,
-        gameTitle: game,
-      });
-      localStorage.setItem('user', JSON.stringify(request.data.response));
-      const currentProfile = request.data.response.profiles.filter((obj) => {
-        return obj.name === activeProfile.name;
-      });
-      setCollection(currentProfile[0].collection);
-    } catch (error) {
-      console.log(error);
-    }
-    setUpdatingCollection(false);
-    setAlteringCollection(false);
-  };
-
   const removeGameHandler = async (game) => {
-    setUpdatingCollection(true);
     try {
       const request = await axios.put('/app/remove_game', {
         email: userEmail,
         currentProfile: userProfile,
         gameTitle: game.name,
       });
-      console.log(request);
+      const currentProfile = request.data.response.profiles.filter((obj) => {
+        return obj.name === userProfile;
+      });
+      setSelectedProfile(currentProfile[0]);
     } catch (error) {
       console.log(error);
     }
-    setUpdatingCollection(false);
   };
 
   const formatTrackTitle = (title) => {
     return title.split('-')[0].split('(')[0];
   };
-
-  useEffect(() => {
-    setLoading(true);
-    const fetchUserCollection = async () => {
-      const gameNames = await Promise.all(
-        activeProfile.collection.map((game) => {
-          return rawgClient.get(
-            `/games?key=${process.env.REACT_APP_RAWG_API_KEY}&search=${game}`
-          );
-        })
-      );
-      setCollection(gameNames.map(({ data }) => data.results[0]));
-      setLoading(false);
-    };
-    fetchUserCollection();
-    return () => setCollection([]);
-  }, [updatingCollection]);
 
   collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 

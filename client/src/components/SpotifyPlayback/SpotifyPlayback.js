@@ -7,7 +7,6 @@ const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
 });
 
-const spotifyToken = localStorage.getItem('spotify_token');
 const activeProfile = JSON.parse(localStorage.getItem('profile'));
 
 const SpotifyPlayback = ({
@@ -15,6 +14,7 @@ const SpotifyPlayback = ({
   playAudio,
   beginPlayback,
   pausePlayback,
+  spotifyToken,
 }) => {
   useEffect(() => {
     spotifyApi.setAccessToken(spotifyToken);

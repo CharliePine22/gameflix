@@ -13,9 +13,8 @@ import banditAvatar from '../../assets/images/lion-icon.png';
 const SPOTIFY_AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=http://localhost:3000&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state`;
 
 const NavDropdown = (props) => {
-  const spotifyToken = localStorage.getItem('spotify_token');
-
   // Profile dummy data until account creation is incorporated
+  const currentUser = JSON.parse(localStorage.getItem('user'));
   const allProfiles = props.allProfiles;
   const dummyData = [
     { name: 'Cj', avatar: cjAvatar },
@@ -105,7 +104,7 @@ const NavDropdown = (props) => {
           <span className='dropdown__settings_item_icon'>
             <FaSpotify
               size={18}
-              style={{ color: spotifyToken ? '#1DB954' : '#FFF' }}
+              style={{ color: props.spotifyToken ? '#1DB954' : '#FFF' }}
             />
           </span>
           <a href={SPOTIFY_AUTH_URL}>Spotify Authentication</a>

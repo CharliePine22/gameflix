@@ -36,6 +36,7 @@ function App() {
   const [editingUser, setEditingUser] = useState(false);
   const [loggedUser, setLoggedUser] = useState(null);
   const [selectedProfile, setSelectedProfile] = useState(null);
+  const [userCollection, setUserCollection] = useState([]);
   // Search States
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState('');
@@ -136,6 +137,24 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    setIsLoading(true);
+    if (selectedProfile == null) return;
+    const fetchUserCollection = async () => {
+      const gameNames = await Promise.all(
+        selectedProfile.collection.map((game) => {
+          return rawgClient.get(
+            `/games?key=${process.env.REACT_APP_RAWG_API_KEY}&search=${game}`
+          );
+        })
+      );
+      setUserCollection(gameNames.map(({ data }) => data.results[0]));
+      setIsLoading(false);
+    };
+    fetchUserCollection();
+    return () => setUserCollection([]);
+  }, [selectedProfile]);
+
   // Display login page if app detects sign out or sign in
   if (!loggedUser && !toLanding) {
     return (
@@ -187,7 +206,13 @@ function App() {
   }
 
   if (gameList.length > 0) {
-    return <GameList list={gameList} exitSearch={() => setGameList([])} />;
+    return (
+      <GameList
+        list={gameList}
+        setSelectedProfile={(profile) => setSelectedProfile(profile)}
+        exitSearch={() => setGameList([])}
+      />
+    );
   }
 
   return (
@@ -216,6 +241,8 @@ function App() {
             resumePlayback={() => setPlayAudio(true)}
             spotifyToken={spotifyAccessToken}
             setGameList={(list) => setGameList(list)}
+            collection={userCollection}
+            setSelectedProfile={(profile) => setSelectedProfile(profile)}
           />
           {requests.map(
             (request) =>
@@ -242,6 +269,7 @@ function App() {
       )}
       {code && (
         <SpotifyPlayback
+          spotifyToken={spotifyAccessToken}
           playAudio={playAudio}
           beginPlayback={(e) => setPlayAudio(true)}
           pausePlayback={(e) => setPlayAudio(false)}

@@ -7,8 +7,6 @@ import Placeholder from '../Placeholder/Placeholder';
 import { SiApplemusic } from 'react-icons/si';
 import { FaPlay, FaPause } from 'react-icons/fa';
 
-const spotifyToken = localStorage.getItem('spotify_token');
-
 function Row({
   title,
   fetchURL,
@@ -17,6 +15,7 @@ function Row({
   resumePlayback,
   pausePlayback,
   isPlaying,
+  spotifyToken,
 }) {
   const [games, setGames] = useState([]);
   const [currentGame, setCurrentGame] = useState('');

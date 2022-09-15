@@ -1,12 +1,36 @@
+.game_item__add {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  border: 1px solid white;
+  position: absolute;
+  right: 15px;
+  bottom: 26px;
+  cursor: pointer;
+}
+
+.added {
+  background-color: lightskyblue;
+}
+
+.game_item__add_icon {
+  font-size: 1.6rem;
+  position: relative;
+  top: -8.5px;
+  left: 3.6px;
+}
+
 .game_item__image {
   height: 60px;
   width: 90px;
   object-fit: cover;
+  border-radius: 4px;
 }
 
 .game_item__title {
   height: 22px;
   margin-left: 6px;
+  font-weight: 500;
 }
 
 .game_list {
@@ -27,9 +51,14 @@
 
 .game_list__actions button {
   cursor: pointer;
-  width: 90px;
-  padding: 5px;
+  width: 110px;
+  padding: 10px;
   margin: 5px 0;
+  background: white;
+  color: black;
+  font-weight: 600;
+  border: 1px solid black;
+  border-radius: 6px;
 }
 
 .game_list__results {
@@ -52,6 +81,10 @@
   font-size: 2rem;
 }
 
+.remove {
+  left: 7px;
+}
+
 .results_game_item {
   position: relative;
   display: flex;
@@ -63,4 +96,22 @@
   list-style-type: none;
   color: #fff;
   width: 80%;
+}
+
+@media screen and (max-width: 430px) {
+  .game_item__title {
+    font-size: 0.9rem;
+  }
+
+  .game_list__results {
+    height: 550px;
+  }
+
+  .game_list__title {
+    font-size: 1.5rem;
+  }
+
+  .results_list {
+    width: 95%;
+  }
 }

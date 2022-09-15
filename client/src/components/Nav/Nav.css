@@ -69,11 +69,16 @@
   align-items: center;
 }
 
+.nav__search_form {
+  transition: all 100ms;
+}
+
 .nav__search_form input {
   font-size: 14px;
   padding: 7px 14px 7px 35px;
   background-color: #000000e6;
   animation: extendSearchbar 500ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+  /* animation: extendSearchbar 500ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards; */
   color: #fff;
   border: 1px solid white;
   margin-right: 10px;

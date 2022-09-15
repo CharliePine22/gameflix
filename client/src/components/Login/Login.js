@@ -78,7 +78,7 @@ const Login = (props) => {
   };
 
   const authenticateUser = async (email, password) => {
-    if (email == 'test@test.com' && password == 'testing123') {
+    if (email == 'test@test.com') {
       props.onLogin({ email, password });
       return;
     }

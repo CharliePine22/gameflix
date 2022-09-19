@@ -137,9 +137,7 @@ router.get('/spotify_album', async (req, res) => {
   try {
     const request = await spotifyApi.searchAlbums(game);
     const albumId = request.body.albums.items[0].id;
-    const albumTracks = await spotifyApi.getAlbumTracks(albumId, {
-      limit: 10,
-    });
+    const albumTracks = await spotifyApi.getAlbumTracks(albumId);
     res.send({
       code: 200,
       status: 'OK',

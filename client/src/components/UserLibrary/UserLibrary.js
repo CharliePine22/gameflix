@@ -18,8 +18,8 @@ const UserLibrary = ({
   collection,
   setSelectedProfile,
   spotifyToken,
+  setGameDetails,
 }) => {
-  // const [collection, setCollection] = useState([]);
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentGame, setCurrentGame] = useState('');
@@ -97,9 +97,11 @@ const UserLibrary = ({
         currentProfile: userProfile,
         gameTitle: game.name,
       });
+      localStorage.setItem('user', JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
         return obj.name === userProfile;
       });
+      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
       setSelectedProfile(currentProfile[0]);
     } catch (error) {
       console.log(error);
@@ -144,7 +146,7 @@ const UserLibrary = ({
                     />
                     <FaUpload
                       className='user_library_upload_icon'
-                      onClick={() => updateCollectionHandler('upload')}
+                      onClick={() => setGameDetails(game)}
                     />
                     <FaTrash
                       className='user_library_trash_icon'

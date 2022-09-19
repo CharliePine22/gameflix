@@ -37,7 +37,7 @@ const MainRow = () => {
     const gameTags = game.tags;
     const gamePlatforms = game.parent_platforms;
 
-    if (gameTags == null) return false;
+    if (gameTags == null || gamePlatforms == undefined) return false;
 
     // If the only platform it's available on is PC, flag it for Indie as ost larger games come
     // out on at least 2 systems, It should also be avaialble for Xbox

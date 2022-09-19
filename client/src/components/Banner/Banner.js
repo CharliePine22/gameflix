@@ -5,7 +5,7 @@ import './Banner.css';
 import useFetchDetails from '../../hooks/useFetchDetails';
 import { BiRefresh } from 'react-icons/bi';
 
-function Banner() {
+function Banner({ setGameDetails }) {
   const [gameList, setGameList] = useState([]);
   const [game, setGame] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -71,7 +71,7 @@ function Banner() {
           <div className='banner__buttons'>
             <button
               className='banner__button'
-              onClick={() => console.log(gameDetails)}
+              onClick={() => setGameDetails(gameDetails)}
             >
               See Details
             </button>

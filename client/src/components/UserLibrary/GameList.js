@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './GameList.css';
 import axios from 'axios';
 
-const GameList = ({ list, exitSearch, setSelectedProfile }) => {
+const GameList = ({ list, exitSearch, setSelectedProfile, setGameDetails }) => {
   const searchedGameList = list;
   const [currentGames, setCurrentGames] = useState([]);
   const userEmail = JSON.parse(localStorage.getItem('user')).email;
@@ -46,9 +46,11 @@ const GameList = ({ list, exitSearch, setSelectedProfile }) => {
         currentProfile: userProfile,
         games: currentGames,
       });
+      localStorage.setItem('user', JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
         return obj.name === userProfile;
       });
+      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
       setSelectedProfile(currentProfile[0]);
       exitSearch();
     } catch (error) {
@@ -69,6 +71,10 @@ const GameList = ({ list, exitSearch, setSelectedProfile }) => {
     }
   };
 
+  const gameDetailsHandler = (game) => {
+    setGameDetails(game);
+  };
+
   return (
     <div className='game_list'>
       <div className='game_list__title'>
@@ -86,6 +92,12 @@ const GameList = ({ list, exitSearch, setSelectedProfile }) => {
                     src={game.background_image}
                   />
                   <p className='game_item__title'>{game.name}</p>
+                  <button
+                    className='game_item__details_btn'
+                    onClick={() => gameDetailsHandler(game)}
+                  >
+                    More Details
+                  </button>
                   <div
                     className={`game_item__add ${
                       currentGames.includes(game.name) && 'added'

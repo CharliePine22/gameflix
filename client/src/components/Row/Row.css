@@ -97,6 +97,11 @@
 .row__poster_back {
   transform: rotateY(0.5turn);
   box-shadow: -5px 7px 10px #000;
+  overflow-y: scroll;
+}
+
+.row__poster_back::-webkit-scrollbar {
+  display: none;
 }
 
 .row__poster_back h3 {

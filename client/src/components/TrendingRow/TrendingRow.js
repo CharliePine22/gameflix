@@ -3,7 +3,7 @@ import './TrendingRow.css';
 import rawgClient from '../../axios';
 import requests from '../../requests';
 import Placeholder from '../Placeholder/Placeholder';
-import GameDetails from '../Row/GameDetails/GameDetails';
+import GamePreview from '../Row/GamePreview/GamePreview';
 
 const TrendingRow = () => {
   const [games, setGames] = useState([]);
@@ -88,7 +88,7 @@ const TrendingRow = () => {
                     )}
                   </div>
                   {currentlyOpen === game.name && (
-                    <GameDetails
+                    <GamePreview
                       game={currentGame}
                       displayDetails={displayDetails}
                       hideDetails={closeGameDetails}

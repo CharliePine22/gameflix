@@ -22,6 +22,7 @@ import useTwitchAuth from './hooks/useTwitchAuth';
 import UserLibrary from './components/UserLibrary/UserLibrary';
 import { MdSignalCellularNull } from 'react-icons/md';
 import GameList from './components/UserLibrary/GameList';
+import GameDetails from './components/GameDetails/GameDetails';
 
 const code = new URLSearchParams(window.location.search).get('code');
 
@@ -41,6 +42,7 @@ function App() {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState('');
   const [gameList, setGameList] = useState([]);
+  const [gameDetails, setGameDetails] = useState(null);
   const [toLanding, setToLanding] = useState(false);
   const [rowsLoaded, setRowsLoaded] = useState(false);
 
@@ -60,7 +62,7 @@ function App() {
   const fetchSubmittedGame = async (game) => {
     setSearchSubmitted(true);
     const request = await rawgClient.get(
-      `/games?key=df0a614ea95743f7a9e2008a796b5249&search=${game}&ordering=-added&search_exact=true`
+      `/games?key=${process.env.REACT_APP_RAWG_API_KEY}&search=${game}&ordering=-added&search_exact=true`
     );
     const result = await request.data.results;
     setSearchedGame(result);
@@ -106,14 +108,6 @@ function App() {
           email: loggedUser.email,
         },
       });
-      // const request = await axios.get(
-      //   'https://gameflixx-server.herokuapp.com/get_user',
-      //   {
-      //     params: {
-      //       email: loggedUser.email,
-      //     },
-      //   }
-      // );
       localStorage.setItem('user', JSON.stringify(request.data));
     };
     updateUser();
@@ -205,12 +199,23 @@ function App() {
     );
   }
 
-  if (gameList.length > 0) {
+  if (gameList.length > 0 && !gameDetails) {
     return (
       <GameList
         list={gameList}
         setSelectedProfile={(profile) => setSelectedProfile(profile)}
         exitSearch={() => setGameList([])}
+        setGameDetails={(id) => setGameDetails(id)}
+      />
+    );
+  }
+
+  if (gameDetails !== null) {
+    return (
+      <GameDetails
+        game={gameDetails}
+        closeDetails={() => setGameDetails(null)}
+        spotifyToken={spotifyAccessToken}
       />
     );
   }
@@ -229,7 +234,7 @@ function App() {
       />
       {!searchSubmitted ? (
         <>
-          <Banner />
+          <Banner setGameDetails={(id) => setGameDetails(id)} />
           <MainRow />
           <TrendingRow />
           <UserLibrary
@@ -243,6 +248,7 @@ function App() {
             setGameList={(list) => setGameList(list)}
             collection={userCollection}
             setSelectedProfile={(profile) => setSelectedProfile(profile)}
+            setGameDetails={(id) => setGameDetails(id)}
           />
           {requests.map(
             (request) =>
@@ -267,7 +273,7 @@ function App() {
       ) : (
         <SearchResults searchedGame={searchedGame} />
       )}
-      {code && (
+      {spotifyAccessToken && (
         <SpotifyPlayback
           spotifyToken={spotifyAccessToken}
           playAudio={playAudio}

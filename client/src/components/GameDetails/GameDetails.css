@@ -1,0 +1,260 @@
+.details_img {
+  height: 400px;
+  border: 2px solid white;
+  border-radius: 4px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.game_details__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.game_details__actions span {
+  user-select: none;
+  text-align: center;
+  display: inline-block;
+  margin: 5px;
+  font-weight: bold;
+  padding: 10px 30px;
+  background-color: lightgray;
+  text-shadow: -1px -1px black, 1px 1px white;
+  color: gray;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -o-border-radius: 7px;
+  border-radius: 7px;
+  box-shadow: 0 0.2em gray;
+  cursor: pointer;
+}
+
+.game_details__actions span:active {
+  box-shadow: none;
+  position: relative;
+  top: 0.2em;
+}
+
+.game_details__background {
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0.35;
+  object-fit: cover;
+}
+
+.game_details__container {
+  display: flex;
+  flex-direction: column;
+  animation: displayDetails 300ms ease-in;
+}
+
+.game_details__container h2 {
+  text-align: center;
+  color: white;
+  font-size: 3rem;
+  margin: 15px 10px 25px;
+  text-shadow: 5px 4px 3px black;
+}
+
+.game_details__data {
+  width: 100%;
+  margin: 10px 0 25px;
+  display: flex;
+  color: white;
+}
+
+.game_details__description {
+  max-width: 85%;
+  text-align: center;
+}
+
+.game_details__details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.game_details__esrb {
+  height: 120px;
+  width: 90px;
+  position: absolute;
+  bottom: 15px;
+  right: 10px;
+  z-index: 1;
+}
+
+.game_details__info_container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  margin: 15px 0;
+}
+
+.game_details__info_toggler {
+  cursor: pointer;
+  border: none;
+  opacity: 0.5;
+  color: white;
+  background-color: transparent;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 0.6rem;
+  position: relative;
+  bottom: 1px;
+}
+
+.game_details__info_toggler:hover {
+  opacity: 1;
+}
+
+.game_details__media {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.game_details__publishers,
+.game_details__platforms,
+.game_details__rating,
+.game_details__released {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  align-items: center;
+}
+
+.game_details__screenshots {
+  height: 400px;
+  position: relative;
+  right: -1px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 30px;
+  border-top: 2px solid white;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+  background: black;
+}
+
+.game_details__title {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.game_details__wrapper {
+  position: relative;
+  z-index: 0;
+}
+
+.media_placeholder {
+  position: relative;
+  width: 49%;
+  /* margin: 0 25px; */
+}
+
+.media_soundtrack__background {
+  height: 26%;
+  width: 90%;
+  z-index: 0;
+  position: absolute;
+  top: 126px;
+  left: 15px;
+  opacity: 0.35;
+}
+
+.media_soundtrack__container {
+  width: 350px;
+  height: 400px;
+  border: 2px solid white;
+  border-radius: 2px;
+  position: relative;
+  background: black;
+  overflow-y: scroll;
+}
+
+.media_soundtrack__container::-webkit-scrollbar {
+  display: none;
+}
+
+.media_soundtracks {
+  z-index: 1;
+}
+
+.media_soundtracks h4 {
+  text-align: center;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.media_trailer {
+  width: 100%;
+  height: 100%;
+  border: 1px solid white;
+  border-radius: 2px;
+  margin: 0 20px;
+}
+
+.publisher,
+.platform {
+  list-style: none;
+}
+
+.publishers_list,
+.platforms_list {
+  padding: 0;
+}
+
+.screenshot_thumbnail {
+  height: 70px;
+  width: 70px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+@keyframes displayDetails {
+  0% {
+    opacity: 0;
+    transform: translate(-10px, -25px);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* MOBILE DEVICES */
+@media screen and (max-width: 450px) {
+  .details_img {
+    width: 300px;
+  }
+  .game_details__description {
+    max-width: 95%;
+    font-size: 0.8rem;
+  }
+
+  .game_details__media {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .media_soundtrack__container {
+    display: none;
+  }
+
+  .media_trailer {
+    width: 90% !important;
+    height: 300px !important;
+  }
+}

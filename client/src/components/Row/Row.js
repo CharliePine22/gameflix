@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import rawgClient from '../../axios';
-import GameDetails from './GameDetails/GameDetails';
+import GamePreview from './GamePreview/GamePreview';
 import './Row.css';
 import axios from 'axios';
 import Placeholder from '../Placeholder/Placeholder';
@@ -206,7 +206,7 @@ function Row({
                     )}
                   </div>
                   {currentlyOpen === game.name && (
-                    <GameDetails
+                    <GamePreview
                       game={currentGame}
                       displayDetails={displayDetails}
                       hideDetails={closeGameDetails}

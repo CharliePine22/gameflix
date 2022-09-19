@@ -1,5 +1,5 @@
 // Rawg Credentials
-const API_KEY = 'df0a614ea95743f7a9e2008a796b5249';
+const API_KEY = process.env.REACT_APP_RAWG_API_KEY;
 
 // Get todays date based off current timezone
 let todayDate = new Date();
@@ -55,7 +55,17 @@ const previousQuarter = `${todayDate.getFullYear()}-${String(
 
 // Grab next 3 months to filter the most popular games in the past 3 months
 const nextQuarter = `${todayDate.getFullYear()}-${String(
+  todayDate.getMonth() + 3
+).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
+
+// Grab next month
+const nextMonthDate = `${todayDate.getFullYear()}-${String(
   todayDate.getMonth() + 2
+).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
+
+// Grab previous month
+const lastMonthDate = `${todayDate.getFullYear()}-${String(
+  todayDate.getMonth()
 ).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
 
 const nextWeek = new Date(
@@ -71,7 +81,7 @@ const requests = [
   {
     requestId: 'fetchUpcomingTitles',
     yearUrl: `games?dates=${nextQuarter},${nextYear}&ordering=-added&key=${API_KEY}`,
-    monthUrl: `games?dates=${nextWeek},${nextMonth}&ordering=-added&key=${API_KEY}`,
+    monthUrl: `games?dates=${nextWeek},${nextMonthDate}&ordering=-added&key=${API_KEY}`,
     weekUrl: `games?dates=${currentDate},${determineDateCutoff(
       todayDate.getMonth() + 1
     )}&ordering=-added&key=${API_KEY}`,
@@ -80,7 +90,7 @@ const requests = [
   },
   {
     requestId: 'fetchPopularTitles',
-    url: `games?dates=${previousQuarter},${currentDate}&page_size=10&ordering=rating_count&key=${API_KEY}`,
+    url: `games?dates=${lastMonthDate},${currentDate}&page_size=10&ordering=-added&key=${API_KEY}`,
     title: 'TRENDING',
   },
   {

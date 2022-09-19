@@ -20,6 +20,23 @@
   left: 3.6px;
 }
 
+.game_item__details_btn {
+  width: 80px;
+  padding: 2px 0;
+  position: absolute;
+  left: 94px;
+  top: 45px;
+  cursor: pointer;
+  background: black;
+  border: 1px solid white;
+  color: white;
+  border-radius: 2px;
+}
+
+.game_item__details_btn:hover {
+  background: rgb(40, 40, 40);
+}
+
 .game_item__image {
   height: 60px;
   width: 90px;

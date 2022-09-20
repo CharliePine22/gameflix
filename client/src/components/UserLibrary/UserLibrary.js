@@ -222,45 +222,6 @@ const UserLibrary = ({
         ))}
 
         {/* COLLECTION UPDATE */}
-        <div
-          className='user_library_add'
-          onClick={() => updateCollectionHandler('update')}
-        >
-          <span>+</span>
-        </div>
-        {alteringCollection && (
-          <div
-            className={`user_library_modal ${
-              !alteringCollection || !updatingImage ? 'modal_hidden' : ''
-            }`}
-          >
-            <h3>{alteringCollection ? 'GAME NAME' : 'IMAGE LINK'}</h3>
-            <div className='modal_content'>
-              <div className='modal_form'>
-                <input
-                  value={alteringCollection ? gameName : imageLink}
-                  onChange={(e) =>
-                    alteringCollection
-                      ? setGameName(e.target.value)
-                      : setImageLink(e.target.value)
-                  }
-                />
-                <button onClick={(e) => searchGameHandler(e, gameName)}>
-                  Submit
-                </button>
-                <button
-                  onClick={() =>
-                    alteringCollection
-                      ? setAlteringCollection(false)
-                      : setUpdatingImage(false)
-                  }
-                >
-                  Back
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

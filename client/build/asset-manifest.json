@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.09df6ce9.css",
-    "main.js": "/static/js/main.3027e3a0.js",
+    "main.css": "/static/css/main.9a150949.css",
+    "main.js": "/static/js/main.d95d9e0f.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -24,12 +24,14 @@
     "static/media/ff9-zidane.png": "/static/media/ff9-zidane.f591db862f46fbe2c3f2.png",
     "static/media/loz-link.png": "/static/media/loz-link.4c290163c8a52fcdb236.png",
     "static/media/roxas-icon.png": "/static/media/roxas-icon.e65c74980722ce835a7b.png",
+    "static/media/murmur.mp3": "/static/media/murmur.97d25e19e2f3bd29437c.mp3",
     "static/media/yuna-icon.png": "/static/media/yuna-icon.c835ebfee99a688f78c7.png",
     "static/media/ff7-cloud.png": "/static/media/ff7-cloud.556d4e5da527546092e2.png",
     "static/media/xbox-logo.png": "/static/media/xbox-logo.1470ebd18d88807af6fe.png",
     "static/media/retro-tv.png": "/static/media/retro-tv.f53bcec5f8dd7413f844.png",
     "static/media/lion-icon.png": "/static/media/lion-icon.6d59169aedce403bbfb8.png",
     "static/media/computer_screen.png": "/static/media/computer_screen.4272856e6a7a6e935764.png",
+    "static/media/gamecube-logo.png": "/static/media/gamecube-logo.946c6e7469abaad7b304.png",
     "static/media/ESRB_M.png": "/static/media/ESRB_M.4a41f5f352b1c2ff77a9.png",
     "static/media/android-logo.png": "/static/media/android-logo.c738080d9145c162601f.png",
     "static/media/apple-logo.png": "/static/media/apple-logo.984030b66746dc4582fb.png",
@@ -38,14 +40,17 @@
     "static/media/ESRB_RP.png": "/static/media/ESRB_RP.57aa50a6ca1272626835.png",
     "static/media/steam-logo.png": "/static/media/steam-logo.ae35c358ce32663bcab0.png",
     "static/media/basic_avatar.png": "/static/media/basic_avatar.28e44cb7f5d2425541e5.png",
+    "static/media/sega-logo.png": "/static/media/sega-logo.ebdd6709ff0639c959c7.png",
     "static/media/ESRB_E.png": "/static/media/ESRB_E.c6e4123839651e70a8d1.png",
     "static/media/spotify_logo.png": "/static/media/spotify_logo.0c4ae91bae23217d39c9.png",
     "static/media/nintendo-logo.png": "/static/media/nintendo-logo.14c4d5793bf79874cb08.png",
     "static/media/rexlia_rg.otf": "/static/media/rexlia_rg.d297770693345b764564.otf",
     "static/media/playstation-logo.png": "/static/media/playstation-logo.630dfedda6273efed3a8.png",
+    "static/media/ferrum.otf": "/static/media/ferrum.0db9aba7b1cb9fa47318.otf",
+    "static/media/Gasalt-Black.ttf": "/static/media/Gasalt-Black.8284ab3fce3818248705.ttf",
     "index.html": "/index.html",
-    "main.09df6ce9.css.map": "/static/css/main.09df6ce9.css.map",
-    "main.3027e3a0.js.map": "/static/js/main.3027e3a0.js.map",
+    "main.9a150949.css.map": "/static/css/main.9a150949.css.map",
+    "main.d95d9e0f.js.map": "/static/js/main.d95d9e0f.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -62,7 +67,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.09df6ce9.css",
-    "static/js/main.3027e3a0.js"
+    "static/css/main.9a150949.css",
+    "static/js/main.d95d9e0f.js"
   ]
 }

@@ -46,6 +46,9 @@ function App() {
   const [toLanding, setToLanding] = useState(false);
   const [rowsLoaded, setRowsLoaded] = useState(false);
 
+  const userEmail = JSON.parse(localStorage.getItem('user')).email;
+  const userProfile = JSON.parse(localStorage.getItem('profile')).name;
+
   let audio = new Audio(loginAudio);
   // "proxy": "http://localhost:5000"
   // "proxy": "https://gameflixx-server.herokuapp.com/",
@@ -66,6 +69,42 @@ function App() {
     );
     const result = await request.data.results;
     setSearchedGame(result);
+  };
+
+  const addGameHandler = async (game) => {
+    try {
+      const request = await axios.post('/app/update_collection', {
+        email: userEmail,
+        currentProfile: userProfile,
+        games: game,
+      });
+      localStorage.setItem('user', JSON.stringify(request.data.response));
+      const currentProfile = request.data.response.profiles.filter((obj) => {
+        return obj.name === userProfile;
+      });
+      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
+      setSelectedProfile(currentProfile[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeGameHandler = async (game) => {
+    try {
+      const request = await axios.put('/app/remove_game', {
+        email: userEmail,
+        currentProfile: userProfile,
+        gameTitle: game,
+      });
+      localStorage.setItem('user', JSON.stringify(request.data.response));
+      const currentProfile = request.data.response.profiles.filter((obj) => {
+        return obj.name === userProfile;
+      });
+      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
+      setSelectedProfile(currentProfile[0]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Login user if verification succeeds.
@@ -199,23 +238,15 @@ function App() {
     );
   }
 
-  if (gameList.length > 0 && !gameDetails) {
-    return (
-      <GameList
-        list={gameList}
-        setSelectedProfile={(profile) => setSelectedProfile(profile)}
-        exitSearch={() => setGameList([])}
-        setGameDetails={(id) => setGameDetails(id)}
-      />
-    );
-  }
-
   if (gameDetails !== null) {
     return (
       <GameDetails
         game={gameDetails}
         closeDetails={() => setGameDetails(null)}
         spotifyToken={spotifyAccessToken}
+        addGame={(game) => addGameHandler(game)}
+        removeGame={(game) => removeGameHandler(game)}
+        activeProfile={selectedProfile}
       />
     );
   }
@@ -271,7 +302,10 @@ function App() {
           )}
         </>
       ) : (
-        <SearchResults searchedGame={searchedGame} />
+        <SearchResults
+          searchedGame={searchedGame}
+          setGameDetails={(id) => setGameDetails(id)}
+        />
       )}
       {spotifyAccessToken && (
         <SpotifyPlayback

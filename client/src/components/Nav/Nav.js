@@ -99,7 +99,12 @@ function Nav(props) {
 
   return (
     <div className={`nav ${displayNav && 'nav__hide'}`}>
-      <img className='nav__logo' src={logo} alt='GameFlix Logo' />
+      <img
+        className='nav__logo'
+        src={logo}
+        alt='GameFlix Logo'
+        onClick={() => (window.location = '/')}
+      />
       <div className='nav__right'>
         <div className='nav__search'>
           {displaySearch && (
@@ -109,6 +114,9 @@ function Nav(props) {
                 autoFocus
                 type='text'
                 placeholder='Titles, publishers, genres'
+                defaultValue={
+                  props.searchedGame ? `${props.searchedGame.name}` : ''
+                }
                 onBlur={closeSearch}
                 onChange={determineSearch}
               />

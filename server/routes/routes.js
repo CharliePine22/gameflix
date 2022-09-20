@@ -355,8 +355,8 @@ router.post('/update_collection', async (req, res) => {
     const request = await userModel.findOneAndUpdate(
       { email: email, profiles: { $elemMatch: { name } } },
       {
-        $addToSet: {
-          'profiles.$.collection': { $each: games },
+        $push: {
+          'profiles.$.collection': games,
         },
       }, // list fields you like to change
       { new: true, setDefaultsOnInsert: false, upsert: true }

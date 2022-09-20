@@ -2,6 +2,14 @@
   font-family: 'Rexlia';
   src: local('Rexlia'), url(./assets/fonts/rexlia_rg.otf) format('opentype');
 }
+@font-face {
+  font-family: 'Gasalt';
+  src: local('Gasalt'), url(./assets/fonts/Gasalt-Black.ttf) format('opentype');
+}
+@font-face {
+  font-family: 'Ferrum';
+  src: local('Ferrum'), url(./assets/fonts/ferrum.otf) format('opentype');
+}
 
 body {
   margin: 0;
@@ -18,8 +26,16 @@ html {
   scroll-behavior: smooth;
 }
 
+p {
+  font-family: Ferrum;
+}
+
 h2 {
   font-family: Rexlia;
+}
+
+h4 {
+  font-family: Gasalt;
 }
 
 code {

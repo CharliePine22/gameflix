@@ -2,13 +2,13 @@
   font-size: 0.8rem;
   width: 100%;
   max-width: 50%;
-  margin-left: 122px;
+  margin-left: 117px;
 }
 
 .game_name_remainder {
   font-size: 0.8rem;
   width: 100%;
-  max-width: 90%;
+  max-width: 95%;
   padding: 1px 5px 3px;
 }
 
@@ -17,7 +17,7 @@
   width: 107px;
   position: absolute;
   top: 111px;
-  left: 10px;
+  left: 5px;
   box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px,
     rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px,
     rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
@@ -58,6 +58,7 @@
   margin: 5px;
   width: 18rem;
   background-color: rgb(35, 35, 35);
+  position: relative;
 }
 
 .results_container_img {
@@ -73,8 +74,11 @@
   color: #fff;
 }
 
-.search_results__container h2 {
+.search_results__container {
   margin-left: 10px;
+}
+
+.search_results__container h2 {
   margin-bottom: 10px;
   width: 100%;
 }
@@ -90,6 +94,37 @@
   width: 31.5%;
   border-radius: 6px;
   position: relative;
+}
+
+.top_result_details_icon,
+.result_details_icon {
+  position: absolute;
+  bottom: 7px;
+  right: 7px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.top_result_add_icon,
+.result_add_icon {
+  position: absolute;
+  bottom: 3px;
+  left: 7px;
+  font-size: 2rem;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.result_add_icon {
+  left: 220px;
+}
+
+.top_result_details_icon:hover,
+.top_result_add_icon:hover,
+.result_add_icon:hover,
+.result_details_icon:hover {
+  opacity: 1;
 }
 
 .top_result_upper {

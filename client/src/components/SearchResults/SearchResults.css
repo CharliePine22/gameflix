@@ -99,9 +99,9 @@
 .top_result_details_icon,
 .result_details_icon {
   position: absolute;
-  bottom: 7px;
+  bottom: 6px;
   right: 7px;
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   cursor: pointer;
   opacity: 0.5;
 }
@@ -111,13 +111,13 @@
   position: absolute;
   bottom: 3px;
   left: 7px;
-  font-size: 2rem;
+  font-size: 1.5rem;
   opacity: 0.5;
   cursor: pointer;
 }
 
 .result_add_icon {
-  left: 220px;
+  left: 233px;
 }
 
 .top_result_details_icon:hover,
@@ -156,7 +156,7 @@
   }
 
   .top_result_container {
-    width: 90%;
+    width: 80%;
     margin-bottom: 15px;
   }
 

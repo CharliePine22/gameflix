@@ -46,8 +46,8 @@ function App() {
   const [toLanding, setToLanding] = useState(false);
   const [rowsLoaded, setRowsLoaded] = useState(false);
 
-  const userEmail = JSON.parse(localStorage.getItem('user')).email;
-  const userProfile = JSON.parse(localStorage.getItem('profile')).name;
+  const userEmail = JSON.parse(localStorage.getItem('user'))?.email;
+  const userProfile = JSON.parse(localStorage.getItem('profile'))?.name;
 
   let audio = new Audio(loginAudio);
   // "proxy": "http://localhost:5000"

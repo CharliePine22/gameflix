@@ -369,7 +369,7 @@ const GameDetails = ({
               <p>
                 {details.info?.metacritic
                   ? details.info?.metacritic
-                  : details.info?.rating * 20}
+                  : Math.round(details.info?.rating * 20)}
                 %
               </p>
             </div>

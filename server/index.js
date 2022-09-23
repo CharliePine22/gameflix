@@ -18,8 +18,6 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 
-console.log(process.env.PORT);
-
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use('/app', routesUrls);

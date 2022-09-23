@@ -155,27 +155,46 @@ router.get('/spotify_album', async (req, res) => {
 
 //! IGDB API ROUTES
 //* IGDB GAME SEARCH
-router.post('/search', async (req, res) => {
+router.post('/search_game', async (req, res) => {
   const token = req.body.token;
-  const clientId = req.body.clientId;
+  const gameName = req.body.gameName;
 
   const headers = {
-    'Client-ID': clientId,
+    'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
     Authorization: `Bearer ${token}`,
   };
-  const url = 'https://api.igdb.com/v4/search';
+  const url = `https://api.igdb.com/v4/games`;
+  // const url = `https://api.igdb.com/v4/games?fields=*,cover.*,platforms.*,screenshots.*,similar_games.*&search=${gameName}&limit=50`;
   try {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      data: {
-        fields: '*',
-        limit: 1,
-        search: 'The Legend of Zelda: Ocarina of Time',
-      },
+      body: `search "${gameName}"; fields *, name, cover.*, release_dates.*, platforms.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*; where (rating != null & category != (1,3)); limit 100;`,
     });
     const result = await request.json();
-    const gameId = result[0].id;
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//* IGDB GAME DETAILS
+router.post('/search_game_details', async (req, res) => {
+  const token = req.body.token;
+  const gameId = req.body.gameId;
+
+  const headers = {
+    'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
+    Authorization: `Bearer ${token}`,
+  };
+  const url = `https://api.igdb.com/v4/games`;
+  try {
+    const request = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: `fields *, cover.*, screenshots.*, similar_games.*; where id = ${gameId};`,
+    });
+    const result = await request.json();
     res.send(result);
   } catch (error) {
     console.log(error);

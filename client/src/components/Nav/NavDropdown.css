@@ -60,7 +60,7 @@
 }
 
 .dropdown__profile_name {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .dropdown__settings {
@@ -71,7 +71,7 @@
 .dropdown__settings_item {
   display: flex;
   align-items: center;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 16px;
   padding: 7px 0px 7px 5px;
   color: #fff;

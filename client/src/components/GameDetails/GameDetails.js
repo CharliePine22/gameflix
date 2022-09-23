@@ -21,6 +21,7 @@ import iosLogo from '../../assets/images/apple-logo.png';
 import androidLogo from '../../assets/images/android-logo.png';
 import segaLogo from '../../assets/images/sega-logo.png';
 import gamecubeLogo from '../../assets/images/gamecube-logo.png';
+import Carousel, { CarouselItem } from './Carousel';
 
 const GameDetails = ({
   game,
@@ -29,41 +30,44 @@ const GameDetails = ({
   addGame,
   removeGame,
   activeProfile,
+  twitchToken,
 }) => {
   const [details, setDetails] = useState({});
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [activeScreenshot, setActiveScreenshot] = useState(
-    game.background_image
+    `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`
   );
   const [currentTrack, setCurrentTrack] = useState(null);
   const [playAudio, setPlayAudio] = useState(false);
 
   const currentCollection = activeProfile.collection;
-  useEffect(() => {
-    const fetchGameDetails = async () => {
-      try {
-        const detailsRequest = await rawgClient.get(
-          `games/${game.id}?key=${process.env.REACT_APP_RAWG_API_KEY}`
-        );
-        const storesRequest = await rawgClient.get(
-          `games/${game.id}/stores?key=${process.env.REACT_APP_RAWG_API_KEY}`
-        );
-        const screenshotRequest = await rawgClient.get(
-          `games/${game.id}/screenshots?key=${process.env.REACT_APP_RAWG_API_KEY}`
-        );
-        setDetails((previousDetails) => ({
-          ...previousDetails,
-          info: detailsRequest.data,
-          stores: storesRequest.data.results,
-          screenshots: screenshotRequest.data.results,
-        }));
-      } catch (error) {
-        console.log('There was an issue fetching all game details');
-        console.log(error);
-      }
-    };
-    fetchGameDetails();
-  }, [game]);
+
+  console.log(game);
+  // useEffect(() => {
+  //   const fetchGameDetails = async () => {
+  //     try {
+  //       const detailsRequest = await rawgClient.get(
+  //         `games/${game.id}?key=${process.env.REACT_APP_RAWG_API_KEY}`
+  //       );
+  //       const storesRequest = await rawgClient.get(
+  //         `games/${game.id}/stores?key=${process.env.REACT_APP_RAWG_API_KEY}`
+  //       );
+  //       const screenshotRequest = await rawgClient.get(
+  //         `games/${game.id}/screenshots?key=${process.env.REACT_APP_RAWG_API_KEY}`
+  //       );
+  //       setDetails((previousDetails) => ({
+  //         ...previousDetails,
+  //         info: detailsRequest.data,
+  //         stores: storesRequest.data.results,
+  //         screenshots: screenshotRequest.data.results,
+  //       }));
+  //     } catch (error) {
+  //       console.log('There was an issue fetching all game details');
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchGameDetails();
+  // }, [game]);
 
   useEffect(() => {
     const fetchYoutubeTrailer = async () => {
@@ -114,22 +118,31 @@ const GameDetails = ({
   };
 
   const shortenDescription = (description) => {
-    if (description == undefined || description == '')
+    if (description.summary == undefined || description == '')
       return 'No available description';
-    const cleanGame = description.replace(/<[^>]*>?/gm, '');
-    const cleanedGame = cleanGame.replace(/&#39;/g, "'").trim();
+    if (description.storyline !== null || description.storyline !== undefined) {
+      const cleanGame = description.storyline.replace(/<[^>]*>?/gm, '');
+      const cleanedGame = cleanGame.replace(/&#39;/g, "'").trim();
 
-    if (cleanedGame.length > 300 && showFullDescription == false) {
-      return cleanedGame.split('').slice(0, 300).join('') + '...';
+      if (cleanedGame.length > 300 && showFullDescription == false) {
+        return cleanedGame.split('').slice(0, 300).join('') + '...';
+      } else {
+        return cleanedGame;
+      }
     } else {
-      return cleanedGame;
+      const cleanGame = description.summary.replace(/<[^>]*>?/gm, '');
+      const cleanedGame = cleanGame.replace(/&#39;/g, "'").trim();
+
+      if (cleanedGame.length > 300 && showFullDescription == false) {
+        return cleanedGame.split('').slice(0, 300).join('') + '...';
+      } else {
+        return cleanedGame;
+      }
     }
   };
 
-  console.log(details.info);
-
   const formatTrackTitle = (title) => {
-    return title.split('-')[0].split('(')[0];
+    return title.split('-')[0];
   };
 
   const playTrackHandler = (track) => {
@@ -248,13 +261,16 @@ const GameDetails = ({
     }
   };
 
-  if (Object.keys(details).length == 0) {
+  if (details == null) {
     return;
   }
 
   return (
     <div className='game_details__wrapper'>
-      <img className='game_details__background' src={game.background_image} />
+      <img
+        className='game_details__background'
+        src={`//images.igdb.com/igdb/image/upload/t_1080p/${game.cover.image_id}.jpg`}
+      />
       <div className='game_details__container'>
         <h2>{game.name}</h2>
         <div className='game_details__details'>
@@ -274,9 +290,13 @@ const GameDetails = ({
             )}
             <div className='game_details__screenshots'>
               <img
-                src={game.background_image}
+                src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
                 className='screenshot_thumbnail'
-                onClick={() => setActiveScreenshot(game.background_image)}
+                onClick={() =>
+                  setActiveScreenshot(
+                    `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`
+                  )
+                }
                 style={{
                   border:
                     game.background_image == activeScreenshot
@@ -284,7 +304,7 @@ const GameDetails = ({
                       : '1px solid transparent',
                 }}
               />
-              {details.screenshots?.map((screenshot) => (
+              {game.screenshots?.map((screenshot) => (
                 <img
                   key={screenshot.id}
                   style={{
@@ -293,16 +313,31 @@ const GameDetails = ({
                         ? '1px solid lightblue'
                         : '1px solid transparent',
                   }}
-                  src={screenshot.image}
-                  onClick={() => setActiveScreenshot(screenshot.image)}
+                  src={`//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`}
+                  onClick={() =>
+                    setActiveScreenshot(
+                      `//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`
+                    )
+                  }
                   className='screenshot_thumbnail'
                 />
               ))}
             </div>
             <div className='media_soundtrack__container'>
-              <img className='media_soundtrack__background' src={spotifyLogo} />
+              <Carousel>
+                {game.similar_games.map((game) => (
+                  <CarouselItem
+                    imageUrl={`//images.igdb.com/igdb/image/upload/t_cover_med_2x/${game.cover.image_id}.jpg`}
+                    key={game.id}
+                  >
+                    <div className='similar_game_container'>
+                      <p>{game.name}</p>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </Carousel>
+              {/* <img className='media_soundtrack__background' src={spotifyLogo} />
               <div className='media_soundtracks'>
-                {/* <h4>Spotify Album</h4> */}
                 <ul className='soundtracks'>
                   {details.soundtrack?.map((track) => (
                     <li
@@ -311,10 +346,11 @@ const GameDetails = ({
                       onClick={playTrackHandler}
                     >
                       {formatTrackTitle(track.name)}
+                      <FaPlay className='game_details_play_icon' />
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className='game_details__info_container'>
@@ -322,15 +358,15 @@ const GameDetails = ({
             <p
               className='game_details__description'
               style={{
-                maxWidth: details.info?.description_raw == '' && '100%',
+                maxWidth: details.summary == '' && '100%',
               }}
             >
-              {shortenDescription(details.info?.description_raw)}{' '}
+              {shortenDescription(game)}{' '}
               <button
                 className='game_details__info_toggler'
                 onClick={toggleFullDescription}
               >
-                {details.info?.description_raw !== ''
+                {details.summary !== ''
                   ? showFullDescription
                     ? 'Hide Full Description'
                     : 'Show Full Description'
@@ -352,30 +388,26 @@ const GameDetails = ({
             <div className='game_details__platforms'>
               <h4 className='game_details__title'>Platforms</h4>
               <ul className='platforms_list'>
-                {details.info?.parent_platforms.map((platform, i) => (
+                {game.platforms.map((platform, i) => (
                   <li
-                    key={platform.platform.id}
+                    key={platform.id}
                     className='platform'
                     alt='platform'
-                    onClick={() => goToStore(i)}
+                    // onClick={() => goToStore(i)}
                   >
-                    {displayConsoleIcons(platform.platform.name)}
+                    {platform.name}
+                    {/* {displayConsoleIcons(platform.platform.name)} */}
                   </li>
                 ))}
               </ul>
             </div>
             <div className='game_details__rating'>
               <h4 className='game_details__title'>Rating</h4>
-              <p>
-                {details.info?.metacritic
-                  ? details.info?.metacritic
-                  : Math.round(details.info?.rating * 20)}
-                %
-              </p>
+              <p>{Math.round(game.rating)}%</p>
             </div>
             <div className='game_details__released'>
               <h4 className='game_details__title'>Release Date</h4>
-              <p>{convertDate(details.info?.released)}</p>
+              <p>{convertDate(game.release_dates[0].human)}</p>
             </div>
           </div>
         </div>
@@ -388,13 +420,6 @@ const GameDetails = ({
           <span onClick={closeDetails}>BACK</span>
         </div>
       </div>
-      <SpotifyPlayback
-        spotifyToken={spotifyToken}
-        playAudio={playAudio}
-        beginPlayback={(e) => setPlayAudio(true)}
-        pausePlayback={(e) => setPlayAudio(false)}
-        trackUri={currentTrack?.uri}
-      />
     </div>
   );
 };

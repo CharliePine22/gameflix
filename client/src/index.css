@@ -26,7 +26,9 @@ html {
   scroll-behavior: smooth;
 }
 
-p {
+p,
+a,
+li {
   font-family: Ferrum;
 }
 

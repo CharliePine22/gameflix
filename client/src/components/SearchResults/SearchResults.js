@@ -14,8 +14,16 @@ const SearchResults = ({ searchedGame, setGameDetails }) => {
   const [remainderGames, setRemainderGames] = useState([]);
   const [playAudio, setPlayAudio] = useState(false);
   let audio = new Audio(chatterAudio);
+  // searchedGame.sort((a, b) =>
+  //   a.total_rating > b.total_rating
+  //     ? 1
+  //     : b.total_rating > a.total_rating
+  //     ? -1
+  //     : 0
+  // );
 
-  console.log(topGames);
+  console.log(searchedGame);
+  // console.log(topGames);
 
   useEffect(() => {
     setTopGames(searchedGame?.slice(0, 3));
@@ -35,7 +43,7 @@ const SearchResults = ({ searchedGame, setGameDetails }) => {
     const gameTags = game.tags;
     const gamePlatforms = game.parent_platforms;
 
-    if (gameTags == null) return false;
+    if (gameTags == null || gamePlatforms == null) return false;
 
     // If the only platform it's available on is PC, flag it for Indie as ost larger games come
     // out on at least 2 systems, It should also be avaialble for Xbox

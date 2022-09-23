@@ -10,6 +10,7 @@ import LandingPage from './components/LandingPage/LandingPage';
 import ProfilesPage from './components/Login/Profiles/ProfilesPage';
 import TrendingRow from './components/TrendingRow/TrendingRow';
 import SearchResults from './components/SearchResults/SearchResults';
+import SearchResultsIGDB from './components/SearchResults/SearchResultsIGDB';
 
 // File Imports
 import requests from './requests';
@@ -64,11 +65,21 @@ function App() {
   // Search for the game, publisher, or developer that the user types in from nav
   const fetchSubmittedGame = async (game) => {
     setSearchSubmitted(true);
+    const testrequest = await axios.post('/app/search_game', {
+      token: twitchAccessToken,
+      gameName: game,
+    });
     const request = await rawgClient.get(
       `/games?key=${process.env.REACT_APP_RAWG_API_KEY}&search=${game}&ordering=-added&search_exact=true`
     );
     const result = await request.data.results;
-    setSearchedGame(result);
+    const testresult = await testrequest.data;
+    const filteredList = testrequest.data.sort(function (a, b) {
+      return b.rating - a.rating;
+    });
+
+    setSearchedGame(filteredList);
+    // setSearchedGame(result);
   };
 
   const addGameHandler = async (game) => {
@@ -244,6 +255,7 @@ function App() {
         game={gameDetails}
         closeDetails={() => setGameDetails(null)}
         spotifyToken={spotifyAccessToken}
+        twitchToken={twitchAccessToken}
         addGame={(game) => addGameHandler(game)}
         removeGame={(game) => removeGameHandler(game)}
         activeProfile={selectedProfile}
@@ -302,7 +314,11 @@ function App() {
           )}
         </>
       ) : (
-        <SearchResults
+        // <SearchResults
+        //   searchedGame={searchedGame}
+        //   setGameDetails={(id) => setGameDetails(id)}
+        // />
+        <SearchResultsIGDB
           searchedGame={searchedGame}
           setGameDetails={(id) => setGameDetails(id)}
         />

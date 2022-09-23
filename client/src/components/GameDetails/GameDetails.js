@@ -118,9 +118,8 @@ const GameDetails = ({
   };
 
   const shortenDescription = (description) => {
-    if (description.summary == undefined || description == '')
-      return 'No available description';
-    if (description.storyline !== null || description.storyline !== undefined) {
+    if (description.summary == undefined) return 'No available description';
+    if (description.storyline) {
       const cleanGame = description.storyline.replace(/<[^>]*>?/gm, '');
       const cleanedGame = cleanGame.replace(/&#39;/g, "'").trim();
 
@@ -269,7 +268,7 @@ const GameDetails = ({
     <div className='game_details__wrapper'>
       <img
         className='game_details__background'
-        src={`//images.igdb.com/igdb/image/upload/t_1080p/${game.cover.image_id}.jpg`}
+        src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover.image_id}.jpg`}
       />
       <div className='game_details__container'>
         <h2>{game.name}</h2>
@@ -329,6 +328,7 @@ const GameDetails = ({
                   <CarouselItem
                     imageUrl={`//images.igdb.com/igdb/image/upload/t_cover_med_2x/${game.cover.image_id}.jpg`}
                     key={game.id}
+                    onClick={() => {}}
                   >
                     <div className='similar_game_container'>
                       <p>{game.name}</p>
@@ -336,21 +336,6 @@ const GameDetails = ({
                   </CarouselItem>
                 ))}
               </Carousel>
-              {/* <img className='media_soundtrack__background' src={spotifyLogo} />
-              <div className='media_soundtracks'>
-                <ul className='soundtracks'>
-                  {details.soundtrack?.map((track) => (
-                    <li
-                      key={track.id}
-                      className='game_soundtrack'
-                      onClick={playTrackHandler}
-                    >
-                      {formatTrackTitle(track.name)}
-                      <FaPlay className='game_details_play_icon' />
-                    </li>
-                  ))}
-                </ul>
-              </div> */}
             </div>
           </div>
           <div className='game_details__info_container'>
@@ -378,9 +363,9 @@ const GameDetails = ({
             <div className='game_details__publishers'>
               <h4 className='game_details__title'>Publishers</h4>
               <ul className='publishers_list'>
-                {details.info?.publishers.map((publisher) => (
-                  <li key={publisher.id} className='publisher'>
-                    {publisher.name}
+                {game.involved_companies.map((company) => (
+                  <li key={company.id} className='publisher'>
+                    {company.company.name}
                   </li>
                 ))}
               </ul>

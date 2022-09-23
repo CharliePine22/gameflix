@@ -9,7 +9,7 @@
   font-size: 1rem;
   width: 100%;
   max-width: 95%;
-  padding: 1px 5px 3px;
+  padding: 5px 5px 3px;
 }
 
 .game_cover {
@@ -39,9 +39,9 @@
   bottom: 13px;
   justify-content: space-evenly;
 }
+
 .game_theme_list_lower {
   font-size: 0.9rem;
-
   padding: 0;
   list-style: none;
   width: 100%;
@@ -49,6 +49,10 @@
   justify-content: space-evenly;
   position: absolute;
   bottom: 5px;
+}
+
+.game_theme_list_lower li {
+  font-size: 0.75rem;
 }
 
 .result_publisher {

@@ -14,7 +14,6 @@ const UserLibrary = ({
   isPlaying,
   pausePlayback,
   resumePlayback,
-  setGameList,
   collection,
   setSelectedProfile,
   spotifyToken,
@@ -71,23 +70,6 @@ const UserLibrary = ({
     } else {
       playTrack(track);
     }
-  };
-
-  // Add game to collection or upload custom game image
-  const updateCollectionHandler = (method) => {
-    if (method == 'update') {
-      setAlteringCollection(true);
-    } else {
-      setUpdatingImage(true);
-    }
-  };
-
-  const searchGameHandler = async (e, game) => {
-    e.preventDefault();
-    const searchResults = await rawgClient.get(
-      `/games?key=${process.env.REACT_APP_RAWG_API_KEY}&search=${game}&page_size=50`
-    );
-    setGameList(searchResults.data.results);
   };
 
   const removeGameHandler = async (game) => {

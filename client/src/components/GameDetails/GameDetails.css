@@ -147,6 +147,7 @@
 }
 
 .game_details__screenshots {
+  overflow-y: scroll;
   height: 350px;
   width: auto;
   max-width: 209px;
@@ -154,11 +155,10 @@
   right: -3px;
   display: flex;
   flex-direction: column;
-  margin-right: 125px;
+  margin-right: 15px;
   border-top: 2px solid white;
   border-right: 2px solid white;
   border-bottom: 2px solid white;
-  flex-wrap: wrap;
 }
 
 .game_details__title {
@@ -246,16 +246,19 @@
 .publishers_list,
 .platforms_list {
   padding: 0;
+  width: 100%;
+  text-align: center;
 }
 
 .platforms_list {
   display: flex;
   width: 100%;
-  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
 }
 
 .screenshot_thumbnail {
-  height: auto;
+  height: -webkit-fill-available;
   width: 80px;
   object-fit: cover;
   cursor: pointer;

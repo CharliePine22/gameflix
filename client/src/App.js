@@ -22,7 +22,6 @@ import useSpotifyAuth from './hooks/useSpotifyAuth';
 import useTwitchAuth from './hooks/useTwitchAuth';
 import UserLibrary from './components/UserLibrary/UserLibrary';
 import { MdSignalCellularNull } from 'react-icons/md';
-import GameList from './components/UserLibrary/GameList';
 import GameDetails from './components/GameDetails/GameDetails';
 
 const code = new URLSearchParams(window.location.search).get('code');
@@ -42,7 +41,6 @@ function App() {
   // Search States
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState('');
-  const [gameList, setGameList] = useState([]);
   const [gameDetails, setGameDetails] = useState(null);
   const [toLanding, setToLanding] = useState(false);
   const [rowsLoaded, setRowsLoaded] = useState(false);
@@ -51,8 +49,6 @@ function App() {
   const userProfile = JSON.parse(localStorage.getItem('profile'))?.name;
 
   let audio = new Audio(loginAudio);
-  // "proxy": "http://localhost:5000"
-  // "proxy": "https://gameflixx-server.herokuapp.com/",
 
   const spotifyAccessToken = useSpotifyAuth(code);
   const twitchAccessToken = useTwitchAuth(code);
@@ -254,6 +250,7 @@ function App() {
       <GameDetails
         game={gameDetails}
         closeDetails={() => setGameDetails(null)}
+        seeGameDetails={(game) => setGameDetails(game)}
         spotifyToken={spotifyAccessToken}
         twitchToken={twitchAccessToken}
         addGame={(game) => addGameHandler(game)}
@@ -288,7 +285,6 @@ function App() {
             pausePlayback={() => setPlayAudio(false)}
             resumePlayback={() => setPlayAudio(true)}
             spotifyToken={spotifyAccessToken}
-            setGameList={(list) => setGameList(list)}
             collection={userCollection}
             setSelectedProfile={(profile) => setSelectedProfile(profile)}
             setGameDetails={(id) => setGameDetails(id)}
@@ -314,10 +310,6 @@ function App() {
           )}
         </>
       ) : (
-        // <SearchResults
-        //   searchedGame={searchedGame}
-        //   setGameDetails={(id) => setGameDetails(id)}
-        // />
         <SearchResultsIGDB
           searchedGame={searchedGame}
           setGameDetails={(id) => setGameDetails(id)}

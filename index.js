@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGODB_URI, () => {
 app.use(express.json());
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,

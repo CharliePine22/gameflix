@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGODB_URI, () => {
 app.use(express.json());
 
 const corsOptions = {
-  origin: '*',
+  origin: ['http://localhost:3000', 'https://gameflix-psi.vercel.app'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,

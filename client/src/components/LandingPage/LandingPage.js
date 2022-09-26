@@ -20,6 +20,7 @@ import logos from '../../assets/images/console-logos.jpg';
 import NewUser from './NewUser/NewUser';
 
 const LandingPage = (props) => {
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const [error, setError] = useState(null);
   const [gameList, setGameList] = useState([]);
   const [imgsLoading, setImgsLoading] = useState(false);
@@ -71,7 +72,7 @@ const LandingPage = (props) => {
       return;
     }
     axios
-      .post('http://localhost:5000/app/email_verification', { email })
+      .post(`${baseURL}/app/email_verification`, { email })
       .then((response) => {
         console.log(response);
         setCreatingNewUser(true);

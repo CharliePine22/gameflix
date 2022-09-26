@@ -43,9 +43,7 @@ function App() {
   const [searchedGame, setSearchedGame] = useState('');
   const [gameDetails, setGameDetails] = useState(null);
   const [toLanding, setToLanding] = useState(false);
-  const [rowsLoaded, setRowsLoaded] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
-  console.log(baseURL);
 
   const userEmail = JSON.parse(localStorage.getItem('user'))?.email;
   const userProfile = JSON.parse(localStorage.getItem('profile'))?.name;
@@ -62,27 +60,23 @@ function App() {
 
   // Search for the game, publisher, or developer that the user types in from nav
   const fetchSubmittedGame = async (game) => {
+    if (searchedGame !== null) setSearchedGame(null);
     setSearchSubmitted(true);
-    const testrequest = await axios.post('/app/search_game', {
+    const request = await axios.post('/app/search_game', {
       token: twitchAccessToken,
       gameName: game,
     });
-    const request = await rawgClient.get(
-      `/games?key=${process.env.REACT_APP_RAWG_API_KEY}&search=${game}&ordering=-added&search_exact=true`
-    );
-    const result = await request.data.results;
-    const testresult = await testrequest.data;
-    const filteredList = testrequest.data.sort(function (a, b) {
+    // Sort games by highest rating
+    const filteredList = request.data.sort(function (a, b) {
       return b.rating - a.rating;
     });
-
+    console.log(searchedGame);
     setSearchedGame(filteredList);
-    // setSearchedGame(result);
   };
 
   const addGameHandler = async (game) => {
     try {
-      const request = await axios.post('/app/update_collection', {
+      const request = await axios.post(`${baseURL}/app/update_collection`, {
         email: userEmail,
         currentProfile: userProfile,
         games: game,
@@ -100,7 +94,7 @@ function App() {
 
   const removeGameHandler = async (game) => {
     try {
-      const request = await axios.put('/app/remove_game', {
+      const request = await axios.put(`${baseURL}/app/remove_game`, {
         email: userEmail,
         currentProfile: userProfile,
         gameTitle: game,
@@ -151,7 +145,7 @@ function App() {
   useEffect(() => {
     const updateUser = async () => {
       if (!loggedUser) return null;
-      const request = await axios.get('/app/get_user', {
+      const request = await axios.get(`${baseURL}/app/get_user`, {
         params: {
           email: loggedUser.email,
         },
@@ -310,20 +304,20 @@ function App() {
                 />
               )
           )}
+          {spotifyAccessToken && (
+            <SpotifyPlayback
+              spotifyToken={spotifyAccessToken}
+              playAudio={playAudio}
+              beginPlayback={(e) => setPlayAudio(true)}
+              pausePlayback={(e) => setPlayAudio(false)}
+              trackUri={currentTrack?.uri}
+            />
+          )}
         </>
       ) : (
         <SearchResultsIGDB
           searchedGame={searchedGame}
           setGameDetails={(id) => setGameDetails(id)}
-        />
-      )}
-      {spotifyAccessToken && (
-        <SpotifyPlayback
-          spotifyToken={spotifyAccessToken}
-          playAudio={playAudio}
-          beginPlayback={(e) => setPlayAudio(true)}
-          pausePlayback={(e) => setPlayAudio(false)}
-          trackUri={currentTrack?.uri}
         />
       )}
     </div>

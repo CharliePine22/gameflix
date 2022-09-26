@@ -5,14 +5,18 @@ export default function useSpotifyAuth(code) {
   const [accessToken, setAccessToken] = useState();
   const [refreshToken, setRefreshToken] = useState();
   const [expiresIn, setExpiresIn] = useState();
+  const baseURL = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
     if (!code) return;
     const spotifyAuthentication = async () => {
       try {
-        const request = await axios.post('/app/spotify_authentication', {
-          code,
-        });
+        const request = await axios.post(
+          `${baseURL}/app/spotify_authentication`,
+          {
+            code,
+          }
+        );
         setAccessToken(request.data.tokenRequest.body.access_token);
         setRefreshToken(request.data.tokenRequest.body.refresh_token);
         setExpiresIn(request.data.tokenRequest.body.expires_in);
@@ -29,7 +33,7 @@ export default function useSpotifyAuth(code) {
     if (!refreshToken || !expiresIn) return;
     const refreshSpotifyToken = async () => {
       try {
-        const request = await axios.post('/app/refresh_token', {
+        const request = await axios.post(`${baseURL}/app/refresh_token`, {
           refreshToken,
         });
         setAccessToken(request.data.body.body.access_token);

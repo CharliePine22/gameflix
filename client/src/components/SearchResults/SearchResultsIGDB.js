@@ -1,34 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import './SearchResults.css';
-import { BsFillArrowUpRightSquareFill } from 'react-icons/bs';
-import { MdAddBox } from 'react-icons/md';
 import chatterAudio from '../../assets/sounds/murmur.mp3';
-import ReactTooltip from 'react-tooltip';
-import Typewriter from 'typewriter-effect';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import SkeletonCard from '../SkeletonCard/SkeletonCard';
 
 const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
   const [topGames, setTopGames] = useState([]);
   const [remainderGames, setRemainderGames] = useState([]);
-  const [playAudio, setPlayAudio] = useState(false);
-  let audio = new Audio(chatterAudio);
 
   useEffect(() => {
     setTopGames(searchedGame?.slice(0, 3));
     setRemainderGames(searchedGame?.slice(3));
   }, [searchedGame]);
 
-  const playChatterNoise = (e) => {
-    audio.play(audio);
-  };
-
-  const stopChatterNoise = (e) => {
-    audio.pause(audio);
-  };
-
   if (!searchedGame || !topGames || !remainderGames) {
-    return 'Loading...';
+    return <SkeletonCard />;
   }
 
   return (
@@ -38,7 +25,7 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
 
         {/* Top 3 Search Results */}
         <div className='top_results_row'>
-          {topGames.map((game) => (
+          {topGames?.map((game) => (
             <div
               className='top_result_container'
               key={game.id}
@@ -58,7 +45,9 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
                 />
               </div>
               <div className='top_result_lower'>
-                <h3 className='game_name'>{game.name || <Skeleton />}</h3>
+                <h3 className='game_name'>
+                  {game.name || <Skeleton count={1} />}
+                </h3>
                 <ul className='game_theme_list'>
                   {game.themes?.map((theme) => (
                     <li key={theme.id}>{theme.name}</li>
@@ -79,7 +68,7 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
         {/* Remaining Games */}
         <div className='remainder_results'>
           <h2>Results</h2>
-          {remainderGames.map(
+          {remainderGames?.map(
             (game) =>
               game.cover !== undefined &&
               game.themes !== undefined && (
@@ -111,6 +100,7 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
           )}
         </div>
       </div>
+      <div className='search_bottom_fade' />
     </div>
   );
 };

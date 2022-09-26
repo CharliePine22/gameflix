@@ -119,6 +119,30 @@
   color: #fff;
 }
 
+.loading_dot {
+  height: 30px;
+  width: 30px;
+  background: white;
+  border-radius: 50%;
+  margin: 0 10px;
+}
+
+.first {
+  animation: dotJump 250ms forwards;
+}
+.second {
+  animation: dotJump 250ms 0.25s forwards;
+}
+.third {
+  animation: dotJump 250ms 0.5s forwards;
+}
+
+.loading__dots {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .login__auth_error {
   position: absolute;
   top: 43px;
@@ -154,7 +178,7 @@
 
 .login__background {
   position: absolute;
-  z-index: 1;
+  z-index: -1;
   top: -130px;
   left: -300px;
   opacity: 0.7;
@@ -175,7 +199,10 @@
 
 .login__image_loading {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .login__name {
@@ -221,12 +248,26 @@
   }
 }
 
+/* LOGIN AUTH LOAD SPIN ANIMATION */
 @keyframes spin-anim {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+/* LOGIN PAGE LOAD */
+@keyframes dotJump {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
 

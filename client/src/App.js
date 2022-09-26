@@ -44,6 +44,8 @@ function App() {
   const [gameDetails, setGameDetails] = useState(null);
   const [toLanding, setToLanding] = useState(false);
   const [rowsLoaded, setRowsLoaded] = useState(false);
+  const baseURL = process.env.REACT_APP_BASE_URL;
+  console.log(baseURL);
 
   const userEmail = JSON.parse(localStorage.getItem('user'))?.email;
   const userProfile = JSON.parse(localStorage.getItem('profile'))?.name;

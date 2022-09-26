@@ -10,7 +10,6 @@ dotenv.config();
 
 mongoose.connect(process.env.MONGODB_ACCESS, () => {
   console.log('Database Connected!');
-  alert('CONNECTED');
 });
 
 const corsOptions = {

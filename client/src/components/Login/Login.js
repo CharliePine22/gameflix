@@ -14,6 +14,7 @@ const Login = (props) => {
   const [currentFocus, setCurrentFocus] = useState(null);
   const [authError, setAuthError] = useState('');
   const [loading, setLoading] = useState(false);
+  const baseURL = process.env.REACT_APP_BASE_URL;
 
   // Refs
   const emailRef = useRef('');
@@ -83,10 +84,10 @@ const Login = (props) => {
       return;
     }
     try {
-      const response = await axios.post(
-        'https://gameflixx-server.herokuapp.com/app/signin',
-        { email, password }
-      );
+      const response = await axios.post(`${baseURL}/app/signin`, {
+        email,
+        password,
+      });
       // const response = await axios.post(
       //   'https://gameflixx-server.herokuapp.com/app/signin',
       //   { email, password }
@@ -94,8 +95,9 @@ const Login = (props) => {
       setAuthError('');
       props.onLogin(response.data.user);
     } catch (e) {
-      setAuthError(e.response.data.message);
-      emailRef.current.value = email;
+      console.log(e);
+      setAuthError(e.message);
+      emailRef.current = email;
     } finally {
       setLoading(false);
     }

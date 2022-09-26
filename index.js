@@ -12,9 +12,14 @@ mongoose.connect(process.env.MONGODB_ACCESS, () => {
   console.log('Database Connected!');
 });
 
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+
 app.use(express.json());
-// app.use(cors());
-app.options('*', cors());
+app.use(cors(corsOptions));
 app.use('/app', routesUrls);
 app.use('/uploads', express.static('uploads'));
 app.use(express.static(path.resolve(__dirname, './client/build')));

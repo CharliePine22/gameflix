@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { MdArrowForwardIos } from 'react-icons/md';
 // import { useSwipeable } from 'react-swipeable';
 
 import './Carousel.css';
 
-export const CarouselItem = ({ children, width, imageUrl }) => {
+export const CarouselItem = ({ children, width, imageUrl, game }) => {
   return (
     <div
       className='carousel-item'
+      onClick={() => console.log(game)}
       style={{
         width: width,
-        backgroundImage: `url(${imageUrl})`,
-        objectFit: 'cover',
+        // backgroundImage: `url(${imageUrl})`,
+        // objectFit: 'cover',
       }}
     >
+      <img src={imageUrl} className='carousel-bg' />
       {children}
     </div>
   );
@@ -32,19 +35,19 @@ const Carousel = ({ children }) => {
     setActiveIndex(newIndex);
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!paused) {
-        updateIndex(activeIndex + 1);
-      }
-    }, 5000);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (!paused) {
+  //       updateIndex(activeIndex + 1);
+  //     }
+  //   }, 5000);
 
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  });
+  //   return () => {
+  //     if (interval) {
+  //       clearInterval(interval);
+  //     }
+  //   };
+  // });
 
   // const handlers = useSwipeable({
   //   onSwipedLeft: () => updateIndex(activeIndex + 1),
@@ -58,6 +61,18 @@ const Carousel = ({ children }) => {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
+      <MdArrowForwardIos
+        className='carousel_forward_arrow'
+        onClick={() => {
+          updateIndex(activeIndex + 1);
+        }}
+      />
+      <MdArrowForwardIos
+        className='carousel_back_arrow'
+        onClick={() => {
+          updateIndex(activeIndex - 1);
+        }}
+      />
       <div
         className='inner'
         style={{ transform: `translateX(-${activeIndex * 100}%)` }}
@@ -65,34 +80,6 @@ const Carousel = ({ children }) => {
         {React.Children.map(children, (child, index) => {
           return React.cloneElement(child, { width: '100%' });
         })}
-      </div>
-      <div className='indicators'>
-        <button
-          onClick={() => {
-            updateIndex(activeIndex - 1);
-          }}
-        >
-          Prev
-        </button>
-        {React.Children.map(children, (child, index) => {
-          return (
-            <button
-              className={`${index === activeIndex ? 'active' : ''}`}
-              onClick={() => {
-                updateIndex(index);
-              }}
-            >
-              {index + 1}
-            </button>
-          );
-        })}
-        <button
-          onClick={() => {
-            updateIndex(activeIndex + 1);
-          }}
-        >
-          Next
-        </button>
       </div>
     </div>
   );

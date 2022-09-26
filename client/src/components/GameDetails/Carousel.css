@@ -1,32 +1,61 @@
 .carousel {
   overflow: hidden;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.carousel_back_arrow {
+  position: absolute;
+  left: 0px;
+  top: 153px;
+  z-index: 3;
+  font-size: 2rem;
+  color: white;
+  transform: rotate(180deg);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.carousel_forward_arrow {
+  position: absolute;
+  right: 0px;
+  top: 153px;
+  z-index: 3;
+  font-size: 2rem;
+  color: white;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.carousel_forward_arrow:hover,
+.carousel_back_arrow:hover {
+  opacity: 1;
 }
 
 .inner {
   white-space: nowrap;
   transition: transform 0.3s;
+  height: 100%;
+  width: 100%;
+}
+
+.carousel-bg {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+  opacity: 0.6;
 }
 
 .carousel-item {
   display: inline-flex;
   align-items: center;
+  height: 100%;
   justify-content: center;
-  height: 320px;
   color: #fff;
-}
-
-.indicators {
-  display: flex;
-  justify-content: center;
+  cursor: pointer;
+  position: relative;
   width: 100%;
-}
-
-.indicators > button {
-  padding: 4px 5.2px;
-  margin: 0px 1.4px;
-}
-
-.indicators > button.active {
-  background-color: green;
-  color: #fff;
+  z-index: 1;
 }

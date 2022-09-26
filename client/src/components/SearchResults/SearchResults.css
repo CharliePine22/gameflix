@@ -171,12 +171,102 @@
   height: 7rem;
 }
 
-@media screen and (max-width: 750px) {
+/* MOBILE */
+@media screen and (max-width: 375px) {
+  .results_container {
+    width: 18rem !important;
+  }
+}
+
+@media screen and (max-width: 450px) {
   .game_cover {
-    top: 65px;
+    height: 119px;
+    width: 90px;
+    position: absolute;
+    top: 80px;
+    left: 10px;
+    box-shadow: rgb(0 0 0 / 7%) 0px 1px 2px, rgb(0 0 0 / 7%) 0px 2px 4px,
+      rgb(0 0 0 / 7%) 0px 4px 8px, rgb(0 0 0 / 7%) 0px 8px 16px,
+      rgb(0 0 0 / 7%) 0px 16px 32px, rgb(0 0 0 / 7%) 0px 32px 64px;
+  }
+
+  .game_name {
+    font-size: 1rem;
+    width: 100%;
+    max-width: 60%;
+    margin-left: 110px;
+    margin-top: 5px;
+  }
+
+  .game_name_remainder {
+    font-size: 0.7rem;
+    width: 100%;
+    max-width: 95%;
+    padding: 5px 0px 3px 4px;
+  }
+
+  .game_theme_list {
+    bottom: 5px;
+  }
+
+  .remainder_results {
+    margin-top: 15px;
+  }
+
+  .results_container {
+    display: inline-flex;
+    height: 5rem;
+    margin: 5px;
+    width: 12rem;
+    background-color: rgb(35, 35, 35);
+    position: relative;
+  }
+
+  .results_container_img {
+    height: 100%;
+    min-width: 75px;
+  }
+
+  .search_results {
+    width: 100%;
+    top: 4.5rem;
+  }
+
+  .search_results__container h2 {
+    margin-bottom: 15px;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+  }
+
+  .top_result_container {
+    width: 85%;
+    margin-bottom: 15px;
+  }
+
+  .top_result_lower {
+    height: 4.9rem;
+  }
+
+  .top_results_row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .top_result_upper {
+    height: 10rem;
+  }
+}
+
+@media screen and (min-width: 450px) and (max-width: 750px) {
+  .game_cover {
+    top: 75px;
     height: 128px;
-    width: 87px;
-    left: 13px;
+    width: 96px;
+    left: 10px;
   }
 
   .game_name {
@@ -213,7 +303,7 @@
   }
 
   .top_result_container {
-    width: 80%;
+    width: 65%;
     margin-bottom: 15px;
   }
 
@@ -230,6 +320,6 @@
   }
 
   .top_result_upper {
-    height: 9rem;
+    height: 10rem;
   }
 }

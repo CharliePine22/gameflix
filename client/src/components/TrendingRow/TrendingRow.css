@@ -76,7 +76,7 @@
 
 .trending_row__posters {
   display: flex;
-  padding: 10px 20px 20px;
+  padding: 20px;
   position: relative;
   overflow-y: hidden;
   overflow-x: scroll;

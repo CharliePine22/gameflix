@@ -93,20 +93,15 @@ const requests = [
     url: `games?dates=${lastMonthDate},${currentDate}&page_size=10&ordering=-added&key=${API_KEY}`,
     title: 'TRENDING',
   },
-  {
-    requestId: 'fetchGOATTitles',
-    url: `games?dates=2000-01-01,${currentDate}&ordering=-added&page_size=30&key=${API_KEY}`,
-    title: 'G.O.A.Ts',
-  },
-  {
-    requestId: 'fetchActionTitles',
-    url: `games?genres=4&key=${API_KEY}`,
-    title: 'ACTION GAMES',
-  },
+  // {
+  //   requestId: 'fetchGOATTitles',
+  //   url: `games?dates=2000-01-01,${currentDate}&ordering=-added&page_size=30&key=${API_KEY}`,
+  //   title: 'G.O.A.Ts',
+  // },
   {
     requestId: 'fetchAdventureTitles',
-    url: `games?genres=3&key=${API_KEY}`,
-    title: 'ADVENTURE GAMES',
+    url: `games?genres=3,4&key=${API_KEY}`,
+    title: 'ADVENTURE/ADVENTURE GAMES',
   },
   {
     requestId: 'fetchArcadeTitles',

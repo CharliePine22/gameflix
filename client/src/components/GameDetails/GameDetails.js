@@ -328,10 +328,20 @@ const GameDetails = ({
                   <CarouselItem
                     imageUrl={`//images.igdb.com/igdb/image/upload/t_cover_med_2x/${game.cover.image_id}.jpg`}
                     key={game.id}
-                    onClick={() => {}}
+                    width='100%'
+                    game={game}
                   >
-                    <div className='similar_game_container'>
-                      <p>{game.name}</p>
+                    <div className='similar_game__container'>
+                      <div className='similar_game__details'>
+                        <p className='similar_game__company'>
+                          <i>{game.involved_companies.at(-1)?.company?.name}</i>
+                        </p>
+                        <ul className='similar_game__genres'>
+                          {game.genres.map((genre) => (
+                            <li>{genre.name.split('(')[0]}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </CarouselItem>
                 ))}

@@ -58,14 +58,12 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
                 />
               </div>
               <div className='top_result_lower'>
-                <div className='result_lower_contents'>
-                  <h3 className='game_name'>{game.name || <Skeleton />}</h3>
-                  <ul className='game_theme_list'>
-                    {game.themes?.map((theme) => (
-                      <li key={theme.id}>{theme.name}</li>
-                    ))}
-                  </ul>
-                </div>
+                <h3 className='game_name'>{game.name || <Skeleton />}</h3>
+                <ul className='game_theme_list'>
+                  {game.themes?.map((theme) => (
+                    <li key={theme.id}>{theme.name}</li>
+                  ))}
+                </ul>
               </div>
               <div
                 className='game_cover'

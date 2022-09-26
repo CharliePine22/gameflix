@@ -92,8 +92,7 @@ const Login = (props) => {
       setAuthError('');
       props.onLogin(response.data.user);
     } catch (e) {
-      console.log(e);
-      setAuthError(e.message);
+      setAuthError(e.response.data.message);
       emailRef.current = email;
     } finally {
       setLoading(false);

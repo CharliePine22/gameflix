@@ -16,7 +16,7 @@ app.use(express.json());
 
 const corsOptions = {
   origin: ['http://localhost:3000', 'https://gameflixx.netlify.app/'],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
@@ -25,13 +25,13 @@ app.use(cors(corsOptions));
 app.use('/app', routesUrls);
 app.use('/uploads', express.static('uploads'));
 
-if (process.env.PORT) {
-  // Set static folder
-  app.use(express.static('client/build'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
+// if (process.env.PORT) {
+//   // Set static folder
+//   app.use(express.static('client/build'));
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+//   });
+// }
 
 app.listen(process.env.PORT || 5000, () =>
   console.log('Server is up and running!')

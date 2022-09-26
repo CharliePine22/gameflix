@@ -8,7 +8,7 @@ const cors = require('cors');
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGODB_ACCESS, () => {
+mongoose.connect(process.env.MONGODB_URI, () => {
   console.log('Database Connected!');
 });
 

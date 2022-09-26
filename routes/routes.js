@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userModel = require('../models/newUserModels');
+const userModel = require('../models/NewUserModels');
 const multer = require('multer');
 const spotifyWebApi = require('spotify-web-api-node');
 const fs = require('fs');

@@ -88,10 +88,7 @@ const Login = (props) => {
         email,
         password,
       });
-      // const response = await axios.post(
-      //   'https://gameflixx-server.herokuapp.com/app/signin',
-      //   { email, password }
-      // );
+      console.log(response);
       setAuthError('');
       props.onLogin(response.data.user);
     } catch (e) {

@@ -8,7 +8,6 @@ export const CarouselItem = ({ children, width, imageUrl, game }) => {
   return (
     <div
       className='carousel-item'
-      onClick={() => console.log(game)}
       style={{
         width: width,
         // backgroundImage: `url(${imageUrl})`,

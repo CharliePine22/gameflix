@@ -204,20 +204,19 @@ const Login = (props) => {
         </div>
       )}
       {/* BACKGROUND */}
-      {imgsLoading && (
-        <div className='login__background'>
-          {gameList.map((game) => (
-            <React.Fragment key={game.name}>
-              <span className='login__name'>{game?.name.split(':')[0]}</span>
-              <img
-                className='login__img'
-                src={game?.background_image}
-                onLoad={imageLoaded}
-              />
-            </React.Fragment>
-          ))}
-        </div>
-      )}
+
+      <div className='login__background'>
+        {gameList.map((game) => (
+          <React.Fragment key={game.name}>
+            <span className='login__name'>{game?.name.split(':')[0]}</span>
+            <img
+              className='login__img'
+              src={game?.background_image}
+              onLoad={imageLoaded}
+            />
+          </React.Fragment>
+        ))}
+      </div>
     </div>
   );
 };

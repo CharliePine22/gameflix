@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import rawgClient from '../../axios';
 import youtube from '../../youtubeAPI';
 import ReactPlayer from 'react-player/lazy';
 import './GameDetails.css';
 import axios from 'axios';
-import { FaPlay, FaPause } from 'react-icons/fa';
-import SpotifyPlayback from '../SpotifyPlayback/SpotifyPlayback';
 // ESRB Logos
-import spotifyLogo from '../../assets/images/spotify_logo.png';
 import eRating from '../../assets/images/ESRB_E.png';
 import tRating from '../../assets/images/ESRB_T.png';
 import mRating from '../../assets/images/ESRB_M.png';
 import rpRating from '../../assets/images/ESRB_RP.png';
 // Game Platform Logo Images
 import playstationLogo from '../../assets/images/playstation-logo.png';
+import pspLogo from '../../assets/images/psp-logo.png';
 import nintendoLogo from '../../assets/images/nintendo-logo.png';
+import nintendoDs from '../../assets/images/nintendo-ds.png';
+import nintendo3ds from '../../assets/images/nintendo-3ds.png';
+import wiiLogo from '../../assets/images/wii-logo.png';
+import wiiULogo from '../../assets/images/wiiu-logo.png';
 import xboxLogo from '../../assets/images/xbox-logo.png';
 import steamLogo from '../../assets/images/steam-logo.png';
 import iosLogo from '../../assets/images/apple-logo.png';
@@ -26,48 +27,29 @@ import Carousel, { CarouselItem } from './Carousel';
 const GameDetails = ({
   game,
   closeDetails,
-  spotifyToken,
   addGame,
   removeGame,
   activeProfile,
   twitchToken,
 }) => {
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const [details, setDetails] = useState({});
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [activeScreenshot, setActiveScreenshot] = useState(
-    `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`
+    `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`
   );
-  const [currentTrack, setCurrentTrack] = useState(null);
-  const [playAudio, setPlayAudio] = useState(false);
+
+  const searchGameDetails = async (id) => {
+    const request = await axios.post(`${baseURL}/app/search_game_details`, {
+      token: twitchToken,
+      gameId: id,
+    });
+
+    const result = await request.data[0];
+    console.log(result);
+  };
 
   const currentCollection = activeProfile.collection;
-
-  console.log(game);
-  // useEffect(() => {
-  //   const fetchGameDetails = async () => {
-  //     try {
-  //       const detailsRequest = await rawgClient.get(
-  //         `games/${game.id}?key=${process.env.REACT_APP_RAWG_API_KEY}`
-  //       );
-  //       const storesRequest = await rawgClient.get(
-  //         `games/${game.id}/stores?key=${process.env.REACT_APP_RAWG_API_KEY}`
-  //       );
-  //       const screenshotRequest = await rawgClient.get(
-  //         `games/${game.id}/screenshots?key=${process.env.REACT_APP_RAWG_API_KEY}`
-  //       );
-  //       setDetails((previousDetails) => ({
-  //         ...previousDetails,
-  //         info: detailsRequest.data,
-  //         stores: storesRequest.data.results,
-  //         screenshots: screenshotRequest.data.results,
-  //       }));
-  //     } catch (error) {
-  //       console.log('There was an issue fetching all game details');
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchGameDetails();
-  // }, [game]);
 
   useEffect(() => {
     const fetchYoutubeTrailer = async () => {
@@ -90,28 +72,6 @@ const GameDetails = ({
     };
     // fetchYoutubeTrailer();
   }, []);
-
-  useEffect(() => {
-    if (!spotifyToken) return;
-    const fetchGameOST = async () => {
-      try {
-        const request = await axios.get('/app/spotify_album', {
-          params: {
-            game: game.name,
-            token: spotifyToken,
-          },
-        });
-
-        setDetails((previousDetails) => ({
-          ...previousDetails,
-          soundtrack: request.data.tracks,
-        }));
-      } catch (error) {
-        console.log('OST FETCH ISSUE');
-      }
-    };
-    fetchGameOST();
-  }, [spotifyToken]);
 
   const toggleFullDescription = () => {
     setShowFullDescription(!showFullDescription);
@@ -140,18 +100,6 @@ const GameDetails = ({
     }
   };
 
-  const formatTrackTitle = (title) => {
-    return title.split('-')[0];
-  };
-
-  const playTrackHandler = (track) => {
-    setCurrentTrack(track);
-  };
-
-  const goToStore = (i) => {
-    window.open(details.stores[i].url, '_blank', 'noopener,noreferrer');
-  };
-
   const addGameHandler = () => {
     addGame(game.name);
     closeDetails();
@@ -162,41 +110,96 @@ const GameDetails = ({
     closeDetails();
   };
 
-  // Convert name of platforms into pulisher icon
+  console.log(game);
+
+  // Convert name of platforms into a PNG icon
   const displayConsoleIcons = (platform) => {
     switch (platform) {
+      case 'PC (Microsoft Windows)':
       case 'PC':
-        return <img src={steamLogo} alt='PC' className='platform_logo' />;
+        return <img src={steamLogo} alt='PC' className='game_platform_logo' />;
       case 'PlayStation':
       case 'PlayStation 2':
       case 'PlayStation 3':
       case 'PlayStation 4':
+      case 'PS4':
       case 'PlayStation 5':
         return (
-          <img src={playstationLogo} alt={platform} className='platform_logo' />
+          <img
+            src={playstationLogo}
+            alt={platform}
+            className='game_platform_logo'
+          />
         );
-      case 'Nintendo':
+      case 'PlayStation Portable':
+        return (
+          <img src={pspLogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'Nintendo 64':
+      case 'N64':
+      case 'Nintendo 64DD':
       case 'Nintendo Switch':
         return (
-          <img src={nintendoLogo} alt={platform} className='platform_logo' />
+          <img
+            src={nintendoLogo}
+            alt={platform}
+            className='game_platform_logo'
+          />
         );
-      case 'GameCube':
+      case 'Nintendo DS':
         return (
-          <img src={gamecubeLogo} alt={platform} className='platform_logo' />
+          <img src={nintendoDs} alt={platform} className='game_platform_logo' />
+        );
+      case 'Nintendo 3DS':
+      case '3DS':
+        return (
+          <img
+            src={nintendo3ds}
+            alt={platform}
+            className='game_platform_logo'
+          />
+        );
+      case 'Nintendo GameCube':
+      case 'NGC':
+        return (
+          <img
+            src={gamecubeLogo}
+            alt={platform}
+            className='game_platform_logo'
+          />
+        );
+      case 'Wii':
+        return (
+          <img src={wiiLogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'Wii U':
+      case 'WiiU':
+        return (
+          <img src={wiiULogo} alt={platform} className='game_platform_logo' />
         );
       case 'Xbox':
       case 'Xbox One':
       case 'Xbox 360':
-        return <img src={xboxLogo} alt={platform} className='platform_logo' />;
+        return (
+          <img src={xboxLogo} alt={platform} className='game_platform_logo' />
+        );
       case 'iOS':
-        return <img src={iosLogo} alt={platform} className='platform_logo' />;
+        return (
+          <img src={iosLogo} alt={platform} className='game_platform_logo' />
+        );
       case 'Android':
         return (
-          <img src={androidLogo} alt={platform} className='platform_logo' />
+          <img
+            src={androidLogo}
+            alt={platform}
+            className='game_platform_logo'
+          />
         );
       case 'SEGA':
       case 'Dreamcast':
-        return <img src={segaLogo} alt={platform} className='platform_logo' />;
+        return (
+          <img src={segaLogo} alt={platform} className='game_platform_logo' />
+        );
     }
   };
 
@@ -244,31 +247,38 @@ const GameDetails = ({
     );
   };
 
-  const determineESRB = () => {
-    if (details.info == undefined) return;
-    const esrb = details.info.esrb_rating;
+  // Return a ESRB rating picture according to fetched game
+  const determineESRB = (game) => {
+    if (game == null || game.age_ratings == null) {
+      return <img className='game_details__esrb_img' src={rpRating} />;
+    }
+    const esrb = game?.age_ratings[0].rating;
+
     switch (esrb) {
-      case 'Everyone':
-      case 'Everyone 10+':
-        return <img className='game_details__esrb' src={eRating} />;
-      case 'Teen':
-        return <img className='game_details__esrb' src={tRating} />;
-      case 'Mature':
-        return <img className='game_details__esrb' src={mRating} />;
+      case 1:
+      case 2:
+      case 8:
+      case 9:
+        return <img className='game_details__esrb_img' src={eRating} />;
+      case 3:
+      case 4:
+      case 10:
+        return <img className='game_details__esrb_img' src={tRating} />;
+      case 5:
+      case 11:
+        return <img className='game_details__esrb_img' src={mRating} />;
       default:
-        return <img className='game_details__esrb' src={rpRating} />;
+        return <img className='game_details__esrb_img' src={rpRating} />;
     }
   };
 
-  if (details == null) {
-    return;
-  }
+  if (!game || !game.screenshots) console.log('LOADING');
 
   return (
     <div className='game_details__wrapper'>
       <img
         className='game_details__background'
-        src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover.image_id}.jpg`}
+        src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
       />
       <div className='game_details__container'>
         <h2>{game.name}</h2>
@@ -284,12 +294,11 @@ const GameDetails = ({
             ) : (
               <div className='media_placeholder'>
                 <img className='details_img' src={activeScreenshot} />
-                {determineESRB()}
               </div>
             )}
             <div className='game_details__screenshots'>
               <img
-                src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
+                src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                 className='screenshot_thumbnail'
                 onClick={() =>
                   setActiveScreenshot(
@@ -303,6 +312,7 @@ const GameDetails = ({
                       : '1px solid transparent',
                 }}
               />
+              {/* SCREENSHOTS */}
               {game.screenshots?.map((screenshot) => (
                 <img
                   key={screenshot.id}
@@ -321,24 +331,54 @@ const GameDetails = ({
                   className='screenshot_thumbnail'
                 />
               ))}
+
+              {/* ARTWORKS */}
+              {game.artworks?.map((screenshot) => (
+                <img
+                  key={screenshot.id}
+                  style={{
+                    border:
+                      screenshot.image == activeScreenshot
+                        ? '1px solid lightblue'
+                        : '1px solid transparent',
+                    objectFit: 'fill',
+                  }}
+                  src={`//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`}
+                  onClick={() =>
+                    setActiveScreenshot(
+                      `//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`
+                    )
+                  }
+                  className='screenshot_thumbnail'
+                />
+              ))}
             </div>
+            {/* SIMILAR GAMES  */}
             <div className='media_soundtrack__container'>
               <Carousel>
-                {game.similar_games.map((game) => (
+                {game.similar_games?.map((game) => (
                   <CarouselItem
                     imageUrl={`//images.igdb.com/igdb/image/upload/t_cover_med_2x/${game.cover.image_id}.jpg`}
                     key={game.id}
                     width='100%'
-                    game={game}
                   >
-                    <div className='similar_game__container'>
+                    <div
+                      className='similar_game__container'
+                      onClick={() => searchGameDetails(game.id)}
+                      // onClick={() => console.log(game)}
+                    >
                       <div className='similar_game__details'>
                         <p className='similar_game__company'>
-                          <i>{game.involved_companies.at(-1)?.company?.name}</i>
+                          <i>{game.involved_companies?.at(-1).company.name}</i>
                         </p>
                         <ul className='similar_game__genres'>
-                          {game.genres.map((genre) => (
-                            <li>{genre.name.split('(')[0]}</li>
+                          {game.genres?.map((genre) => (
+                            <li
+                              key={genre.name}
+                              style={{ fontSize: '1.15rem' }}
+                            >
+                              {genre.name.split('(')[0]}
+                            </li>
                           ))}
                         </ul>
                       </div>
@@ -348,6 +388,8 @@ const GameDetails = ({
               </Carousel>
             </div>
           </div>
+
+          {/* GAME INFORMATION */}
           <div className='game_details__info_container'>
             <h4 className='game_details__title'>Description</h4>
             <p
@@ -370,39 +412,45 @@ const GameDetails = ({
             </p>
           </div>
           <div className='game_details__data'>
+            {/* PUBLISHERS */}
             <div className='game_details__publishers'>
               <h4 className='game_details__title'>Publishers</h4>
               <ul className='publishers_list'>
-                {game.involved_companies.map((company) => (
+                {game.involved_companies?.map((company) => (
                   <li key={company.id} className='publisher'>
                     {company.company.name}
                   </li>
                 ))}
               </ul>
             </div>
+
+            {/* PLATFORMS */}
             <div className='game_details__platforms'>
               <h4 className='game_details__title'>Platforms</h4>
               <ul className='platforms_list'>
-                {game.platforms.map((platform, i) => (
-                  <li
-                    key={platform.id}
-                    className='platform'
-                    alt='platform'
-                    // onClick={() => goToStore(i)}
-                  >
-                    {platform.name}
-                    {/* {displayConsoleIcons(platform.platform.name)} */}
+                {game.platforms?.map((platform, i) => (
+                  <li key={platform.id} className='platform' alt='platform'>
+                    {displayConsoleIcons(
+                      platform.abbreviation || platform.name
+                    )}
+                    {platform.abbreviation || platform.name}
                   </li>
                 ))}
               </ul>
             </div>
-            <div className='game_details__rating'>
-              <h4 className='game_details__title'>Rating</h4>
-              <p>{Math.round(game.rating)}%</p>
+            <div className='game_details__column'>
+              <div className='game_details__rating'>
+                <h4 className='game_details__title'>Rating</h4>
+                <p>{Math.round(game.rating)}%</p>
+              </div>
+              <div className='game_details__released'>
+                <h4 className='game_details__title'>Release Date</h4>
+                <p>{convertDate(game.release_dates[0].human)}</p>
+              </div>
             </div>
-            <div className='game_details__released'>
-              <h4 className='game_details__title'>Release Date</h4>
-              <p>{convertDate(game.release_dates[0].human)}</p>
+            <div className='game_details__esrb'>
+              <h4 className='game_details__title'>ESRB</h4>
+              {determineESRB(game)}
             </div>
           </div>
         </div>

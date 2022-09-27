@@ -67,10 +67,9 @@ function App() {
       gameName: game,
     });
     // Sort games by highest rating
-    const filteredList = request.data.sort(function (a, b) {
+    const filteredList = await request.data.sort(function (a, b) {
       return b.rating - a.rating;
     });
-    console.log(searchedGame);
     setSearchedGame(filteredList);
   };
 
@@ -246,8 +245,6 @@ function App() {
       <GameDetails
         game={gameDetails}
         closeDetails={() => setGameDetails(null)}
-        seeGameDetails={(game) => setGameDetails(game)}
-        spotifyToken={spotifyAccessToken}
         twitchToken={twitchAccessToken}
         addGame={(game) => addGameHandler(game)}
         removeGame={(game) => removeGameHandler(game)}

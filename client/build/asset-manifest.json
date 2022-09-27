@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.1c492ff6.css",
-    "main.js": "/static/js/main.d0333f8e.js",
+    "main.css": "/static/css/main.9d0b0bee.css",
+    "main.js": "/static/js/main.7d05c944.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -19,10 +19,13 @@
     "static/media/gameflix-demo.webm": "/static/media/gameflix-demo.b0f6b37a1fa11965f828.webm",
     "static/media/kairi-icon.png": "/static/media/kairi-icon.e44c96817ad926fd4293.png",
     "static/media/mario.png": "/static/media/mario.859de03787befacd320b.png",
+    "static/media/nintendo-3ds.png": "/static/media/nintendo-3ds.287f0cc59d0ec301cd42.png",
     "static/media/master-chief.png": "/static/media/master-chief.e6dd88dfce063e57eda4.png",
     "static/media/success.wav": "/static/media/success.691f932eabcba96fbd39.wav",
     "static/media/ff9-zidane.png": "/static/media/ff9-zidane.f591db862f46fbe2c3f2.png",
     "static/media/loz-link.png": "/static/media/loz-link.4c290163c8a52fcdb236.png",
+    "static/media/nintendo-ds.png": "/static/media/nintendo-ds.2f5f510a038d17437421.png",
+    "static/media/wii-logo.png": "/static/media/wii-logo.e13a4c73e15a82d6b22b.png",
     "static/media/roxas-icon.png": "/static/media/roxas-icon.e65c74980722ce835a7b.png",
     "static/media/murmur.mp3": "/static/media/murmur.97d25e19e2f3bd29437c.mp3",
     "static/media/yuna-icon.png": "/static/media/yuna-icon.c835ebfee99a688f78c7.png",
@@ -32,6 +35,8 @@
     "static/media/lion-icon.png": "/static/media/lion-icon.6d59169aedce403bbfb8.png",
     "static/media/computer_screen.png": "/static/media/computer_screen.4272856e6a7a6e935764.png",
     "static/media/gamecube-logo.png": "/static/media/gamecube-logo.946c6e7469abaad7b304.png",
+    "static/media/psp-logo.png": "/static/media/psp-logo.90012714acf7142e3bda.png",
+    "static/media/wiiu-logo.png": "/static/media/wiiu-logo.4300903ffb4e0b57de37.png",
     "static/media/ESRB_M.png": "/static/media/ESRB_M.4a41f5f352b1c2ff77a9.png",
     "static/media/android-logo.png": "/static/media/android-logo.c738080d9145c162601f.png",
     "static/media/apple-logo.png": "/static/media/apple-logo.984030b66746dc4582fb.png",
@@ -42,15 +47,14 @@
     "static/media/basic_avatar.png": "/static/media/basic_avatar.28e44cb7f5d2425541e5.png",
     "static/media/sega-logo.png": "/static/media/sega-logo.ebdd6709ff0639c959c7.png",
     "static/media/ESRB_E.png": "/static/media/ESRB_E.c6e4123839651e70a8d1.png",
-    "static/media/spotify_logo.png": "/static/media/spotify_logo.0c4ae91bae23217d39c9.png",
     "static/media/nintendo-logo.png": "/static/media/nintendo-logo.14c4d5793bf79874cb08.png",
     "static/media/rexlia_rg.otf": "/static/media/rexlia_rg.d297770693345b764564.otf",
     "static/media/playstation-logo.png": "/static/media/playstation-logo.630dfedda6273efed3a8.png",
     "static/media/ferrum.otf": "/static/media/ferrum.0db9aba7b1cb9fa47318.otf",
     "static/media/Gasalt-Black.ttf": "/static/media/Gasalt-Black.8284ab3fce3818248705.ttf",
     "index.html": "/index.html",
-    "main.1c492ff6.css.map": "/static/css/main.1c492ff6.css.map",
-    "main.d0333f8e.js.map": "/static/js/main.d0333f8e.js.map",
+    "main.9d0b0bee.css.map": "/static/css/main.9d0b0bee.css.map",
+    "main.7d05c944.js.map": "/static/js/main.7d05c944.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -67,7 +71,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1c492ff6.css",
-    "static/js/main.d0333f8e.js"
+    "static/css/main.9d0b0bee.css",
+    "static/js/main.7d05c944.js"
   ]
 }

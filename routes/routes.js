@@ -164,12 +164,11 @@ router.post('/search_game', async (req, res) => {
     Authorization: `Bearer ${token}`,
   };
   const url = `https://api.igdb.com/v4/games`;
-  // const url = `https://api.igdb.com/v4/games?fields=*,cover.*,platforms.*,screenshots.*,similar_games.*&search=${gameName}&limit=50`;
   try {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `search "${gameName}"; fields *, name, cover.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.genres.*, similar_games.involved_companies.company.name; where (rating != null & category != (1,3)); limit 100;`,
+      body: `search "${gameName}"; fields *, artworks.*, age_ratings.*, name, cover.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; where (rating != null & category != (1,3)); limit 100;`,
     });
     const result = await request.json();
     res.send(result);
@@ -192,7 +191,7 @@ router.post('/search_game_details', async (req, res) => {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `fields *, cover.*, screenshots.*, similar_games.*; where id = ${gameId};`,
+      body: `fields *, artworks.*, age_ratings.*, name, cover.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; where id = ${gameId}; limit 1;`,
     });
     const result = await request.json();
     res.send(result);

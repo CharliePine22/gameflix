@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './SearchResults.css';
-import chatterAudio from '../../assets/sounds/murmur.mp3';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import SkeletonCard from '../SkeletonCard/SkeletonCard';
@@ -14,13 +13,42 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
     setRemainderGames(searchedGame?.slice(3));
   }, [searchedGame]);
 
+  const listInnerRef = useRef();
+
+  const onScroll = () => {
+    if (listInnerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+      if (scrollTop + clientHeight === scrollHeight) {
+        console.log('reached bottom');
+      }
+    }
+  };
+
+  // Skeleton Loader
   if (!searchedGame || !topGames || !remainderGames) {
-    return <SkeletonCard />;
+    return (
+      <div className='search_results'>
+        <div className='search_results__container_skeleton'>
+          <div className='top_results_row_skeleton'>
+            <h2>Top Results</h2>
+            <SkeletonCard count={3} type='full' />
+          </div>
+          <div className='remainder_results_skeleton'>
+            <h2>Results</h2>
+            <SkeletonCard count={9} />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className='search_results'>
-      <div className='search_results__container'>
+      <div
+        className='search_results__container'
+        ref={listInnerRef}
+        onScroll={onScroll}
+      >
         <h2>Top Results</h2>
 
         {/* Top 3 Search Results */}

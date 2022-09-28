@@ -48,6 +48,7 @@ router.get('/get_user', async (req, res) => {
 router.post('/spotify_authentication', async (req, res) => {
   const code = req.body.code;
   const baseUrl = req.body.baseUrl;
+  console.log(baseUrl);
   let redirectUri;
 
   if (baseUrl == undefined) {

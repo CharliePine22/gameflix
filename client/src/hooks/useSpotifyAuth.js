@@ -36,6 +36,7 @@ export default function useSpotifyAuth(code) {
       try {
         const request = await axios.post(`${baseURL}/app/refresh_token`, {
           refreshToken,
+          baseURL,
         });
         setAccessToken(request.data.body.body.access_token);
         setRefreshToken(request.data.body.body.refresh_token);

@@ -6,6 +6,7 @@ import { SketchPicker } from 'react-color';
 import { FaAngleDown } from 'react-icons/fa';
 
 const ProfileEditor = (props) => {
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const currentProfile = props.currentProfile;
   const isAdmin = currentProfile.isAdmin;
   const [loading, setLoading] = useState(false);
@@ -77,7 +78,7 @@ const ProfileEditor = (props) => {
   const deleteProfileHandler = async () => {
     setLoading(true);
     try {
-      const request = await axios.delete('/app/delete_profile', {
+      const request = await axios.delete(`${baseURL}/app/delete_profile`, {
         data: { email: props.userEmail, name: currentProfile.name },
       });
       console.log(request);
@@ -127,7 +128,10 @@ const ProfileEditor = (props) => {
     if (method == 'file') {
       data.append('avatar', e.target.files[0]);
       try {
-        const request = await axios.post('/app/update_avatar_file', data);
+        const request = await axios.post(
+          `${baseURL}/app/update_avatar_file`,
+          data
+        );
         setCurrentAvatar(URL.createObjectURL(e.target.files[0]));
       } catch (e) {
         console.log(e);
@@ -143,7 +147,10 @@ const ProfileEditor = (props) => {
         avatar: imgLink,
       };
       try {
-        const request = await axios.post('/app/update_avatar_link', data);
+        const request = await axios.post(
+          `${baseURL}/app/update_avatar_link`,
+          data
+        );
         console.log(request.data);
         setCurrentAvatar(imgLink);
       } catch (e) {
@@ -178,7 +185,10 @@ const ProfileEditor = (props) => {
     };
 
     try {
-      const request = await axios.post('/app/update_user_profile', userData);
+      const request = await axios.post(
+        `${baseURL}/app/update_user_profile`,
+        userData
+      );
       localStorage.setItem('user', JSON.stringify(request.data.response));
       setStatusMessage(request.data.message);
       props.saveEdit();

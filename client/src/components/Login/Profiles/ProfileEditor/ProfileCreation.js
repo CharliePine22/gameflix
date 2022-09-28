@@ -7,6 +7,7 @@ import './ProfileEditor.css';
 import { FaCloudUploadAlt, FaLink } from 'react-icons/fa';
 
 const ProfileCreation = (props) => {
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const [loading, setLoading] = useState(false);
   // Color states
   const [changingColor, setChangingColor] = useState(false);
@@ -120,7 +121,10 @@ const ProfileCreation = (props) => {
     };
 
     try {
-      const request = await axios.post('/app/create_new_profile', userData);
+      const request = await axios.post(
+        `${baseURL}/app/create_new_profile`,
+        userData
+      );
       localStorage.setItem('user', JSON.stringify(request.data.response));
       props.updateUser();
       props.viewAllProfiles();

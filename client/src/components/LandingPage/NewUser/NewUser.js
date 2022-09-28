@@ -5,6 +5,8 @@ import axios from 'axios';
 import './NewUser.css';
 
 const NewUser = (props) => {
+  const baseURL = process.env.REACT_APP_BASE_URL;
+
   const [currentStep, setCurrentStep] = useState(1);
   const [error, setError] = useState(false);
 
@@ -42,7 +44,7 @@ const NewUser = (props) => {
   const validateEmail = (data) => {
     let flag = false;
     const request = axios
-      .post('/app/signup', data)
+      .post(`${baseURL}/app/signup`, data)
       .then((response) => {
         return response;
       })

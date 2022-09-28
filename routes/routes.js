@@ -47,8 +47,16 @@ router.get('/get_user', async (req, res) => {
 //* AUTH ROUTE
 router.post('/spotify_authentication', async (req, res) => {
   const code = req.body.code;
+  const baseUrl = req.body.baseUrl;
+  let redirectUri;
+
+  if (baseUrl == undefined) {
+    redirectUri = 'http://localhost:3000';
+  } else {
+    redirectUri = baseUrl;
+  }
   const spotifyApi = new spotifyWebApi({
-    redirectUri: 'http://localhost:3000',
+    redirectUri: redirectUri,
     clientId: '05e6f02e47724a63b635cfdac09fc991',
     clientSecret: 'eb21ac786045448285ae40cc89db9ad6',
   });

@@ -15,6 +15,7 @@ export default function useSpotifyAuth(code) {
           `${baseURL}/app/spotify_authentication`,
           {
             code,
+            baseURL,
           }
         );
         setAccessToken(request.data.tokenRequest.body.access_token);

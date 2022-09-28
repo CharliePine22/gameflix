@@ -22,26 +22,25 @@ const UserLibrary = ({
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentGame, setCurrentGame] = useState('');
-  const [gameName, setGameName] = useState('');
-  const [imageLink, setImageLink] = useState('');
-  const [alteringCollection, setAlteringCollection] = useState(false);
-  const [updatingImage, setUpdatingImage] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [expandTitle, setExpandTitle] = useState(false);
+  const baseURL = process.env.REACT_APP_BASE_URL;
 
   // MongoDB Query Creds
   const userEmail = JSON.parse(localStorage.getItem('user')).email;
   const userProfile = JSON.parse(localStorage.getItem('profile')).name;
+
   const fetchGameOST = async (game) => {
     if (!spotifyToken) {
       console.log('Please connect to Spotify!');
       return;
     }
     try {
-      const request = await axios.get('/app/spotify_album', {
+      const request = await axios.get(`${baseURL}/app/spotify_album`, {
         params: {
           game,
           token: spotifyToken,
+          baseURL,
         },
       });
       setCurrentPlaylist(request.data.tracks);
@@ -74,7 +73,7 @@ const UserLibrary = ({
 
   const removeGameHandler = async (game) => {
     try {
-      const request = await axios.put('/app/remove_game', {
+      const request = await axios.put(`${baseURL}/app/remove_game`, {
         email: userEmail,
         currentProfile: userProfile,
         gameTitle: game.name,

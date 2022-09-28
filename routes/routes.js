@@ -48,15 +48,9 @@ router.get('/get_user', async (req, res) => {
 router.post('/spotify_authentication', async (req, res) => {
   const code = req.body.code;
   const baseUrl = req.body.baseURL;
-  let redirectUri;
 
-  if (baseUrl == undefined) {
-    redirectUri = 'http://localhost:3000';
-  } else {
-    redirectUri = baseUrl;
-  }
   const spotifyApi = new spotifyWebApi({
-    redirectUri: redirectUri,
+    redirectUri: baseUrl,
     clientId: '05e6f02e47724a63b635cfdac09fc991',
     clientSecret: 'eb21ac786045448285ae40cc89db9ad6',
   });
@@ -78,16 +72,9 @@ router.post('/spotify_authentication', async (req, res) => {
 router.post('/refresh_token', async (req, res) => {
   const refreshToken = req.body.refreshToken;
   const baseUrl = req.body.baseURL;
-  let redirectUri;
-
-  if (baseUrl == undefined || baseUrl == '') {
-    redirectUri = 'http://localhost:3000';
-  } else {
-    redirectUri = baseUrl;
-  }
 
   const spotifyApi = new spotifyWebApi({
-    redirectUri: redirectUri,
+    redirectUri: baseUrl,
     clientId: '05e6f02e47724a63b635cfdac09fc991',
     clientSecret: 'eb21ac786045448285ae40cc89db9ad6',
     refreshToken,
@@ -142,8 +129,9 @@ router.get('/spotify_playlist', async (req, res) => {
 
 //* GET ALBUM ROUTE
 router.get('/spotify_album', async (req, res) => {
+  const baseUrl = req.body.baseURL;
   const spotifyApi = new spotifyWebApi({
-    redirectUri: 'http://localhost:3000',
+    redirectUri: baseUrl,
     clientId: '05e6f02e47724a63b635cfdac09fc991',
     clientSecret: 'eb21ac786045448285ae40cc89db9ad6',
   });
@@ -185,7 +173,7 @@ router.post('/search_game', async (req, res) => {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `search "${gameName}"; fields *, artworks.*, age_ratings.*, name, cover.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; where (rating != null & category != (1,3)); limit 100;`,
+      body: `search "${gameName}"; fields *, artworks.*, age_ratings.*, name, cover.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; where (rating != null & category != (1,3)); limit 100;`,
     });
     const result = await request.json();
     res.send(result);
@@ -208,7 +196,7 @@ router.post('/search_game_details', async (req, res) => {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `fields *, artworks.*, age_ratings.*, name, cover.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; where id = ${gameId}; limit 1;`,
+      body: `fields *, artworks.*, age_ratings.*, name, cover.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; where id = ${gameId}; limit 1;`,
     });
     const result = await request.json();
     res.send(result);

@@ -21,7 +21,6 @@ import SpotifyPlayback from './components/SpotifyPlayback/SpotifyPlayback';
 import useSpotifyAuth from './hooks/useSpotifyAuth';
 import useTwitchAuth from './hooks/useTwitchAuth';
 import UserLibrary from './components/UserLibrary/UserLibrary';
-import { MdSignalCellularNull } from 'react-icons/md';
 import GameDetails from './components/GameDetails/GameDetails';
 
 const code = new URLSearchParams(window.location.search).get('code');

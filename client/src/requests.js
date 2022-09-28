@@ -101,7 +101,7 @@ const requests = [
   {
     requestId: 'fetchAdventureTitles',
     url: `games?genres=3,4&key=${API_KEY}`,
-    title: 'ADVENTURE/ADVENTURE GAMES',
+    title: 'ACTION/ADVENTURE GAMES',
   },
   {
     requestId: 'fetchArcadeTitles',

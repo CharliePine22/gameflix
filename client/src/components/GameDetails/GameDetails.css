@@ -108,6 +108,7 @@
   height: 100%;
   width: 75px;
   margin-top: 5px;
+  max-height: 120px;
   filter: drop-shadow(5px 6px 3px #000);
 }
 
@@ -176,7 +177,7 @@
   right: -3px;
   display: flex;
   flex-direction: column;
-  margin-right: 15px;
+  margin-right: 25px;
   border-top: 2px solid white;
   border-right: 2px solid white;
   border-bottom: 2px solid white;

@@ -25,6 +25,7 @@ function Row({
   const [currentlyOpen, setCurrentlyOpen] = useState(null);
   const [imgsLoaded, setImgsLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const baseURL = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
     // Grab games from each genre
@@ -60,10 +61,11 @@ function Row({
       return;
     }
     try {
-      const request = await axios.get('/app/spotify_album', {
+      const request = await axios.get(`${baseURL}/app/spotify_album`, {
         params: {
           game,
           token: spotifyToken,
+          baseURL,
         },
       });
       console.log(request.data);

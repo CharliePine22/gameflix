@@ -11,9 +11,12 @@ import rpRating from '../../assets/images/ESRB_RP.png';
 // Game Platform Logo Images
 import playstationLogo from '../../assets/images/playstation-logo.png';
 import pspLogo from '../../assets/images/psp-logo.png';
+import psVitaLogo from '../../assets/images/psvita-logo.png';
+import nesLogo from '../../assets/images/nes-logo.png';
 import nintendoLogo from '../../assets/images/nintendo-logo.png';
 import nintendoDs from '../../assets/images/nintendo-ds.png';
 import nintendo3ds from '../../assets/images/nintendo-3ds.png';
+import gbaLogo from '../../assets/images/gba-logo.png';
 import wiiLogo from '../../assets/images/wii-logo.png';
 import wiiULogo from '../../assets/images/wiiu-logo.png';
 import xboxLogo from '../../assets/images/xbox-logo.png';
@@ -21,6 +24,7 @@ import steamLogo from '../../assets/images/steam-logo.png';
 import iosLogo from '../../assets/images/apple-logo.png';
 import androidLogo from '../../assets/images/android-logo.png';
 import segaLogo from '../../assets/images/sega-logo.png';
+import snesLogo from '../../assets/images/snes-logo.png';
 import gamecubeLogo from '../../assets/images/gamecube-logo.png';
 import Carousel, { CarouselItem } from './Carousel';
 
@@ -119,8 +123,11 @@ const GameDetails = ({
       case 'PC':
         return <img src={steamLogo} alt='PC' className='game_platform_logo' />;
       case 'PlayStation':
+      case 'PS1':
       case 'PlayStation 2':
+      case 'PS2':
       case 'PlayStation 3':
+      case 'PS3':
       case 'PlayStation 4':
       case 'PS4':
       case 'PlayStation 5':
@@ -132,8 +139,13 @@ const GameDetails = ({
           />
         );
       case 'PlayStation Portable':
+      case 'PSP':
         return (
           <img src={pspLogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'Vita':
+        return (
+          <img src={psVitaLogo} alt={platform} className='game_platform_logo' />
         );
       case 'Nintendo 64':
       case 'N64':
@@ -147,10 +159,16 @@ const GameDetails = ({
           />
         );
       case 'Nintendo DS':
+      case 'NDS':
         return (
           <img src={nintendoDs} alt={platform} className='game_platform_logo' />
         );
+      case 'GBA':
+        return (
+          <img src={gbaLogo} alt={platform} className='game_platform_logo' />
+        );
       case 'Nintendo 3DS':
+      case 'New Nintendo 3DS':
       case '3DS':
         return (
           <img
@@ -177,17 +195,29 @@ const GameDetails = ({
         return (
           <img src={wiiULogo} alt={platform} className='game_platform_logo' />
         );
+      case 'SNES':
+        return (
+          <img src={snesLogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'NES':
+        return (
+          <img src={nesLogo} alt={platform} className='game_platform_logo' />
+        );
       case 'Xbox':
+      case 'XONE':
       case 'Xbox One':
       case 'Xbox 360':
+      case 'X360':
         return (
           <img src={xboxLogo} alt={platform} className='game_platform_logo' />
         );
       case 'iOS':
+      case 'Mac':
         return (
           <img src={iosLogo} alt={platform} className='game_platform_logo' />
         );
       case 'Android':
+      case 'Linux':
         return (
           <img
             src={androidLogo}
@@ -392,6 +422,7 @@ const GameDetails = ({
           {/* GAME INFORMATION */}
           <div className='game_details__info_container'>
             <h4 className='game_details__title'>Description</h4>
+            {/* DESCRIPTION */}
             <p
               className='game_details__description'
               style={{
@@ -428,14 +459,29 @@ const GameDetails = ({
             <div className='game_details__platforms'>
               <h4 className='game_details__title'>Platforms</h4>
               <ul className='platforms_list'>
-                {game.platforms?.map((platform, i) => (
-                  <li key={platform.id} className='platform' alt='platform'>
-                    {displayConsoleIcons(
-                      platform.abbreviation || platform.name
-                    )}
-                    {platform.abbreviation || platform.name}
-                  </li>
-                ))}
+                {game.platforms?.map((platform, i) => {
+                  if (platform.category == 1 || platform.category == 5) {
+                    if (
+                      platform.name !== 'Super Famicom' &&
+                      platform.name !== 'Family Computer' &&
+                      platform.name !== 'Nintendo DSi' &&
+                      platform.name !== 'Family Computer Disk System'
+                    ) {
+                      return (
+                        <li
+                          key={platform.id}
+                          className='platform'
+                          alt='platform'
+                        >
+                          {displayConsoleIcons(
+                            platform.abbreviation || platform.name
+                          )}
+                          {platform.abbreviation || platform.name}
+                        </li>
+                      );
+                    }
+                  }
+                })}
               </ul>
             </div>
             <div className='game_details__column'>

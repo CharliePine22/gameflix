@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.9d0b0bee.css",
-    "main.js": "/static/js/main.20d02a19.js",
+    "main.css": "/static/css/main.8a015e7f.css",
+    "main.js": "/static/js/main.a26f70a7.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -42,6 +42,7 @@
     "static/media/apple-logo.png": "/static/media/apple-logo.984030b66746dc4582fb.png",
     "static/media/spyro.png": "/static/media/spyro.6e54039ba1f7884ca898.png",
     "static/media/ESRB_T.png": "/static/media/ESRB_T.6ed5a3e7b4606d5c0824.png",
+    "static/media/snes-logo.png": "/static/media/snes-logo.7c5f712cf6dc5c4b0aa0.png",
     "static/media/ESRB_RP.png": "/static/media/ESRB_RP.57aa50a6ca1272626835.png",
     "static/media/steam-logo.png": "/static/media/steam-logo.ae35c358ce32663bcab0.png",
     "static/media/basic_avatar.png": "/static/media/basic_avatar.28e44cb7f5d2425541e5.png",
@@ -49,12 +50,15 @@
     "static/media/ESRB_E.png": "/static/media/ESRB_E.c6e4123839651e70a8d1.png",
     "static/media/nintendo-logo.png": "/static/media/nintendo-logo.14c4d5793bf79874cb08.png",
     "static/media/rexlia_rg.otf": "/static/media/rexlia_rg.d297770693345b764564.otf",
+    "static/media/psvita-logo.png": "/static/media/psvita-logo.fb4c047637585a7d3320.png",
     "static/media/playstation-logo.png": "/static/media/playstation-logo.630dfedda6273efed3a8.png",
+    "static/media/nes-logo.png": "/static/media/nes-logo.b0fe8b9dba6d6bc5fa53.png",
     "static/media/ferrum.otf": "/static/media/ferrum.0db9aba7b1cb9fa47318.otf",
     "static/media/Gasalt-Black.ttf": "/static/media/Gasalt-Black.8284ab3fce3818248705.ttf",
+    "static/media/gba-logo.png": "/static/media/gba-logo.d897fee67c639798373a.png",
     "index.html": "/index.html",
-    "main.9d0b0bee.css.map": "/static/css/main.9d0b0bee.css.map",
-    "main.20d02a19.js.map": "/static/js/main.20d02a19.js.map",
+    "main.8a015e7f.css.map": "/static/css/main.8a015e7f.css.map",
+    "main.a26f70a7.js.map": "/static/js/main.a26f70a7.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -71,7 +75,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9d0b0bee.css",
-    "static/js/main.20d02a19.js"
+    "static/css/main.8a015e7f.css",
+    "static/js/main.a26f70a7.js"
   ]
 }

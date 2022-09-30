@@ -277,8 +277,8 @@
   }
 
   .top_result_container {
-    width: 85%;
-    margin-bottom: 15px;
+    width: 90%;
+    margin-bottom: 28px;
   }
 
   .top_result_lower {
@@ -336,7 +336,7 @@
   }
 
   .search_results {
-    top: 5rem;
+    top: 6rem;
   }
 
   .top_result_container {

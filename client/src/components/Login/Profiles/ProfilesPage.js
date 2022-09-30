@@ -15,30 +15,6 @@ const ProfilesPage = (props) => {
   const [creatingProfile, setCreatingProfile] = useState(null);
   const [profiles, setProfiles] = useState(null);
 
-  const dummyData = [
-    { name: 'Roxas', dummyAvatar: cjAvatar, color: 'blue' },
-    {
-      name: 'Kairi',
-      dummyAvatar: jessAvatar,
-      color: 'pink',
-    },
-    {
-      name: 'Yuna',
-      dummyAvatar: yunaAvatar,
-      color: 'purple',
-    },
-    {
-      name: 'Cloud',
-      dummyAvatar: cloudAvatar,
-      color: 'silver',
-    },
-    {
-      name: 'Zidane',
-      dummyAvatar: zidaneAvatar,
-      color: 'gold',
-    },
-  ];
-
   // Set active profile
   const chooseCurrentProfile = (user) => {
     localStorage.setItem('profile', JSON.stringify(user));
@@ -60,11 +36,7 @@ const ProfilesPage = (props) => {
 
   // Determine what user is selected and grab their profiles
   useEffect(() => {
-    if (props.currentUser.email == 'test@test.com') {
-      setProfiles(dummyData);
-    } else {
-      setProfiles(props.currentUser.profiles);
-    }
+    setProfiles(props.currentUser.profiles);
   }, [props.currentUser]);
 
   if (profiles == null) {
@@ -93,7 +65,6 @@ const ProfilesPage = (props) => {
   }
 
   profiles.sort((a, b) => (a.isAdmin ? -1 : b.isAdmin ? 1 : 0));
-  // collection.sort((a, b) => (a.name ? 1 : b.name ? -1 : 0));
 
   return (
     <div className='profile__page'>

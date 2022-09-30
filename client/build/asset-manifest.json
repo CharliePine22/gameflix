@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.d7122aaa.css",
-    "main.js": "/static/js/main.5f689a59.js",
+    "main.css": "/static/css/main.56c9362c.css",
+    "main.js": "/static/js/main.6bf86b03.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -27,12 +27,10 @@
     "static/media/nintendo-ds.png": "/static/media/nintendo-ds.2f5f510a038d17437421.png",
     "static/media/wii-logo.png": "/static/media/wii-logo.e13a4c73e15a82d6b22b.png",
     "static/media/roxas-icon.png": "/static/media/roxas-icon.e65c74980722ce835a7b.png",
-    "static/media/murmur.mp3": "/static/media/murmur.97d25e19e2f3bd29437c.mp3",
     "static/media/yuna-icon.png": "/static/media/yuna-icon.c835ebfee99a688f78c7.png",
     "static/media/ff7-cloud.png": "/static/media/ff7-cloud.556d4e5da527546092e2.png",
     "static/media/xbox-logo.png": "/static/media/xbox-logo.1470ebd18d88807af6fe.png",
     "static/media/retro-tv.png": "/static/media/retro-tv.f53bcec5f8dd7413f844.png",
-    "static/media/lion-icon.png": "/static/media/lion-icon.6d59169aedce403bbfb8.png",
     "static/media/computer_screen.png": "/static/media/computer_screen.4272856e6a7a6e935764.png",
     "static/media/gamecube-logo.png": "/static/media/gamecube-logo.946c6e7469abaad7b304.png",
     "static/media/psp-logo.png": "/static/media/psp-logo.90012714acf7142e3bda.png",
@@ -57,8 +55,8 @@
     "static/media/Gasalt-Black.ttf": "/static/media/Gasalt-Black.8284ab3fce3818248705.ttf",
     "static/media/gba-logo.png": "/static/media/gba-logo.d897fee67c639798373a.png",
     "index.html": "/index.html",
-    "main.d7122aaa.css.map": "/static/css/main.d7122aaa.css.map",
-    "main.5f689a59.js.map": "/static/js/main.5f689a59.js.map",
+    "main.56c9362c.css.map": "/static/css/main.56c9362c.css.map",
+    "main.6bf86b03.js.map": "/static/js/main.6bf86b03.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -75,7 +73,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d7122aaa.css",
-    "static/js/main.5f689a59.js"
+    "static/css/main.56c9362c.css",
+    "static/js/main.6bf86b03.js"
   ]
 }

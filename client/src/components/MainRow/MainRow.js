@@ -1,62 +1,100 @@
 import React, { useState, useEffect } from 'react';
 import './MainRow.css';
-import rawgClient from '../../axios';
-import requests from '../../requests';
+import axios from 'axios';
 import { FaAngleUp } from 'react-icons/fa';
 import Placeholder from '../Placeholder/Placeholder';
 
-const MainRow = () => {
+const MainRow = ({ twitchToken, setGameDetails }) => {
   const [games, setGames] = useState([]);
   const [currentFilter, setCurrentFilter] = useState('Year');
   const [changingFilter, setChangingFilter] = useState(false);
+  const [currentlyViewing, setCurrentlyViewing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const baseURL = process.env.REACT_APP_BASE_URL;
+
+  let todaysDate = new Date();
+  const weekDateFormat = Math.floor(
+    new Date(todaysDate.getTime() + 7 * 24 * 60 * 60 * 1000) / 1000
+  );
+  const monthDateFormat = Math.floor(
+    new Date(
+      new Date(weekDateFormat * 1000).setMonth(
+        new Date(weekDateFormat * 1000).getMonth() + 1
+      )
+    ).getTime() / 1000
+  );
+  const yearDateFormat = Math.floor(
+    new Date(
+      new Date(monthDateFormat * 1000).setMonth(
+        new Date(monthDateFormat * 1000).getMonth() + 12
+      )
+    ).getTime() / 1000
+  );
+
+  // use pagination (scroll api) to get all game titles and year. Maybe get it every 24 hours using a cron job. Cache it locally and use that to autocomplete game titles. That's what we do internally.
+
+  const filterUniques = (list) => {
+    const uniques = [];
+    const filteredList = [];
+    list.map((game) => {
+      if (uniques.indexOf(game.game.name) === -1) {
+        uniques.push(game.game.name);
+        filteredList.push(game);
+      }
+    });
+    return filteredList;
+  };
 
   useEffect(() => {
     // Grab upcoming games based on current date filter
+    if (!twitchToken) return;
     setLoading(true);
     async function fetchData() {
-      const request = await rawgClient.get(
-        requests[0][`${currentFilter.toLowerCase()}Url`]
-      );
-      setGames(request.data.results);
-      setLoading(false);
-      return request;
+      let startDate;
+      let targetDate;
+
+      switch (currentFilter) {
+        case 'Month':
+          startDate = weekDateFormat;
+          targetDate = monthDateFormat;
+          break;
+        case 'Year':
+          startDate = monthDateFormat;
+          targetDate = yearDateFormat;
+          break;
+        default:
+          startDate = Math.floor(todaysDate.getTime() / 1000);
+          targetDate = weekDateFormat;
+          break;
+      }
+
+      try {
+        const retries = 3;
+        for (let i = 0; i < retries; i++) {
+          try {
+            const request = await axios.post(`${baseURL}/app/upcoming`, {
+              token: twitchToken,
+              currentDate: startDate,
+              targetDate,
+            });
+            setGames(filterUniques(request.data));
+            setLoading(false);
+            break;
+          } catch (error) {
+            console.log('Issue fetching data');
+          }
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
     }
     fetchData();
-  }, [currentFilter]);
+  }, [currentFilter, twitchToken]);
 
   // Handler to change the filter type (Week, Month, Year)
   const changeFilterDate = (e) => {
     setCurrentFilter(e.target.innerText);
     setChangingFilter(false);
-  };
-
-  // Filter out any games with adult content/themes or smaller indie games
-  const filterOutAdult = (game) => {
-    // Grab game tags and game platforms lists
-    const gameTags = game.tags;
-    const gamePlatforms = game.parent_platforms;
-
-    if (gameTags == null || gamePlatforms == undefined) return false;
-
-    // If the only platform it's available on is PC, flag it for Indie as ost larger games come
-    // out on at least 2 systems, It should also be avaialble for Xbox
-    if (gamePlatforms.length == 1 && gamePlatforms[0].platform.name == 'PC') {
-      return false;
-    }
-
-    // Loop through tag names to look for unwanted tags
-    for (let tag of gameTags) {
-      if (
-        tag.name == 'Nudity' ||
-        tag.name == 'Нагота' ||
-        tag.name == 'Для взрослых' ||
-        tag.name == 'Sexual Content' ||
-        tag.name == 'Сексуальный контент'
-      )
-        return false;
-    }
-    return true;
   };
 
   // Convert the YYYY-MM-DD to Month, Day, Year
@@ -107,11 +145,12 @@ const MainRow = () => {
     );
   };
 
-  // Sort games by release date
-  games.sort((a, b) => new Date(a.released) - new Date(b.released));
-
   return (
-    <div className='main_row'>
+    <div
+      onMouseOver={() => setCurrentlyViewing(true)}
+      onMouseOut={() => setCurrentlyViewing(false)}
+      className='main_row'
+    >
       <div
         className='main_row__filters'
         onMouseLeave={() => setChangingFilter(false)}
@@ -165,30 +204,25 @@ const MainRow = () => {
       <div className='main_row__row_posters'>
         {games &&
           !loading &&
-          games.map(
-            (game, i) =>
-              game.background_image !== null &&
-              filterOutAdult(game) == true && (
-                <div
-                  className='main_row__poster_container'
-                  onClick={() => console.log(game)}
-                  key={game.name}
-                >
-                  <div className='poster__gradient_top' />
-                  <div className='poster__gradient_bottom' />
-                  <span className='main__poster_released'>
-                    {convertDate(game.released)}
-                  </span>
-                  <span className='main__poster_name'>{game.name}</span>
-                  <img
-                    key={game.id}
-                    className='main_poster'
-                    src={game.background_image}
-                    alt={game.name}
-                  />
-                </div>
-              )
-          )}
+          games.map((game, i) => (
+            <div
+              className={`main_row__poster_container ${
+                currentlyViewing && 'dimmed'
+              }`}
+              onClick={() => setGameDetails(game)}
+              key={game.id}
+            >
+              <h4 className='main__poster_released'>
+                {convertDate(game.human)}
+              </h4>
+              <img
+                key={game.id}
+                className='main_poster'
+                src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.game.cover?.image_id}.jpg`}
+                alt={game.name}
+              />
+            </div>
+          ))}
         {loading && (
           <div className='main_row__loading_container'>
             {[...Array(4)].map((item, i) => (

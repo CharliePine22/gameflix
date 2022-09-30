@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+
 // Component Imports
 import Row from './components/Row/Row';
 import Banner from './components/Banner/Banner';
@@ -9,13 +10,11 @@ import Login from './components/Login/Login';
 import LandingPage from './components/LandingPage/LandingPage';
 import ProfilesPage from './components/Login/Profiles/ProfilesPage';
 import TrendingRow from './components/TrendingRow/TrendingRow';
-import SearchResults from './components/SearchResults/SearchResults';
 import SearchResultsIGDB from './components/SearchResults/SearchResultsIGDB';
 
 // File Imports
-import requests from './requests';
+import requestsIGDB from './requestsIGDB';
 import loginAudio from './assets/sounds/success.wav';
-import rawgClient from './axios';
 import axios from 'axios';
 import SpotifyPlayback from './components/SpotifyPlayback/SpotifyPlayback';
 import useSpotifyAuth from './hooks/useSpotifyAuth';
@@ -51,6 +50,7 @@ function App() {
 
   const spotifyAccessToken = useSpotifyAuth(code);
   const twitchAccessToken = useTwitchAuth(code);
+  // console.log(twitchAccessToken);
 
   const closeSearchResults = () => {
     setSearchSubmitted(false);
@@ -65,6 +65,7 @@ function App() {
       token: twitchAccessToken,
       gameName: game,
     });
+
     // Sort games by highest rating
     const filteredList = await request.data.sort(function (a, b) {
       return b.rating - a.rating;
@@ -77,7 +78,7 @@ function App() {
       const request = await axios.post(`${baseURL}/app/update_collection`, {
         email: userEmail,
         currentProfile: userProfile,
-        games: game,
+        game: { id: game.id, name: game.name },
       });
       localStorage.setItem('user', JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
@@ -95,7 +96,7 @@ function App() {
       const request = await axios.put(`${baseURL}/app/remove_game`, {
         email: userEmail,
         currentProfile: userProfile,
-        gameTitle: game,
+        gameId: game.id,
       });
       localStorage.setItem('user', JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
@@ -173,21 +174,22 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    if (selectedProfile == null) return;
+    if (selectedProfile == null || !twitchAccessToken) return;
     const fetchUserCollection = async () => {
       const gameNames = await Promise.all(
         selectedProfile.collection.map((game) => {
-          return rawgClient.get(
-            `/games?key=${process.env.REACT_APP_RAWG_API_KEY}&search=${game}`
-          );
+          return axios.post(`${baseURL}/app/search_game_details`, {
+            token: twitchAccessToken,
+            gameId: game.id,
+          });
         })
       );
-      setUserCollection(gameNames.map(({ data }) => data.results[0]));
+      setUserCollection(gameNames.map(({ data }) => data[0]));
       setIsLoading(false);
     };
     fetchUserCollection();
     return () => setUserCollection([]);
-  }, [selectedProfile]);
+  }, [selectedProfile, twitchAccessToken]);
 
   // Display login page if app detects sign out or sign in
   if (!loggedUser && !toLanding) {
@@ -229,7 +231,7 @@ function App() {
   }
 
   // Loading screen for profile change
-  if (changingUser) {
+  if (selectedProfile && changingUser) {
     return (
       <div className='loading_profile__container'>
         <div className='loading_profile'>
@@ -266,8 +268,14 @@ function App() {
       />
       {!searchSubmitted ? (
         <>
-          <Banner setGameDetails={(id) => setGameDetails(id)} />
-          <MainRow />
+          <Banner
+            setGameDetails={(id) => setGameDetails(id)}
+            twitchToken={twitchAccessToken}
+          />
+          <MainRow
+            twitchToken={twitchAccessToken}
+            setGameDetails={(game) => setGameDetails(game.game.id)}
+          />
           <TrendingRow />
           <UserLibrary
             activeProfile={selectedProfile}
@@ -279,13 +287,14 @@ function App() {
             spotifyToken={spotifyAccessToken}
             collection={userCollection}
             setSelectedProfile={(profile) => setSelectedProfile(profile)}
-            setGameDetails={(id) => setGameDetails(id)}
+            setGameDetails={(game) => setGameDetails(game)}
           />
-          {requests.map(
+          {requestsIGDB.map(
             (request) =>
               request.title !== 'COMING SOON' &&
               request.title !== 'TRENDING' && (
                 <Row
+                  activeProfile={selectedProfile}
                   spotifyToken={spotifyAccessToken}
                   twitchToken={twitchAccessToken}
                   key={request.requestId}
@@ -295,6 +304,7 @@ function App() {
                   playTrack={playTrack}
                   currentTrack={currentTrack}
                   isPlaying={playAudio}
+                  genreId={request.genreId}
                   pausePlayback={(e) => setPlayAudio(false)}
                   resumePlayback={(e) => setPlayAudio(true)}
                 />

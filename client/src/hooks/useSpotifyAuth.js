@@ -6,7 +6,6 @@ export default function useSpotifyAuth(code) {
   const [refreshToken, setRefreshToken] = useState();
   const [expiresIn, setExpiresIn] = useState();
   const baseURL = process.env.REACT_APP_BASE_URL;
-  console.log(baseURL);
 
   useEffect(() => {
     if (!code) return;

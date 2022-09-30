@@ -37,23 +37,29 @@ const GameDetails = ({
   twitchToken,
 }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
-  const [details, setDetails] = useState({});
+  const [gameDetails, setGameDetails] = useState({});
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const [activeScreenshot, setActiveScreenshot] = useState(
-    `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`
-  );
+  const [activeScreenshot, setActiveScreenshot] = useState('');
+  const currentCollection = activeProfile.collection;
 
   const searchGameDetails = async (id) => {
-    const request = await axios.post(`${baseURL}/app/search_game_details`, {
-      token: twitchToken,
-      gameId: id,
-    });
-
-    const result = await request.data[0];
-    console.log(result);
+    try {
+      const request = await axios.post(`${baseURL}/app/search_game_details`, {
+        token: twitchToken,
+        gameId: id,
+      });
+      const result = await request.data;
+      setGameDetails(result[0]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const currentCollection = activeProfile.collection;
+  useEffect(() => {
+    if (!game) return;
+    searchGameDetails(game);
+    setActiveScreenshot('');
+  }, [game]);
 
   useEffect(() => {
     const fetchYoutubeTrailer = async () => {
@@ -63,10 +69,10 @@ const GameDetails = ({
             q: game.name + ' Trailer',
           },
         });
-        setDetails((previousDetails) => ({
-          ...previousDetails,
-          trailer: trailerRequest.data.items[0],
-        }));
+        // setDetails((previousDetails) => ({
+        //   ...previousDetails,
+        //   trailer: trailerRequest.data.items[0],
+        // }));
       } catch (error) {
         if (error.response.status !== 200) {
           console.log('No youtube issue');
@@ -105,7 +111,7 @@ const GameDetails = ({
   };
 
   const addGameHandler = () => {
-    addGame(game.name);
+    addGame(game);
     closeDetails();
   };
 
@@ -113,8 +119,6 @@ const GameDetails = ({
     removeGame(game.name);
     closeDetails();
   };
-
-  console.log(game);
 
   // Convert name of platforms into a PNG icon
   const displayConsoleIcons = (platform) => {
@@ -131,6 +135,7 @@ const GameDetails = ({
       case 'PlayStation 4':
       case 'PS4':
       case 'PlayStation 5':
+      case 'PS5':
         return (
           <img
             src={playstationLogo}
@@ -151,6 +156,7 @@ const GameDetails = ({
       case 'N64':
       case 'Nintendo 64DD':
       case 'Nintendo Switch':
+      case 'Switch':
         return (
           <img
             src={nintendoLogo}
@@ -208,6 +214,7 @@ const GameDetails = ({
       case 'Xbox One':
       case 'Xbox 360':
       case 'X360':
+      case 'Series X':
         return (
           <img src={xboxLogo} alt={platform} className='game_platform_logo' />
         );
@@ -279,10 +286,10 @@ const GameDetails = ({
 
   // Return a ESRB rating picture according to fetched game
   const determineESRB = (game) => {
-    if (game == null || game.age_ratings == null) {
+    if (gameDetails == null || gameDetails.age_ratings == null) {
       return <img className='game_details__esrb_img' src={rpRating} />;
     }
-    const esrb = game?.age_ratings[0].rating;
+    const esrb = gameDetails?.age_ratings[0].rating;
 
     switch (esrb) {
       case 1:
@@ -302,37 +309,40 @@ const GameDetails = ({
     }
   };
 
-  if (!game || !game.screenshots) console.log('LOADING');
+  if (!gameDetails || !gameDetails.screenshots || !gameDetails.release_dates) {
+    return 'Loading';
+  } else {
+    console.log('done');
+  }
 
   return (
     <div className='game_details__wrapper'>
       <img
         className='game_details__background'
-        src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
+        src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${gameDetails.cover?.image_id}.jpg`}
       />
       <div className='game_details__container'>
-        <h2>{game.name}</h2>
+        <h2>{gameDetails.name}</h2>
         <div className='game_details__details'>
           <div className='game_details__media'>
-            {details.trailer !== undefined ? (
-              <ReactPlayer
-                url={`https://www.youtube.com/embed/${details.trailer.id.videoId}`}
-                className='media_trailer'
-                height='400px'
-                light={true}
+            <div className='media_placeholder'>
+              <img
+                className='details_img'
+                src={
+                  activeScreenshot == ''
+                    ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails?.cover?.image_id}.jpg`
+                    : activeScreenshot
+                }
               />
-            ) : (
-              <div className='media_placeholder'>
-                <img className='details_img' src={activeScreenshot} />
-              </div>
-            )}
+            </div>
+
             <div className='game_details__screenshots'>
               <img
-                src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
+                src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover?.image_id}.jpg`}
                 className='screenshot_thumbnail'
                 onClick={() =>
                   setActiveScreenshot(
-                    `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`
+                    `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover?.image_id}.jpg`
                   )
                 }
                 style={{
@@ -343,7 +353,7 @@ const GameDetails = ({
                 }}
               />
               {/* SCREENSHOTS */}
-              {game.screenshots?.map((screenshot) => (
+              {gameDetails.screenshots?.map((screenshot) => (
                 <img
                   key={screenshot.id}
                   style={{
@@ -363,7 +373,7 @@ const GameDetails = ({
               ))}
 
               {/* ARTWORKS */}
-              {game.artworks?.map((screenshot) => (
+              {gameDetails.artworks?.map((screenshot) => (
                 <img
                   key={screenshot.id}
                   style={{
@@ -386,7 +396,7 @@ const GameDetails = ({
             {/* SIMILAR GAMES  */}
             <div className='media_soundtrack__container'>
               <Carousel>
-                {game.similar_games?.map((game) => (
+                {gameDetails.similar_games?.map((game) => (
                   <CarouselItem
                     imageUrl={`//images.igdb.com/igdb/image/upload/t_cover_med_2x/${game.cover.image_id}.jpg`}
                     key={game.id}
@@ -402,7 +412,7 @@ const GameDetails = ({
                           <i>{game.involved_companies?.at(-1).company.name}</i>
                         </p>
                         <ul className='similar_game__genres'>
-                          {game.genres?.map((genre) => (
+                          {gameDetails.genres?.map((genre) => (
                             <li
                               key={genre.name}
                               style={{ fontSize: '1.15rem' }}
@@ -426,15 +436,15 @@ const GameDetails = ({
             <p
               className='game_details__description'
               style={{
-                maxWidth: details.summary == '' && '100%',
+                maxWidth: gameDetails.summary == '' && '100%',
               }}
             >
-              {shortenDescription(game)}{' '}
+              {shortenDescription(gameDetails)}{' '}
               <button
                 className='game_details__info_toggler'
                 onClick={toggleFullDescription}
               >
-                {details.summary !== ''
+                {gameDetails.summary !== ''
                   ? showFullDescription
                     ? 'Hide Full Description'
                     : 'Show Full Description'
@@ -447,7 +457,7 @@ const GameDetails = ({
             <div className='game_details__publishers'>
               <h4 className='game_details__title'>Publishers</h4>
               <ul className='publishers_list'>
-                {game.involved_companies?.map((company) => (
+                {gameDetails.involved_companies?.map((company) => (
                   <li key={company.id} className='publisher'>
                     {company.company.name}
                   </li>
@@ -459,7 +469,7 @@ const GameDetails = ({
             <div className='game_details__platforms'>
               <h4 className='game_details__title'>Platforms</h4>
               <ul className='platforms_list'>
-                {game.platforms?.map((platform, i) => {
+                {gameDetails.platforms?.map((platform, i) => {
                   if (platform.category == 1 || platform.category == 5) {
                     if (
                       platform.name !== 'Super Famicom' &&
@@ -487,16 +497,24 @@ const GameDetails = ({
             <div className='game_details__column'>
               <div className='game_details__rating'>
                 <h4 className='game_details__title'>Rating</h4>
-                <p>{Math.round(game.rating)}%</p>
+                <p>
+                  {gameDetails.rating
+                    ? Math.round(gameDetails.rating) + '%'
+                    : 'N/A'}
+                </p>
               </div>
               <div className='game_details__released'>
                 <h4 className='game_details__title'>Release Date</h4>
-                <p>{convertDate(game.release_dates[0].human)}</p>
+                <p>
+                  {convertDate(
+                    gameDetails && gameDetails?.release_dates[0]?.human
+                  )}
+                </p>
               </div>
             </div>
             <div className='game_details__esrb'>
               <h4 className='game_details__title'>ESRB</h4>
-              {determineESRB(game)}
+              {determineESRB(gameDetails)}
             </div>
           </div>
         </div>

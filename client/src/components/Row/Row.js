@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import rawgClient from '../../axios';
 import GamePreview from './GamePreview/GamePreview';
 import './Row.css';
 import axios from 'axios';
@@ -9,13 +8,15 @@ import { FaPlay, FaPause } from 'react-icons/fa';
 
 function Row({
   title,
-  fetchURL,
   playTrack,
   currentTrack,
   resumePlayback,
   pausePlayback,
   isPlaying,
   spotifyToken,
+  twitchToken,
+  genreId,
+  activeProfile,
 }) {
   const [games, setGames] = useState([]);
   const [currentGame, setCurrentGame] = useState('');
@@ -29,31 +30,23 @@ function Row({
 
   useEffect(() => {
     // Grab games from each genre
+    if (!twitchToken) return;
     setLoading(true);
     async function fetchData() {
-      const request = await rawgClient.get(fetchURL);
-      setGames(request.data.results);
-      setLoading(false);
-      return request;
+      try {
+        const request = await axios.post(`${baseURL}/app/game_genre`, {
+          token: twitchToken,
+          genreId,
+        });
+        setGames(request.data);
+        setLoading(false);
+        return request;
+      } catch (error) {
+        console.log(error);
+      }
     }
     fetchData();
-  }, [fetchURL]);
-
-  // useEffect(() => {
-  //   if (!twitchToken) return;
-  //   const fetchIGDB = async () => {
-  //     try {
-  //       const request = await axios.post('/app/search', {
-  //         token: twitchToken,
-  //         clientId: process.env.REACT_APP_IGDB_CLIENT_ID,
-  //       });
-  //       console.log(request);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchIGDB();
-  // }, [twitchToken]);
+  }, [genreId, twitchToken]);
 
   const fetchGameOST = async (game) => {
     if (!spotifyToken) {
@@ -68,7 +61,6 @@ function Row({
           baseURL,
         },
       });
-      console.log(request.data);
       if (request.data.status !== 'OK') {
         window.location = '/';
         localStorage.removeItem('spotify_token');
@@ -117,15 +109,19 @@ function Row({
     return title.split('-')[0].split('(')[0];
   };
 
+  if (twitchToken == null || games == null) {
+    return;
+  }
+
   return (
-    <div className='row' key={title}>
-      <h2>{title}</h2>
+    <div className='row' key={title} onClick={() => console.log(games)}>
+      <h2 className='row__title'>{title}</h2>
 
       <div className='row__posters'>
         {games.map(
           (game) =>
-            game.background_image !== null && (
-              <React.Fragment key={game.name}>
+            game.cover !== undefined && (
+              <React.Fragment key={game.id}>
                 <div className='row__poster_wrapper'>
                   <div
                     className={`row__poster_container ${
@@ -143,12 +139,13 @@ function Row({
                           <SiApplemusic
                             onClick={(e) => viewGameSoundtrack(e, game)}
                             className='row__poster_music_icon'
+                            style={{ color: activeProfile.color }}
                           />
-                          <span className='row__poster_name'>{game?.name}</span>
+                          {/* <span className='row__poster_name'>{game?.name}</span> */}
                           <img
                             loading='lazy'
                             className='row__poster'
-                            src={game.background_image}
+                            src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                             alt={game.name}
                           />
                         </div>

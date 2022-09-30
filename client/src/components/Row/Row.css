@@ -22,7 +22,6 @@
 }
 
 .row__poster {
-  object-fit: cover;
   width: 100%;
   height: 100%;
   cursor: pointer;
@@ -48,7 +47,7 @@
   width: 100%;
   cursor: pointer;
   position: relative;
-  margin-right: 10px;
+  margin-right: 20px;
   /* FLIP CARD TRANSITION */
   transition: all 250ms;
   z-index: -1;
@@ -218,8 +217,14 @@
     padding-bottom: 10px;
   }
 
+  .row__title {
+    width: 100%;
+    white-space: pre;
+    font-size: 1.25rem;
+  }
+
   .row__posters {
-    padding: 10px 20px 20px 5px;
+    padding: 15px 20px 20px 5px;
   }
 
   .row__poster_container {

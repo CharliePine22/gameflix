@@ -95,6 +95,11 @@ const UserLibrary = ({
 
   collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
+  if (!collection) {
+    console.log('Nothin');
+    return;
+  }
+
   return (
     <div className='user_library__row'>
       <div
@@ -124,25 +129,22 @@ const UserLibrary = ({
                     <SiApplemusic
                       onClick={(e) => viewGameSoundtrack(e, game)}
                       className='row__poster_music_icon'
+                      style={{ color: activeProfile.color }}
                     />
                     <FaUpload
                       className='user_library_upload_icon'
                       onClick={() => setGameDetails(game)}
+                      style={{ color: activeProfile.color }}
                     />
                     <FaTrash
                       className='user_library_trash_icon'
                       onClick={() => removeGameHandler(game)}
+                      style={{ color: activeProfile.color }}
                     />
-                    <span
-                      className='row__poster_name'
-                      style={{ color: activeProfile.color, fontWeight: 800 }}
-                    >
-                      {game.name}
-                    </span>
                     <img
                       loading='lazy'
                       className='row__poster'
-                      src={game.background_image}
+                      src={`//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg`}
                       alt={game.name}
                     />
                   </div>
@@ -155,7 +157,7 @@ const UserLibrary = ({
                     <img
                       loading='lazy'
                       className='row__poster_back_img'
-                      src={game.background_image}
+                      src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                       alt={game.name}
                     />
                     <div className='soundtrack_container'>

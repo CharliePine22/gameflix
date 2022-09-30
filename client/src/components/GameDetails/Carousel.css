@@ -8,7 +8,7 @@
 .carousel_back_arrow {
   position: absolute;
   left: 0px;
-  top: 153px;
+  top: 165px;
   z-index: 3;
   font-size: 2rem;
   color: white;
@@ -20,7 +20,7 @@
 .carousel_forward_arrow {
   position: absolute;
   right: 0px;
-  top: 153px;
+  top: 165px;
   z-index: 3;
   font-size: 2rem;
   color: white;

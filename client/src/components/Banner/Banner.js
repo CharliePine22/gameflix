@@ -1,34 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import rawgClient from '../../axios';
-import requests from '../../requests';
 import './Banner.css';
-import useFetchDetails from '../../hooks/useFetchDetails';
 import { BiRefresh } from 'react-icons/bi';
+import axios from 'axios';
 
-function Banner({ setGameDetails }) {
+function Banner({ setGameDetails, twitchToken }) {
   const [gameList, setGameList] = useState([]);
   const [game, setGame] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const { isLoading, gameDetails, serverError } = useFetchDetails(game);
+  const [isLoading, setIsLoading] = useState(true);
+  const baseURL = process.env.REACT_APP_BASE_URL;
 
   // Fetch and return list of games from endpoint
   useEffect(() => {
+    if (!twitchToken) return;
     setRefresh(false);
+    setIsLoading(true);
     async function fetchData() {
       try {
-        const request = await rawgClient.get(requests[2].url + '&page_size=40');
-        setGameList(request.data.results);
+        const request = await axios.post(`${baseURL}/app/search_game`, {
+          token: twitchToken,
+          gameName: '',
+        });
+        const filteredList = await request.data.sort(function (a, b) {
+          return b.rating - a.rating;
+        });
+        setGameList(filteredList);
         setGame(
-          request.data.results[
-            Math.floor(Math.random() * request.data.results.length - 1)
-          ]
+          filteredList[Math.floor(Math.random() * request.data.length - 1)]
         );
       } catch (e) {
         console.log(e);
       }
+      setIsLoading(false);
     }
     fetchData();
-  }, [refresh]);
+  }, [refresh, twitchToken]);
 
   // Return a different game from the games list to highlight
   const getNewGame = () => {
@@ -42,7 +48,7 @@ function Banner({ setGameDetails }) {
 
   // Wait for game deatils to finish loading or the game name shows up undefined
   // Undefined is a game name apart of the dataset and will display jibberish
-  if (isLoading || game == false || gameDetails?.name == 'UNDEFINED') {
+  if (isLoading || !game) {
     return (
       <div className='banner__loading'>
         <div className='banner__spinner' />
@@ -50,28 +56,29 @@ function Banner({ setGameDetails }) {
     );
   }
 
-  if (!isLoading && gameDetails?.name == 'UNDEFINED') {
+  if (!isLoading && !game) {
     setRefresh(true);
   }
+  // console.log(game);
 
   return (
     <header
       className='banner'
-      key={gameDetails?.name}
+      key={game?.name}
       style={{
         backgroundSize: 'cover',
-        backgroundImage: `url(${gameDetails?.background_image})`,
+        backgroundImage: `url(//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg)`,
         backgroundPosition: 'center center',
       }}
     >
       <>
         <div className='banner__contents'>
-          <h1 className='banner__title'>{gameDetails?.name}</h1>
+          <h1 className='banner__title'>{game?.name}</h1>
 
           <div className='banner__buttons'>
             <button
               className='banner__button'
-              onClick={() => setGameDetails(gameDetails)}
+              onClick={() => setGameDetails(game)}
             >
               See Details
             </button>
@@ -79,7 +86,7 @@ function Banner({ setGameDetails }) {
           </div>
 
           <h1 className='banner__description'>
-            {truncate(gameDetails?.description_raw, 150)}
+            {truncate(game?.summary, 150)}
           </h1>
         </div>
         <div className='banner--fadeBottom' />

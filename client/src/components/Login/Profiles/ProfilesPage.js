@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './ProfilesPage.css';
-import jessAvatar from '../../../assets/images/kairi-icon.png';
-import yunaAvatar from '../../../assets/images/yuna-icon.png';
-import cloudAvatar from '../../../assets/images/ff7-cloud.png';
-import zidaneAvatar from '../../../assets/images/ff9-zidane.png';
-import cjAvatar from '../../../assets/images/roxas-icon.png';
 import defaultAvatar from '../../../assets/images/basic_avatar.png';
 import { MdEdit } from 'react-icons/md';
 import ProfileEditor from './ProfileEditor/ProfileEditor';

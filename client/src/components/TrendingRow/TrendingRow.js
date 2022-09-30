@@ -70,6 +70,9 @@ const TrendingRow = () => {
                   <div className='trending_row__rank'>{i + 1}</div>
                   <div
                     className='trending_row__poster_container'
+                    style={{
+                      marginLeft: (i == 9 && '160px') || (i == 0 && '65px'),
+                    }}
                     onClick={() => fetchGameDetails(game)}
                   >
                     {' '}

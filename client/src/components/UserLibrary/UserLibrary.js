@@ -25,7 +25,6 @@ const UserLibrary = ({
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [expandTitle, setExpandTitle] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
-
   // MongoDB Query Creds
   const userEmail = JSON.parse(localStorage.getItem('user')).email;
   const userProfile = JSON.parse(localStorage.getItem('profile')).name;
@@ -95,7 +94,7 @@ const UserLibrary = ({
 
   collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
-  if (!collection) {
+  if (!collection || collection.length == 0) {
     console.log('Nothin');
     return;
   }
@@ -114,6 +113,7 @@ const UserLibrary = ({
         <p className='user_library_view_all'>View All</p>
       </div>
       <div className='row__posters'>
+        {collection.length == 0 && <div>Please add a game!</div>}
         {collection.map((game) => (
           <div className='row__poster_wrapper' key={game.name}>
             <div

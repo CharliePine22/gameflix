@@ -176,6 +176,10 @@ function App() {
     setIsLoading(true);
     if (selectedProfile == null || !twitchAccessToken) return;
     const fetchUserCollection = async () => {
+      if (!selectedProfile.collection) {
+        setUserCollection([]);
+        return;
+      }
       const gameNames = await Promise.all(
         selectedProfile.collection.map((game) => {
           return axios.post(`${baseURL}/app/search_game_details`, {

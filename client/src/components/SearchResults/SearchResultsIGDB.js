@@ -13,17 +13,6 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
     setRemainderGames(searchedGame?.slice(3));
   }, [searchedGame]);
 
-  const listInnerRef = useRef();
-
-  const onScroll = () => {
-    if (listInnerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
-      if (scrollTop + clientHeight === scrollHeight) {
-        console.log('reached bottom');
-      }
-    }
-  };
-
   // Skeleton Loader
   if (!searchedGame || !topGames || !remainderGames) {
     return (
@@ -42,13 +31,20 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
     );
   }
 
+  if (searchedGame.length == 0) {
+    return (
+      <div className='search_results__error'>
+        <p>
+          Sorry, no results for current game, please refine your search and try
+          again!
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className='search_results'>
-      <div
-        className='search_results__container'
-        ref={listInnerRef}
-        onScroll={onScroll}
-      >
+      <div className='search_results__container'>
         <h2>Top Results</h2>
 
         {/* Top 3 Search Results */}

@@ -132,7 +132,7 @@ const NewUser = (props) => {
               {currentStep == 1
                 ? 'Start now by creating an account to gain acess to your personal collection of games!'
                 : currentStep == 2
-                ? 'Tell us a little more about yourself, enter your first and last name in the boxers below!'
+                ? 'Tell us a little more about yourself, enter your first and last name in the boxes below!'
                 : 'Click the image below to set your profile picture and select your favorite color!'}
             </h1>
           </div>

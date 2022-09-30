@@ -40,6 +40,7 @@ const GameDetails = ({
   const [gameDetails, setGameDetails] = useState({});
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [activeScreenshot, setActiveScreenshot] = useState('');
+  const [error, setError] = useState('');
   const currentCollection = activeProfile.collection;
 
   const searchGameDetails = async (id) => {
@@ -49,8 +50,17 @@ const GameDetails = ({
         gameId: id,
       });
       const result = await request.data;
-      setGameDetails(result[0]);
+      if (!result[0].status) {
+        setGameDetails(result[0]);
+      } else {
+        setError(
+          `Sorry ${activeProfile.name} but our princess is in another castle! Please try again!`
+        );
+      }
     } catch (error) {
+      setError(
+        `Sorry ${activeProfile.name} but our princess is in another castle! Please try again!`
+      );
       console.log(error);
     }
   };
@@ -240,6 +250,21 @@ const GameDetails = ({
     }
   };
 
+  if (error !== '') {
+    return (
+      <p className='game_details__error'>
+        {error}{' '}
+        <span
+          style={{ fontSize: '1.8rem', marginTop: '20px', padding: '5px 32px' }}
+          className='snes_button'
+          onClick={closeDetails}
+        >
+          Back
+        </span>
+      </p>
+    );
+  }
+
   const convertDate = (date) => {
     let months = [
       'January',
@@ -310,11 +335,14 @@ const GameDetails = ({
   };
 
   if (!gameDetails || !gameDetails.screenshots || !gameDetails.release_dates) {
-    return 'Loading';
-  } else {
-    console.log('done');
+    return (
+      <div className='game_details__wrapper' data-title='.dot-falling'>
+        <div className='stage'>
+          <div className='dot-falling'></div>
+        </div>
+      </div>
+    );
   }
-
   return (
     <div className='game_details__wrapper'>
       <img
@@ -362,10 +390,10 @@ const GameDetails = ({
                         ? '1px solid lightblue'
                         : '1px solid transparent',
                   }}
-                  src={`//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`}
+                  src={`//images.igdb.com/igdb/image/upload/t_screenshot_big_2x/${screenshot.image_id}.jpg`}
                   onClick={() =>
                     setActiveScreenshot(
-                      `//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`
+                      `//images.igdb.com/igdb/image/upload/t_screenshot_big_2x/${screenshot.image_id}.jpg`
                     )
                   }
                   className='screenshot_thumbnail'
@@ -398,7 +426,7 @@ const GameDetails = ({
               <Carousel>
                 {gameDetails.similar_games?.map((game) => (
                   <CarouselItem
-                    imageUrl={`//images.igdb.com/igdb/image/upload/t_cover_med_2x/${game.cover.image_id}.jpg`}
+                    imageUrl={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
                     key={game.id}
                     width='100%'
                   >
@@ -519,12 +547,18 @@ const GameDetails = ({
           </div>
         </div>
         <div className='game_details__actions'>
-          {!currentCollection.includes(game.name) ? (
-            <span onClick={addGameHandler}>ADD</span>
+          {!currentCollection || !currentCollection.includes(game.name) ? (
+            <span className='snes_button' onClick={addGameHandler}>
+              ADD
+            </span>
           ) : (
-            <span onClick={removeGameHandler}>REMOVE</span>
+            <span className='snes_button' onClick={removeGameHandler}>
+              REMOVE
+            </span>
           )}
-          <span onClick={closeDetails}>BACK</span>
+          <span className='snes_button' onClick={closeDetails}>
+            BACK
+          </span>
         </div>
       </div>
     </div>

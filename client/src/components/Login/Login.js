@@ -107,110 +107,106 @@ const Login = (props) => {
     authenticateUser(email, password);
   };
 
-  if (imgsLoading) {
-    console.log('IMAGES LOADING');
-  } else {
-    console.log('IMAGES DONE');
-  }
+  // if (imgsLoading) {
+  //   console.log('loading');
+  //   return (
+  //     <div className='game_details__wrapper' data-title='.dot-falling'>
+  //       <div className='stage'>
+  //         <div className='dot-falling'></div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+  // else {
+  //   console.log('IMAGES DONE');
+  // }
 
   return (
     <div className='login__wrapper'>
-      {imgsLoading && (
-        <div className='login__image_loading'>
-          <div className='loading__dots'>
-            <div className='loading_dot first' />
-            <div className='loading_dot second' />
-            <div className='loading_dot third' />
-          </div>
-        </div>
-      )}
-      {!imgsLoading && (
-        <div className='login'>
-          <img src={gameflixBrand} className='login__brand' />
-          <div className='login__form_wrapper'>
-            <div className='login__form_container'>
-              <form className='login__form' onSubmit={formSubmitHandler}>
-                {!loading ? (
-                  <>
-                    <h1>Sign In</h1>
-                    <div className='login__form_actions'>
-                      <label className='form_label' htmlFor='email' />
-                      <input
-                        ref={emailRef}
-                        onFocus={() => setCurrentFocus('email')}
-                        onChange={checkEmailValidity}
-                        onBlur={emailBlurHandler}
-                        className={`form_input ${
-                          emailRef.current?.value !== '' && hasEmailError
-                            ? 'error'
-                            : ''
-                        }`}
-                        type='email'
-                      />
-                      <span
-                        className={`form_actions_placeholder ${
-                          emailRef.current?.value || currentFocus == 'email'
-                            ? 'focused'
-                            : ''
-                        }`}
-                      >
-                        Email
-                      </span>
-                    </div>
-                    <div className='login__form_actions'>
-                      <label className='form_label' htmlFor='email' />
-                      <input
-                        ref={passwordRef}
-                        onFocus={() => setCurrentFocus('password')}
-                        onChange={checkPasswordValidity}
-                        onBlur={passwordBlurHandler}
-                        className={`form_input ${
-                          passwordRef.current?.value !== undefined &&
-                          hasPasswordError &&
-                          passwordRef.current.value.length > 0
-                            ? 'error'
-                            : ''
-                        }`}
-                        type='password'
-                      />
-                      <span
-                        className={`form_actions_placeholder ${
-                          passwordRef.current?.value ||
-                          currentFocus == 'password'
-                            ? 'password_focused'
-                            : ''
-                        }`}
-                      >
-                        Password
-                      </span>
-                      {authError && (
-                        <p className='login__auth_error'>{authError}</p>
-                      )}
-                    </div>
-                    <button className='form__submit_btn'>Sign In</button>
-                    <p className='form__create_account'>
-                      Don't have an account?{' '}
-                      <span onClick={toLandingPage}>Create one now</span>.
-                    </p>
-                  </>
-                ) : (
-                  <div className='login__loading'>
-                    <div className='loading_spinner' />
+      <div className='login'>
+        <img src={gameflixBrand} className='login__brand' />
+        <div className='login__form_wrapper'>
+          <div className='login__form_container'>
+            <form className='login__form' onSubmit={formSubmitHandler}>
+              {!loading ? (
+                <>
+                  <h1>Sign In</h1>
+                  <div className='login__form_actions'>
+                    <label className='form_label' htmlFor='email' />
+                    <input
+                      ref={emailRef}
+                      onFocus={() => setCurrentFocus('email')}
+                      onChange={checkEmailValidity}
+                      onBlur={emailBlurHandler}
+                      className={`form_input ${
+                        emailRef.current?.value !== '' && hasEmailError
+                          ? 'error'
+                          : ''
+                      }`}
+                      type='email'
+                    />
+                    <span
+                      className={`form_actions_placeholder ${
+                        emailRef.current?.value || currentFocus == 'email'
+                          ? 'focused'
+                          : ''
+                      }`}
+                    >
+                      Email
+                    </span>
                   </div>
-                )}
-              </form>
-            </div>
+                  <div className='login__form_actions'>
+                    <label className='form_label' htmlFor='email' />
+                    <input
+                      ref={passwordRef}
+                      onFocus={() => setCurrentFocus('password')}
+                      onChange={checkPasswordValidity}
+                      onBlur={passwordBlurHandler}
+                      className={`form_input ${
+                        passwordRef.current?.value !== undefined &&
+                        hasPasswordError &&
+                        passwordRef.current.value.length > 0
+                          ? 'error'
+                          : ''
+                      }`}
+                      type='password'
+                    />
+                    <span
+                      className={`form_actions_placeholder ${
+                        passwordRef.current?.value || currentFocus == 'password'
+                          ? 'password_focused'
+                          : ''
+                      }`}
+                    >
+                      Password
+                    </span>
+                    {authError && (
+                      <p className='login__auth_error'>{authError}</p>
+                    )}
+                  </div>
+                  <button className='form__submit_btn'>Sign In</button>
+                  <p className='form__create_account'>
+                    Don't have an account?{' '}
+                    <span onClick={toLandingPage}>Create one now</span>.
+                  </p>
+                </>
+              ) : (
+                <div className='login__loading'>
+                  <div className='loading_spinner' />
+                </div>
+              )}
+            </form>
           </div>
         </div>
-      )}
+      </div>
       {/* BACKGROUND */}
-
       <div className='login__background'>
         {gameList.map((game) => (
           <React.Fragment key={game.name}>
             <span className='login__name'>{game?.name.split(':')[0]}</span>
             <img
               className='login__img'
+              style={{ display: imgsLoading && 'none' }}
               src={game?.background_image}
               onLoad={imageLoaded}
             />

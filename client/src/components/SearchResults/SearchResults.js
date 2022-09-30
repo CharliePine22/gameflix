@@ -14,16 +14,6 @@ const SearchResults = ({ searchedGame, setGameDetails }) => {
   const [remainderGames, setRemainderGames] = useState([]);
   const [playAudio, setPlayAudio] = useState(false);
   let audio = new Audio(chatterAudio);
-  // searchedGame.sort((a, b) =>
-  //   a.total_rating > b.total_rating
-  //     ? 1
-  //     : b.total_rating > a.total_rating
-  //     ? -1
-  //     : 0
-  // );
-
-  console.log(searchedGame);
-  // console.log(topGames);
 
   useEffect(() => {
     setTopGames(searchedGame?.slice(0, 3));
@@ -74,46 +64,11 @@ const SearchResults = ({ searchedGame, setGameDetails }) => {
     <div className='search_results'>
       <div className='search_results__container'>
         <h2>Top Results</h2>
-        <ReactTooltip
-          multiline={true}
-          border={true}
-          id='details_tip'
-          type='info'
-          place='top'
-          // afterShow={(e) => playChatterNoise(e)}
-          // afterHide={(e) => stopChatterNoise(e)}
-        >
-          <Typewriter
-            options={{
-              strings: `Click me to see more details <br> about this game!`,
-              autoStart: true,
-              delay: 75,
-              loop: true,
-            }}
-          />
-        </ReactTooltip>
 
         {/* Top 3 Search Results */}
         <div className='top_results_row'>
           {topGames == undefined && <Skeleton count={3} />}
-          <ReactTooltip
-            multiline={true}
-            border={true}
-            id='adding_tip'
-            type='info'
-            place='top'
-            // afterShow={(e) => playChatterNoise(e)}
-            // afterHide={(e) => stopChatterNoise(e)}
-          >
-            <Typewriter
-              options={{
-                strings: `Click me to add this game <br> into your personal collection!`,
-                autoStart: true,
-                delay: 75,
-                loop: true,
-              }}
-            />
-          </ReactTooltip>
+
           {topGames &&
             topGames?.slice(0, 3).map(
               (game) =>

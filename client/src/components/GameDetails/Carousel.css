@@ -7,25 +7,27 @@
 
 .carousel_back_arrow {
   position: absolute;
-  left: 0px;
-  top: 165px;
+  left: -10px;
+  top: 135px;
   z-index: 3;
   font-size: 2rem;
   color: white;
   transform: rotate(180deg);
   opacity: 0.5;
   cursor: pointer;
+  padding: 20px;
 }
 
 .carousel_forward_arrow {
   position: absolute;
-  right: 0px;
-  top: 165px;
+  right: -10px;
+  top: 135px;
   z-index: 3;
   font-size: 2rem;
   color: white;
   opacity: 0.5;
   cursor: pointer;
+  padding: 20px;
 }
 
 .carousel_forward_arrow:hover,

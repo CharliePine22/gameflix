@@ -174,6 +174,7 @@ const ProfileEditor = (props) => {
   const saveUserData = async (e) => {
     e.preventDefault();
     setLoading(true);
+    // Make inputs OPTIONAL
     const userData = {
       email: props.userEmail,
       originalName: currentProfile.name,
@@ -378,7 +379,9 @@ const ProfileEditor = (props) => {
                   <>
                     <p className='form_personal_genre'>Favorite Genre</p>
                     <button onClick={() => setChangingGenre(!changingGenre)}>
-                      {currentGenre !== '' ? `${currentGenre}` : 'Action'}{' '}
+                      {currentGenre !== undefined
+                        ? `${currentGenre}`
+                        : 'Action'}{' '}
                       <FaAngleDown className='genre_arrow' />
                     </button>
                   </>

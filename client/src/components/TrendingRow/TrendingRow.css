@@ -34,8 +34,8 @@
   width: 100%;
   cursor: pointer;
   position: relative;
-  margin-right: 50px;
-  margin-left: 50px;
+  margin-right: 60px;
+  margin-left: 100px;
   transition: all 400ms;
   z-index: 1;
   max-width: 22rem;
@@ -45,6 +45,10 @@
   min-height: 230px;
   max-height: 230px;
 }
+
+/* .trending_row__poster_container:last-of-type {
+  margin-left: 60px;
+} */
 
 .trending_row__placeholder__wrapper {
   max-width: 22rem;
@@ -86,11 +90,9 @@
   position: absolute;
   z-index: 1;
   font-size: 15rem;
-  top: -30px;
   left: -40px;
   font-family: 'Games', sans-serif;
   color: white;
-  /* width: 50rem; */
   text-shadow: 10px 10px 10px black;
   height: 100%;
 }

@@ -49,8 +49,10 @@ const GameDetails = ({
         token: twitchToken,
         gameId: id,
       });
+      console.log(request);
       const result = await request.data;
-      if (!result[0].status) {
+      console.log(result);
+      if (!result[0].status < 400) {
         setGameDetails(result[0]);
       } else {
         setError(
@@ -120,9 +122,10 @@ const GameDetails = ({
     }
   };
 
-  const addGameHandler = () => {
-    addGame(game);
-    closeDetails();
+  const addGameHandler = async () => {
+    const addingResult = await addGame(game);
+    console.log(addingResult);
+    // closeDetails();
   };
 
   const removeGameHandler = () => {

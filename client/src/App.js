@@ -73,6 +73,7 @@ function App() {
     setSearchedGame(filteredList);
   };
 
+  // Add game name and id to DB
   const addGameHandler = async (game) => {
     try {
       const request = await axios.post(`${baseURL}/app/update_collection`, {
@@ -86,8 +87,10 @@ function App() {
       });
       localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
       setSelectedProfile(currentProfile[0]);
+      return `${game.name} successfully added!`;
     } catch (error) {
       console.log(error);
+      return error;
     }
   };
 

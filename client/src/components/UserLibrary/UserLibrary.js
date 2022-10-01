@@ -28,7 +28,6 @@ const UserLibrary = ({
   // MongoDB Query Creds
   const userEmail = JSON.parse(localStorage.getItem('user')).email;
   const userProfile = JSON.parse(localStorage.getItem('profile')).name;
-
   const fetchGameOST = async (game) => {
     if (!spotifyToken) {
       console.log('Please connect to Spotify!');
@@ -114,7 +113,7 @@ const UserLibrary = ({
       </div>
       <div className='row__posters'>
         {collection.length == 0 && <div>Please add a game!</div>}
-        {collection.map((game) => (
+        {collection?.map((game) => (
           <div className='row__poster_wrapper' key={game.name}>
             <div
               className={`row__poster_container ${
@@ -133,7 +132,7 @@ const UserLibrary = ({
                     />
                     <FaUpload
                       className='user_library_upload_icon'
-                      onClick={() => setGameDetails(game)}
+                      onClick={() => setGameDetails(game.id)}
                       style={{ color: activeProfile.color }}
                     />
                     <FaTrash

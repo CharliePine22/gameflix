@@ -99,7 +99,7 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
                 <div
                   className='results_container'
                   key={game.id}
-                  onClick={() => setGameDetails(game)}
+                  onClick={() => setGameDetails(game.id)}
                 >
                   <div
                     className='results_container_img'

@@ -1,46 +1,21 @@
 import React, { useRef } from 'react';
 import './Nav.css';
-import jessAvatar from '../../assets/images/kairi-icon.png';
-import yunaAvatar from '../../assets/images/yuna-icon.png';
-import cloudAvatar from '../../assets/images/ff7-cloud.png';
-import zidaneAvatar from '../../assets/images/ff9-zidane.png';
-import cjAvatar from '../../assets/images/roxas-icon.png';
 import logo from '../../assets/images/gameflix-logo.png';
 import { useEffect, useState } from 'react';
 import { FaSistrix, FaAngleUp } from 'react-icons/fa';
 import NavDropdown from './NavDropdown';
+import ProfileEditor from '../Login/Profiles/ProfileEditor/ProfileEditor';
+import AccountEditor from '../Login/Profiles/ProfileEditor/AccountEditor';
 
 function Nav(props) {
   const [displayNav, setDisplayNav] = useState(false);
   const [displayDropdown, setDisplayDropdown] = useState(false);
   const [displaySearch, setDisplaySearch] = useState(false);
   const searchRef = useRef('');
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [editingAccount, setEditingAccount] = useState(false);
 
   const profile = props.activeProfile;
-
-  const dummyData = [
-    { name: 'Roxas', dummyAvatar: cjAvatar, color: 'blue' },
-    {
-      name: 'Kairi',
-      dummyAvatar: jessAvatar,
-      color: 'pink',
-    },
-    {
-      name: 'Yuna',
-      dummyAvatar: yunaAvatar,
-      color: 'purple',
-    },
-    {
-      name: 'Cloud',
-      dummyAvatar: cloudAvatar,
-      color: 'silver',
-    },
-    {
-      name: 'Zidane',
-      dummyAvatar: zidaneAvatar,
-      color: 'gold',
-    },
-  ];
 
   const closeNavDropdown = () => {
     setDisplayDropdown(false);
@@ -82,6 +57,26 @@ function Nav(props) {
     };
   }, []);
 
+  const cancelEdit = () => {
+    document.body.style.overflowY = 'scroll';
+    setEditingProfile(false);
+  };
+
+  const editProfileHandler = () => {
+    document.body.style.overflowY = 'hidden';
+    setEditingProfile(true);
+  };
+
+  const editAccountHandler = () => {
+    document.body.style.overflowY = 'hidden';
+    setEditingAccount(true);
+  };
+
+  const saveEdit = () => {
+    props.saveEdit();
+    setEditingProfile(false);
+  };
+
   // Handles escape key press for search input
   useEffect(() => {
     const handleEsc = (event) => {
@@ -99,6 +94,25 @@ function Nav(props) {
 
   return (
     <div className={`nav ${displayNav && 'nav__hide'}`}>
+      {editingProfile && (
+        <div className='nav_edit_profile'>
+          <ProfileEditor
+            currentProfile={profile}
+            userEmail={props.currentUser.email}
+            viewAllProfiles={cancelEdit}
+            saveEdit={saveEdit}
+            getProfile={(test) => props.selectProfile(test)}
+          />
+        </div>
+      )}
+      {editingAccount && (
+        <div className='nav_edit_profile'>
+          {' '}
+          <AccountEditor
+            closeAccountSettings={() => setEditingAccount(false)}
+          />{' '}
+        </div>
+      )}
       <img
         className='nav__logo'
         src={logo}
@@ -160,6 +174,8 @@ function Nav(props) {
               closeNavDropdown={closeNavDropdown}
               toProfilePage={props.toProfilePage}
               spotifyToken={props.spotifyToken}
+              editProfile={editProfileHandler}
+              editAccount={editAccountHandler}
             />
           )}
         </div>

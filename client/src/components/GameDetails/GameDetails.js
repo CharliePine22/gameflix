@@ -41,6 +41,7 @@ const GameDetails = ({
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [activeScreenshot, setActiveScreenshot] = useState('');
   const [error, setError] = useState('');
+  const [gameActionStatus, setGameActionStatus] = useState('');
   const currentCollection = activeProfile.collection;
 
   const searchGameDetails = async (id) => {
@@ -49,9 +50,7 @@ const GameDetails = ({
         token: twitchToken,
         gameId: id,
       });
-      console.log(request);
       const result = await request.data;
-      console.log(result);
       if (!result[0].status < 400) {
         setGameDetails(result[0]);
       } else {
@@ -124,13 +123,14 @@ const GameDetails = ({
 
   const addGameHandler = async () => {
     const addingResult = await addGame(game);
-    console.log(addingResult);
+    setGameActionStatus(addingResult);
     // closeDetails();
   };
 
-  const removeGameHandler = () => {
-    removeGame(game.name);
-    closeDetails();
+  const removeGameHandler = async () => {
+    const removalResult = await removeGame(game);
+    setGameActionStatus(removalResult);
+    // closeDetails();
   };
 
   // Convert name of platforms into a PNG icon
@@ -517,7 +517,7 @@ const GameDetails = ({
                           {displayConsoleIcons(
                             platform.abbreviation || platform.name
                           )}
-                          {platform.abbreviation || platform.name}
+                          <p>{platform.abbreviation || platform.name}</p>
                         </li>
                       );
                     }
@@ -550,7 +550,7 @@ const GameDetails = ({
           </div>
         </div>
         <div className='game_details__actions'>
-          {!currentCollection || !currentCollection.includes(game.name) ? (
+          {!currentCollection || !currentCollection.includes(gameDetails.id) ? (
             <span className='snes_button' onClick={addGameHandler}>
               ADD
             </span>

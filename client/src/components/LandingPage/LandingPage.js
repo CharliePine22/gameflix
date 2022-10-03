@@ -72,9 +72,8 @@ const LandingPage = (props) => {
       return;
     }
     axios
-      .post(`${baseURL}/app/email_verification`, { email })
+      .post(`${baseURL}/authentication/email_verification`, { email })
       .then((response) => {
-        console.log(response);
         setCreatingNewUser(true);
         setInputFocused(false);
       })

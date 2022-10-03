@@ -190,8 +190,10 @@ const ProfileEditor = (props) => {
         `${baseURL}/app/update_user_profile`,
         userData
       );
-      localStorage.setItem('user', JSON.stringify(request.data.response));
+
+      localStorage.setItem('user', JSON.stringify(request.data.response.user));
       setStatusMessage(request.data.message);
+      // props.getProfile(request.data.response.profile);
       props.saveEdit();
       props.viewAllProfiles();
     } catch (error) {

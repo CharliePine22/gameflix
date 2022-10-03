@@ -4,8 +4,10 @@ const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const routesUrls = require('./routes/routes');
+const authenticationRoutes = require('./routes/authentication_routes');
+const spotifyRoutes = require('./routes/spotify_routes');
+const igdbRoutes = require('./routes/igdb_routes');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 
 dotenv.config();
 
@@ -25,6 +27,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use('/app', routesUrls);
+app.use('/authentication', authenticationRoutes);
+app.use('/spotify', spotifyRoutes);
+app.use('/igdb', igdbRoutes);
 app.use('/uploads', express.static('uploads'));
 
 if (process.env.PORT) {

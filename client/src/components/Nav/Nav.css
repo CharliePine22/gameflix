@@ -48,6 +48,21 @@
   transition: transform 0.25s;
 }
 
+.nav_edit_profile {
+  height: 1240px;
+  width: 105vw;
+  position: absolute;
+  top: -290px;
+  left: -10px;
+  background: rgb(5, 5, 5);
+  overflow: hidden;
+  z-index: 100;
+}
+
+.nav_edit_profile::-webkit-scrollbar {
+  display: none;
+}
+
 .nav__hide {
   background-color: #111;
 }
@@ -55,6 +70,7 @@
 .nav__logo {
   width: 46px;
   object-fit: contain;
+  cursor: pointer;
 }
 
 .nav__right {

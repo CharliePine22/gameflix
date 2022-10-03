@@ -31,6 +31,8 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
     );
   }
 
+  console.log(searchedGame);
+
   if (searchedGame.length == 0) {
     return (
       <div className='search_results__error'>
@@ -65,7 +67,11 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
                   }}
                 />
                 <img
-                  src={`//images.igdb.com/igdb/image/upload/t_screenshot_big/${game.screenshots[0]?.image_id}.jpg`}
+                  src={`//images.igdb.com/igdb/image/upload/t_screenshot_big/${
+                    game.screenshots
+                      ? game.screenshots[0]?.image_id
+                      : game.cover?.image_id
+                  }.jpg`}
                 />
               </div>
               <div className='top_result_lower'>
@@ -73,9 +79,12 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
                   {game.name || <Skeleton count={1} />}
                 </h3>
                 <ul className='game_theme_list'>
-                  {game.themes?.map((theme) => (
-                    <li key={theme.id}>{theme.name}</li>
-                  ))}
+                  {game.themes?.map(
+                    (theme) =>
+                      theme.name !== 'Sandbox' && (
+                        <li key={theme.id}>{theme.name}</li>
+                      )
+                  )}
                 </ul>
               </div>
               <div
@@ -94,8 +103,7 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
           <h2>Results</h2>
           {remainderGames?.map(
             (game) =>
-              game.cover !== undefined &&
-              game.themes !== undefined && (
+              game.cover !== undefined && (
                 <div
                   className='results_container'
                   key={game.id}
@@ -113,8 +121,9 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
                     <h3 className='game_name_remainder'>{game.name}</h3>
                     {/* <p>{game.publisher}</p> */}
                     <ul className='game_theme_list_lower'>
-                      {game.themes.map(
+                      {game.themes?.map(
                         (theme, i) =>
+                          theme.name !== 'Sandbox' &&
                           i < 3 && <li key={theme.id}>{theme.name}</li>
                       )}
                     </ul>

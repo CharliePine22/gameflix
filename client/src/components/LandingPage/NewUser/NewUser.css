@@ -31,7 +31,7 @@
   width: 100%;
   padding: 15px;
   color: white;
-  background-color: blue;
+  background-color: #9147ff;
   font-size: 1.25rem;
   border: 0;
   border-radius: 4px;
@@ -41,7 +41,7 @@
 }
 
 .form_actions_btn:hover {
-  background-color: rgb(0, 64, 255);
+  background-color: #a870fc;
 }
 
 .form_back_btn {
@@ -79,6 +79,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.form_file_error {
+  color: red;
+  font-weight: 600;
+  margin-bottom: 25px;
 }
 
 .form_file_input {
@@ -135,7 +141,8 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
+  /* margin-bottom: 25px; */
 }
 
 .form_input_selections {
@@ -152,7 +159,7 @@
 }
 
 .header_brand {
-  color: blue;
+  color: #9147ff;
   margin-left: 25px;
   cursor: pointer;
 }
@@ -256,8 +263,9 @@
   color: red;
   font-weight: bold;
   position: absolute;
-  font-size: 0.8rem;
-  left: 1px;
+  font-size: 0.9rem;
+  left: 0px;
+  top: -19px;
 }
 
 /* ! MEDIA QUERIES ! */

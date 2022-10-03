@@ -63,7 +63,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
+  margin-top: 10px;
+  /* margin: 0; */
 }
 
 .snes_button {
@@ -182,7 +183,7 @@
   flex-direction: column;
   align-items: center;
   color: white;
-  margin: 20px 0 10px;
+  margin: 20px 0 15px;
 }
 
 .game_details__info_toggler {
@@ -498,6 +499,10 @@
     justify-content: space-around;
   }
 
+  .game_details__description {
+    max-width: 95%;
+  }
+
   .game_details__esrb {
     width: auto;
   }
@@ -517,6 +522,10 @@
 
 /* MOBILE DEVICES */
 @media screen and (max-width: 500px) {
+  .game_details__column {
+    max-height: 125px;
+  }
+
   .game_details__container {
     margin: 0;
   }
@@ -527,11 +536,11 @@
   }
 
   .game_details__data {
-    margin: 0px 0 25px;
+    margin: 0px 0 15px;
   }
 
   .game_details__description {
-    max-width: 90%;
+    max-width: 95%;
     font-size: 1rem;
   }
 
@@ -555,15 +564,15 @@
   }
 
   .game_details__esrb_img {
-    height: 100%;
-    width: 50px;
+    height: 65%;
+    width: 75%;
     margin-top: 5px;
     max-height: 120px;
     filter: drop-shadow(5px 6px 3px #000);
   }
 
   .game_details__info_container {
-    margin: 25px 0;
+    margin: 20px 0;
   }
 
   .game_details__publishers {
@@ -576,7 +585,6 @@
   }
 
   .game_details__title {
-    margin-bottom: 8px;
     font-size: 1.25rem;
   }
 
@@ -597,6 +605,10 @@
   .publisher,
   .platform {
     font-size: 0.8rem;
+  }
+
+  .platform p {
+    display: none;
   }
 
   .snes_button {

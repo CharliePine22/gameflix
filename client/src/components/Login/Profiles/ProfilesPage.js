@@ -45,6 +45,7 @@ const ProfilesPage = (props) => {
         currentProfile={creatingProfile}
         viewAllProfiles={() => setCreatingProfile(null)}
         userEmail={props.currentUser.email}
+        getProfile={(test) => console.log(test)}
       />
     );
   }

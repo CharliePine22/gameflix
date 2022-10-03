@@ -26,8 +26,6 @@ const NavDropdown = (props) => {
     };
   }, []);
 
-  const spotifyAuthHandler = () => {};
-
   // Change current user
   const changeUserHandler = (user) => {
     props.changeProfile(user);
@@ -68,13 +66,16 @@ const NavDropdown = (props) => {
         </ul>
       </div>
       <div className='dropdown__settings'>
-        <div className='dropdown__settings_item'>
+        <div
+          className='dropdown__settings_item'
+          onClick={() => props.editProfile()}
+        >
           <span className='dropdown__settings_item_icon'>
             <FaUserEdit size={18} />
           </span>
           <p>My Profile</p>
         </div>
-        <div className='dropdown__settings_item'>
+        <div className='dropdown__settings_item' onClick={props.editAccount}>
           <span className='dropdown__settings_item_icon'>
             <IoSettingsOutline size={18} />
           </span>

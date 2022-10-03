@@ -35,17 +35,19 @@ const NewUser = (props) => {
   // Handler to go back and edit forms in previous steps
   const backStepHandler = () => {
     setCurrentStep(currentStep - 1);
+    if (error) setError(false);
   };
 
   useEffect(() => {
-    if (error) emailRef.current.focus();
+    if (error && emailRef.current) emailRef.current.focus();
   }, []);
 
   const validateEmail = (data) => {
     let flag = false;
     const request = axios
-      .post(`${baseURL}/app/signup`, data)
+      .post(`${baseURL}/authentication/signup`, data)
       .then((response) => {
+        console.log(response);
         return response;
       })
       .catch((e) => {
@@ -58,6 +60,7 @@ const NewUser = (props) => {
 
   const formSubmitHandler = async (e) => {
     e.preventDefault();
+    setError(false);
     // Go throuh the steps until user gets to last step (3), then submit data
     // Step 1
     if (currentStep == 1) {
@@ -65,10 +68,8 @@ const NewUser = (props) => {
       const password = passwordRef.current.value.trim();
       if (email == '' || !email.includes('@')) {
         setError('Please enter a valid email');
-      } else if (password == '' || password.length > 10) {
-        setError(
-          'Please enter a valid password that is 10 characters or less!'
-        );
+      } else if (password == '' || password.length < 7) {
+        setError('Please enter a valid password that is 7 characters or more!');
       } else {
         setStepOneData({ email, password });
         setCurrentStep(currentStep + 1);
@@ -96,11 +97,18 @@ const NewUser = (props) => {
       formData.append('password', stepOneData.password);
       formData.append('color', color.hex);
       formData.append('avatar', imgFile);
+      console.log(imgFile);
 
       const result = await validateEmail(formData);
-      console.log(result);
-
-      if (!error && !result.data.message && result !== null) {
+      if (
+        !result &&
+        (imgFile.type.split('/')[1] == 'mp4' || imgFile.type == '')
+      ) {
+        setError(
+          'Invalid file type not supported, please use a valid PNG, JPG, JPEG, GIF, or ICO file.'
+        );
+        return;
+      } else if (!error && result && !result.data.message) {
         localStorage.setItem('user', JSON.stringify(result.data));
         window.location.reload();
       } else {
@@ -183,6 +191,7 @@ const NewUser = (props) => {
             {/* STEP THREE INPUTS */}
             {currentStep >= 3 && (
               <>
+                {error && <p className='form_file_error'>{error}</p>}
                 <div className='form_file_container'>
                   <div
                     className='form_file'

@@ -14,17 +14,15 @@ const storage = multer.diskStorage({
     cb(null, 'uploads');
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
+    if (['image/png', 'image/jpg', 'image/jpeg'].includes(file.mimetype)) {
+      cb(null, Date.now() + '-' + file.originalname);
+    } else {
+      cb('Invalid file type', '');
+    }
   },
 });
 
 const upload = multer({ storage: storage });
-
-// Determine whether or not email exists in database
-const newAccountValidation = async (email) => {
-  const result = await userModel.findOne({ email: email });
-  return result == null;
-};
 
 // Find user helper function
 const findUser = async (email) => {
@@ -173,7 +171,7 @@ router.post('/search_game', async (req, res) => {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `fields *, artworks.*, age_ratings.*, name, cover.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; where name ~ *"${gameName}"* & rating_count > 0 & cover != null & (rating != null & category != (1,3)); limit 100;`,
+      body: `fields *, artworks.*, age_ratings.*, name, cover.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; sort rating_count desc; where name ~ *"${gameName}"* & rating_count > 0 & cover != null & (rating != null & category != (1,3)); limit 100;`,
     });
     const result = await request.json();
     res.send(result);
@@ -278,64 +276,6 @@ router.post('/trending', async (req, res) => {
   }
 });
 
-//! SIGN UP
-router.post('/signup', upload.single('avatar'), (req, res) => {
-  const avatar = req.file.destination + '/' + req.file.filename;
-  const newUser = new userModel({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    password: req.body.password,
-    color: req.body.color,
-    avatar: avatar,
-  });
-
-  newAccountValidation(req.body.email).then(function (valid) {
-    if (valid) {
-      newUser.profiles.push({
-        name: req.body.firstName,
-        avatar: avatar,
-        color: req.body.color,
-        isAdmin: true,
-      });
-      newUser
-        .save()
-        .then((data) => {
-          res.json(data);
-        })
-        .catch((error) => {
-          res.json(error);
-        });
-    } else {
-      res.status(400).send({ message: 'Email is already in use!' });
-    }
-  });
-});
-
-//! EMAIL VERIFICATION
-router.post('/email_verification', (req, res) => {
-  newAccountValidation(req.body.email).then(function (valid) {
-    if (valid) {
-      res.status(200).send({ status: 'success' });
-    } else {
-      res.status(400).send({ message: 'Email is already in use!' });
-    }
-  });
-});
-
-//! SIGN IN
-router.post('/signin', (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  findUser(email).then(function (user) {
-    if (user && password == user.password) {
-      res.status(200).send({ message: 'User logged in successfully!', user });
-    } else {
-      res.status(400).send({ message: 'Incorrect email or password!' });
-    }
-  });
-});
-
 //! UPDATE AVATAR FILE
 router.post(
   '/update_avatar_file',
@@ -392,6 +332,11 @@ router.post('/update_avatar_link', async function (req, res) {
   }
 });
 
+router.post('/update_user_account', async (req, res) => {
+  const currentEmail = req.body.originalEmail;
+  const newEmail = req.body.newEmail;
+});
+
 //! UPDATE A PROFILE IN USER ACCOUNT
 router.post('/update_user_profile', async (req, res) => {
   const email = req.body.email;
@@ -427,6 +372,17 @@ router.post('/update_user_profile', async (req, res) => {
       }, // list fields you like to change
       { new: true, setDefaultsOnInsert: false, upsert: true }
     );
+    console.log(request);
+    for (let profile of request.profiles) {
+      if (profile.name == name) {
+        res.send({
+          code: 200,
+          status: 'OK',
+          message: 'Profile updated!',
+          response: { user: request, profile: profile },
+        });
+      }
+    }
     res.send({
       code: 200,
       status: 'OK',
@@ -475,15 +431,16 @@ router.post('/update_collection', async (req, res) => {
 //* REMOVE GAME
 router.put('/remove_game', async (req, res) => {
   const email = req.body.email;
-  const gameTitle = req.body.gameTitle;
+  const gameId = req.body.game;
   const name = req.body.currentProfile;
+  console.log(gameId);
 
   try {
     const request = await userModel.findOneAndUpdate(
       { email: email, profiles: { $elemMatch: { name } } },
       {
         $pull: {
-          'profiles.$.collection': { name: gameTitle },
+          'profiles.$.collection': gameId,
         },
       }, // list fields you like to change
       { new: true, upsert: false }

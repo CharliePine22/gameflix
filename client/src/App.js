@@ -65,12 +65,7 @@ function App() {
       token: twitchAccessToken,
       gameName: game,
     });
-
-    // Sort games by highest rating
-    const filteredList = await request.data.sort(function (a, b) {
-      return b.rating - a.rating;
-    });
-    setSearchedGame(filteredList);
+    setSearchedGame(request.data);
   };
 
   // Add game name and id to DB
@@ -79,7 +74,8 @@ function App() {
       const request = await axios.post(`${baseURL}/app/update_collection`, {
         email: userEmail,
         currentProfile: userProfile,
-        game: { id: game.id, name: game.name },
+        game,
+        // game: { id: game.id, name: game.name },
       });
       localStorage.setItem('user', JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
@@ -87,7 +83,7 @@ function App() {
       });
       localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
       setSelectedProfile(currentProfile[0]);
-      return `${game.name} successfully added!`;
+      return `Successfully added!`;
     } catch (error) {
       console.log(error);
       return error;
@@ -99,7 +95,7 @@ function App() {
       const request = await axios.put(`${baseURL}/app/remove_game`, {
         email: userEmail,
         currentProfile: userProfile,
-        gameId: game.id,
+        game,
       });
       localStorage.setItem('user', JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
@@ -107,6 +103,7 @@ function App() {
       });
       localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
       setSelectedProfile(currentProfile[0]);
+      return 'Successfully removed!';
     } catch (error) {
       console.log(error);
     }
@@ -173,6 +170,7 @@ function App() {
     if (userProfile) {
       setSelectedProfile(JSON.parse(userProfile));
     }
+    setEditingUser(false);
   }, []);
 
   useEffect(() => {
@@ -187,7 +185,7 @@ function App() {
         selectedProfile.collection.map((game) => {
           return axios.post(`${baseURL}/app/search_game_details`, {
             token: twitchAccessToken,
-            gameId: game.id,
+            gameId: game,
           });
         })
       );
@@ -238,7 +236,7 @@ function App() {
   }
 
   // Loading screen for profile change
-  if (selectedProfile && changingUser) {
+  if (changingUser) {
     return (
       <div className='loading_profile__container'>
         <div className='loading_profile'>
@@ -271,7 +269,10 @@ function App() {
         fetchSubmittedGame={fetchSubmittedGame}
         closeSearchResults={closeSearchResults}
         toProfilePage={() => setSelectedProfile(null)}
+        selectProfile={(profile) => setSelectedProfile(profile)}
         spotifyToken={spotifyAccessToken}
+        searchedGame={searchedGame}
+        saveEdit={() => setEditingUser(true)}
       />
       {!searchSubmitted ? (
         <>

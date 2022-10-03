@@ -174,7 +174,7 @@
 
 .landing__form button {
   padding: 0 20px;
-  background: blue;
+  background: #9147ff;
   color: #fff;
   cursor: pointer;
   border: 0;
@@ -187,7 +187,7 @@
 }
 
 .landing__form button:hover {
-  background: rgb(0, 26, 255);
+  background: #9d5cfe;
 }
 
 .landing__email {
@@ -297,6 +297,7 @@
   justify-content: center;
   align-items: flex-end;
   text-align: right;
+  margin-right: 10px;
 }
 
 .information_right_description {
@@ -334,8 +335,9 @@
 }
 
 .nav_badge {
-  color: #fff;
+  color: #9147ff;
   font-size: 2rem;
+  font-weight: 900;
 }
 
 .nav_left {
@@ -387,7 +389,7 @@
 .sign_in_btn {
   border: 0;
   padding: 0.55rem 0.9rem;
-  background: blue;
+  background: #9147ff;
   color: white;
   cursor: pointer;
   border-radius: 4px;
@@ -473,7 +475,7 @@
   }
   .landing_banner__content h1 {
     font-size: 1.6rem;
-    max-width: 99%;
+    max-width: 95%;
   }
   .landing_banner__content p {
     text-align: center;
@@ -569,6 +571,12 @@
     margin: 0;
     height: 70%;
     width: 70%;
+  }
+
+  .sign_up_error {
+    font-weight: 600 !important;
+    bottom: -50px;
+    font-size: 1.6rem !important;
   }
 }
 

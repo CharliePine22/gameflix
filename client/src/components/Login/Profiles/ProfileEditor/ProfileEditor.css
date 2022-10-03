@@ -1,3 +1,64 @@
+.account_edit__form {
+  border-bottom: 1px solid grey;
+  margin: 0;
+  position: relative;
+  width: 100%;
+  padding: 40px 30px 25px;
+}
+
+.account_email_container,
+.account_password_container {
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.account_email_input,
+.account_password_input {
+  background: grey;
+  border: 0;
+  outline: 0;
+  color: white;
+  padding: 8px 5px;
+  width: 92%;
+  margin-bottom: 15px;
+  border-radius: 2px;
+}
+
+.account_email_input::placeholder,
+.account_password_input::placeholder {
+  color: white;
+}
+
+.account_email_container button,
+.account_password_container button {
+  margin: 0;
+  padding: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.account_email_save_btn {
+  position: absolute;
+  right: 15px;
+  bottom: 0px;
+}
+
+.account_password_save_btn {
+  position: absolute;
+  right: 15px;
+  bottom: 0px;
+}
+
+.account_password_visible_icon {
+  color: white;
+  font-size: 1.6rem;
+  position: absolute;
+  top: 36px;
+  right: -20px;
+  cursor: pointer;
+}
+
 .avatar_file_option,
 .avatar_link_option {
   width: 100%;
@@ -85,11 +146,17 @@
 }
 
 .cancel_btn,
-.delete_profile_btn {
+.delete_profile_btn,
+.delete_account_btn {
   opacity: 0.5;
   background: transparent;
   border: 1px solid grey;
   color: white;
+}
+
+.delete_account_btn:hover {
+  opacity: 1;
+  border: 1px solid red;
 }
 
 .cancel_btn:hover,
@@ -511,7 +578,7 @@
 }
 
 .profile_edit__header h3 {
-  color: blue;
+  color: #9147ff;
   margin: 10px;
   font-size: 2rem;
 }
@@ -545,7 +612,7 @@
 }
 
 .save_btn:hover {
-  background-color: blue;
+  background-color: #9147ff;
   color: white;
 }
 

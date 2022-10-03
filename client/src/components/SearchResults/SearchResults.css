@@ -124,7 +124,7 @@
 }
 
 .search_results__container {
-  margin-left: 15px;
+  margin: 0 80px;
 }
 
 .search_results__container_skeleton {
@@ -250,7 +250,7 @@
   }
 
   .game_theme_list {
-    bottom: 5px;
+    bottom: 10px;
   }
 
   .game_theme_list_lower {
@@ -291,7 +291,11 @@
 
   .search_results {
     width: 100%;
-    top: 4.5rem;
+    top: 5rem;
+  }
+
+  .search_results__container {
+    margin: 0 5px;
   }
 
   .search_results__container h2 {
@@ -310,8 +314,13 @@
     margin-bottom: 28px;
   }
 
+  .top_result_upper img {
+    object-fit: cover;
+  }
+
   .top_result_lower {
     height: 4.9rem;
+    padding-bottom: 15px;
   }
 
   .top_results_row {
@@ -327,7 +336,7 @@
   }
 }
 
-@media screen and (min-width: 450px) and (max-width: 750px) {
+@media screen and (min-width: 450px) and (max-width: 800px) {
   .game_cover {
     top: 75px;
     height: 128px;
@@ -372,6 +381,10 @@
     top: 4.5rem;
   }
 
+  .search_results__container {
+    margin: 0 20px;
+  }
+
   .search_results__container h2 {
     text-align: center;
     font-size: 2rem;
@@ -380,6 +393,10 @@
   .top_result_container {
     width: 75%;
     margin-bottom: 15px;
+  }
+
+  .top_result_upper img {
+    object-fit: cover;
   }
 
   .top_results_row {

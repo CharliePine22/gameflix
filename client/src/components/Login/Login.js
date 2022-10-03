@@ -80,7 +80,7 @@ const Login = (props) => {
 
   const authenticateUser = async (email, password) => {
     try {
-      const response = await axios.post(`${baseURL}/app/signin`, {
+      const response = await axios.post(`${baseURL}/authentication/signin`, {
         email,
         password,
       });

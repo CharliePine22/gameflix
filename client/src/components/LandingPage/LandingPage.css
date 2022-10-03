@@ -49,6 +49,7 @@
   font-size: 1.25rem;
   transition: all 400ms cubic-bezier(0.075, 0.82, 0.165, 1),
     font-weight 50ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  pointer-events: none;
 }
 
 .email_focused {

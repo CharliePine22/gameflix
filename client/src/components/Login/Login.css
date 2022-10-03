@@ -102,6 +102,7 @@
   left: 13px;
   font-size: 0.8rem;
   color: grey;
+  pointer-events: none;
   transition: all 150ms ease-in;
 }
 

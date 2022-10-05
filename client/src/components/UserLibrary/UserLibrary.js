@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { FaPause, FaPlay, FaUpload, FaTrash } from 'react-icons/fa';
-import { SiApplemusic } from 'react-icons/si';
-import './UserLibrary.css';
-import '../Row/Row.css';
-import { MdKeyboardArrowRight } from 'react-icons/md';
-import Placeholder from '../Placeholder/Placeholder';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { FaPause, FaPlay, FaUpload, FaTrash } from "react-icons/fa";
+import { SiApplemusic } from "react-icons/si";
+import "./UserLibrary.css";
+import "../Row/Row.css";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import Placeholder from "../Placeholder/Placeholder";
 
 const UserLibrary = ({
   activeProfile,
@@ -21,16 +21,17 @@ const UserLibrary = ({
 }) => {
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [currentGame, setCurrentGame] = useState('');
+  const [currentGame, setCurrentGame] = useState("");
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [expandTitle, setExpandTitle] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
   // MongoDB Query Creds
-  const userEmail = JSON.parse(localStorage.getItem('user')).email;
-  const userProfile = JSON.parse(localStorage.getItem('profile')).name;
+  const userEmail = JSON.parse(localStorage.getItem("user")).email;
+  const userProfile = JSON.parse(localStorage.getItem("profile")).name;
   const fetchGameOST = async (game) => {
+    setViewingSoundtrack(false);
     if (!spotifyToken) {
-      console.log('Please connect to Spotify!');
+      console.log("Please connect to Spotify!");
       return;
     }
     try {
@@ -44,7 +45,7 @@ const UserLibrary = ({
       setCurrentPlaylist(request.data.tracks);
       setViewingSoundtrack(true);
     } catch (error) {
-      console.log('OST FETCH ISSUE');
+      console.log("OST FETCH ISSUE");
     }
   };
 
@@ -76,11 +77,11 @@ const UserLibrary = ({
         currentProfile: userProfile,
         gameTitle: game.name,
       });
-      localStorage.setItem('user', JSON.stringify(request.data.response));
+      localStorage.setItem("user", JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
         return obj.name === userProfile;
       });
-      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
+      localStorage.setItem("profile", JSON.stringify(currentProfile[0]));
       setSelectedProfile(currentProfile[0]);
     } catch (error) {
       console.log(error);
@@ -88,16 +89,15 @@ const UserLibrary = ({
   };
 
   const formatTrackTitle = (title) => {
-    return title.split('-')[0].split('(')[0];
+    return title.split("-")[0].split("(")[0];
   };
 
   collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
-
   if (!collection || collection.length == 0) {
     return (
-      <div className='user_library__row'>
+      <div className="user_library__row">
         {[...Array(5)].map((item, i) => (
-          <div key={i} className='row__poster_wrapper'></div>
+          <div key={i} className="row__poster_wrapper"></div>
         ))}
       </div>
     );
@@ -106,112 +106,118 @@ const UserLibrary = ({
   }
 
   return (
-    <div className='user_library__row'>
+    <div className="user_library__row">
       <div
-        className='user_library_title'
+        className="user_library_title"
         onMouseOver={() => setExpandTitle(true)}
         onMouseOut={() => setExpandTitle(false)}
       >
         <h2 style={{ color: activeProfile.color }}>YOUR COLLECTION</h2>
         <MdKeyboardArrowRight
-          className={`user_library_arrow ${expandTitle ? 'extended' : ''}`}
+          className={`user_library_arrow ${expandTitle ? "extended" : ""}`}
         />
-        <p className='user_library_view_all'>View All</p>
+        <p className="user_library_view_all">View All</p>
       </div>
-      <div className='row__posters'>
-        {collection?.map((game) => (
-          <div className='row__poster_wrapper' key={game.name}>
-            <div
-              className={`row__poster_container ${
-                viewingSoundtrack && currentGame == game.name ? 'flip' : ''
-              }`}
-            >
-              {' '}
-              {!loading && (
-                <>
-                  {/* FRONT OF POSTER */}
-                  <div className='row__poster_front'>
-                    <SiApplemusic
-                      onClick={(e) => viewGameSoundtrack(e, game)}
-                      className='row__poster_music_icon'
-                      style={{ color: activeProfile.color }}
-                    />
-                    <FaUpload
-                      className='user_library_upload_icon'
-                      onClick={() => setGameDetails(game.id)}
-                      style={{ color: activeProfile.color }}
-                    />
-                    <FaTrash
-                      className='user_library_trash_icon'
-                      onClick={() => removeGameHandler(game)}
-                      style={{ color: activeProfile.color }}
-                    />
-                    <img
-                      loading='lazy'
-                      className='row__poster'
-                      src={`//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg`}
-                      alt={game.name}
-                    />
-                  </div>
-                  {/* BACK OF POSTER */}
-                  <div
-                    className='row__poster_back'
-                    onClick={closeGameSoundtrack}
-                  >
-                    <h3>Spotify OST</h3>
-                    <img
-                      loading='lazy'
-                      className='row__poster_back_img'
-                      src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
-                      alt={game.name}
-                    />
-                    <div className='soundtrack_container'>
-                      <ul className='soundtracks'>
-                        {currentPlaylist?.map((track) => (
-                          <li
-                            key={track.id}
-                            onClick={(e) => e.stopPropagation()}
-                            className='soundtrack'
-                          >
-                            <p
-                              style={{
-                                color:
-                                  currentTrack !== null &&
-                                  currentTrack.name == track.name
-                                    ? 'green'
-                                    : 'white',
-                                fontWeight:
-                                  currentTrack !== null &&
-                                  currentTrack.name == track.name
-                                    ? '600'
-                                    : '400',
-                              }}
-                            >
-                              {formatTrackTitle(track.name)}
-                            </p>
-                            {(currentTrack !== null &&
-                              currentTrack.name !== track.name) ||
-                            !isPlaying ? (
-                              <FaPlay
-                                onClick={(e) => selectTrackHandler(e, track)}
-                              />
-                            ) : (
-                              <FaPause onClick={pausePlayback} />
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        ))}
+      <div className="row__posters">
+        {collection?.map(
+          (game) =>
+            game !== undefined && (
+              <div className="row__poster_wrapper" key={game.name}>
+                <div
+                  className={`row__poster_container ${
+                    viewingSoundtrack && currentGame == game.name ? "flip" : ""
+                  }`}
+                >
+                  {" "}
+                  {!loading && (
+                    <>
+                      {/* FRONT OF POSTER */}
+                      <div className="row__poster_front">
+                        <SiApplemusic
+                          onClick={(e) => viewGameSoundtrack(e, game)}
+                          className="row__poster_music_icon"
+                          style={{ color: activeProfile.color }}
+                        />
+                        <FaUpload
+                          className="user_library_upload_icon"
+                          onClick={() => setGameDetails(game.id)}
+                          style={{ color: activeProfile.color }}
+                        />
+                        <FaTrash
+                          className="user_library_trash_icon"
+                          onClick={() => removeGameHandler(game)}
+                          style={{ color: activeProfile.color }}
+                        />
+                        <img
+                          loading="lazy"
+                          className="row__poster"
+                          src={`//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg`}
+                          alt={game.name}
+                        />
+                      </div>
+                      {/* BACK OF POSTER */}
+                      <div
+                        className="row__poster_back"
+                        onClick={closeGameSoundtrack}
+                      >
+                        <h3>Spotify OST</h3>
+                        <img
+                          loading="lazy"
+                          className="row__poster_back_img"
+                          src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
+                          alt={game.name}
+                        />
+                        <div className="soundtrack_container">
+                          <ul className="soundtracks">
+                            {currentPlaylist?.map((track) => (
+                              <li
+                                key={track.id}
+                                onClick={(e) => e.stopPropagation()}
+                                className="soundtrack"
+                              >
+                                <p
+                                  style={{
+                                    color:
+                                      currentTrack !== null &&
+                                      currentTrack.name == track.name
+                                        ? "green"
+                                        : "white",
+                                    fontWeight:
+                                      currentTrack !== null &&
+                                      currentTrack.name == track.name
+                                        ? "600"
+                                        : "400",
+                                  }}
+                                >
+                                  {track.name}
+                                  {/* {formatTrackTitle(track.name)} */}
+                                </p>
+                                {(currentTrack !== null &&
+                                  currentTrack.name !== track.name) ||
+                                !isPlaying ? (
+                                  <FaPlay
+                                    onClick={(e) =>
+                                      selectTrackHandler(e, track)
+                                    }
+                                  />
+                                ) : (
+                                  <FaPause onClick={pausePlayback} />
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            )
+        )}
         {!collection ||
           (collection.length == 0 &&
             [...Array(4)].map((item, i) => (
-              <div key={i} className='main_row__placeholder__wrapper'>
+              <div key={i} className="main_row__placeholder__wrapper">
                 <Placeholder key={i} delay={i} />
               </div>
             )))}

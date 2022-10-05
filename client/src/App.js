@@ -1,28 +1,28 @@
-import { useState, useEffect } from 'react';
-import './App.css';
+import { useState, useEffect } from "react";
+import "./App.css";
 
 // Component Imports
-import Row from './components/Row/Row';
-import Banner from './components/Banner/Banner';
-import Nav from './components/Nav/Nav';
-import MainRow from './components/MainRow/MainRow';
-import Login from './components/Login/Login';
-import LandingPage from './components/LandingPage/LandingPage';
-import ProfilesPage from './components/Login/Profiles/ProfilesPage';
-import TrendingRow from './components/TrendingRow/TrendingRow';
-import SearchResultsIGDB from './components/SearchResults/SearchResultsIGDB';
+import Row from "./components/Row/Row";
+import Banner from "./components/Banner/Banner";
+import Nav from "./components/Nav/Nav";
+import MainRow from "./components/MainRow/MainRow";
+import Login from "./components/Login/Login";
+import LandingPage from "./components/LandingPage/LandingPage";
+import ProfilesPage from "./components/Login/Profiles/ProfilesPage";
+import TrendingRow from "./components/TrendingRow/TrendingRow";
+import SearchResultsIGDB from "./components/SearchResults/SearchResultsIGDB";
 
 // File Imports
-import requestsIGDB from './requestsIGDB';
-import loginAudio from './assets/sounds/success.wav';
-import axios from 'axios';
-import SpotifyPlayback from './components/SpotifyPlayback/SpotifyPlayback';
-import useSpotifyAuth from './hooks/useSpotifyAuth';
-import useTwitchAuth from './hooks/useTwitchAuth';
-import UserLibrary from './components/UserLibrary/UserLibrary';
-import GameDetails from './components/GameDetails/GameDetails';
+import requestsIGDB from "./requestsIGDB";
+import loginAudio from "./assets/sounds/success.wav";
+import axios from "axios";
+import SpotifyPlayback from "./components/SpotifyPlayback/SpotifyPlayback";
+import useSpotifyAuth from "./hooks/useSpotifyAuth";
+import useTwitchAuth from "./hooks/useTwitchAuth";
+import UserLibrary from "./components/UserLibrary/UserLibrary";
+import GameDetails from "./components/GameDetails/GameDetails";
 
-const code = new URLSearchParams(window.location.search).get('code');
+const code = new URLSearchParams(window.location.search).get("code");
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,13 +38,13 @@ function App() {
   const [userCollection, setUserCollection] = useState([]);
   // Search States
   const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const [searchedGame, setSearchedGame] = useState('');
+  const [searchedGame, setSearchedGame] = useState("");
   const [gameDetails, setGameDetails] = useState(null);
   const [toLanding, setToLanding] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
 
-  const userEmail = JSON.parse(localStorage.getItem('user'))?.email;
-  const userProfile = JSON.parse(localStorage.getItem('profile'))?.name;
+  const userEmail = JSON.parse(localStorage.getItem("user"))?.email;
+  const userProfile = JSON.parse(localStorage.getItem("profile"))?.name;
 
   let audio = new Audio(loginAudio);
 
@@ -60,14 +60,14 @@ function App() {
           email: loggedUser.email,
         },
       });
-      localStorage.setItem('user', JSON.stringify(request.data));
+      localStorage.setItem("user", JSON.stringify(request.data));
     };
     updateUser();
   }, []);
 
   // Check to see if user is logged in
   useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
     if (loggedInUser) {
       setLoggedUser(loggedInUser);
     }
@@ -77,7 +77,7 @@ function App() {
 
   // Check to see which profile is active
   useEffect(() => {
-    const userProfile = localStorage.getItem('profile');
+    const userProfile = localStorage.getItem("profile");
     if (userProfile) {
       setSelectedProfile(JSON.parse(userProfile));
     }
@@ -116,7 +116,7 @@ function App() {
   const fetchSubmittedGame = async (game) => {
     if (searchedGame !== null) setSearchedGame(null);
     setSearchSubmitted(true);
-    const request = await axios.post('/app/search_game', {
+    const request = await axios.post("/app/search_game", {
       token: twitchAccessToken,
       gameName: game,
     });
@@ -129,14 +129,14 @@ function App() {
       const request = await axios.post(`${baseURL}/app/update_collection`, {
         email: userEmail,
         currentProfile: userProfile,
-        game,
-        // game: { id: game.id, name: game.name },
+        gameName: game.name,
+        gameId: game.id,
       });
-      localStorage.setItem('user', JSON.stringify(request.data.response));
+      localStorage.setItem("user", JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
         return obj.name === userProfile;
       });
-      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
+      localStorage.setItem("profile", JSON.stringify(currentProfile[0]));
       setSelectedProfile(currentProfile[0]);
       return `Successfully added!`;
     } catch (error) {
@@ -152,13 +152,13 @@ function App() {
         currentProfile: userProfile,
         game,
       });
-      localStorage.setItem('user', JSON.stringify(request.data.response));
+      localStorage.setItem("user", JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
         return obj.name === userProfile;
       });
-      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
+      localStorage.setItem("profile", JSON.stringify(currentProfile[0]));
       setSelectedProfile(currentProfile[0]);
-      return 'Successfully removed!';
+      return "Successfully removed!";
     } catch (error) {
       console.log(error);
     }
@@ -166,18 +166,18 @@ function App() {
 
   // Login user if verification succeeds.
   const loginAuthentication = (user) => {
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
     setLoggedUser(user);
     audio.play();
   };
 
   // Logout the user
   const logoutHandler = () => {
-    window.location = '/';
-    localStorage.removeItem('user');
-    localStorage.removeItem('profile');
-    localStorage.removeItem('password');
-    localStorage.removeItem('spotify_token');
+    window.location = "/";
+    localStorage.removeItem("user");
+    localStorage.removeItem("profile");
+    localStorage.removeItem("password");
+    localStorage.removeItem("spotify_token");
     setSelectedProfile(null);
     setLoggedUser(null);
   };
@@ -185,7 +185,7 @@ function App() {
   const changeProfile = (user) => {
     setChangingUser(true);
     setSelectedProfile(user);
-    localStorage.setItem('profile', JSON.stringify(user));
+    localStorage.setItem("profile", JSON.stringify(user));
     setTimeout(() => {
       setChangingUser(false);
     }, 2000);
@@ -238,9 +238,9 @@ function App() {
   // Loading screen for profile change
   if (changingUser) {
     return (
-      <div className='loading_profile__container'>
-        <div className='loading_profile'>
-          <img src={selectedProfile.avatar} alt='current user avatar' />
+      <div className="loading_profile__container">
+        <div className="loading_profile">
+          <img src={selectedProfile.avatar} alt="current user avatar" />
         </div>
       </div>
     );
@@ -260,7 +260,7 @@ function App() {
   }
 
   return (
-    <div className='App'>
+    <div className="App">
       <Nav
         currentUser={loggedUser}
         activeProfile={selectedProfile}
@@ -281,6 +281,8 @@ function App() {
           <Banner
             setGameDetails={(id) => setGameDetails(id)}
             twitchToken={twitchAccessToken}
+            addGame={(game) => addGameHandler(game)}
+            activeProfile={selectedProfile}
           />
           <MainRow
             twitchToken={twitchAccessToken}
@@ -301,8 +303,8 @@ function App() {
           />
           {requestsIGDB.map(
             (request) =>
-              request.title !== 'COMING SOON' &&
-              request.title !== 'TRENDING' && (
+              request.title !== "COMING SOON" &&
+              request.title !== "TRENDING" && (
                 <Row
                   activeProfile={selectedProfile}
                   spotifyToken={spotifyAccessToken}
@@ -315,6 +317,7 @@ function App() {
                   currentTrack={currentTrack}
                   isPlaying={playAudio}
                   genreId={request.genreId}
+                  setGameDetails={(game) => setGameDetails(game)}
                   pausePlayback={(e) => setPlayAudio(false)}
                   resumePlayback={(e) => setPlayAudio(true)}
                 />

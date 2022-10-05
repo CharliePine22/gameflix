@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import rawgClient from '../../axios';
 import axios from 'axios';
 import { FaPause, FaPlay, FaUpload, FaTrash } from 'react-icons/fa';
 import { SiApplemusic } from 'react-icons/si';
 import './UserLibrary.css';
 import '../Row/Row.css';
 import { MdKeyboardArrowRight } from 'react-icons/md';
+import Placeholder from '../Placeholder/Placeholder';
 
 const UserLibrary = ({
   activeProfile,
@@ -94,8 +94,15 @@ const UserLibrary = ({
   collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
   if (!collection || collection.length == 0) {
-    console.log('Nothin');
-    return;
+    return (
+      <div className='user_library__row'>
+        {[...Array(5)].map((item, i) => (
+          <div key={i} className='row__poster_wrapper'></div>
+        ))}
+      </div>
+    );
+  } else if (collection && collection.length == 0) {
+    <div>No AVAILABLE GAMES</div>;
   }
 
   return (
@@ -112,7 +119,6 @@ const UserLibrary = ({
         <p className='user_library_view_all'>View All</p>
       </div>
       <div className='row__posters'>
-        {collection.length == 0 && <div>Please add a game!</div>}
         {collection?.map((game) => (
           <div className='row__poster_wrapper' key={game.name}>
             <div
@@ -202,7 +208,13 @@ const UserLibrary = ({
             </div>
           </div>
         ))}
-
+        {!collection ||
+          (collection.length == 0 &&
+            [...Array(4)].map((item, i) => (
+              <div key={i} className='main_row__placeholder__wrapper'>
+                <Placeholder key={i} delay={i} />
+              </div>
+            )))}
         {/* COLLECTION UPDATE */}
       </div>
     </div>

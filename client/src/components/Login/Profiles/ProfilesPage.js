@@ -46,6 +46,7 @@ const ProfilesPage = (props) => {
         viewAllProfiles={() => setCreatingProfile(null)}
         userEmail={props.currentUser.email}
         getProfile={(test) => console.log(test)}
+        twitchToken={props.twitchToken}
       />
     );
   }

@@ -332,9 +332,44 @@ router.post('/update_avatar_link', async function (req, res) {
   }
 });
 
-router.post('/update_user_account', async (req, res) => {
+//! UPDATE ACCOUNT EMAIL
+router.post('/update_user_email', async (req, res) => {
   const currentEmail = req.body.originalEmail;
   const newEmail = req.body.newEmail;
+  const query = { email: currentEmail };
+
+  try {
+    const request = await userModel.findOneAndUpdate(
+      query,
+      { email: newEmail },
+      { upsert: false, new: true }
+    );
+
+    if (request !== null) {
+      res.send({
+        status: 200,
+        message: 'Email successfully changed!',
+        user: request,
+      });
+      return;
+    } else {
+      res.send({
+        status: 400,
+        message: 'Unable to change email, please try again!',
+        user: '',
+      });
+      return;
+    }
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+//! DELETE USER ACCOUNT
+router.delete('/delete_account', async (req, res) => {
+  const id = req.body.id;
+  const request = await userModel.findByIdAndRemove(id);
+  res.send(request);
 });
 
 //! UPDATE A PROFILE IN USER ACCOUNT
@@ -343,6 +378,7 @@ router.post('/update_user_profile', async (req, res) => {
   const originalName = req.body.originalName;
   const newName = req.body.newName;
   const gameTitle = req.body.favoriteGame;
+  const gameId = req.body.gameId;
   const gameConsole = req.body.favoriteConsole;
   const color = req.body.newColor;
   const genre = req.body.favoriteGenre;
@@ -366,8 +402,8 @@ router.post('/update_user_profile', async (req, res) => {
           'profiles.$.favorite_console': gameConsole,
           'profiles.$.favorite_genre': genre,
         },
-        $push: {
-          'profiles.$.collection': gameTitle,
+        $addToSet: {
+          'profiles.$.collection': { name: gameTitle, id: gameId },
         },
       }, // list fields you like to change
       { new: true, setDefaultsOnInsert: false, upsert: true }
@@ -383,12 +419,6 @@ router.post('/update_user_profile', async (req, res) => {
         });
       }
     }
-    res.send({
-      code: 200,
-      status: 'OK',
-      message: 'Profile updated!',
-      response: request,
-    });
   } catch (error) {
     console.log(error);
     res.status(400, {

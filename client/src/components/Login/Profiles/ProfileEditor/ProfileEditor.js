@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './ProfileEditor.css';
+import SearchList from './SearchList';
 import axios from 'axios';
 import { MdEdit } from 'react-icons/md';
 import { SketchPicker } from 'react-color';
@@ -10,11 +11,15 @@ const ProfileEditor = (props) => {
   const currentProfile = props.currentProfile;
   const isAdmin = currentProfile.isAdmin;
   const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
   // Current Profile Name
   const [nameValue, setNameValue] = useState(currentProfile.name);
   // Title Input State and Ref
   const titleRef = useRef('');
   const [titleValue, setTitleValue] = useState(currentProfile.favorite_game);
+  const [titleId, setTitleId] = useState(0);
+  const [titleList, setTitleList] = useState([]);
+  let searchValue = '';
   // Console Input State and Ref
   const consoleRef = useRef('');
   const [consoleValue, setConsoleValue] = useState(
@@ -37,6 +42,8 @@ const ProfileEditor = (props) => {
   const [currentGenre, setCurrentGenre] = useState(
     currentProfile.favorite_genre
   );
+  console.log(searchValue);
+
   const genreList = [
     'Action',
     'Adventure',
@@ -54,6 +61,69 @@ const ProfileEditor = (props) => {
     'Sports',
     'Strategy',
   ];
+
+  useEffect(() => {
+    if (
+      titleValue == '' ||
+      titleValue == currentProfile.favorite_game ||
+      searchLoading
+    ) {
+      setTitleList([]);
+      return;
+    }
+    const delaySearch = setTimeout(() => {
+      setSearchLoading(true);
+      const fetchSearchedGame = async () => {
+        const request = await axios.post(`${baseURL}/app/search_game`, {
+          gameName: titleValue,
+          token: props.twitchToken,
+        });
+        setTitleList(request.data);
+        setSearchLoading(false);
+      };
+      fetchSearchedGame();
+    }, 500);
+
+    return () => clearTimeout(delaySearch);
+  }, [titleValue]);
+
+  // Listen for escape key press to close out color palette
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) {
+        setChangingColor(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
+
+  // Listen for clicks outside of genre dropdown box
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (genreRef.current && !genreRef.current.contains(event.target)) {
+        setChangingGenre(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [genreRef]);
+
+  const selectGameHandler = (game) => {
+    setTitleValue(game.name);
+    setTitleId(game.id);
+    setTitleList([]);
+  };
+
+  const titleBlurHandler = () => {
+    if (titleList.length > 0) {
+    }
+  };
 
   const colorChangeHandler = (color) => setColor(color.hex);
   const genreChangeHandler = (genre) => {
@@ -89,33 +159,6 @@ const ProfileEditor = (props) => {
     }
     setLoading(false);
   };
-
-  // Listen for escape key press to close out color palette
-  useEffect(() => {
-    const handleEsc = (event) => {
-      if (event.keyCode === 27) {
-        setChangingColor(false);
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
-
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, []);
-
-  // Listen for clicks outside of genre dropdown box
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (genreRef.current && !genreRef.current.contains(event.target)) {
-        setChangingGenre(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [genreRef]);
 
   // Avatar profile image handling
   const updateAvatar = async (e, method) => {
@@ -182,7 +225,9 @@ const ProfileEditor = (props) => {
       newColor: color,
       favoriteGenre: currentGenre.trim(),
       favoriteGame: titleValue.trim(),
+      gameId: titleId,
       favoriteConsole: consoleValue.trim(),
+      twitchToken: props.twitchToken,
     };
 
     try {
@@ -342,6 +387,33 @@ const ProfileEditor = (props) => {
                   </div>
                 </>
               )}
+              {/* TITLE */}
+              {!changingAvatar && (
+                <>
+                  <p className='form_personal_title'>Favorite Title</p>
+                  <input
+                    ref={titleRef}
+                    value={titleValue}
+                    className='title_input'
+                    onBlur={titleBlurHandler}
+                    onChange={(e) => {
+                      titleRef.current = titleValue;
+                      setTitleValue(e.target.value);
+                    }}
+                  />
+                  {searchLoading && (
+                    <div className='profile__search_loading'>
+                      <div className='profile__search_loading_spinner' />
+                    </div>
+                  )}
+                  {titleList.length > 0 && titleValue !== '' && (
+                    <SearchList
+                      list={titleList}
+                      selectGame={selectGameHandler}
+                    />
+                  )}
+                </>
+              )}
               {/* CONSOLE */}
               {!changingAvatar && (
                 <>
@@ -357,21 +429,6 @@ const ProfileEditor = (props) => {
                     placeholder={
                       changingAvatar ? 'https://www.example.com' : ''
                     }
-                  />
-                </>
-              )}
-              {/* TITLE */}
-              {!changingAvatar && (
-                <>
-                  <p className='form_personal_title'>Favorite Title</p>
-                  <input
-                    ref={titleRef}
-                    value={titleValue}
-                    className='title_input'
-                    onChange={(e) => {
-                      titleRef.current = titleValue;
-                      setTitleValue(e.target.value);
-                    }}
                   />
                 </>
               )}

@@ -49,11 +49,11 @@
 }
 
 .nav_edit_profile {
-  height: 1240px;
+  height: 150vh;
   width: 105vw;
   position: absolute;
-  top: -290px;
-  left: -10px;
+  top: -340px;
+  left: -60px;
   background: rgb(5, 5, 5);
   overflow: hidden;
   z-index: 100;
@@ -139,6 +139,14 @@
   100% {
     right: 298px;
     cursor: default;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .nav_edit_profile {
+    width: 105vw;
+    top: -340px;
+    left: -15px;
   }
 }
 

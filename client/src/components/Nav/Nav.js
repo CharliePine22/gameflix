@@ -60,6 +60,7 @@ function Nav(props) {
   const cancelEdit = () => {
     document.body.style.overflowY = 'scroll';
     setEditingProfile(false);
+    setEditingAccount(false);
   };
 
   const editProfileHandler = () => {
@@ -102,6 +103,7 @@ function Nav(props) {
             viewAllProfiles={cancelEdit}
             saveEdit={saveEdit}
             getProfile={(test) => props.selectProfile(test)}
+            twitchToken={props.twitchToken}
           />
         </div>
       )}
@@ -109,7 +111,8 @@ function Nav(props) {
         <div className='nav_edit_profile'>
           {' '}
           <AccountEditor
-            closeAccountSettings={() => setEditingAccount(false)}
+            closeAccountSettings={cancelEdit}
+            setLoggedUser={(user) => props.setLoggedUser(user)}
           />{' '}
         </div>
       )}

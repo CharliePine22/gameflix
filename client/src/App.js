@@ -50,7 +50,62 @@ function App() {
 
   const spotifyAccessToken = useSpotifyAuth(code);
   const twitchAccessToken = useTwitchAuth(code);
-  // console.log(twitchAccessToken);
+
+  // Refetch user data if any changes are made
+  useEffect(() => {
+    const updateUser = async () => {
+      if (!loggedUser) return null;
+      const request = await axios.get(`${baseURL}/app/get_user`, {
+        params: {
+          email: loggedUser.email,
+        },
+      });
+      localStorage.setItem('user', JSON.stringify(request.data));
+    };
+    updateUser();
+  }, []);
+
+  // Check to see if user is logged in
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    if (loggedInUser) {
+      setLoggedUser(loggedInUser);
+    }
+    setEditingUser(false);
+    setUpdatingUser(false);
+  }, [editingUser, updatingUser]);
+
+  // Check to see which profile is active
+  useEffect(() => {
+    const userProfile = localStorage.getItem('profile');
+    if (userProfile) {
+      setSelectedProfile(JSON.parse(userProfile));
+    }
+    setEditingUser(false);
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    if (selectedProfile == null || !twitchAccessToken) return;
+    const fetchUserCollection = async () => {
+      if (!selectedProfile.collection) {
+        setUserCollection([]);
+        return;
+      }
+      const gameNames = await Promise.all(
+        selectedProfile.collection.map((game) => {
+          return axios.post(`${baseURL}/app/search_game_details`, {
+            token: twitchAccessToken,
+            gameId: game.id,
+          });
+        })
+      );
+      setUserCollection(gameNames.map(({ data }) => data[0]));
+      setIsLoading(false);
+    };
+    fetchUserCollection();
+    return () => setUserCollection([]);
+  }, [selectedProfile, twitchAccessToken]);
 
   const closeSearchResults = () => {
     setSearchSubmitted(false);
@@ -118,13 +173,13 @@ function App() {
 
   // Logout the user
   const logoutHandler = () => {
+    window.location = '/';
     localStorage.removeItem('user');
     localStorage.removeItem('profile');
     localStorage.removeItem('password');
     localStorage.removeItem('spotify_token');
     setSelectedProfile(null);
     setLoggedUser(null);
-    window.location = '/';
   };
 
   const changeProfile = (user) => {
@@ -139,62 +194,6 @@ function App() {
   const playTrack = (track) => {
     setCurrentTrack(track);
   };
-
-  // Refetch user data if any changes are made
-  useEffect(() => {
-    const updateUser = async () => {
-      if (!loggedUser) return null;
-      const request = await axios.get(`${baseURL}/app/get_user`, {
-        params: {
-          email: loggedUser.email,
-        },
-      });
-      localStorage.setItem('user', JSON.stringify(request.data));
-    };
-    updateUser();
-  }, []);
-
-  // Check to see if user is logged in
-  useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem('user'));
-    if (loggedInUser) {
-      setLoggedUser(loggedInUser);
-    }
-    setEditingUser(false);
-    setUpdatingUser(false);
-  }, [editingUser, updatingUser]);
-
-  // Check to see which profile is active
-  useEffect(() => {
-    const userProfile = localStorage.getItem('profile');
-    if (userProfile) {
-      setSelectedProfile(JSON.parse(userProfile));
-    }
-    setEditingUser(false);
-  }, []);
-
-  useEffect(() => {
-    setIsLoading(true);
-    if (selectedProfile == null || !twitchAccessToken) return;
-    const fetchUserCollection = async () => {
-      if (!selectedProfile.collection) {
-        setUserCollection([]);
-        return;
-      }
-      const gameNames = await Promise.all(
-        selectedProfile.collection.map((game) => {
-          return axios.post(`${baseURL}/app/search_game_details`, {
-            token: twitchAccessToken,
-            gameId: game,
-          });
-        })
-      );
-      setUserCollection(gameNames.map(({ data }) => data[0]));
-      setIsLoading(false);
-    };
-    fetchUserCollection();
-    return () => setUserCollection([]);
-  }, [selectedProfile, twitchAccessToken]);
 
   // Display login page if app detects sign out or sign in
   if (!loggedUser && !toLanding) {
@@ -231,6 +230,7 @@ function App() {
         updateUser={updatingUser}
         currentUser={loggedUser}
         selectProfile={(user) => setSelectedProfile(user)}
+        twitchToken={twitchAccessToken}
       />
     );
   }
@@ -271,8 +271,10 @@ function App() {
         toProfilePage={() => setSelectedProfile(null)}
         selectProfile={(profile) => setSelectedProfile(profile)}
         spotifyToken={spotifyAccessToken}
+        twitchToken={twitchAccessToken}
         searchedGame={searchedGame}
         saveEdit={() => setEditingUser(true)}
+        setLoggedUser={(user) => setLoggedUser(user)}
       />
       {!searchSubmitted ? (
         <>

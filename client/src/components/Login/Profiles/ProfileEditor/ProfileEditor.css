@@ -3,7 +3,7 @@
   margin: 0;
   position: relative;
   width: 100%;
-  padding: 40px 30px 25px;
+  padding: 25px 30px 25px;
 }
 
 .account_email_container,
@@ -36,6 +36,18 @@
   font-size: 0.75rem;
   cursor: pointer;
   border-radius: 2px;
+}
+
+.account_email_error {
+  color: red;
+  position: relative;
+  top: -11px;
+}
+
+.account_email_success {
+  color: green;
+  position: relative;
+  top: -11px;
 }
 
 .account_email_save_btn {
@@ -228,6 +240,48 @@
   cursor: pointer;
 }
 
+.delete_account_modal {
+  position: fixed;
+  top: 170px;
+  display: flex;
+  flex-direction: column;
+  height: 40%;
+  width: 385px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.95);
+  color: white;
+  z-index: 2;
+  border: 2px solid white;
+  align-items: center;
+  animation: displayModal 500ms forwards;
+  box-shadow: 0 3px 7px rgb(255 255 255 / 30%);
+}
+
+.delete_account_modal h4 {
+  font-size: 2.2rem;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.delete_account_modal_actions {
+  display: flex;
+  width: 50%;
+  justify-content: space-around;
+}
+
+.delete_account_modal_content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.delete_account_modal_content p {
+  font-size: 1.25rem;
+}
+
 .justify-start {
   margin-left: auto !important;
   margin-right: 0 !important;
@@ -253,7 +307,6 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  /* width: 90px; */
   transition: all 700ms cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
@@ -267,10 +320,8 @@
 }
 
 .form_personal {
-  /* border-bottom: 1px solid grey; */
   margin: 10px 0px 0px 20px;
   position: relative;
-  /* height: 65%; */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -383,6 +434,16 @@
   flex-direction: column-reverse;
 }
 
+.item_thumbnail {
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+}
+
+.item_title {
+  font-size: 0.9rem;
+}
+
 .link_submit {
   position: absolute;
   right: 14px;
@@ -398,6 +459,12 @@
   background: white;
   border: 1px solid black;
   color: black;
+}
+
+.modal_action_option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .modal_content {
@@ -530,7 +597,6 @@
 }
 
 .profile_edit__form {
-  /* height: 100px; */
   border-bottom: 1px solid grey;
   margin: 20px 0px 0px 20px;
   position: relative;
@@ -599,8 +665,27 @@
   width: 64px;
   height: 64px;
   border: 8px solid;
-  border-color: #3d5af1 transparent #3d5af1 transparent;
+  border-color: #9147ff transparent #9147ff transparent;
   border-radius: 50%;
+  animation: spin-anim 1.2s linear infinite;
+}
+
+.profile__search_loading {
+  position: absolute;
+  top: 67px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.profile__search_loading_spinner {
+  width: 10px;
+  height: 10px;
+  border: 2px solid;
+  border-color: #9147ff transparent #9147ff transparent;
+  border-radius: 52%;
   animation: spin-anim 1.2s linear infinite;
 }
 
@@ -614,6 +699,46 @@
 .save_btn:hover {
   background-color: #9147ff;
   color: white;
+}
+
+.search_list_container {
+  position: absolute;
+  width: 120%;
+  height: auto;
+  /* height: 170px; */
+  z-index: 1;
+  top: 85px;
+}
+
+.search_list {
+  padding: 3px 2px;
+  list-style: none;
+  background: black;
+  border-radius: 4px;
+  border: 1px solid white;
+  z-index: 5;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.search_list_item {
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  align-items: center;
+  cursor: pointer;
+  margin: 0;
+  padding: 2px 0;
+}
+
+.search_list_item:hover {
+  background-color: white;
+  color: black;
 }
 
 .title_input {
@@ -636,6 +761,49 @@
   color: rgba(0, 0, 0, 0);
   width: 90px;
   /* width: 29%; */
+}
+
+.video-game-button {
+  font-size: 1.3rem;
+  text-shadow: 1px 1px pink, -1px -1px maroon;
+  line-height: 1.5em;
+  text-align: center;
+  display: inline-block;
+  width: 1.5em;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -o-border-radius: 1em;
+  border-radius: 1em;
+  background-color: red;
+  -webkit-box-shadow: 0 0.25em maroon;
+  -moz-box-shadow: 0 0.25em maroon;
+  -o-box-shadow: 0 0.25em maroon;
+  box-shadow: 0 0.25em maroon;
+  color: red;
+  margin: 5px;
+  background-color: red;
+  background-image: -o-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+  background-image: -moz-linear-gradient(
+    left top,
+    pink 3%,
+    red 22%,
+    maroon 99%
+  );
+  background-image: -webkit-linear-gradient(
+    left top,
+    pink 3%,
+    red 22%,
+    maroon 99%
+  );
+  background-image: linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+  cursor: pointer;
+  padding: 5px;
+}
+
+.video-game-button:active {
+  box-shadow: none;
+  position: relative;
+  top: 0.2em;
 }
 
 /*! !!!!!!!!!!!!!!!!!!!ANIMATIONS!!!!!!!!!!!!!!!!!!!! */

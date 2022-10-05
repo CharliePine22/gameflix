@@ -88,10 +88,10 @@ const Login = (props) => {
       props.onLogin(response.data.user);
     } catch (e) {
       setAuthError(e.response.data.message);
-      emailRef.current = email;
     } finally {
       setLoading(false);
     }
+    emailRef.current = email;
   };
 
   // Submit user information to match authentication

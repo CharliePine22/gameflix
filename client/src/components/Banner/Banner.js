@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import './Banner.css';
-import { BiRefresh } from 'react-icons/bi';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import "./Banner.css";
+import { BiRefresh } from "react-icons/bi";
+import axios from "axios";
 
-function Banner({ setGameDetails, twitchToken }) {
+function Banner({ setGameDetails, twitchToken, addGame, activeProfile }) {
   const [gameList, setGameList] = useState([]);
   const [game, setGame] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const baseURL = process.env.REACT_APP_BASE_URL;
-
+  const exists = activeProfile.collection.some(
+    (title) => title.id === game?.id
+  );
+  console.log(exists);
   // Fetch and return list of games from endpoint
   useEffect(() => {
     if (!twitchToken) return;
@@ -19,7 +22,7 @@ function Banner({ setGameDetails, twitchToken }) {
       try {
         const request = await axios.post(`${baseURL}/app/search_game`, {
           token: twitchToken,
-          gameName: '',
+          gameName: "",
         });
         const filteredList = await request.data.sort(function (a, b) {
           return b.rating - a.rating;
@@ -43,15 +46,15 @@ function Banner({ setGameDetails, twitchToken }) {
 
   // If the game description is longer that 150 characters, replace the reaminder with the ellipsis '...'
   const truncate = (str, n) => {
-    return str?.length > n ? str.substr(0, n - 1) + '...' : str;
+    return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   };
 
   // Wait for game deatils to finish loading or the game name shows up undefined
   // Undefined is a game name apart of the dataset and will display jibberish
   if (isLoading || !game) {
     return (
-      <div className='banner__loading'>
-        <div className='banner__spinner' />
+      <div className="banner__loading">
+        <div className="banner__spinner" />
       </div>
     );
   }
@@ -63,39 +66,43 @@ function Banner({ setGameDetails, twitchToken }) {
 
   return (
     <header
-      className='banner'
+      className="banner"
       key={game?.name}
       style={{
-        backgroundSize: 'cover',
+        backgroundSize: "cover",
         backgroundImage: `url(//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg)`,
-        backgroundPosition: 'center center',
+        backgroundPosition: "center center",
       }}
     >
       <>
-        <div className='banner__contents'>
-          <h1 className='banner__title'>{game?.name}</h1>
+        <div className="banner__contents">
+          <h1 className="banner__title">{game?.name}</h1>
 
-          <div className='banner__buttons'>
+          <div className="banner__buttons">
             <button
-              className='banner__button'
-              onClick={() => setGameDetails(game)}
+              className="banner__button"
+              onClick={() => setGameDetails(game.id)}
             >
               See Details
             </button>
-            <button className='banner__button'>Add to My List</button>
+            {!exists && (
+              <button className="banner__button" onClick={() => addGame(game)}>
+                Add to My List
+              </button>
+            )}
           </div>
 
-          <h1 className='banner__description'>
+          <h1 className="banner__description">
             {truncate(game?.summary, 150)}
           </h1>
         </div>
-        <div className='banner--fadeBottom' />
+        <div className="banner--fadeBottom" />
       </>
 
       {
         <BiRefresh
           size={35}
-          className='banner__refresh_icon'
+          className="banner__refresh_icon"
           onClick={() => getNewGame()}
         />
       }

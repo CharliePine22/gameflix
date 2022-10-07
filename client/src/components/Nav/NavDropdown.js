@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import axios from 'axios';
 import './NavDropdown.css';
 // React Icons
 import { FaSortUp, FaSpotify, FaUserEdit } from 'react-icons/fa';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { MdEdit } from 'react-icons/md';
 
+import steamAuthBtn from '../../assets/images/steam-auth-btn.png';
+
 const SPOTIFY_AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_BASE_URL}&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state`;
+const STEAM_AUTH_URL = 'https://steamcommunity.com/openid';
 
 const NavDropdown = (props) => {
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const allProfiles = props.allProfiles;
 
   // Listens for escape key press to close nav dropdown
@@ -27,6 +32,10 @@ const NavDropdown = (props) => {
   // Change current user
   const changeUserHandler = (user) => {
     props.changeProfile(user);
+  };
+
+  const steamAuthHandler = async () => {
+    const request = await axios.get(`${baseURL}/steam/steam_auth`);
   };
 
   allProfiles.sort((a, b) => (a.name - b.name ? 1 : -1));
@@ -87,6 +96,22 @@ const NavDropdown = (props) => {
             />
           </span>
           <a href={SPOTIFY_AUTH_URL}>Spotify Authentication</a>
+        </div>
+        <div
+          className='dropdown__settings_item'
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '5px, 0, 0',
+          }}
+        >
+          <a href={`http://localhost:3001/api/auth/steam`}>
+            <img
+              className='steam_btn'
+              // onClick={steamAuthHandler}
+              src={steamAuthBtn}
+            />
+          </a>
         </div>
       </div>
       <div className='dropdown__settings_links'>

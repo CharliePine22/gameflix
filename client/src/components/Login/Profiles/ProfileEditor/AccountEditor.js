@@ -10,6 +10,7 @@ const AccountEditor = ({ closeAccountSettings, setLoggedUser }) => {
   // EMAIL STATES
   const [emailValue, setEmailValue] = useState(user.email);
   const [newEmailValue, setNewEmailValue] = useState('');
+  let repeatValue = '';
   const [changingEmail, setChangingEmail] = useState(false);
   // PASSWORD STATES
   const [passwordValue, setPasswordValue] = useState(user.password);
@@ -33,7 +34,7 @@ const AccountEditor = ({ closeAccountSettings, setLoggedUser }) => {
         originalEmail: user.email,
         newEmail: email,
       });
-      console.log(request);
+
       if (request.data.status < 400) {
         localStorage.setItem('user', JSON.stringify(request.data.user));
         setUpdateStatus({ type: 'success', message: request.data.message });
@@ -50,7 +51,6 @@ const AccountEditor = ({ closeAccountSettings, setLoggedUser }) => {
     }
   };
 
-  console.log(emailValue);
   const emailChangeHandler = () => {
     if (!changingEmail) {
       setChangingEmail(true);
@@ -83,11 +83,16 @@ const AccountEditor = ({ closeAccountSettings, setLoggedUser }) => {
       setChangingPassword(true);
       setChangingEmail(false);
     } else {
-      setChangingPassword(false);
-      setNewPasswordValue('');
+      if (newPasswordValue !== '') {
+        repeatValue = newEmailValue;
+      } else {
+        setChangingPassword(false);
+        setNewPasswordValue('');
+      }
     }
   };
 
+  console.log(repeatValue);
   const determineEmailValidity = async (e) => {
     e.preventDefault();
     try {
@@ -106,7 +111,7 @@ const AccountEditor = ({ closeAccountSettings, setLoggedUser }) => {
       <div className='profile_edit__header'>
         <h3>GAMEFLIX</h3>
       </div>
-      <div className='profile_edit__form_wrapper' style={{ height: '390px' }}>
+      <div className='profile_edit__form_wrapper' style={{ height: '350px' }}>
         <h3>Account Settings</h3>
         <div className='form_container'>
           <form className='account_edit__form'>
@@ -191,7 +196,10 @@ const AccountEditor = ({ closeAccountSettings, setLoggedUser }) => {
                   />
                   <button
                     type='button'
-                    onClick={passwordChangeHandler}
+                    onClick={() => {
+                      setNewPasswordValue('');
+                      setChangingPassword(false);
+                    }}
                     className='account_password_save_btn'
                   >
                     Cancel

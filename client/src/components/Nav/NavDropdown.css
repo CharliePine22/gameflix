@@ -112,3 +112,8 @@
 .dropdown__settings_link:hover {
   text-decoration: underline;
 }
+
+.steam_btn {
+  height: 30px;
+  width: 85%;
+}

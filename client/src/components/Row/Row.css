@@ -58,7 +58,7 @@
   min-height: 350px;
   max-height: 350px;
   transform-style: preserve-3d;
-  box-shadow: -3px 3px 10px #000;
+  box-shadow: -3px 3px 5px #000;
 }
 
 .row__poster_container.flip {

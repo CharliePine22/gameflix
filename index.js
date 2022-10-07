@@ -3,33 +3,85 @@ const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const passport = require('passport');
+const session = require('express-session');
+const passportSteam = require('passport-steam');
+const SteamStrategy = passportSteam.Strategy;
+
+// Route imports
 const routesUrls = require('./routes/routes');
 const authenticationRoutes = require('./routes/authentication_routes');
 const spotifyRoutes = require('./routes/spotify_routes');
 const igdbRoutes = require('./routes/igdb_routes');
+const steamRoutes = require('./routes/steam_routes');
 const cors = require('cors');
-
 dotenv.config();
 
 mongoose.connect(process.env.MONGODB_URI, () => {
   console.log('Database Connected!');
 });
 
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+let baseURL = process.env.PORT
+  ? 'https://gameflexx.herokuapp.com'
+  : 'http://localhost:';
+let port = process.env.PORT ? process.env.PORT : 3000;
 
+// Required to get data from user for sessions
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+// Coors
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://gameflixx.netlify.app/'],
+  origin: ['http://localhost:3000'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
+
+// Initiate Strategy
+passport.use(
+  new SteamStrategy(
+    {
+      returnURL: 'http://localhost:3001/api/auth/steam/return',
+      // returnURL: baseURL + port + '/api/auth/steam/return',
+      realm: 'http://localhost:3001/',
+      apiKey: process.env.STEAM_API_KEY,
+    },
+    function (identifier, profile, done) {
+      process.nextTick(function () {
+        profile.identifier = identifier;
+        return done(null, profile);
+      });
+    }
+  )
+);
+app.use(
+  session({
+    secret: 'Yunaismybestfriendforever511022',
+    saveUninitialized: true,
+    resave: false,
+    cookie: {
+      maxAge: 3600000,
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
 app.use('/app', routesUrls);
 app.use('/authentication', authenticationRoutes);
 app.use('/spotify', spotifyRoutes);
 app.use('/igdb', igdbRoutes);
+// app.use('/steam', steamRoutes);
 app.use('/uploads', express.static('uploads'));
 
 if (process.env.PORT) {
@@ -42,4 +94,22 @@ if (process.env.PORT) {
 
 app.listen(process.env.PORT || 3001, () =>
   console.log('Server is up and running!')
+);
+
+app.get('/', (req, res) => {
+  res.send(req.user);
+});
+
+app.get('/api/auth/steam', passport.authenticate('steam'), function (req, res) {
+  res.redirect('/');
+});
+
+app.get(
+  '/api/auth/steam/return',
+  passport.authenticate('steam', { failureRedirect: '/' }),
+  function (req, res) {
+    console.log(req.user.id);
+    // res.send(req.user);
+    res.redirect('http://localhost:3000/');
+  }
 );

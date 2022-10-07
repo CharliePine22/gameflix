@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useSearchParams } from 'react';
 import './App.css';
 
 // Component Imports
@@ -24,6 +24,8 @@ import UserLibrary from './components/UserLibrary/UserLibrary';
 import GameDetails from './components/GameDetails/GameDetails';
 
 const code = new URLSearchParams(window.location.search).get('code');
+const windowUrl = window.location.search;
+const id = windowUrl.split('?')[1];
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +33,6 @@ function App() {
   const [currentTrack, setCurrentTrack] = useState(null);
   const [playAudio, setPlayAudio] = useState(false);
   // User states
-  const [steamId, setSteamId] = useState('');
   const [changingUser, setChangingUser] = useState(false);
   const [updatingUser, setUpdatingUser] = useState(false);
   const [editingUser, setEditingUser] = useState(false);
@@ -52,7 +53,7 @@ function App() {
 
   const spotifyAccessToken = useSpotifyAuth(code);
   const twitchAccessToken = useTwitchAuth(code);
-  // const steamId = useSteamAuth(code);
+  const steamCollection = useSteamAuth(id);
 
   // Refetch user data if any changes are made
   useEffect(() => {

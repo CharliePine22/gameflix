@@ -81,7 +81,7 @@ app.use('/app', routesUrls);
 app.use('/authentication', authenticationRoutes);
 app.use('/spotify', spotifyRoutes);
 app.use('/igdb', igdbRoutes);
-// app.use('/steam', steamRoutes);
+app.use('/steam', steamRoutes);
 app.use('/uploads', express.static('uploads'));
 
 if (process.env.PORT) {
@@ -97,7 +97,8 @@ app.listen(process.env.PORT || 3001, () =>
 );
 
 app.get('/', (req, res) => {
-  res.send(req.user);
+  res.redirect(`http://localhost:3000?${req.user.id}`);
+  // res.send(req.user.id);
 });
 
 app.get('/api/auth/steam', passport.authenticate('steam'), function (req, res) {
@@ -108,8 +109,7 @@ app.get(
   '/api/auth/steam/return',
   passport.authenticate('steam', { failureRedirect: '/' }),
   function (req, res) {
-    console.log(req.user.id);
     // res.send(req.user);
-    res.redirect('http://localhost:3000/');
+    res.redirect('/');
   }
 );

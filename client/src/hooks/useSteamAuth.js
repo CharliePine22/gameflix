@@ -1,23 +1,29 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function useSteamAuth(code) {
-  const [spotifyId, setSpotifyId] = useState('');
+export default function useTwitchAuth(id) {
+  const [steamCollection, setSteamCollection] = useState([]);
   const baseURL = process.env.REACT_APP_BASE_URL;
+  console.log(id);
 
-  // useEffect(() => {
-  //   if (!code) return;
-  //   const fetchSteamId = async () => {
-  //     try {
-  //       const request = await axios.get(`${baseURL}/steam/get_id`);
-  //       setSpotifyId(request.data);
-  //     } catch (error) {
-  //       console.log('GET TOKEN ERROR');
-  //       window.location = '/';
-  //     }
-  //   };
-  //   fetchSteamId();
-  // }, [code]);
+  useEffect(() => {
+    if (!id) return;
+    const fetchUserLibrary = async () => {
+      try {
+        const request = await axios.get(`${baseURL}/steam/get_owned_games`, {
+          params: {
+            id,
+            baseURL,
+          },
+        });
+        console.log(request);
+        // window.history.pushState({}, null, '/');
+      } catch (error) {
+        console.log('GET STEAM COLLECTION ERROR');
+      }
+    };
+    fetchUserLibrary();
+  }, [id]);
 
-  return spotifyId;
+  return steamCollection;
 }

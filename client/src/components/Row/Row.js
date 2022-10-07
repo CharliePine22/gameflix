@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import GamePreview from "./GamePreview/GamePreview";
-import "./Row.css";
-import axios from "axios";
-import Placeholder from "../Placeholder/Placeholder";
-import { SiApplemusic } from "react-icons/si";
-import { FaPlay, FaPause } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import GamePreview from './GamePreview/GamePreview';
+import './Row.css';
+import axios from 'axios';
+import Placeholder from '../Placeholder/Placeholder';
+import { SiApplemusic } from 'react-icons/si';
+import { FaPlay, FaPause } from 'react-icons/fa';
 
 function Row({
   title,
@@ -20,7 +20,7 @@ function Row({
   setGameDetails,
 }) {
   const [games, setGames] = useState([]);
-  const [currentGame, setCurrentGame] = useState("");
+  const [currentGame, setCurrentGame] = useState('');
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [displayDetails, setDisplayDetails] = useState(false);
@@ -51,7 +51,7 @@ function Row({
 
   const fetchGameOST = async (game) => {
     if (!spotifyToken) {
-      console.log("Please connect to Spotify!");
+      console.log('Please connect to Spotify!');
       return;
     }
     try {
@@ -62,16 +62,16 @@ function Row({
           baseURL,
         },
       });
-      if (request.data.status !== "OK") {
-        window.location = "/";
-        localStorage.removeItem("spotify_token");
+      if (request.data.status !== 'OK') {
+        window.location = '/';
+        localStorage.removeItem('spotify_token');
       } else {
         setCurrentPlaylist(request.data.tracks);
         setViewingSoundtrack(true);
       }
     } catch (error) {
       console.log(error);
-      console.log("OST FETCH ISSUE");
+      console.log('OST FETCH ISSUE');
     }
   };
 
@@ -108,81 +108,81 @@ function Row({
   };
 
   const formatTrackTitle = (title) => {
-    return title.split("-")[0].split("(")[0];
+    return title.split('-')[0].split('(')[0];
   };
 
-  if (twitchToken == null || games == null) {
+  if (twitchToken == null || games == null || !games) {
     return;
   }
 
   return (
-    <div className="row" key={title}>
-      <h2 className="row__title">{title}</h2>
+    <div className='row' key={title}>
+      <h2 className='row__title'>{title}</h2>
 
-      <div className="row__posters">
-        {games.map(
+      <div className='row__posters'>
+        {games?.map(
           (game) =>
             game.cover !== undefined && (
               <React.Fragment key={game.id}>
-                <div className="row__poster_wrapper">
+                <div className='row__poster_wrapper'>
                   <div
                     className={`row__poster_container ${
                       viewingSoundtrack && currentGame == game.name
-                        ? "flip"
-                        : ""
+                        ? 'flip'
+                        : ''
                     }`}
                     onClick={() => fetchGameDetails(game)}
                   >
-                    {" "}
+                    {' '}
                     {!loading && (
                       <>
                         {/* FRONT OF POSTER */}
-                        <div className="row__poster_front">
+                        <div className='row__poster_front'>
                           <SiApplemusic
                             onClick={(e) => viewGameSoundtrack(e, game)}
-                            className="row__poster_music_icon"
+                            className='row__poster_music_icon'
                             style={{ color: activeProfile.color }}
                           />
                           {/* <span className='row__poster_name'>{game?.name}</span> */}
                           <img
-                            loading="lazy"
-                            className="row__poster"
+                            loading='lazy'
+                            className='row__poster'
                             src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                             alt={game.name}
                           />
                         </div>
                         {/* BACK OF POSTER */}
                         <div
-                          className="row__poster_back"
+                          className='row__poster_back'
                           onClick={closeGameSoundtrack}
                         >
                           <h3>{game?.name} Spotify OST</h3>
                           <img
-                            loading="lazy"
-                            className="row__poster_back_img"
+                            loading='lazy'
+                            className='row__poster_back_img'
                             src={game.background_image}
                             alt={game.name}
                           />
-                          <div className="soundtrack_container">
-                            <ul className="soundtracks">
+                          <div className='soundtrack_container'>
+                            <ul className='soundtracks'>
                               {currentPlaylist?.map((track) => (
                                 <li
                                   key={track.id}
                                   onClick={(e) => e.stopPropagation()}
-                                  className="soundtrack"
+                                  className='soundtrack'
                                 >
                                   <p
                                     style={{
                                       color:
                                         currentTrack !== null &&
                                         currentTrack.name == track.name
-                                          ? "green"
-                                          : "white",
+                                          ? 'green'
+                                          : 'white',
                                       fontWeight:
                                         currentTrack !== null &&
                                         currentTrack.name == track.name
-                                          ? "600"
-                                          : "400",
+                                          ? '600'
+                                          : '400',
                                     }}
                                   >
                                     {formatTrackTitle(track.name)}
@@ -218,10 +218,10 @@ function Row({
             )
         )}
         {loading && (
-          <div className="row__loading_container">
+          <div className='row__loading_container'>
             {[...Array(10)].map((item, i) => (
-              <div key={i} className="row__placeholder__wrapper">
-                <div className="row__poster_container">
+              <div key={i} className='row__placeholder__wrapper'>
+                <div className='row__poster_container'>
                   <Placeholder key={i} delay={i} />
                 </div>
               </div>

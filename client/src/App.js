@@ -22,6 +22,7 @@ import useTwitchAuth from './hooks/useTwitchAuth';
 import useSteamAuth from './hooks/useSteamAuth';
 import UserLibrary from './components/UserLibrary/UserLibrary';
 import GameDetails from './components/GameDetails/GameDetails';
+import UserCollection from './components/UserCollectionPage/UserCollection';
 
 const code = new URLSearchParams(window.location.search).get('code');
 const windowUrl = window.location.search;
@@ -39,6 +40,7 @@ function App() {
   const [loggedUser, setLoggedUser] = useState(null);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [userCollection, setUserCollection] = useState([]);
+  const [viewingCollection, setViewingCollection] = useState(false);
   // Search States
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState('');
@@ -69,15 +71,6 @@ function App() {
     updateUser();
   }, []);
 
-  // useEffect(() => {
-  //   if (!loggedUser) return;
-  //   const getSteam = async () => {
-  //     const request = await axios.get(`${baseURL}/steam/get_id`);
-  //     setSteamId(request.data);
-  //   };
-  //   getSteam();
-  // }, [loggedUser]);
-
   // Check to see if user is logged in
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -91,33 +84,29 @@ function App() {
   // Check to see which profile is active
   useEffect(() => {
     const userProfile = localStorage.getItem('profile');
+    sessionStorage.removeItem('steamID');
     if (userProfile) {
       setSelectedProfile(JSON.parse(userProfile));
     }
-    setEditingUser(false);
-  }, []);
+  }, [userProfile]);
 
+  // Fetch User Collection
   useEffect(() => {
     setIsLoading(true);
     if (selectedProfile == null || !twitchAccessToken) return;
     const fetchUserCollection = async () => {
-      if (!selectedProfile.collection) {
-        setUserCollection([]);
-        return;
-      }
-      const gameNames = await Promise.all(
-        selectedProfile.collection.map((game) => {
-          return axios.post(`${baseURL}/app/search_game_details`, {
-            token: twitchAccessToken,
-            gameId: game.id,
-          });
-        })
-      );
-      setUserCollection(gameNames.map(({ data }) => data[0]));
+      // const gameNames = await Promise.all(
+      //   selectedProfile.collection.map((game) => {
+      //     return axios.post(`${baseURL}/app/search_game_details`, {
+      //       token: twitchAccessToken,
+      //       gameId: game.id,
+      //     });
+      //   })
+      // );
+      setUserCollection(selectedProfile.collection);
       setIsLoading(false);
     };
     fetchUserCollection();
-    return () => setUserCollection([]);
   }, [selectedProfile, twitchAccessToken]);
 
   const closeSearchResults = () => {
@@ -142,8 +131,12 @@ function App() {
       const request = await axios.post(`${baseURL}/app/update_collection`, {
         email: userEmail,
         currentProfile: userProfile,
-        gameName: game.name,
-        gameId: game.id,
+        game: {
+          name: game.name,
+          id: game.id,
+          imageURL: `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`,
+          playtime: 0,
+        },
       });
       localStorage.setItem('user', JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
@@ -191,6 +184,7 @@ function App() {
     localStorage.removeItem('profile');
     localStorage.removeItem('password');
     localStorage.removeItem('spotify_token');
+    sessionStorage.removeItem('steamID');
     setSelectedProfile(null);
     setLoggedUser(null);
   };
@@ -272,6 +266,14 @@ function App() {
     );
   }
 
+  if (viewingCollection)
+    return (
+      <UserCollection
+        collection={userCollection}
+        activeProfile={selectedProfile}
+      />
+    );
+
   return (
     <div className='App'>
       <Nav
@@ -313,6 +315,8 @@ function App() {
             collection={userCollection}
             setSelectedProfile={(profile) => setSelectedProfile(profile)}
             setGameDetails={(game) => setGameDetails(game)}
+            steamCollection={steamCollection}
+            viewCollection={() => setViewingCollection(true)}
           />
           {requestsIGDB.map(
             (request) =>

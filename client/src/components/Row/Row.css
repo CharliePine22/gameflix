@@ -47,16 +47,16 @@
   width: 100%;
   cursor: pointer;
   position: relative;
-  margin-right: 20px;
+  margin-right: 15px;
   /* FLIP CARD TRANSITION */
   transition: all 250ms;
   z-index: -1;
-  max-width: 14rem;
-  min-width: 14rem;
+  max-width: 13rem;
+  min-width: 13rem;
   object-fit: cover;
   height: 100%;
-  min-height: 350px;
-  max-height: 350px;
+  min-height: 320px;
+  max-height: 320px;
   transform-style: preserve-3d;
   box-shadow: -3px 3px 5px #000;
 }
@@ -137,7 +137,7 @@
 }
 
 .row__poster_container:hover .row__poster_front {
-  box-shadow: -5px 7px 10px #000;
+  box-shadow: -5px 5px 5px #000;
   transform: translate3d(1px, -3px, 0px);
 }
 
@@ -173,6 +173,7 @@
   position: relative;
   transform-style: preserve-3d;
   transition: all 250ms ease-in-out;
+  z-index: 3;
 }
 
 .row__posters::-webkit-scrollbar {

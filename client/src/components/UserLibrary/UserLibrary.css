@@ -51,6 +51,16 @@
   opacity: 1;
 }
 
+.user_library__filter {
+  display: flex;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  align-items: center;
+  margin-left: 5px;
+}
+
 .user_library_modal {
   position: fixed;
   display: flex;
@@ -83,15 +93,103 @@
   margin-left: 20px;
   color: #fff;
   z-index: 0;
-  padding-bottom: 30px;
+  /* padding-bottom: 30px; */
   height: auto;
+  position: relative;
+}
+
+.user_library__row_posters {
+  display: flex;
+  padding: 10px 20px 30px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  position: relative;
+  max-height: 320px;
+}
+
+.user_library__row_posters::-webkit-scrollbar {
+  display: none;
+}
+
+.user_library__stack_collection_container {
+  position: relative;
+  opacity: 1;
+  height: 375px;
+  width: 250px;
+}
+
+.user_library__stack_collection_container:hover
+  .user_library__stack_collection {
+  opacity: 0.4;
+}
+
+.user_library__stack_collection {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.user_library__stack_collection_container h2 {
+  position: absolute;
+  z-index: 4;
+  top: 80px;
+  text-align: center;
+  font-size: 2.3rem;
+  left: 3px;
+  cursor: pointer;
+  pointer-events: none;
+  font-weight: 900;
+}
+
+.user_library__stack_collection:hover .row__poster_front {
+  transform: translate(0, 0);
+  box-shadow: none;
+}
+
+.user_library__stack_collection:hover .stack_card:nth-last-child(2) {
+  /* transform: translateX(5px); */
+  transform: translate(2px, 5px);
+}
+.user_library__stack_collection:hover .stack_card:last-of-type {
+  /* transform: translateX(10px); */
+  transform: translate(4px, 10px);
+}
+
+.stack_card {
+  z-index: 3;
+  transform-origin: center center;
+  border-radius: 6px;
+}
+
+.stack_card img {
+  box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.5);
+}
+
+.stack_card .row__poster_front:hover {
+  pointer-events: none;
+}
+
+.stack_card:nth-last-child(2) {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  z-index: 2;
+  transform-origin: center center;
+}
+
+.stack_card:last-of-type {
+  position: absolute;
+  z-index: 1;
+  top: 4px;
+  left: 8px;
+  transform-origin: center center;
+  /* box-shadow: 0 1px 4px 1px rgba(255, 255, 255, 0.5); */
 }
 
 .user_library_title {
   display: flex;
   align-items: center;
-  width: 355px;
-  cursor: pointer;
 }
 
 .user_library_title h2 {
@@ -138,13 +236,18 @@
   opacity: 1;
 }
 
-.user_library_view_all {
-  color: lightblue;
-  cursor: pointer;
-  font-size: 0.8rem;
-  opacity: 0;
-  transform: translateX(-12px);
-  transition: opacity 300ms ease-in;
+.steam_active_container {
+  position: relative;
+  left: 10px;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  color: lightgrey;
+  background: linear-gradient(120deg, #00adee, #000000);
+}
+
+.steam_active_icon {
+  font-size: 25px;
 }
 
 @keyframes displayModal {
@@ -175,5 +278,6 @@
 @media screen and (max-width: 500px) {
   .user_library__row {
     height: 280px;
+    padding-bottom: 30px;
   }
 }

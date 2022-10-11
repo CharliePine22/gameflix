@@ -115,6 +115,11 @@ function Row({
     return;
   }
 
+  if (games.message == 'Too Many Requests') {
+    console.log(games.message);
+    window.location = '/';
+  }
+
   return (
     <div className='row' key={title}>
       <h2 className='row__title'>{title}</h2>

@@ -1,0 +1,61 @@
+.list_item {
+  color: white;
+  padding: 10px 10px 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.list_item:hover {
+  background-color: #004057;
+  font-weight: 900;
+}
+
+.list_item img {
+  height: 40px;
+  width: 40px;
+  margin-right: 15px;
+}
+
+.user_collection__container {
+  display: flex;
+  flex-direction: column;
+  height: 810px;
+  background: linear-gradient(120deg, #00adee, #000000);
+  border-radius: 6px;
+}
+
+.user_collection_left {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  max-width: 340px;
+  border-right: 1px solid black;
+  padding: 60px 20px;
+  overflow: hidden;
+}
+
+.user_collection_list {
+  height: 100%;
+  width: 100%;
+  background: black;
+  padding: 0;
+  list-style: none;
+  overflow-y: scroll;
+}
+
+.user_collection_list::-webkit-scrollbar {
+  display: none;
+}
+
+.user_collection__wrapper {
+  position: relative;
+  padding: 0 40px;
+}
+
+.user_collection__wrapper h2 {
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  margin: 20px 0;
+}

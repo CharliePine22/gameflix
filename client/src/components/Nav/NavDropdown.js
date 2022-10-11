@@ -102,7 +102,8 @@ const NavDropdown = (props) => {
           style={{
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '5px, 0, 0',
+            paddingBottom: '0',
+            paddingLeft: '0',
           }}
         >
           <a href={`http://localhost:3001/api/auth/steam`}>

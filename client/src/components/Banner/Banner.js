@@ -9,9 +9,10 @@ function Banner({ setGameDetails, twitchToken, addGame, activeProfile }) {
   const [refresh, setRefresh] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const baseURL = process.env.REACT_APP_BASE_URL;
-  const exists = activeProfile.collection.some(
-    (title) => title.id === game?.id
-  );
+  const exists =
+    activeProfile.collection.length > 0 &&
+    activeProfile.collection.some((title) => title.id === game?.id);
+
   // Fetch and return list of games from endpoint
   useEffect(() => {
     if (!twitchToken) return;

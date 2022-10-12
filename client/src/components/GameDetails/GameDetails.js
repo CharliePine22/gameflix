@@ -41,7 +41,6 @@ const GameDetails = ({
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [activeScreenshot, setActiveScreenshot] = useState('');
   const [error, setError] = useState('');
-  const [gameActionStatus, setGameActionStatus] = useState('');
   const currentCollection = activeProfile.collection;
   const exists =
     currentCollection &&

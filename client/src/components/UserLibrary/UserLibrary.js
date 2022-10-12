@@ -21,6 +21,7 @@ const UserLibrary = ({
   viewCollection,
   setCompleteCollection,
   removeGame,
+  setNotification,
 }) => {
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [hoveringCollection, setHoveringCollection] = useState(false);
@@ -105,7 +106,10 @@ const UserLibrary = ({
   const fetchGameOST = async (game) => {
     setViewingSoundtrack(false);
     if (!spotifyToken) {
-      console.log('Please connect to Spotify!');
+      setNotification(
+        'ERROR',
+        'Please connect to Spotify through the nav dropdown!'
+      );
       return;
     }
     try {
@@ -116,8 +120,13 @@ const UserLibrary = ({
           baseURL,
         },
       });
-      setCurrentPlaylist(request.data.tracks);
-      setViewingSoundtrack(true);
+      if (request.data.status !== 'OK') {
+        window.location = '/';
+        localStorage.removeItem('spotify_token');
+      } else {
+        setCurrentPlaylist(request.data.tracks);
+        setViewingSoundtrack(true);
+      }
     } catch (error) {
       console.log('OST FETCH ISSUE');
     }

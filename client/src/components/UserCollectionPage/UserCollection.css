@@ -62,6 +62,22 @@
   margin-right: 10px;
 }
 
+.user_collection__actions {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  position: relative;
+  top: 11px;
+}
+
+.user_collection__actions button {
+  cursor: pointer;
+  padding: 9px 32px;
+  border-radius: 5px;
+}
+
 .user_collection__arrow {
   display: none;
 }
@@ -95,7 +111,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  /* justify-content: space-between; */
   align-content: flex-start;
   overflow-y: scroll;
 }
@@ -156,7 +173,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 7px;
+  margin-bottom: 8px;
   position: relative;
 }
 
@@ -172,7 +189,8 @@
   border: 1px solid darkgray;
   background: grey;
   border-radius: 4px;
-  padding: 6px 0px 6px 28px;
+  font-size: 1rem;
+  padding: 8px 0px 6px 30px;
   color: white;
 }
 
@@ -239,7 +257,7 @@
 
   .user_collection__left {
     min-width: 210px;
-    padding: 0 14px 45px 14px;
+    padding: 0 12px 34px 12px;
   }
 
   .user_collection__poster_container {

@@ -19,6 +19,7 @@ function Row({
   activeProfile,
   setGameDetails,
   addGame,
+  setNotification,
   removeGame,
 }) {
   const [games, setGames] = useState([]);
@@ -53,7 +54,10 @@ function Row({
 
   const fetchGameOST = async (game) => {
     if (!spotifyToken) {
-      console.log('Please connect to Spotify!');
+      setNotification(
+        'ERROR',
+        'Please connect to Spotify through the nav dropdown!'
+      );
       return;
     }
     try {
@@ -80,8 +84,6 @@ function Row({
   // Grab trailer video from selected game
   const fetchGameDetails = (game) => {
     setGameDetails(game);
-    // setCurrentlyOpen(game.name);
-    // setCurrentGame(game);
   };
 
   const closeGameDetails = () => {

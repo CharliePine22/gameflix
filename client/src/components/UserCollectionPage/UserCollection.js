@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './UserCollection.css';
 import { FaSistrix, FaAngleUp, FaHome } from 'react-icons/fa';
 
@@ -15,11 +15,31 @@ const UserCollection = ({
   setSelectedProfile,
 }) => {
   const [searchValue, setSearchValue] = useState('');
+  const [searchList, setSearchList] = useState([]);
   const [viewingList, setViewingList] = useState(false);
+
+  useEffect(() => {
+    if (searchValue == '') return;
+    const delaySearch = setTimeout(() => {
+      const res = collection.filter((item) => item.name.includes(searchValue));
+      setSearchList(res);
+    }, 500);
+
+    return () => clearTimeout(delaySearch);
+  }, [searchValue]);
+
+  collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
   return (
     <div className='user_collection__wrapper'>
-      <div className='user_collection__container'>
+      <div
+        className='user_collection__container'
+        style={{
+          background: `linear-gradient(120deg, ${
+            activeProfile.color || '#00adee'
+          }, #000000)`,
+        }}
+      >
         {/* LEFT SIDE */}
         <div
           className='user_collection__left'
@@ -64,13 +84,21 @@ const UserCollection = ({
               display: viewingList && 'flex',
             }}
           >
-            {collection.map((game) => (
-              <li className='title_list__item' key={game.name}>
-                {' '}
-                <img src={game.imageURL} />
-                <p>{game.name}</p>
-              </li>
-            ))}
+            {searchValue == ''
+              ? collection.map((game) => (
+                  <li className='title_list__item' key={game.name}>
+                    {' '}
+                    <img src={game.imageURL} />
+                    <p>{game.name}</p>
+                  </li>
+                ))
+              : searchList.map((game) => (
+                  <li className='title_list__item' key={game.name}>
+                    {' '}
+                    <img src={game.imageURL} />
+                    <p>{game.name}</p>
+                  </li>
+                ))}
           </ul>
           <div className='user_collection__actions'>
             <button onClick={backToHome}>Back</button>
@@ -100,10 +128,6 @@ const UserCollection = ({
           </ul>
         </div>
       </div>
-
-      {/* <div className='user_collection__actions'>
-        <button onClick={backToHome}>Back</button>
-      </div> */}
     </div>
   );
 };

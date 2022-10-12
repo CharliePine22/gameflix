@@ -37,6 +37,7 @@ function App() {
   // Spotify States
   const [currentTrack, setCurrentTrack] = useState(null);
   const [playAudio, setPlayAudio] = useState(false);
+  const [currentPlaylist, setCurrentPlaylist] = useState([]);
   // User states
   const [changingUser, setChangingUser] = useState(false);
   const [updatingUser, setUpdatingUser] = useState(false);
@@ -106,7 +107,6 @@ function App() {
       setIsLoading(false);
     };
     fetchUserCollection();
-    console.log(userCollection);
   }, [selectedProfile, twitchAccessToken]);
 
   const closeSearchResults = () => {
@@ -125,8 +125,43 @@ function App() {
     setSearchedGame(request.data);
   };
 
+  // const fetchGameOST = async (game) => {
+  //   setViewingSoundtrack(false);
+  //   if (!spotifyToken) {
+  //     console.log('Please connect to Spotify!');
+  //     return;
+  //   }
+  //   try {
+  //     const request = await axios.get(`${baseURL}/app/spotify_album`, {
+  //       params: {
+  //         game,
+  //         token: spotifyToken,
+  //         baseURL,
+  //       },
+  //     });
+  //     if (request.data.status !== 'OK') {
+  //       window.location = '/';
+  //       localStorage.removeItem('spotify_token');
+  //     } else {
+  //       setCurrentPlaylist(request.data.tracks);
+  //       setViewingSoundtrack(true);
+  //     }
+  //   } catch (error) {
+  //     console.log('OST FETCH ISSUE');
+  //   }
+  // };
+
   // Add game name and id to DB
   const addGameHandler = async (game) => {
+    const exists = userCollection.some((item) => item.id === game.id);
+    if (exists) {
+      setNotification({
+        message: `${game.name} is already in your collection!`,
+        status: 'ERROR',
+      });
+      setDisplayNotification(true);
+      return;
+    }
     try {
       const request = await axios.post(`${baseURL}/app/update_collection`, {
         email: userEmail,
@@ -357,6 +392,9 @@ function App() {
             steamCollection={steamCollection}
             removeGame={removeGameHandler}
             viewCollection={() => setViewingCollection(true)}
+            setNotification={(status, message) =>
+              setNotification({ status, message })
+            }
             setCompleteCollection={(collection) =>
               setUserCollection(collection)
             }
@@ -383,6 +421,9 @@ function App() {
                   resumePlayback={(e) => setPlayAudio(true)}
                   addGame={(game) => addGameHandler(game)}
                   removeGame={(game) => removeGameHandler(game)}
+                  setNotification={(status, message) =>
+                    setNotification({ status, message })
+                  }
                 />
               )
           )}

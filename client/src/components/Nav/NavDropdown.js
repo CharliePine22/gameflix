@@ -97,7 +97,7 @@ const NavDropdown = (props) => {
           </span>
           <a href={SPOTIFY_AUTH_URL}>Spotify Authentication</a>
         </div>
-        <div
+        {/* <div
           className='dropdown__settings_item'
           style={{
             alignItems: 'center',
@@ -113,7 +113,7 @@ const NavDropdown = (props) => {
               src={steamAuthBtn}
             />
           </a>
-        </div>
+        </div> */}
       </div>
       <div className='dropdown__settings_links'>
         <a className='dropdown__settings_link' onClick={props.logoutHandler}>

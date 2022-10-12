@@ -87,6 +87,7 @@ const UserLibrary = ({
   // If steam is linked, compare steam games vs gameflix games to find unique titles
   useEffect(() => {
     if (steamCollection.length == 0 || !steamCollection) return;
+    console.log(steamCollection);
     setCompleteCollection([
       ...compareCollections(steamCollection, collection),
       ...compareCollections(collection, steamCollection),

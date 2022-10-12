@@ -79,7 +79,7 @@ function Row({
 
   // Grab trailer video from selected game
   const fetchGameDetails = (game) => {
-    setGameDetails(game.id);
+    setGameDetails(game);
     // setCurrentlyOpen(game.name);
     // setCurrentGame(game);
   };

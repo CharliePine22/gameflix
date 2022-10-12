@@ -20,6 +20,7 @@ const UserLibrary = ({
   steamCollection,
   viewCollection,
   setCompleteCollection,
+  removeGame,
 }) => {
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [hoveringCollection, setHoveringCollection] = useState(false);
@@ -70,12 +71,14 @@ const UserLibrary = ({
   };
 
   const compareCollections = (arr1, arr2) => {
-    if (arr1 == [] || arr2 == []) return;
-    return arr1.filter((object1) => {
-      return !arr2.some((object2) => {
-        return object1.name.toLowerCase() === object2.name.toLowerCase();
+    if (!arr1 || arr1.length == 0) return arr2;
+    else if (!arr2 || arr2.length == 0) return arr1;
+    else
+      return arr1.filter((object1) => {
+        return !arr2.some((object2) => {
+          return object1.name.toLowerCase() === object2.name.toLowerCase();
+        });
       });
-    });
   };
 
   // Add Steam games into MongoDB Collection
@@ -87,7 +90,6 @@ const UserLibrary = ({
   // If steam is linked, compare steam games vs gameflix games to find unique titles
   useEffect(() => {
     if (steamCollection.length == 0 || !steamCollection) return;
-    console.log(steamCollection);
     setCompleteCollection([
       ...compareCollections(steamCollection, collection),
       ...compareCollections(collection, steamCollection),
@@ -139,25 +141,6 @@ const UserLibrary = ({
       resumePlayback();
     } else {
       playTrack(track);
-    }
-  };
-
-  const removeGameHandler = async (game) => {
-    try {
-      const request = await axios.put(`${baseURL}/app/remove_game`, {
-        email: userEmail,
-        currentProfile: userProfile,
-        game: game.id,
-      });
-      console.log(request);
-      localStorage.setItem('user', JSON.stringify(request.data.response));
-      const currentProfile = request.data.response.profiles.filter((obj) => {
-        return obj.name === userProfile;
-      });
-      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
-      setSelectedProfile(currentProfile[0]);
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -218,12 +201,12 @@ const UserLibrary = ({
                             />
                             <FaUpload
                               className='user_library_upload_icon'
-                              onClick={() => setGameDetails(game.id)}
+                              onClick={() => setGameDetails(game)}
                               style={{ color: activeProfile.color }}
                             />
                             <FaTrash
                               className='user_library_trash_icon'
-                              onClick={() => removeGameHandler(game)}
+                              onClick={() => removeGame(game)}
                               style={{ color: activeProfile.color }}
                             />
                           </>

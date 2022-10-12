@@ -209,7 +209,7 @@ const MainRow = ({ twitchToken, setGameDetails }) => {
               className={`main_row__poster_container ${
                 currentlyViewing && 'dimmed'
               }`}
-              onClick={() => setGameDetails(game)}
+              onClick={() => setGameDetails(game.game)}
               key={game.id}
             >
               <h4 className='main__poster_released'>

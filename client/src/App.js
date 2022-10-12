@@ -23,6 +23,7 @@ import useSteamAuth from './hooks/useSteamAuth';
 import UserLibrary from './components/UserLibrary/UserLibrary';
 import GameDetails from './components/GameDetails/GameDetails';
 import UserCollection from './components/UserCollectionPage/UserCollection';
+import Notification from './components/Notification/Notification';
 
 const code = new URLSearchParams(window.location.search).get('code');
 const windowUrl = window.location.search;
@@ -31,6 +32,9 @@ const id = windowUrl.split('?')[1];
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [displayNotification, setDisplayNotification] = useState(false);
+  const [notification, setNotification] = useState({ status: '', message: '' });
+  // Spotify States
   const [currentTrack, setCurrentTrack] = useState(null);
   const [playAudio, setPlayAudio] = useState(false);
   // User states
@@ -46,8 +50,9 @@ function App() {
   const [searchedGame, setSearchedGame] = useState('');
   const [gameDetails, setGameDetails] = useState(null);
   const [toLanding, setToLanding] = useState(false);
-  const baseURL = process.env.REACT_APP_BASE_URL;
 
+  // Local Variables
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const userEmail = JSON.parse(localStorage.getItem('user'))?.email;
   const userProfile = JSON.parse(localStorage.getItem('profile'))?.name;
 
@@ -95,9 +100,10 @@ function App() {
     setIsLoading(true);
     if (selectedProfile == null || !twitchAccessToken) return;
     const fetchUserCollection = async () => {
-      console.log('CHANGING');
-      setUserCollection(selectedProfile.collection);
-      setIsLoading(selectedProfile);
+      setUserCollection(
+        selectedProfile.collection.filter((game) => game.id !== null)
+      );
+      setIsLoading(false);
     };
     fetchUserCollection();
     console.log(userCollection);
@@ -136,19 +142,29 @@ function App() {
       });
       localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
       setSelectedProfile(currentProfile[0]);
-      return `Successfully added!`;
+      setNotification({
+        message: `${game.name} sucessfully added to your collection!`,
+        status: 'SUCCESS',
+      });
+      setDisplayNotification(true);
+      return;
     } catch (error) {
-      console.log(error);
+      setNotification({
+        message: `Unable to add ${game.name} to your collection!`,
+        status: 'ERROR',
+      });
+      setDisplayNotification(true);
       return error;
     }
   };
 
   const removeGameHandler = async (game) => {
+    console.log(game);
     try {
       const request = await axios.put(`${baseURL}/app/remove_game`, {
         email: userEmail,
         currentProfile: userProfile,
-        game,
+        game: game.id,
       });
       localStorage.setItem('user', JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
@@ -156,9 +172,19 @@ function App() {
       });
       localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
       setSelectedProfile(currentProfile[0]);
-      return 'Successfully removed!';
+      setNotification({
+        message: `${game.name} sucessfully removed from your collection!`,
+        status: 'SUCCESS',
+      });
+      setDisplayNotification(true);
+      return;
     } catch (error) {
-      console.log(error);
+      setNotification({
+        message: `Unable to remove ${game.name} from your collection!`,
+        status: 'ERROR',
+      });
+      setDisplayNotification(true);
+      return;
     }
   };
 
@@ -247,14 +273,27 @@ function App() {
 
   if (gameDetails !== null) {
     return (
-      <GameDetails
-        game={gameDetails}
-        closeDetails={() => setGameDetails(null)}
-        twitchToken={twitchAccessToken}
-        addGame={(game) => addGameHandler(game)}
-        removeGame={(game) => removeGameHandler(game)}
-        activeProfile={selectedProfile}
-      />
+      <>
+        <GameDetails
+          setNotification={(status, message) =>
+            setNotification({ status, message })
+          }
+          game={gameDetails}
+          closeDetails={() => setGameDetails(null)}
+          twitchToken={twitchAccessToken}
+          addGame={(game) => addGameHandler(game)}
+          removeGame={(game) => removeGameHandler(game)}
+          activeProfile={selectedProfile}
+        />
+        <Notification
+          notification={notification}
+          displayNotification={displayNotification}
+          hideNotification={() => {
+            setDisplayNotification(false);
+            setNotification({ message: '', status: '' });
+          }}
+        />
+      </>
     );
   }
 
@@ -301,7 +340,7 @@ function App() {
           />
           <MainRow
             twitchToken={twitchAccessToken}
-            setGameDetails={(game) => setGameDetails(game.game.id)}
+            setGameDetails={(game) => setGameDetails(game)}
           />
           <TrendingRow />
           <UserLibrary
@@ -316,11 +355,13 @@ function App() {
             setSelectedProfile={(profile) => setSelectedProfile(profile)}
             setGameDetails={(game) => setGameDetails(game)}
             steamCollection={steamCollection}
+            removeGame={removeGameHandler}
             viewCollection={() => setViewingCollection(true)}
             setCompleteCollection={(collection) =>
               setUserCollection(collection)
             }
           />
+
           {requestsIGDB.map(
             (request) =>
               request.title !== 'COMING SOON' &&
@@ -361,6 +402,14 @@ function App() {
           setGameDetails={(id) => setGameDetails(id)}
         />
       )}
+      <Notification
+        notification={notification}
+        displayNotification={displayNotification}
+        hideNotification={() => {
+          setNotification({ message: '', status: '' });
+        }}
+      />
+      {/* <Notification message={notificationMessage} status={notificationStatus} /> */}
     </div>
   );
 }

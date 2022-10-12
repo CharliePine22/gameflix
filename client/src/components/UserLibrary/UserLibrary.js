@@ -95,8 +95,8 @@ const UserLibrary = ({
 
   // Set collection based on if steam is linked or not
   useEffect(() => {
-    if (collection.length > 0) return;
-    if (steamCollection && collection) setCompleteCollection(collection);
+    if (!collection || collection.length > 0) return;
+    if (steamCollection || collection) setCompleteCollection(collection);
   }, [steamCollection, collection]);
 
   const fetchGameOST = async (game) => {

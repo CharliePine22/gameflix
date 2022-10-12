@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.012f334b.css",
-    "main.js": "/static/js/main.0556c2fd.js",
+    "main.js": "/static/js/main.37407559.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -52,7 +52,7 @@
     "static/media/gba-logo.png": "/static/media/gba-logo.d897fee67c639798373a.png",
     "index.html": "/index.html",
     "main.012f334b.css.map": "/static/css/main.012f334b.css.map",
-    "main.0556c2fd.js.map": "/static/js/main.0556c2fd.js.map",
+    "main.37407559.js.map": "/static/js/main.37407559.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -70,6 +70,6 @@
   },
   "entrypoints": [
     "static/css/main.012f334b.css",
-    "static/js/main.0556c2fd.js"
+    "static/js/main.37407559.js"
   ]
 }

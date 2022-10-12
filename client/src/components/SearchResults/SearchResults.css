@@ -102,7 +102,8 @@
 }
 
 .search_bottom_fade {
-  height: 5rem;
+  pointer-events: none;
+  height: 7rem;
   position: fixed;
   bottom: 0;
   width: 100%;

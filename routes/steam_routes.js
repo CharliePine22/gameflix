@@ -8,7 +8,7 @@ dotenv.config();
 const steam = new SteamAPI(process.env.STEAM_API_KEY);
 
 router.get('/get_owned_games', async (req, res) => {
-  if (req.user.id == undefined) {
+  if (req.user == undefined) {
     res.send('Error, please authenticate with steam!');
     return;
   }

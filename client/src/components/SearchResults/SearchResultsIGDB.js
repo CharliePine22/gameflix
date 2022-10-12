@@ -31,8 +31,6 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
     );
   }
 
-  console.log(searchedGame);
-
   if (searchedGame.length == 0) {
     return (
       <div className='search_results__error'>

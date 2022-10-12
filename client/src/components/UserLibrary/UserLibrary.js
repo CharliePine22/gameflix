@@ -19,10 +19,10 @@ const UserLibrary = ({
   setGameDetails,
   steamCollection,
   viewCollection,
+  setCompleteCollection,
 }) => {
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [hoveringCollection, setHoveringCollection] = useState(false);
-  const [completeCollection, setCompleteCollection] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentGame, setCurrentGame] = useState('');
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
@@ -37,10 +37,10 @@ const UserLibrary = ({
   //  SHOW ALL WILL LOOK LIKE STEAM
 
   const integrateSteamGames = async () => {
-    if (completeCollection.length == 0 || !steamID) return;
+    if (collection.length == 0 || !steamID) return;
     try {
       const gameNames = await Promise.all(
-        completeCollection.map((game) => {
+        collection.map((game) => {
           let gameId;
           let imageURL;
 
@@ -57,16 +57,13 @@ const UserLibrary = ({
           return axios.post(`${baseURL}/app/update_collection`, {
             email: userEmail,
             currentProfile: userProfile,
-            game: {
-              name: game.name,
-              id: gameId,
-              imageURL,
-              playtime: game.playTime || 0,
-            },
+            name: game.name,
+            id: gameId,
+            imageURL,
+            playtime: game.playTime || 0,
           });
         })
       );
-      console.log(gameNames);
     } catch (error) {
       console.log(error);
     }
@@ -81,23 +78,25 @@ const UserLibrary = ({
     });
   };
 
+  // Add Steam games into MongoDB Collection
   useEffect(() => {
-    if (!steamID || !completeCollection) return;
+    if (!steamID || !collection) return;
     integrateSteamGames();
-  }, [steamID, completeCollection]);
+  }, [steamID, collection]);
 
+  // If steam is linked, compare steam games vs gameflix games to find unique titles
   useEffect(() => {
-    if (steamCollection.length == 0) return;
+    if (steamCollection.length == 0 || !steamCollection) return;
     setCompleteCollection([
       ...compareCollections(steamCollection, collection),
       ...compareCollections(collection, steamCollection),
     ]);
   }, [steamCollection]);
 
+  // Set collection based on if steam is linked or not
   useEffect(() => {
-    if (completeCollection.length > 0 && collection.length > 0) return;
-    if (steamCollection.length == 0 && collection.length > 0)
-      setCompleteCollection(collection);
+    if (collection.length > 0) return;
+    if (steamCollection && collection) setCompleteCollection(collection);
   }, [steamCollection, collection]);
 
   const fetchGameOST = async (game) => {
@@ -166,9 +165,7 @@ const UserLibrary = ({
   };
 
   // Sort collection alphabetically
-  completeCollection.sort((a, b) =>
-    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-  );
+  collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
   // Display loading placeholder while fetching data
   if (!collection || collection.length == 0) {
@@ -182,8 +179,6 @@ const UserLibrary = ({
   } else if (collection && collection.length == 0) {
     <div>No AVAILABLE GAMES</div>;
   }
-
-  console.log(completeCollection);
 
   return (
     <div className='user_library__row'>
@@ -199,7 +194,7 @@ const UserLibrary = ({
         )}
       </div>
       <div className='user_library__row_posters'>
-        {completeCollection?.slice(0, 9).map(
+        {collection?.slice(0, 9).map(
           (game, i) =>
             game.id !== null && (
               <div className={`row__poster_wrapper`} key={game.name}>
@@ -303,35 +298,36 @@ const UserLibrary = ({
           onMouseOver={() => setHoveringCollection(true)}
           onMouseOut={() => setHoveringCollection(false)}
         >
-          {hoveringCollection && (
+          {hoveringCollection && collection.length > 10 && (
             <h2>
               View <br /> Collection
             </h2>
           )}
           <div className='user_library__stack_collection'>
-            {completeCollection?.slice(9, 12).map((game, i) => (
-              <div
-                className='row__poster_wrapper stack_card'
-                key={game.name}
-                onClick={viewCollection}
-              >
+            {collection.length > 10 &&
+              collection?.slice(9, 12).map((game, i) => (
                 <div
-                  className='row__poster_container'
-                  style={{ boxShadow: 'none' }}
+                  className='row__poster_wrapper stack_card'
+                  key={game.name}
+                  onClick={viewCollection}
                 >
-                  {!loading && (
-                    <div className='row__poster_front'>
-                      <img
-                        loading='lazy'
-                        className='row__poster'
-                        src={game.imageURL}
-                        alt={game.name}
-                      />
-                    </div>
-                  )}
+                  <div
+                    className='row__poster_container'
+                    style={{ boxShadow: 'none' }}
+                  >
+                    {!loading && (
+                      <div className='row__poster_front'>
+                        <img
+                          loading='lazy'
+                          className='row__poster'
+                          src={game.imageURL}
+                          alt={game.name}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
         {!collection ||

@@ -4,7 +4,7 @@ import './Row.css';
 import axios from 'axios';
 import Placeholder from '../Placeholder/Placeholder';
 import { SiApplemusic } from 'react-icons/si';
-import { FaPlay, FaPause } from 'react-icons/fa';
+import { FaPlay, FaPause, FaPlusSquare } from 'react-icons/fa';
 
 function Row({
   title,
@@ -18,6 +18,8 @@ function Row({
   genreId,
   activeProfile,
   setGameDetails,
+  addGame,
+  removeGame,
 }) {
   const [games, setGames] = useState([]);
   const [currentGame, setCurrentGame] = useState('');
@@ -87,6 +89,11 @@ function Row({
     setCurrentGame(null);
   };
 
+  const addGameHandler = (e, game) => {
+    e.stopPropagation();
+    addGame(game);
+  };
+
   const viewGameSoundtrack = (e, game) => {
     e.stopPropagation();
     fetchGameOST(game.name);
@@ -148,7 +155,11 @@ function Row({
                             className='row__poster_music_icon'
                             style={{ color: activeProfile.color }}
                           />
-                          {/* <span className='row__poster_name'>{game?.name}</span> */}
+                          <FaPlusSquare
+                            onClick={(e) => addGameHandler(e, game)}
+                            className='row__poster_add_icon'
+                            style={{ color: activeProfile.color }}
+                          />
                           <img
                             loading='lazy'
                             className='row__poster'

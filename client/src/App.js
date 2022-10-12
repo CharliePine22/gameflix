@@ -95,18 +95,12 @@ function App() {
     setIsLoading(true);
     if (selectedProfile == null || !twitchAccessToken) return;
     const fetchUserCollection = async () => {
-      // const gameNames = await Promise.all(
-      //   selectedProfile.collection.map((game) => {
-      //     return axios.post(`${baseURL}/app/search_game_details`, {
-      //       token: twitchAccessToken,
-      //       gameId: game.id,
-      //     });
-      //   })
-      // );
+      console.log('CHANGING');
       setUserCollection(selectedProfile.collection);
-      setIsLoading(false);
+      setIsLoading(selectedProfile);
     };
     fetchUserCollection();
+    console.log(userCollection);
   }, [selectedProfile, twitchAccessToken]);
 
   const closeSearchResults = () => {
@@ -131,12 +125,10 @@ function App() {
       const request = await axios.post(`${baseURL}/app/update_collection`, {
         email: userEmail,
         currentProfile: userProfile,
-        game: {
-          name: game.name,
-          id: game.id,
-          imageURL: `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`,
-          playtime: 0,
-        },
+        name: game.name,
+        id: game.id,
+        imageURL: `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`,
+        playtime: 0,
       });
       localStorage.setItem('user', JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
@@ -271,6 +263,14 @@ function App() {
       <UserCollection
         collection={userCollection}
         activeProfile={selectedProfile}
+        backToHome={() => setViewingCollection(false)}
+        currentTrack={currentTrack}
+        playTrack={playTrack}
+        isPlaying={playAudio}
+        pausePlayback={() => setPlayAudio(false)}
+        resumePlayback={() => setPlayAudio(true)}
+        setSelectedProfile={(profile) => setSelectedProfile(profile)}
+        spotifyToken={spotifyAccessToken}
       />
     );
 
@@ -317,6 +317,9 @@ function App() {
             setGameDetails={(game) => setGameDetails(game)}
             steamCollection={steamCollection}
             viewCollection={() => setViewingCollection(true)}
+            setCompleteCollection={(collection) =>
+              setUserCollection(collection)
+            }
           />
           {requestsIGDB.map(
             (request) =>
@@ -337,6 +340,8 @@ function App() {
                   setGameDetails={(game) => setGameDetails(game)}
                   pausePlayback={(e) => setPlayAudio(false)}
                   resumePlayback={(e) => setPlayAudio(true)}
+                  addGame={(game) => addGameHandler(game)}
+                  removeGame={(game) => removeGameHandler(game)}
                 />
               )
           )}

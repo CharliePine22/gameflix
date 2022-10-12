@@ -439,12 +439,12 @@ router.post('/update_user_profile', async (req, res) => {
 //* ADD GAME
 router.post('/update_collection', async (req, res) => {
   const email = req.body.email;
-  const gameName = req.body.game.name;
-  const gameId = req.body.game.id;
-  const imageURL = req.body.game.imageURL;
-  const playtime = req.body.game.playtime;
+  const gameName = req.body.name;
+  const gameId = req.body.id;
+  const imageURL = req.body.imageURL;
+  const playtime = req.body.playtime;
   const name = req.body.currentProfile;
-  console.log(req.body);
+
   try {
     const request = await userModel.findOneAndUpdate(
       { email: email, profiles: { $elemMatch: { name } } },

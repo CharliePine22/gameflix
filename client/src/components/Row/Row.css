@@ -26,6 +26,20 @@
   height: 100%;
   cursor: pointer;
   border-radius: 6px;
+  /* opacity: .8; */
+}
+
+.row__poster_add_icon {
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  right: 6px;
+  top: 6px;
+  z-index: 2;
+  transition: transform 250ms ease-in-out, opacity 100ms ease-in-out;
+  color: black;
+  opacity: 0.75;
+  backface-visibility: hidden;
 }
 
 .row__poster_back_img {
@@ -120,11 +134,12 @@
   z-index: 2;
   transition: transform 250ms ease-in-out, opacity 100ms ease-in-out;
   color: black;
-  opacity: 0.5;
+  opacity: 0.75;
   backface-visibility: hidden;
 }
 
-.row__poster_music_icon:hover {
+.row__poster_music_icon:hover,
+.row__poster_add_icon:hover {
   opacity: 1;
 }
 

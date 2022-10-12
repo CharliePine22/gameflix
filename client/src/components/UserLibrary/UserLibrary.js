@@ -165,7 +165,7 @@ const UserLibrary = ({
   };
 
   // Sort collection alphabetically
-  collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+  collection?.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
   // Display loading placeholder while fetching data
   if (!collection || collection.length == 0) {

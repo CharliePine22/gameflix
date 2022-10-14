@@ -18,6 +18,7 @@ const ProfileEditor = (props) => {
   const titleRef = useRef('');
   const [titleValue, setTitleValue] = useState(currentProfile.favorite_game);
   const [titleId, setTitleId] = useState(0);
+  const [titleImage, setTitleImage] = useState('');
   const [titleList, setTitleList] = useState([]);
   let searchValue = '';
   // Console Input State and Ref
@@ -117,6 +118,9 @@ const ProfileEditor = (props) => {
   const selectGameHandler = (game) => {
     setTitleValue(game.name);
     setTitleId(game.id);
+    setTitleImage(
+      `//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg`
+    );
     setTitleList([]);
   };
 
@@ -226,6 +230,7 @@ const ProfileEditor = (props) => {
       favoriteGenre: currentGenre.trim(),
       favoriteGame: titleValue.trim(),
       gameId: titleId,
+      imageURL: titleImage,
       favoriteConsole: consoleValue.trim(),
       twitchToken: props.twitchToken,
     };

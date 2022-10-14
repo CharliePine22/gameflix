@@ -388,6 +388,7 @@ router.post('/update_user_profile', async (req, res) => {
   const newName = req.body.newName;
   const gameTitle = req.body.favoriteGame;
   const gameId = req.body.gameId;
+  const imageURL = req.body.imageURL;
   const gameConsole = req.body.favoriteConsole;
   const color = req.body.newColor;
   const genre = req.body.favoriteGenre;
@@ -412,7 +413,12 @@ router.post('/update_user_profile', async (req, res) => {
           'profiles.$.favorite_genre': genre,
         },
         $addToSet: {
-          'profiles.$.collection': { name: gameTitle, id: gameId },
+          'profiles.$.collection': {
+            name: gameTitle,
+            id: gameId,
+            imageURL: imageURL,
+            playtime: 0,
+          },
         },
       }, // list fields you like to change
       { new: true, setDefaultsOnInsert: false, upsert: true }
@@ -444,6 +450,7 @@ router.post('/update_collection', async (req, res) => {
   const imageURL = req.body.imageURL;
   const playtime = req.body.playtime;
   const name = req.body.currentProfile;
+  const origin = req.body.type;
 
   try {
     const request = await userModel.findOneAndUpdate(
@@ -455,6 +462,7 @@ router.post('/update_collection', async (req, res) => {
             id: gameId,
             imageURL,
             playtime,
+            origin,
           },
         },
       }, // list fields you like to change

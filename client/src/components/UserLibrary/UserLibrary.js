@@ -8,13 +8,13 @@ import Placeholder from '../Placeholder/Placeholder';
 
 const UserLibrary = ({
   activeProfile,
+  setSelectedProfile,
   playTrack,
   currentTrack,
   isPlaying,
   pausePlayback,
   resumePlayback,
   collection,
-  setSelectedProfile,
   spotifyToken,
   setGameDetails,
   steamCollection,
@@ -32,76 +32,88 @@ const UserLibrary = ({
   // MongoDB Query Creds
   const userEmail = JSON.parse(localStorage.getItem('user')).email;
   const userProfile = JSON.parse(localStorage.getItem('profile')).name;
-  const steamID = sessionStorage.getItem('steamID');
+  const userCurrentCollection = JSON.parse(
+    localStorage.getItem('profile')
+  ).collection;
+  const steamID = localStorage.getItem('steamID');
 
-  // # SHOW 10 GAMES BASED ON FILTER AND THEN
   // FOR 10TH SPOT HAVE 3 GAMES STACKED LIKE CARDS AND SLIGHTLY FADE TO SHOW ALL
   //  SHOW ALL WILL LOOK LIKE STEAM
-
-  const integrateSteamGames = async () => {
-    if (collection.length == 0 || !steamID) return;
+  const integrateSteamGames = async (updatedCollection) => {
     try {
       const gameNames = await Promise.all(
-        collection.map((game) => {
-          let gameId;
-          let imageURL;
-
-          if (game.hasOwnProperty('cover')) {
-            gameId = game.id;
-            imageURL = `//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg`;
-          } else {
-            gameId = game.appID;
-            imageURL = `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appID}/capsule_616x353.jpg`;
-          }
-
-          if (game.id == null) return;
-
-          return axios.post(`${baseURL}/app/update_collection`, {
-            email: userEmail,
-            currentProfile: userProfile,
-            name: game.name,
-            id: gameId,
-            imageURL,
-            playtime: game.playTime || 0,
+        updatedCollection.map((game) => {
+          const exists = collection.some((element) => {
+            if (element.id === game.id) {
+              return true;
+            }
           });
+
+          if (!exists) {
+            let gameId;
+            let imageURL;
+            let origin;
+
+            if (game.hasOwnProperty('cover')) {
+              origin = 'gameflix';
+              gameId = game.id;
+              imageURL = `//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg`;
+            } else {
+              origin = 'steam';
+              gameId = game.appID;
+              imageURL = `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appID}/capsule_616x353.jpg`;
+            }
+            return axios.post(`${baseURL}/app/update_collection`, {
+              email: userEmail,
+              currentProfile: userProfile,
+              name: game.name,
+              id: gameId,
+              imageURL,
+              playtime: game.playTime || 0,
+              type: origin,
+            });
+          }
         })
       );
+
+      const lastItem = gameNames.filter((item) => item !== undefined);
+      const response = lastItem[lastItem.length - 1].data.response;
+      console.log(response);
+      setCompleteCollection(updatedCollection);
+      localStorage.setItem('user', JSON.stringify(response));
+      const currentProfile = response.profiles.filter((obj) => {
+        return obj.name === userProfile;
+      });
+      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
+      setSelectedProfile(currentProfile[0]);
+      // setNotification({
+      //   message: `Steam games sucessfully added to your collection!`,
+      //   status: 'SUCCESS',
+      // });
     } catch (error) {
       console.log(error);
+      return;
     }
   };
 
-  const compareCollections = (arr1, arr2) => {
-    if (!arr1 || arr1.length == 0) return arr2;
-    else if (!arr2 || arr2.length == 0) return arr1;
-    else
-      return arr1.filter((object1) => {
-        return !arr2.some((object2) => {
-          return object1.name.toLowerCase() === object2.name.toLowerCase();
-        });
-      });
-  };
-
-  // Add Steam games into MongoDB Collection
+  // List of every steam game to compare to alreaydy owned
   useEffect(() => {
-    if (!steamID || !collection) return;
-    integrateSteamGames();
-  }, [steamID, collection]);
+    if (steamCollection.length == 0 || !steamCollection || !steamID) return;
 
-  // If steam is linked, compare steam games vs gameflix games to find unique titles
-  useEffect(() => {
-    if (steamCollection.length == 0 || !steamCollection) return;
-    setCompleteCollection([
-      ...compareCollections(steamCollection, collection),
-      ...compareCollections(collection, steamCollection),
-    ]);
+    const steamGames = new Map(
+      steamCollection.map(({ name, ...rest }) => [name.toLowerCase(), rest])
+    );
+
+    // If user has game in both gameflix and steam library, dont push gameflix game
+    const newGames = collection.reduce(function (result, game) {
+      if (!steamGames.get(game.name.toLowerCase())) {
+        result.push(game);
+      }
+      return result;
+    }, []);
+
+    integrateSteamGames([...steamCollection, ...newGames]);
   }, [steamCollection]);
-
-  // Set collection based on if steam is linked or not
-  useEffect(() => {
-    if (!collection || collection.length > 0) return;
-    if (steamCollection || collection) setCompleteCollection(collection);
-  }, [steamCollection, collection]);
 
   const fetchGameOST = async (game) => {
     setViewingSoundtrack(false);
@@ -190,7 +202,7 @@ const UserLibrary = ({
         {collection?.slice(0, 9).map(
           (game, i) =>
             game.id !== null && (
-              <div className={`row__poster_wrapper`} key={game.name}>
+              <div className={`row__poster_wrapper`} key={game.id}>
                 <div
                   className={`row__poster_container ${
                     viewingSoundtrack && currentGame == game.name ? 'flip' : ''

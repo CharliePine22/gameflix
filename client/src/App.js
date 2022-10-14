@@ -63,6 +63,8 @@ function App() {
   const twitchAccessToken = useTwitchAuth(code);
   const steamCollection = useSteamAuth(id);
 
+  // console.log(steamCollection);
+
   // Refetch user data if any changes are made
   useEffect(() => {
     const updateUser = async () => {
@@ -99,7 +101,12 @@ function App() {
   // Fetch User Collection
   useEffect(() => {
     setIsLoading(true);
-    if (selectedProfile == null || !twitchAccessToken) return;
+    if (
+      selectedProfile == null ||
+      !twitchAccessToken ||
+      !selectedProfile.collection
+    )
+      return;
     const fetchUserCollection = async () => {
       setUserCollection(
         selectedProfile.collection.filter((game) => game.id !== null)
@@ -237,7 +244,7 @@ function App() {
     localStorage.removeItem('profile');
     localStorage.removeItem('password');
     localStorage.removeItem('spotify_token');
-    sessionStorage.removeItem('steamID');
+    localStorage.removeItem('steamID');
     setSelectedProfile(null);
     setLoggedUser(null);
   };
@@ -392,9 +399,10 @@ function App() {
             steamCollection={steamCollection}
             removeGame={removeGameHandler}
             viewCollection={() => setViewingCollection(true)}
-            setNotification={(status, message) =>
-              setNotification({ status, message })
-            }
+            setNotification={(status, message) => {
+              setNotification({ status, message });
+              setDisplayNotification(true);
+            }}
             setCompleteCollection={(collection) =>
               setUserCollection(collection)
             }

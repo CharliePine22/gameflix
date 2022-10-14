@@ -7,6 +7,7 @@ dotenv.config();
 
 const steam = new SteamAPI(process.env.STEAM_API_KEY);
 
+// Grab user's Steam Library
 router.get('/get_owned_games', async (req, res) => {
   if (req.user == undefined) {
     res.send('Error, please authenticate with steam!');
@@ -22,12 +23,11 @@ router.get('/get_owned_games', async (req, res) => {
 });
 
 router.get('/get_game_stats', async (req, res) => {
-  const steamId = req.user.id;
+  const steamId = req.query.steamId;
   const gameId = req.query.gameId;
 
   try {
-    const request = await steam.getUserStats(steamId, gameId);
-    // console.log(request);
+    const request = await steam.getUserAchievements(steamId, gameId);
     res.send(request);
     return;
   } catch (error) {

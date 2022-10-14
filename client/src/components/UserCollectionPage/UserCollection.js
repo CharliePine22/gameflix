@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './UserCollection.css';
-import { FaSistrix, FaAngleUp, FaHome } from 'react-icons/fa';
+import { FaSistrix, FaHome, FaStar } from 'react-icons/fa';
+import UserGame from '../UserGame/UserGame';
 
 const UserCollection = ({
   collection,
@@ -17,16 +18,37 @@ const UserCollection = ({
   const [searchValue, setSearchValue] = useState('');
   const [searchList, setSearchList] = useState([]);
   const [viewingList, setViewingList] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [currentlyViewing, setCurrentlyViewing] = useState(null);
 
+  // If user is typing, filter titles that reflect inputted value
   useEffect(() => {
     if (searchValue == '') return;
     const delaySearch = setTimeout(() => {
       const res = collection.filter((item) => item.name.includes(searchValue));
       setSearchList(res);
-    }, 500);
+    }, 250);
 
     return () => clearTimeout(delaySearch);
   }, [searchValue]);
+
+  // Listen for screen size to determine if user is on mobile
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth <= 533) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const viewGameHandler = (game) => {
+    setCurrentlyViewing(game);
+  };
 
   collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
@@ -35,10 +57,13 @@ const UserCollection = ({
       <div
         className='user_collection__container'
         style={{
-          background: `linear-gradient(120deg, ${
-            activeProfile.color || '#00adee'
-          }, #000000)`,
+          background: '#111',
         }}
+        // style={{
+        //   background: `linear-gradient(120deg, ${
+        //     activeProfile.color || '#00adee'
+        //   }, #000000)`,
+        // }}
       >
         {/* LEFT SIDE */}
         <div
@@ -46,11 +71,17 @@ const UserCollection = ({
           style={{
             height: viewingList && '250%',
             marginBottom: viewingList && '25px',
+            display: isMobile && currentlyViewing && 'none',
           }}
         >
           <h2>
             <img
-              style={{ height: '50px', width: '50px', borderRadius: '4px' }}
+              style={{
+                height: '50px',
+                width: '50px',
+                borderRadius: '4px',
+                // marginRight: '5px',
+              }}
               src={activeProfile.avatar}
             />
             {activeProfile.name}'s Collection
@@ -68,14 +99,6 @@ const UserCollection = ({
               onChange={(e) => setSearchValue(e.target.value)}
             />
           </div>
-          <FaAngleUp
-            className='user_collection__arrow'
-            onClick={() => setViewingList(!viewingList)}
-            style={{
-              position: viewingList && 'absolute',
-              transform: viewingList && 'rotate(0deg)',
-            }}
-          />
 
           <ul
             className='user_collection__title_list'
@@ -86,14 +109,25 @@ const UserCollection = ({
           >
             {searchValue == ''
               ? collection.map((game) => (
-                  <li className='title_list__item' key={game.name}>
+                  <li
+                    className='title_list__item'
+                    key={game.id}
+                    onClick={() => viewGameHandler(game)}
+                  >
                     {' '}
                     <img src={game.imageURL} />
                     <p>{game.name}</p>
+                    {game.name == activeProfile.favorite_game && (
+                      <FaStar className='list_item_favorite' />
+                    )}
                   </li>
                 ))
               : searchList.map((game) => (
-                  <li className='title_list__item' key={game.name}>
+                  <li
+                    className='title_list__item'
+                    key={game.id}
+                    onClick={() => viewGameHandler(game)}
+                  >
                     {' '}
                     <img src={game.imageURL} />
                     <p>{game.name}</p>
@@ -106,26 +140,63 @@ const UserCollection = ({
         </div>
         {/* RIGHT SIDE */}
         <div className='user_collection__right'>
-          <ul className='user_collection__list'>
-            {collection.map((game) => (
-              <li className='list_item' key={game.name}>
-                <div className='user_collection__poster_container'>
-                  <div className='gradient' />
-                  <>
-                    {/* FRONT OF POSTER */}
-                    <div className='user_collection__poster_front'>
-                      <img
-                        loading='lazy'
-                        className='user_collection__poster'
-                        src={game.imageURL}
-                        alt={game.name}
-                      />
-                    </div>
-                  </>
-                </div>
-              </li>
-            ))}
-          </ul>
+          {currentlyViewing !== null && (
+            <UserGame
+              game={currentlyViewing}
+              activeProfile={activeProfile}
+              closeStats={() => setCurrentlyViewing(null)}
+            />
+          )}
+          {/* <div className='user_collection__spotlight'></div> */}
+          {!currentlyViewing && (
+            <ul className='user_collection__list'>
+              {!isMobile || (isMobile && searchValue == '')
+                ? collection.map((game) => (
+                    <li
+                      className='list_item'
+                      key={game.id}
+                      onClick={() => viewGameHandler(game)}
+                    >
+                      <div className='user_collection__poster_container'>
+                        <div className='gradient' />
+                        <>
+                          {/* FRONT OF POSTER */}
+                          <div className='user_collection__poster_front'>
+                            <img
+                              loading='lazy'
+                              className='user_collection__poster'
+                              src={game.imageURL}
+                              alt={game.name}
+                            />
+                          </div>
+                        </>
+                      </div>
+                    </li>
+                  ))
+                : searchList.map((game) => (
+                    <li className='list_item' key={game.id}>
+                      <div className='user_collection__poster_container'>
+                        <div className='gradient' />
+                        <>
+                          {/* FRONT OF POSTER */}
+                          <div className='user_collection__poster_front'>
+                            <img
+                              loading='lazy'
+                              className='user_collection__poster'
+                              src={
+                                isMobile
+                                  ? game.imageURL.replace('cover_big', '1080p')
+                                  : game.imageURL
+                              }
+                              alt={game.name}
+                            />
+                          </div>
+                        </>
+                      </div>
+                    </li>
+                  ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>

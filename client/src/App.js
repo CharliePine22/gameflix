@@ -177,6 +177,7 @@ function App() {
         id: game.id,
         imageURL: `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`,
         playtime: 0,
+        origin: 'gameflix',
       });
       localStorage.setItem('user', JSON.stringify(request.data.response));
       const currentProfile = request.data.response.profiles.filter((obj) => {
@@ -201,7 +202,6 @@ function App() {
   };
 
   const removeGameHandler = async (game) => {
-    console.log(game);
     try {
       const request = await axios.put(`${baseURL}/app/remove_game`, {
         email: userEmail,

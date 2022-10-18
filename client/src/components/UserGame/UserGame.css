@@ -1,15 +1,48 @@
 .playtime_input {
-  flex: 1 1 auto;
-  line-height: 20px;
-  padding: 8px 0 8px;
-  max-width: 100%;
-  min-width: 0;
-  max-height: 32px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  width: 0px;
+  /* position: absolute; */
+  display: none;
+}
+
+.playtime_input:focus,
+.playtime_focused:focus {
+  outline: 0;
+}
+
+.playtime_focused:focus {
+  caret-color: #9147ff;
+}
+
+.playtime_focused {
+  display: block;
+  background: transparent;
+  border: 0;
+  font-weight: bold;
+  border-bottom: 1px solid #9147ff;
+  color: white;
+  width: 70px;
+  margin-top: 5px;
+  animation: displayPlaytimeInput 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  padding-bottom: 3px;
+}
+
+.previous_rating {
+  cursor: pointer;
+}
+
+.rating_stars {
+  cursor: pointer;
+  display: flex;
   width: 100%;
-  cursor: text;
-  transition: background 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-  background-color: transparent;
-  border-style: none;
+  animation: displayRatingStars 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.rating_star {
+  color: gold;
+  cursor: pointer;
 }
 
 .achievement_count_container,
@@ -17,6 +50,7 @@
 .rating_container {
   display: flex;
   align-items: center;
+  width: auto;
 }
 
 .playtime_container span,
@@ -57,12 +91,6 @@
   z-index: 0;
 }
 
-/* .user_game__banner {
-  height: 291px;
-  width: 218px;
-  margin: 25px auto 20px;
-} */
-
 .user_game__current_stats {
   color: white;
   display: flex;
@@ -81,11 +109,34 @@
   z-index: 1;
 }
 
+.user_game__exit {
+  color: white;
+  background: #111;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  border-radius: 6px;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  align-items: center;
+  padding: 4px 10px;
+  opacity: 0.5;
+}
+
+.user_game__exit:hover {
+  opacity: 1;
+}
+
 .user_game__header {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 10px 0;
+}
+
+.user_game__platforms {
 }
 
 .user_game__stats_container {
@@ -98,7 +149,8 @@
 .user_game__title {
   font-size: 1.8rem;
   text-align: center;
-  text-shadow: 2px 2px 3px black;
+  /* text-shadow: 2px 2px 3px black; */
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.7);
   color: white;
   margin-bottom: 8px;
 }
@@ -108,12 +160,27 @@
   height: 100%;
   width: 100%;
   padding: 0 0 20px;
-  /* padding: 10px 0 20px; */
-  background: linear-gradient(
-    to top,
-    transparent 0%,
-    rgba(0, 0, 0, 0.323) 100%
-  );
+}
+
+@keyframes displayPlaytimeInput {
+  0% {
+    /* position: absolute; */
+    width: 0;
+    border-bottom: 1px solid transparent;
+  }
+  100% {
+    width: 70px;
+    border-bottom: 1px solid #9147ff;
+  }
+}
+
+@keyframes displayRatingStars {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 1000px) {
@@ -122,5 +189,11 @@
     height: 100%;
     object-fit: cover;
     object-position: top;
+  }
+}
+
+@media screen and (max-width: 533px) {
+  .user_game__title {
+    max-width: 90%;
   }
 }

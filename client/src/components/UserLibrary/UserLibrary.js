@@ -189,9 +189,9 @@ const UserLibrary = ({
     <div className='user_library__row'>
       <div className='user_library_title'>
         <h2 style={{ color: activeProfile.color }}>YOUR COLLECTION</h2>
-        <div className='user_library__filter'>
+        {/* <div className='user_library__filter'>
           <p>Filter By</p>
-        </div>
+        </div> */}
         {steamID && (
           <div className='steam_active_container'>
             <FaSteam className='steam_active_icon' />

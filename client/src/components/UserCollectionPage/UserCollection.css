@@ -311,7 +311,7 @@
   }
 
   .user_collection__search_icon {
-    left: 32px;
+    left: 40px;
     /* left: 31px; */
   }
 
@@ -360,5 +360,11 @@
 
   .user_collection__search_icon {
     left: 28px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .user_collection__search_icon {
+    left: 22px;
   }
 }

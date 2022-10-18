@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './UserCollection.css';
 import { FaSistrix, FaHome, FaStar } from 'react-icons/fa';
 import UserGame from '../UserGame/UserGame';
+import Notification from '../Notification/Notification';
+import { IoNotifications } from 'react-icons/io5';
 
 const UserCollection = ({
   collection,
@@ -20,6 +22,10 @@ const UserCollection = ({
   const [viewingList, setViewingList] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [currentlyViewing, setCurrentlyViewing] = useState(null);
+  const [changingGame, setChangingGame] = useState(false);
+  const [displayNotification, setDisplayNotification] = useState(false);
+  const [notification, setNotification] = useState({ status: '', message: '' });
+  const [alerttedUser, setAlerttedUser] = useState(false);
 
   // If user is typing, filter titles that reflect inputted value
   useEffect(() => {
@@ -46,8 +52,16 @@ const UserCollection = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Select which game is being viewed
   const viewGameHandler = (game) => {
     setCurrentlyViewing(game);
+  };
+
+  // Open up the menu when the user right clicks
+  const viewGameHeaders = (e, game) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(game);
   };
 
   collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
@@ -113,6 +127,11 @@ const UserCollection = ({
                     className='title_list__item'
                     key={game.id}
                     onClick={() => viewGameHandler(game)}
+                    onContextMenu={(e) => viewGameHeaders(e, game)}
+                    style={{
+                      background:
+                        currentlyViewing?.name == game.name && '#9147ff',
+                    }}
                   >
                     {' '}
                     <img src={game.imageURL} />
@@ -141,11 +160,26 @@ const UserCollection = ({
         {/* RIGHT SIDE */}
         <div className='user_collection__right'>
           {currentlyViewing !== null && (
-            <UserGame
-              game={currentlyViewing}
-              activeProfile={activeProfile}
-              closeStats={() => setCurrentlyViewing(null)}
-            />
+            <>
+              <UserGame
+                game={currentlyViewing}
+                activeProfile={activeProfile}
+                closeStats={() => setCurrentlyViewing(null)}
+                setProfile={(profile) => setSelectedProfile(profile)}
+                setCurrentlyViewing={(game) => setCurrentlyViewing(game)}
+                setNotification={(message, status) => {
+                  setNotification(message, status);
+                }}
+              />
+              <Notification
+                notification={notification}
+                displayNotification={() => setDisplayNotification(true)}
+                hideNotification={() => {
+                  setDisplayNotification(false);
+                  setNotification({ message: '', status: '' });
+                }}
+              />
+            </>
           )}
           {/* <div className='user_collection__spotlight'></div> */}
           {!currentlyViewing && (

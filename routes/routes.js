@@ -6,6 +6,7 @@ const spotifyWebApi = require('spotify-web-api-node');
 // const fs = require('fs');
 // const path = require('path');
 const fetch = require('cross-fetch');
+const { findOneAndUpdate } = require('../models/NewUserModels');
 // const { connected } = require('process');
 
 // Transform upload file into DB Object String
@@ -483,37 +484,6 @@ router.post('/update_collection', async (req, res) => {
   }
 });
 
-//* ADD STEAM GAMES
-router.post('/update_collectionsa', async (req, res) => {
-  const email = req.body.email;
-  const gameName = req.body.gameName;
-  const gameId = req.body.gameId;
-  const name = req.body.currentProfile;
-  try {
-    const request = await userModel.findOneAndUpdate(
-      { email: email, profiles: { $elemMatch: { name } } },
-      {
-        $addToSet: {
-          'profiles.$.collection': { name: gameName, id: gameId },
-        },
-      }, // list fields you like to change
-      { new: true, setDefaultsOnInsert: false, upsert: true }
-    );
-
-    res.send({
-      code: 200,
-      status: 'OK',
-      message: 'Game added to collection!',
-      response: request,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400, {
-      message: 'There was an error adding games, please try again.',
-    });
-  }
-});
-
 //* REMOVE GAME
 router.put('/remove_game', async (req, res) => {
   const email = req.body.email;
@@ -544,7 +514,106 @@ router.put('/remove_game', async (req, res) => {
   }
 });
 
-//* ADD STEAM DATA
+//* UPDATE GAME PLAYTIME
+router.put('/update_game_playtime', async (req, res) => {
+  const email = req.body.email;
+  const gameId = req.body.gameId;
+  const name = req.body.currentProfile;
+  const playtime = req.body.playtime;
+
+  try {
+    const request = await userModel.findOneAndUpdate(
+      {
+        email: email,
+        profiles: { $elemMatch: { name } },
+      },
+      {
+        $set: {
+          'profiles.$.collection.$[element].playtime': playtime,
+        },
+      },
+      { arrayFilters: [{ 'element.id': { $eq: gameId } }], new: true }
+    );
+
+    if (request == null) {
+      res.send({
+        code: 400,
+        status: 'NOT OK',
+        message: 'Unable to update playtime, please try again!',
+        response: request,
+      });
+    } else {
+      const currentProfile = request.profiles.filter(
+        (profile) => profile.name === name
+      );
+      const currentPlaytime = currentProfile[0].collection.filter(
+        (game) => game.id === gameId
+      );
+
+      res.send({
+        code: 200,
+        status: 'OK',
+        message: 'Playtime updated!',
+        response: { profile: currentProfile[0], game: currentPlaytime[0] },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400, {
+      message: 'There was an error with your request, please try again.',
+    });
+  }
+});
+//* UPDATE GAME PLAYTIME
+router.put('/update_game_rating', async (req, res) => {
+  const email = req.body.email;
+  const gameId = req.body.gameId;
+  const name = req.body.currentProfile;
+  const rating = req.body.rating;
+
+  try {
+    const request = await userModel.findOneAndUpdate(
+      {
+        email: email,
+        profiles: { $elemMatch: { name } },
+      },
+      {
+        $set: {
+          'profiles.$.collection.$[element].user_rating': rating,
+        },
+      },
+      { arrayFilters: [{ 'element.id': { $eq: gameId } }], new: true }
+    );
+
+    if (request == null) {
+      res.send({
+        code: 400,
+        status: 'NOT OK',
+        message: 'Unable to update playtime, please try again!',
+        response: request,
+      });
+    } else {
+      const currentProfile = request.profiles.filter(
+        (profile) => profile.name === name
+      );
+      const currentPlaytime = currentProfile[0].collection.filter(
+        (game) => game.id === gameId
+      );
+
+      res.send({
+        code: 200,
+        status: 'OK',
+        message: 'Rating updated!',
+        response: { profile: currentProfile[0], game: currentPlaytime[0] },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400, {
+      message: 'There was an error with your request, please try again.',
+    });
+  }
+});
 
 //! CREATE A NEW PROFILE
 router.post('/create_new_profile', async (req, res) => {

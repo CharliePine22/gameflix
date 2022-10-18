@@ -22,12 +22,24 @@ router.get('/get_owned_games', async (req, res) => {
   }
 });
 
-router.get('/get_game_stats', async (req, res) => {
+router.get('/get_game_achievements', async (req, res) => {
   const steamId = req.query.steamId;
   const gameId = req.query.gameId;
 
   try {
     const request = await steam.getUserAchievements(steamId, gameId);
+    res.send(request);
+    return;
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+router.get('/get_game_news', async (req, res) => {
+  const gameId = req.query.gameId;
+
+  try {
+    const request = await steam.getGameNews(gameId);
     res.send(request);
     return;
   } catch (error) {

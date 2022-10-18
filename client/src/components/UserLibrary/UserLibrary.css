@@ -21,14 +21,6 @@
   border: 3px solid white;
 }
 
-.user_library_arrow {
-  font-size: 1.1rem;
-  cursor: pointer;
-  transform: translateX(0);
-  transition: transform 250ms ease-in;
-  color: lightblue;
-}
-
 .extended {
   transform: translateX(50px);
   transition: transform 250ms ease-in;

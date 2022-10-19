@@ -213,6 +213,29 @@ router.post('/search_game_details', async (req, res) => {
   }
 });
 
+//* IGDB POPULAR GAMES
+router.post('/popular_titles', async (req, res) => {
+  const token = req.body.token;
+
+  const headers = {
+    'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
+    Authorization: `Bearer ${token}`,
+  };
+  const url = `https://api.igdb.com/v4/games`;
+  try {
+    const request = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: `fields *, artworks.*, age_ratings.*, name, cover.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; sort rating_count desc; where (rating != null & rating_count > 0); limit 50;`,
+    });
+    console.log(request);
+    const result = await request.json();
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 //* IGDB GAME GENRES
 router.post('/game_genre', async (req, res) => {
   const token = req.body.token;
@@ -564,12 +587,64 @@ router.put('/update_game_playtime', async (req, res) => {
     });
   }
 });
-//* UPDATE GAME PLAYTIME
+
+//* UPDATE GAME RATING
 router.put('/update_game_rating', async (req, res) => {
   const email = req.body.email;
   const gameId = req.body.gameId;
   const name = req.body.currentProfile;
   const rating = req.body.rating;
+
+  try {
+    const request = await userModel.findOneAndUpdate(
+      {
+        email: email,
+        profiles: { $elemMatch: { name } },
+      },
+      {
+        $set: {
+          'profiles.$.collection.$[element].user_rating': rating,
+        },
+      },
+      { arrayFilters: [{ 'element.id': { $eq: gameId } }], new: true }
+    );
+
+    if (request == null) {
+      res.send({
+        code: 400,
+        status: 'NOT OK',
+        message: 'Unable to update playtime, please try again!',
+        response: request,
+      });
+    } else {
+      const currentProfile = request.profiles.filter(
+        (profile) => profile.name === name
+      );
+      const currentPlaytime = currentProfile[0].collection.filter(
+        (game) => game.id === gameId
+      );
+
+      res.send({
+        code: 200,
+        status: 'OK',
+        message: 'Rating updated!',
+        response: { profile: currentProfile[0], game: currentPlaytime[0] },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400, {
+      message: 'There was an error with your request, please try again.',
+    });
+  }
+});
+
+//* UPDATE GAME BANNER
+router.put('/update_game_banner', async (req, res) => {
+  const email = req.body.email;
+  const gameId = req.body.gameId;
+  const name = req.body.currentProfile;
+  const bannerURL = req.body.url;
 
   try {
     const request = await userModel.findOneAndUpdate(

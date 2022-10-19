@@ -126,7 +126,9 @@ const NewUser = (props) => {
         <h1 className='header_brand' onClick={() => props.returnToLanding()}>
           GAMEFLIX
         </h1>
-        <button className='header_btn'>Sign In</button>
+        <button className='header_btn' onClick={props.toLoginHandler}>
+          Sign In
+        </button>
       </div>
 
       <div className='new_user__forms_container'>

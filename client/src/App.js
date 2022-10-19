@@ -271,6 +271,7 @@ function App() {
         landing={toLanding}
         loading={isLoading}
         onLogin={loginAuthentication}
+        twitchToken={twitchAccessToken}
       />
     );
   }
@@ -284,6 +285,7 @@ function App() {
           setToLanding(false);
           setChangingUser(true);
         }}
+        twitchToken={twitchAccessToken}
       />
     );
   }

@@ -27,14 +27,17 @@ const Login = (props) => {
 
   // Fetch games to display and create background image
   useEffect(() => {
+    if (!props.twitchToken) return;
     setImgsLoading(true);
     async function fetchData() {
-      const request = await rawgClient.get(requests[2].url + '&page_size=40');
-      setGameList(request.data.results);
+      const request = await axios.post(`${baseURL}/app/popular_titles`, {
+        token: props.twitchToken,
+      });
+      setGameList(request.data);
       return request;
     }
     fetchData();
-  }, []);
+  }, [props.twitchToken]);
 
   // Helper function to render all images when they're loaded
   const imageLoaded = () => {
@@ -201,17 +204,18 @@ const Login = (props) => {
       </div>
       {/* BACKGROUND */}
       <div className='login__background'>
-        {gameList.map((game) => (
-          <React.Fragment key={game.name}>
-            <span className='login__name'>{game?.name.split(':')[0]}</span>
-            <img
-              className='login__img'
-              style={{ display: imgsLoading && 'none' }}
-              src={game?.background_image}
-              onLoad={imageLoaded}
-            />
-          </React.Fragment>
-        ))}
+        {gameList &&
+          gameList.map((game) => (
+            <React.Fragment key={game.name}>
+              {/* <span className='login__name'>{game?.name.split(':')[0]}</span> */}
+              <img
+                className='login__img'
+                style={{ display: imgsLoading && 'none' }}
+                src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game?.cover.image_id}.jpg`}
+                onLoad={imageLoaded}
+              />
+            </React.Fragment>
+          ))}
       </div>
     </div>
   );

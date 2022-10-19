@@ -171,14 +171,14 @@ const UserCollection = ({
                   setNotification(message, status);
                 }}
               />
-              <Notification
+              {/* <Notification
                 notification={notification}
                 displayNotification={() => setDisplayNotification(true)}
                 hideNotification={() => {
                   setDisplayNotification(false);
                   setNotification({ message: '', status: '' });
                 }}
-              />
+              /> */}
             </>
           )}
           {/* <div className='user_collection__spotlight'></div> */}

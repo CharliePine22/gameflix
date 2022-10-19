@@ -45,6 +45,7 @@ const UserLibrary = ({
         updatedCollection.map((game) => {
           const exists = collection.some((element) => {
             if (element.id === game.id) {
+              console.log(element, game);
               return true;
             }
           });
@@ -96,10 +97,16 @@ const UserLibrary = ({
     }
   };
 
+  console.log(steamCollection);
   // List of every steam game to compare to alreaydy owned
   useEffect(() => {
-    if (steamCollection.length == 0 || !steamCollection || !steamID) return;
-
+    if (
+      steamCollection.length == 0 ||
+      !steamCollection ||
+      !steamID ||
+      typeof steamCollection == 'string'
+    )
+      return;
     const steamGames = new Map(
       steamCollection.map(({ name, ...rest }) => [name.toLowerCase(), rest])
     );
@@ -113,7 +120,7 @@ const UserLibrary = ({
     }, []);
 
     integrateSteamGames([...steamCollection, ...newGames]);
-  }, [steamCollection]);
+  }, [steamCollection, steamID]);
 
   const fetchGameOST = async (game) => {
     setViewingSoundtrack(false);

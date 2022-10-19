@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import './UserGame.css';
 import axios from 'axios';
 import { FiClock } from 'react-icons/fi';
-import { FaMedal } from 'react-icons/fa';
-import { GiNorthStarShuriken } from 'react-icons/gi';
-import { RiStarSFill } from 'react-icons/ri';
+import { FaMedal, FaMusic } from 'react-icons/fa';
 import { DynamicStar } from 'react-dynamic-star';
+import useContextMenu from '../../hooks/useContextMenu';
 
 const UserGame = ({
   game,
@@ -16,16 +15,21 @@ const UserGame = ({
   setCurrentlyViewing,
 }) => {
   // RATING, PLAYTIME, ACHIEVEMENTS, SPOTIFY, NOTES, STATUS(COMPLETED, BACKLOG, ETC.), PLATFORMS OWNED
-  const baseURL = process.env.REACT_APP_BASE_URL;
-  const steamID = localStorage.getItem('steamID');
+  const { anchorPoint, show } = useContextMenu();
+  // Achievement States
   const [achievements, setAchievements] = useState(null);
-  const [playtime, setPlaytime] = useState(game.playtime / 60);
+  const [achievementData, setAchievementData] = useState(null);
+  // Playtime States
+  const [playtime, setPlaytime] = useState(Math.floor(game.playtime / 60));
   const [changingPlaytime, setChangingPlaytime] = useState(false);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [rating, setRating] = useState(game.user_rating || 0);
-  const ratingRef = useRef('');
+  // Rating States
+  const [rating, setRating] = useState(game.user_rating);
   const [changingRating, setChangingRating] = useState(false);
   const [gameNews, setGameNews] = useState(null);
+  const [changingBanner, setChangingBanner] = useState(false);
+  // Hooks and Storage Variables
+  const baseURL = process.env.REACT_APP_BASE_URL;
+  const steamID = localStorage.getItem('steamID');
   const userEmail = JSON.parse(localStorage.getItem('user'))?.email;
 
   useEffect(() => {
@@ -46,6 +50,30 @@ const UserGame = ({
       console.log('No steam id');
       return;
     }
+
+    // Compare both achievement lists to get Icons
+    const getAchievementData = (arr1, arr2) => {
+      let dataList = [];
+      arr2.map(function (x) {
+        var result = arr1.filter((a1) => a1.name == x.displayName);
+        if (result.length > 0) {
+          x.achieved = result[0].achieved;
+        }
+        dataList.push(x);
+      });
+
+      dataList.sort(function (a, b) {
+        var textA = a.displayName.toUpperCase();
+        var textB = b.displayName.toUpperCase();
+        return textA < textB ? -1 : textA > textB ? 1 : 0;
+      });
+
+      dataList.sort(function (a, b) {
+        return a.achieved < b.achieved ? 1 : a.achieved > b.achieved ? -1 : 0;
+      });
+      return dataList;
+    };
+
     const fetchAppData = async () => {
       try {
         const steamGameAchievements = await axios.get(
@@ -58,15 +86,22 @@ const UserGame = ({
           }
         );
 
-        // const steamGameNews = await axios.get(`${baseURL}/steam/get_game_stats`, {
-        //   params: {
-        //     gameId: game.id,
-        //   },
-        // });
+        const steamGameStats = await axios.get(
+          `${baseURL}/steam/get_game_stats`,
+          {
+            params: {
+              gameId: game.id,
+            },
+          }
+        );
 
         if (Object.keys(steamGameAchievements.data).length > 0) {
-          console.log(steamGameAchievements.data.achievements);
-          setAchievements(steamGameAchievements.data.achievements);
+          setAchievements(
+            getAchievementData(
+              steamGameAchievements.data.achievements,
+              steamGameStats.data.availableGameStats.achievements
+            )
+          );
         } else {
           setAchievements(null);
         }
@@ -79,7 +114,10 @@ const UserGame = ({
 
   const handleMouseMove = (event) => {
     const bounds = event.currentTarget.getBoundingClientRect();
+    const position = Math.floor(event.clientX - bounds.left) / 20;
+    console.log(position * 20 - 20);
     setRating(Math.floor(event.clientX - bounds.left) / 20);
+    console.log(event);
   };
 
   const getAchievementCount = (list) => {
@@ -90,7 +128,7 @@ const UserGame = ({
 
   // Convert steam minutes to numbers
   function padTo2Digits(num) {
-    return num.toString().padStart(1, '0');
+    return num.toString().padStart(2, '0');
   }
 
   function toHoursAndMinutes(totalMinutes) {
@@ -98,8 +136,9 @@ const UserGame = ({
     else if (totalMinutes <= 0 && game.type !== 'steam') return 0 + ' hours';
     else {
       const minutes = totalMinutes % 60;
-      const hours = totalMinutes / 60;
+      const hours = Math.floor(totalMinutes / 60);
       if (minutes == 0) return hours + ' hours';
+      // setPlaytime(hours)
       return `${hours}.${padTo2Digits(minutes)} hours`;
     }
   }
@@ -169,31 +208,54 @@ const UserGame = ({
     }
   };
 
+  // Determine if user is updating or canceling playtime change
   const determinePlaytimeAction = (e) => {
     if (e.key === 'Enter') {
       updatePlaytime();
     }
     if (e.key === 'Escape') {
       setChangingPlaytime(false);
-      setPlaytime(game.playtime / 60);
+      setPlaytime(Math.floor(game.playtime / 60));
     }
+  };
+
+  const changeBannerHandler = (e) => {
+    e.preventDefault();
+    setChangingBanner(true);
   };
 
   return (
     <div className='user_game__wrapper'>
+      {changingBanner && <div className='modal'></div>}
       <div className='user_game__banner'>
+        {show && (
+          <ul
+            className='user_game__banner_context'
+            style={{ top: anchorPoint.y + 5, left: anchorPoint.x }}
+          >
+            <li className='banner_context__item' onClick={changeBannerHandler}>
+              Set Custom Image
+            </li>
+            <li className='banner_context__item'>Set Custom Logo</li>
+            <li className='banner_context__item'>Set Default Image</li>
+          </ul>
+        )}
+
         <div className='user_game__exit' onClick={closeStats}>
           X
         </div>
-        <img src={game.imageURL.replace('cover_big_2x', '1080p_2x')} />
+        <img
+          className='user_game_banner_img'
+          src={game.imageURL.replace('cover_big_2x', '1080p_2x')}
+        />
         <div className='user_game__current_stats'>
           {/* PLAYTIME */}
           <div className='playtime_container'>
             <FiClock className='playtime_clock_icon' />
             <div className='stats_item'>
-              <h4 style={{ color: changingPlaytime && '#9147ff' }}>
+              <h3 style={{ color: changingPlaytime && '#9147ff' }}>
                 PLAY TIME
-              </h4>
+              </h3>
               <span
                 style={{ display: changingPlaytime && 'none' }}
                 className='previous_playtime'
@@ -217,13 +279,13 @@ const UserGame = ({
           {/* RATING */}
           <div className='rating_container'>
             <div className='stats_item'>
-              <h4 style={{ paddingBottom: changingRating && '4px' }}>RATING</h4>
+              <h3 style={{ paddingBottom: changingRating && '4px' }}>RATING</h3>
               <span
                 onClick={() => setChangingRating(true)}
                 className='previous_rating'
                 style={{ display: changingRating && 'none' }}
               >
-                {game.user_rating}%
+                {game.user_rating || 0}%
               </span>
               <div
                 className='rating_stars'
@@ -241,11 +303,6 @@ const UserGame = ({
                   height={20}
                   outlined={true}
                 />
-                {/* <GiNorthStarShuriken className='rating_star' />
-                <GiNorthStarShuriken className='rating_star' />
-                <GiNorthStarShuriken className='rating_star' />
-                <GiNorthStarShuriken className='rating_star' />
-                <GiNorthStarShuriken className='rating_star' /> */}
               </div>
             </div>
           </div>
@@ -254,21 +311,94 @@ const UserGame = ({
           <div className='achievement_count_container'>
             <FaMedal className='achievement_medal_icon' />
             <div className='stats_item'>
-              <h4>ACHIEVEMENTS</h4>
+              <h3>ACHIEVEMENTS</h3>
               <span>{getAchievementCount(achievements)}</span>
+            </div>
+          </div>
+
+          {/* SPOTIFY MUSIC */}
+          <div className='music_icon_container'>
+            <div className='stats_item'>
+              <h3>MUSIC</h3>
+              <FaMusic className='music_icon' />
             </div>
           </div>
         </div>
       </div>
 
-      <div className='user_game__header'>
-        <h2 className='user_game__title'>{game.name}</h2>
-      </div>
+      {/* GAME NEWS AND DATA */}
       <div className='user_game__data'>
+        <div
+          className='user_game__data_img'
+          style={{
+            backgroundSize: 'cover',
+            backgroundImage: `url(${game.imageURL.replace(
+              'cover_big_2x',
+              '1080p_2x'
+            )})`,
+            backgroundPosition: 'center center',
+          }}
+        />
+        <div className='user_game__header'>
+          <h2 className='user_game__title'>{game.name}</h2>
+        </div>
+        {/* OWNED PLATFORMS */}
         <div className='user_game__platforms'>
           <h4>Platforms Owned</h4>
           <ul>{game.origin == 'steam' && <li>Steam</li>}</ul>
         </div>
+
+        {/* ACHIEVEMENT LIST */}
+        {achievements && (
+          <div className='user_game__achievements_wrapper'>
+            <h3>Achievements</h3>
+
+            <div className='user_game__achievements'>
+              <div className='user_game__achievements_banner'>
+                <p>
+                  You've unlocked {getAchievementCount(achievements)} (
+                  {Math.floor(
+                    (achievements.filter((game) => game.achieved == true)
+                      .length /
+                      achievements.length) *
+                      100
+                  )}
+                  %)
+                </p>
+                <div className='user_game__achievements_progress_bar_container'>
+                  <div
+                    className='user_game__achievements_progress_bar'
+                    style={{
+                      width: `${Math.floor(
+                        (achievements.filter((game) => game.achieved == true)
+                          .length /
+                          achievements.length) *
+                          100
+                      )}%`,
+                      background: activeProfile.color,
+                    }}
+                  />
+                </div>
+              </div>
+              <ul className='user_game__achievements_list'>
+                {achievements.map((item) => (
+                  <li className='achievement_item'>
+                    <div className='achievement_item_icon'>
+                      <img
+                        className='achievement_item_icon__img'
+                        src={item.achieved ? item.icon : item.icongray}
+                      />
+                    </div>
+                    <div className='achievement_item_headers'>
+                      <h4>{item.displayName}</h4>
+                      {item.description && <p>{item.description}</p>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

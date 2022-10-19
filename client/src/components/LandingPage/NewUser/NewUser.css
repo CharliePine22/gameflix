@@ -171,6 +171,7 @@
   cursor: pointer;
   margin-right: 25px;
   font-size: 1.1rem;
+  color: #9147ff;
 }
 
 .header_btn:hover {
@@ -292,6 +293,8 @@
 
   .forms_step {
     text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
   }
 
   .info_title {
@@ -300,6 +303,7 @@
 
   .new_user__forms {
     padding: 0px 20px 20px;
+    min-height: auto;
   }
 
   .new_user__header {

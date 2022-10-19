@@ -35,6 +35,18 @@ router.get('/get_game_achievements', async (req, res) => {
   }
 });
 
+router.get('/get_game_stats', async (req, res) => {
+  const gameId = req.query.gameId;
+
+  try {
+    const request = await steam.getGameSchema(gameId);
+    res.send(request);
+    return;
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 router.get('/get_game_news', async (req, res) => {
   const gameId = req.query.gameId;
 

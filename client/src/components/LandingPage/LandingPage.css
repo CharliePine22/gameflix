@@ -75,13 +75,15 @@
 
 .landing_banner__img {
   height: 100%;
-  min-height: 12rem;
+  min-height: 14rem;
+  max-height: 14rem;
+  width: 10rem;
+  /* min-height: 12rem;
   max-height: 12rem;
-  width: 20rem;
+  width: 20rem; */
   transform: translate(-150px, -30px);
-  margin: 0;
-  border: 3px solid transparent;
-  opacity: 0.75;
+  margin: 2px 5px;
+  opacity: 0.7;
 }
 
 .landing_banner__name {
@@ -320,7 +322,7 @@
   color: #fff;
   margin-left: auto;
   margin-right: auto;
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
 }
 
 .landing_nav {
@@ -509,6 +511,7 @@
     font-size: 1.1rem;
     position: relative;
     justify-content: flex-start;
+    border-radius: 4px;
   }
   .landing_banner {
     height: 580px;
@@ -516,7 +519,7 @@
   .landing_banner__img {
     min-height: 8rem;
     max-height: 8rem;
-    width: 11rem;
+    width: 7rem;
     transform: translate(-60px, -60px);
   }
   .landing_banner__fade_bottom {
@@ -577,6 +580,27 @@
     font-weight: 600 !important;
     bottom: -50px;
     font-size: 1.6rem !important;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .email_focused {
+    font-size: 0.7rem !important;
+    transform: translate(-115px, 2px) !important;
+  }
+
+  .email_placeholder {
+    font-size: 1rem;
+    transform: translate(-96px, 12px);
+  }
+
+  .landing__email {
+    height: 0px !important;
+    padding-bottom: 17px;
+    min-width: 300px;
+    margin-bottom: 25px;
+    padding-top: 28px;
+    /* margin-left: 20px; */
   }
 }
 

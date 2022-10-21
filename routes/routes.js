@@ -654,7 +654,7 @@ router.put('/update_game_banner', async (req, res) => {
       },
       {
         $set: {
-          'profiles.$.collection.$[element].user_rating': rating,
+          'profiles.$.collection.$[element].banner_image': bannerURL,
         },
       },
       { arrayFilters: [{ 'element.id': { $eq: gameId } }], new: true }
@@ -664,7 +664,58 @@ router.put('/update_game_banner', async (req, res) => {
       res.send({
         code: 400,
         status: 'NOT OK',
-        message: 'Unable to update playtime, please try again!',
+        message: 'Unable to update banner image, please try again!',
+        response: request,
+      });
+    } else {
+      const currentProfile = request.profiles.filter(
+        (profile) => profile.name === name
+      );
+      const currentPlaytime = currentProfile[0].collection.filter(
+        (game) => game.id === gameId
+      );
+
+      res.send({
+        code: 200,
+        status: 'OK',
+        message: 'Banner image updated!',
+        response: { profile: currentProfile[0], game: currentPlaytime[0] },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400, {
+      message: 'There was an error with your request, please try again.',
+    });
+  }
+});
+
+//* UPDATE GAME ACHIEVEMENTS
+router.put('/update_game_achievements', async (req, res) => {
+  const email = req.body.email;
+  const gameId = req.body.gameId;
+  const name = req.body.currentProfile;
+  const achievements = req.body.achievements;
+
+  try {
+    const request = await userModel.findOneAndUpdate(
+      {
+        email: email,
+        profiles: { $elemMatch: { name } },
+      },
+      {
+        $set: {
+          'profiles.$.collection.$[element].achievements': achievements,
+        },
+      },
+      { arrayFilters: [{ 'element.id': { $eq: gameId } }], new: true }
+    );
+
+    if (request == null) {
+      res.send({
+        code: 400,
+        status: 'NOT OK',
+        message: 'Unable to update achievements, please try again!',
         response: request,
       });
     } else {

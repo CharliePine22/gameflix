@@ -12,10 +12,10 @@ const UserGame = ({
   closeStats,
   setProfile,
   setNotification,
-  setCurrentlyViewing,
+  setCurrentGame,
 }) => {
   // RATING, PLAYTIME, ACHIEVEMENTS, SPOTIFY, NOTES, STATUS(COMPLETED, BACKLOG, ETC.), PLATFORMS OWNED
-  const { anchorPoint, show } = useContextMenu();
+  const { anchorPoint, showBannerMenu } = useContextMenu();
   // Achievement States
   const [achievements, setAchievements] = useState(null);
   const [achievementData, setAchievementData] = useState(null);
@@ -27,6 +27,7 @@ const UserGame = ({
   const [changingRating, setChangingRating] = useState(false);
   const [gameNews, setGameNews] = useState(null);
   const [changingBanner, setChangingBanner] = useState(false);
+  const [bannerLink, setBannerLink] = useState('');
   // Hooks and Storage Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
   const steamID = localStorage.getItem('steamID');
@@ -46,6 +47,10 @@ const UserGame = ({
   }, []);
 
   useEffect(() => {
+    setChangingRating(false);
+    setPlaytime(Math.floor(game.playtime / 60));
+    setRating(game.user_rating);
+    setChangingPlaytime(false);
     if (!steamID) {
       console.log('No steam id');
       return;
@@ -108,6 +113,9 @@ const UserGame = ({
       } catch (error) {
         console.log(error);
       }
+
+      setPlaytime(Math.floor(game.playtime / 60));
+      setRating(game.user_rating);
     };
     fetchAppData();
   }, [game]);
@@ -157,7 +165,7 @@ const UserGame = ({
         JSON.stringify(request.data.response.profile)
       );
       setProfile(request.data.response.profile);
-      setCurrentlyViewing(request.data.response.game);
+      setCurrentGame(request.data.response.game);
       setRating(request.data.response.game.rating);
       setNotification({
         message: `${game.name} playtime successfully updated!`,
@@ -191,7 +199,7 @@ const UserGame = ({
           JSON.stringify(request.data.response.profile)
         );
         setProfile(request.data.response.profile);
-        setCurrentlyViewing(request.data.response.game);
+        setCurrentGame(request.data.response.game);
         setPlaytime(request.data.response.game.playtime / 60);
         setNotification({
           message: `${game.name} playtime successfully updated!`,
@@ -224,17 +232,72 @@ const UserGame = ({
     setChangingBanner(true);
   };
 
+  const updateBanner = async () => {
+    if (bannerLink.trim() == '') return;
+    try {
+      const request = await axios.put(`${baseURL}/app/update_game_banner`, {
+        email: userEmail,
+        currentProfile: activeProfile.name,
+        url: bannerLink,
+        gameId: game.id,
+      });
+      console.log(request);
+      localStorage.setItem(
+        'profile',
+        JSON.stringify(request.data.response.profile)
+      );
+      setProfile(request.data.response.profile);
+      setCurrentGame(request.data.response.game);
+      setPlaytime(request.data.response.game.playtime / 60);
+      setNotification({
+        message: `${game.name} playtime successfully updated!`,
+        status: 'SUCCESS',
+      });
+      setChangingPlaytime(false);
+    } catch (error) {
+      console.log(error);
+      setNotification({
+        message: `Something went wrong, please try again!`,
+        status: 'ERROR',
+      });
+    }
+  };
+
   return (
     <div className='user_game__wrapper'>
-      {changingBanner && <div className='modal'></div>}
+      {changingBanner && (
+        <div className='user_game__modal'>
+          <div className='modal_content'>
+            <h2
+              style={{
+                maxWidth: '75%',
+                textAlign: 'center',
+                marginBottom: '25px',
+              }}
+            >
+              Please enter the link to any image or gif below.
+            </h2>
+
+            <div className='modal_form' style={{ width: '100%' }}>
+              <input
+                style={{ width: '80%' }}
+                value={bannerLink}
+                onChange={(e) => setBannerLink(e.target.value)}
+              />
+              <button onClick={updateBanner}>Submit</button>
+              <button onClick={() => setChangingBanner(false)}>Back</button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className='user_game__banner'>
-        {show && (
+        {showBannerMenu && (
           <ul
             className='user_game__banner_context'
             style={{ top: anchorPoint.y + 5, left: anchorPoint.x }}
           >
             <li className='banner_context__item' onClick={changeBannerHandler}>
-              Set Custom Image
+              Set Custom Banner
             </li>
             <li className='banner_context__item'>Set Custom Logo</li>
             <li className='banner_context__item'>Set Default Image</li>
@@ -246,7 +309,10 @@ const UserGame = ({
         </div>
         <img
           className='user_game_banner_img'
-          src={game.imageURL.replace('cover_big_2x', '1080p_2x')}
+          src={
+            game.banner_image ||
+            game.imageURL.replace('cover_big_2x', '1080p_2x')
+          }
         />
         <div className='user_game__current_stats'>
           {/* PLAYTIME */}

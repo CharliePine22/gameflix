@@ -97,7 +97,6 @@ const UserLibrary = ({
     }
   };
 
-  console.log(steamCollection);
   // List of every steam game to compare to alreaydy owned
   useEffect(() => {
     if (

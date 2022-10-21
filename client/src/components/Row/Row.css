@@ -156,6 +156,11 @@
   transform: translate3d(1px, -3px, 0px);
 }
 
+.row__poster_container:hover .row__poster_front {
+  box-shadow: -5px 5px 5px #000;
+  transform: translate3d(1px, -3px, 0px);
+}
+
 .row__poster_container:hover > .row__poster_name {
   transform: translate3d(1px, -3px, 0px);
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useSearchParams } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 // Component Imports
@@ -64,6 +64,7 @@ function App() {
   const steamCollection = useSteamAuth(id);
 
   // console.log(steamCollection);
+  // console.log(twitchAccessToken);
 
   // Refetch user data if any changes are made
   useEffect(() => {
@@ -202,6 +203,7 @@ function App() {
   };
 
   const removeGameHandler = async (game) => {
+    console.log(game);
     try {
       const request = await axios.put(`${baseURL}/app/remove_game`, {
         email: userEmail,
@@ -221,6 +223,7 @@ function App() {
       setDisplayNotification(true);
       return;
     } catch (error) {
+      console.log(error);
       setNotification({
         message: `Unable to remove ${game.name} from your collection!`,
         status: 'ERROR',
@@ -354,6 +357,7 @@ function App() {
         resumePlayback={() => setPlayAudio(true)}
         setSelectedProfile={(profile) => setSelectedProfile(profile)}
         spotifyToken={spotifyAccessToken}
+        removeGame={(game) => removeGameHandler(game)}
       />
     );
 

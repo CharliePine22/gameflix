@@ -3,7 +3,10 @@ import './UserCollection.css';
 import { FaSistrix, FaHome, FaStar } from 'react-icons/fa';
 import UserGame from '../UserGame/UserGame';
 import Notification from '../Notification/Notification';
-import { IoNotifications } from 'react-icons/io5';
+import useContextMenu from '../../hooks/useContextMenu';
+import bronzeTrophy from '../../assets/images/ps-trophy-bronze.png';
+import goldTrophy from '../../assets/images/ps-trophy-gold.png';
+import platinumTrophy from '../../assets/images/ps-trophy-platinum.png';
 
 const UserCollection = ({
   collection,
@@ -16,16 +19,25 @@ const UserCollection = ({
   resumePlayback,
   spotifyToken,
   setSelectedProfile,
+  removeGame,
 }) => {
   const [searchValue, setSearchValue] = useState('');
   const [searchList, setSearchList] = useState([]);
   const [viewingList, setViewingList] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [currentlyViewing, setCurrentlyViewing] = useState(null);
+  const [currentGame, setCurrentGame] = useState(null);
+  const [currentlyAdjusting, setCurrentlyAdjusting] = useState(null);
+  const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [changingGame, setChangingGame] = useState(false);
   const [displayNotification, setDisplayNotification] = useState(false);
   const [notification, setNotification] = useState({ status: '', message: '' });
   const [alerttedUser, setAlerttedUser] = useState(false);
+  const [spotlightFilter, setSpotlightFilter] = useState('playtime');
+  const { anchorPoint, showTitleMenu } = useContextMenu();
+  const trophies = [platinumTrophy, goldTrophy, bronzeTrophy];
+
+  const npsso =
+    'SmCxqqTxQJ11ZOVQFQo4ZBJZx1OEsffbmwC2hpUHusLeEHvoAyuMQFIIegudospP';
 
   // If user is typing, filter titles that reflect inputted value
   useEffect(() => {
@@ -54,15 +66,41 @@ const UserCollection = ({
 
   // Select which game is being viewed
   const viewGameHandler = (game) => {
-    setCurrentlyViewing(game);
+    setCurrentGame(game);
   };
 
   // Open up the menu when the user right clicks
   const viewGameHeaders = (e, game) => {
     e.preventDefault();
-    e.stopPropagation();
-    console.log(game);
+    setCurrentlyAdjusting(game);
+    setContextMenuVisible(true);
   };
+
+  const removeGameHandler = (e) => {
+    e.stopPropagation();
+    setContextMenuVisible(false);
+    console.log(currentlyAdjusting);
+    if (
+      Object.keys(currentGame).length > 0 &&
+      currentlyAdjusting.id === currentGame.id
+    )
+      setCurrentGame(null);
+    const gameRemoval = removeGame(currentlyAdjusting);
+    console.log(gameRemoval);
+    setCurrentlyAdjusting(null);
+  };
+
+  const mostPlayed = collection
+    .sort((a, b) =>
+      a.playtime > b.playtime ? -1 : b.playtime > a.playtime ? 1 : 0
+    )
+    .slice(0, 3);
+
+  const highestRated = collection
+    .sort((a, b) =>
+      a.user_rating > b.user_rating ? -1 : b.user_rating > a.user_rating ? 1 : 0
+    )
+    .slice(0, 3);
 
   collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
@@ -73,11 +111,6 @@ const UserCollection = ({
         style={{
           background: '#111',
         }}
-        // style={{
-        //   background: `linear-gradient(120deg, ${
-        //     activeProfile.color || '#00adee'
-        //   }, #000000)`,
-        // }}
       >
         {/* LEFT SIDE */}
         <div
@@ -85,7 +118,7 @@ const UserCollection = ({
           style={{
             height: viewingList && '250%',
             marginBottom: viewingList && '25px',
-            display: isMobile && currentlyViewing && 'none',
+            display: isMobile && currentGame && 'none',
           }}
         >
           <h2>
@@ -119,6 +152,7 @@ const UserCollection = ({
             style={{
               height: viewingList && '100%',
               display: viewingList && 'flex',
+              overflowY: showTitleMenu ? 'hidden' : 'scroll',
             }}
           >
             {searchValue == ''
@@ -129,8 +163,7 @@ const UserCollection = ({
                     onClick={() => viewGameHandler(game)}
                     onContextMenu={(e) => viewGameHeaders(e, game)}
                     style={{
-                      background:
-                        currentlyViewing?.name == game.name && '#9147ff',
+                      background: currentGame?.id == game.id && '#9147ff',
                     }}
                   >
                     {' '}
@@ -138,6 +171,27 @@ const UserCollection = ({
                     <p>{game.name}</p>
                     {game.name == activeProfile.favorite_game && (
                       <FaStar className='list_item_favorite' />
+                    )}
+                    {showTitleMenu && contextMenuVisible && (
+                      <ul
+                        onMouseEnter={(e) => e.stopPropagation(true)}
+                        className='user_collection__game_context'
+                        style={{
+                          top: anchorPoint.y + 5,
+                          left: anchorPoint.x,
+                          zIndex: 6,
+                        }}
+                      >
+                        <li className='banner_context__item'>
+                          Add to Favorites
+                        </li>
+                        <li
+                          className='banner_context__item'
+                          onClick={(e) => removeGameHandler(e, game)}
+                        >
+                          Delete Game
+                        </li>
+                      </ul>
                     )}
                   </li>
                 ))
@@ -159,14 +213,14 @@ const UserCollection = ({
         </div>
         {/* RIGHT SIDE */}
         <div className='user_collection__right'>
-          {currentlyViewing !== null && (
+          {currentGame !== null && (
             <>
               <UserGame
-                game={currentlyViewing}
+                game={currentGame}
                 activeProfile={activeProfile}
-                closeStats={() => setCurrentlyViewing(null)}
+                closeStats={() => setCurrentGame(null)}
                 setProfile={(profile) => setSelectedProfile(profile)}
-                setCurrentlyViewing={(game) => setCurrentlyViewing(game)}
+                setCurrentGame={(game) => setCurrentGame(game)}
                 setNotification={(message, status) => {
                   setNotification(message, status);
                 }}
@@ -181,55 +235,85 @@ const UserCollection = ({
               /> */}
             </>
           )}
-          {/* <div className='user_collection__spotlight'></div> */}
-          {!currentlyViewing && (
-            <ul className='user_collection__list'>
-              {!isMobile || (isMobile && searchValue == '')
-                ? collection.map((game) => (
-                    <li
-                      className='list_item'
-                      key={game.id}
-                      onClick={() => viewGameHandler(game)}
-                    >
-                      <div className='user_collection__poster_container'>
-                        <div className='gradient' />
-                        <>
-                          {/* FRONT OF POSTER */}
-                          <div className='user_collection__poster_front'>
-                            <img
-                              loading='lazy'
-                              className='user_collection__poster'
-                              src={game.imageURL}
-                              alt={game.name}
-                            />
-                          </div>
-                        </>
-                      </div>
-                    </li>
-                  ))
-                : searchList.map((game) => (
-                    <li className='list_item' key={game.id}>
-                      <div className='user_collection__poster_container'>
-                        <div className='gradient' />
-                        <>
-                          {/* FRONT OF POSTER */}
-                          <div className='user_collection__poster_front'>
-                            <img
-                              loading='lazy'
-                              className='user_collection__poster'
-                              src={
-                                isMobile
-                                  ? game.imageURL.replace('cover_big', '1080p')
-                                  : game.imageURL
-                              }
-                              alt={game.name}
-                            />
-                          </div>
-                        </>
-                      </div>
-                    </li>
+
+          {!currentGame && (
+            // SPOTLIGHT
+            <>
+              <div className='user_collection__spotlight_wrapper'>
+                <div className='spotlight_filters'>
+                  <h3 className='spotlight_filter'>Most Played</h3>
+                </div>
+                <div className='user_collection__spotlight'>
+                  {highestRated.map((top, i) => (
+                    <figure className='spotlight_container'>
+                      <img
+                        className='spotlight_image'
+                        src={top.banner_url || top.imageURL}
+                      />
+                      <img
+                        className='spotlight_trophy_image'
+                        src={trophies[i]}
+                      />
+                      <figcaption className='spotlight_details'>
+                        <p>{Math.floor(top.playtime / 60)} hours</p>
+                      </figcaption>
+                    </figure>
                   ))}
-            </ul>
+                </div>
+              </div>
+
+              {/* COVER LIST */}
+              <ul className='user_collection__list'>
+                {!isMobile || (isMobile && searchValue == '')
+                  ? collection.map((game) => (
+                      <li
+                        className='list_item'
+                        key={game.id}
+                        onClick={() => viewGameHandler(game)}
+                      >
+                        <div className='user_collection__poster_container'>
+                          <div className='gradient' />
+                          <>
+                            {/* FRONT OF POSTER */}
+                            <div className='user_collection__poster_front'>
+                              <img
+                                loading='lazy'
+                                className='user_collection__poster'
+                                src={game.imageURL}
+                                alt={game.name}
+                              />
+                            </div>
+                          </>
+                        </div>
+                      </li>
+                    ))
+                  : searchList.map((game) => (
+                      <li className='list_item' key={game.id}>
+                        <div className='user_collection__poster_container'>
+                          <div className='gradient' />
+                          <>
+                            {/* FRONT OF POSTER */}
+                            <div className='user_collection__poster_front'>
+                              <img
+                                loading='lazy'
+                                className='user_collection__poster'
+                                src={
+                                  isMobile
+                                    ? game.imageURL.replace(
+                                        'cover_big',
+                                        '1080p'
+                                      )
+                                    : game.imageURL
+                                }
+                                alt={game.name}
+                              />
+                            </div>
+                          </>
+                        </div>
+                      </li>
+                    ))}
+              </ul>
+            </>
           )}
         </div>
       </div>

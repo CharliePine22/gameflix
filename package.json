@@ -24,6 +24,7 @@
     "nodemon": "^2.0.19",
     "passport": "^0.6.0",
     "passport-steam": "^1.0.17",
+    "psn-api": "^2.8.1",
     "spotify-web-api-node": "^5.0.2",
     "steamapi": "^2.2.0"
   }

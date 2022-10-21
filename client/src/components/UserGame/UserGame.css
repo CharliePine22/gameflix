@@ -317,8 +317,9 @@
   font-weight: bold;
   cursor: pointer;
   align-items: center;
-  padding: 4px 10px;
+  padding: 6px 12px;
   opacity: 0.5;
+  z-index: 1;
 }
 
 .user_game__exit:hover {
@@ -331,6 +332,23 @@
   justify-content: center;
   margin-bottom: 10px;
   padding: 0 5px;
+}
+
+.user_game__modal {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 40px 70px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.95);
+  color: white;
+  z-index: 2;
+  left: 35%;
+  top: 100px;
+  border: 2px solid white;
+  align-items: center;
+  animation: displayModal 500ms forwards;
+  box-shadow: 0 3px 7px rgb(255 255 255 / 30%);
 }
 
 .user_game__platforms {
@@ -384,6 +402,15 @@
   }
 }
 
+@media screen and (max-width: 1024px) {
+  .user_game__modal {
+    padding: 50px 0px 70px;
+    left: 35%;
+    top: 100px;
+    width: 55%;
+  }
+}
+
 @media screen and (max-width: 1000px) {
   .user_game__banner img {
     width: 100%;
@@ -394,6 +421,11 @@
 }
 
 @media screen and (max-width: 533px) {
+  .user_game__modal {
+    left: 7%;
+    width: 85%;
+  }
+
   .user_game__title {
     max-width: 90%;
   }

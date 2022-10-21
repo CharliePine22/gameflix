@@ -34,7 +34,7 @@ function Row({
 
   useEffect(() => {
     // Grab games from each genre
-    if (!twitchToken) return;
+    if (!twitchToken || games.length > 0) return;
     setLoading(true);
     async function fetchData() {
       try {
@@ -43,14 +43,13 @@ function Row({
           genreId,
         });
         setGames(request.data);
-        setLoading(false);
-        return request;
       } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     }
     fetchData();
-  }, [genreId, twitchToken]);
+  }, [genreId, twitchToken, games]);
 
   const fetchGameOST = async (game) => {
     if (!spotifyToken) {
@@ -132,23 +131,23 @@ function Row({
   return (
     <div className='row' key={title}>
       <h2 className='row__title'>{title}</h2>
-
       <div className='row__posters'>
         {games?.map(
           (game) =>
             game.cover !== undefined && (
               <React.Fragment key={game.id}>
-                <div className='row__poster_wrapper'>
-                  <div
-                    className={`row__poster_container ${
-                      viewingSoundtrack && currentGame == game.name
-                        ? 'flip'
-                        : ''
-                    }`}
-                    onClick={() => fetchGameDetails(game)}
-                  >
-                    {' '}
-                    {!loading && (
+                {!loading && (
+                  <div className='row__poster_wrapper'>
+                    <div
+                      className={`row__poster_container ${
+                        viewingSoundtrack && currentGame == game.name
+                          ? 'flip'
+                          : ''
+                      }`}
+                      onClick={() => fetchGameDetails(game)}
+                    >
+                      {' '}
+                      {/* {!loading && ( */}
                       <>
                         {/* FRONT OF POSTER */}
                         <div className='row__poster_front'>
@@ -222,16 +221,10 @@ function Row({
                           </div>
                         </div>
                       </>
-                    )}
+                      {/* )} */}
+                    </div>
                   </div>
-                  {currentlyOpen === game.name && (
-                    <GamePreview
-                      game={currentGame}
-                      displayDetails={displayDetails}
-                      hideDetails={closeGameDetails}
-                    />
-                  )}
-                </div>
+                )}
               </React.Fragment>
             )
         )}
@@ -239,9 +232,7 @@ function Row({
           <div className='row__loading_container'>
             {[...Array(10)].map((item, i) => (
               <div key={i} className='row__placeholder__wrapper'>
-                <div className='row__poster_container'>
-                  <Placeholder key={i} delay={i} />
-                </div>
+                <Placeholder key={i} delay={i} />
               </div>
             ))}
           </div>

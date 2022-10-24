@@ -22,6 +22,19 @@
   width: 31.5%;
   margin: 10px 0;
   position: relative;
+  background-color: rgb(35, 35, 35);
+  border-radius: 2px;
+  --base-color: rgb(55, 55, 55);
+}
+
+.card_banner {
+  background-color: rgb(35, 35, 35);
+  --base-color: rgb(55, 55, 55);
+}
+
+.card_banner_small {
+  background-color: rgb(35, 35, 35);
+  --base-color: rgb(55, 55, 55);
 }
 
 .card_small {
@@ -35,6 +48,9 @@
   top: 73px;
   left: 20px;
   border: 2px solid black;
+  background-color: rgb(35, 35, 35);
+  --base-color: rgb(55, 55, 55);
+
   width: 105px;
   height: 141px;
 }
@@ -42,9 +58,11 @@
 .card_cover_small {
   position: absolute;
   top: 2px;
-  --base-color: lightblue;
+  --base-color: rgb(55, 55, 55);
   height: 104px;
   width: 83px;
+  background-color: rgb(30, 30, 30);
+  border: 2px solid black;
 }
 
 .card-link {
@@ -54,6 +72,7 @@
 
 .card-image {
   width: 100%;
+  background: rgb(35, 35, 35);
 }
 
 .channel-image {
@@ -78,7 +97,7 @@
   margin-top: 5px;
   margin-bottom: 5px;
   font-size: 14px;
-  --base-color: lightblue;
+  --base-color: rgb(55, 55, 55);
 }
 
 .skeleton_card_wrapper {
@@ -88,19 +107,21 @@
 .skeleton_title {
   position: absolute;
   top: 193px;
-  right: 0px;
+  right: 12px;
   height: 22px;
-  width: 63%;
-  --base-color: lightblue;
+  width: 59%;
+  --base-color: rgb(55, 55, 55);
+  background-color: rgb(11, 11, 11);
 }
 
 .skeleton_title_small {
   position: absolute;
   top: 15px;
-  right: 4px;
+  right: 6px;
   height: 15px;
-  width: 60%;
-  --base-color: lightblue;
+  width: 56%;
+  --base-color: rgb(55, 55, 55);
+  background-color: rgb(11, 11, 11);
 }
 
 @media (max-width: 1024px) {
@@ -131,9 +152,9 @@
     position: absolute;
     top: 191px;
     right: 0px;
-    height: 22px;
+    height: 15px;
     width: 58%;
-    --base-color: lightblue;
+    --base-color: rgb(55, 55, 55);
   }
 }
 
@@ -162,7 +183,7 @@
     right: 0px;
     height: 22px;
     width: 65%;
-    --base-color: lightblue;
+    --base-color: rgb(55, 55, 55);
   }
 
   .skeleton_title_small {
@@ -171,7 +192,7 @@
     right: 4px;
     height: 15px;
     width: 52%;
-    --base-color: lightblue;
+    --base-color: rgb(55, 55, 55);
   }
 }
 

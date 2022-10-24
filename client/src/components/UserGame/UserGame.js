@@ -28,15 +28,19 @@ const UserGame = ({
   const [gameNews, setGameNews] = useState(null);
   const [changingBanner, setChangingBanner] = useState(false);
   const [bannerLink, setBannerLink] = useState('');
+  const [backlogStatus, setBacklogStatus] = useState(game.status);
+  const [changingBacklog, setChangingBacklog] = useState(false);
+  // BACKLOG, CURRENTLY PLAYING, COMPLETED, STARTED, ABANDONED, 100%, NOT OWNED
   // Hooks and Storage Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
   const steamID = localStorage.getItem('steamID');
   const userEmail = JSON.parse(localStorage.getItem('user'))?.email;
-
+  // console.log(game);
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.keyCode === 27) {
         setChangingRating(false);
+        setChangingBacklog(false);
       }
     };
     window.addEventListener('keydown', handleEsc);
@@ -46,11 +50,14 @@ const UserGame = ({
     };
   }, []);
 
+  // Runs everytime game changes
   useEffect(() => {
+    setChangingPlaytime(false);
     setChangingRating(false);
+    setChangingBacklog(false);
+    setBacklogStatus(game.status || 'BACKLOG');
     setPlaytime(Math.floor(game.playtime / 60));
     setRating(game.user_rating);
-    setChangingPlaytime(false);
     if (!steamID) {
       console.log('No steam id');
       return;
@@ -67,6 +74,7 @@ const UserGame = ({
         dataList.push(x);
       });
 
+      // Sort Alphabetically
       dataList.sort(function (a, b) {
         var textA = a.displayName.toUpperCase();
         var textB = b.displayName.toUpperCase();
@@ -79,10 +87,11 @@ const UserGame = ({
       return dataList;
     };
 
+    // Sort by unlocked Achievements
     const fetchAppData = async () => {
       try {
         const steamGameAchievements = await axios.get(
-          `${baseURL}/steam/get_game_achievements`,
+          `${baseURL}/steam/get_steam_achievements`,
           {
             params: {
               gameId: game.id,
@@ -216,6 +225,44 @@ const UserGame = ({
     }
   };
 
+  const updateBacklog = async (status) => {
+    if (status == backlogStatus) {
+      console.log('No new update');
+      return;
+    }
+    try {
+      const request = await axios.put(`${baseURL}/app/update_game_backlog`, {
+        email: userEmail,
+        currentProfile: activeProfile.name,
+        status: status,
+        gameId: game.id,
+      });
+      localStorage.setItem(
+        'profile',
+        JSON.stringify(request.data.response.profile)
+      );
+      setProfile(request.data.response.profile);
+      setCurrentGame(request.data.response.game);
+      setBacklogStatus(request.data.response.game.status);
+      setNotification({
+        message: `${game.name} backlog successfully updated!`,
+        status: 'SUCCESS',
+      });
+      setChangingPlaytime(false);
+    } catch (error) {
+      console.log(error);
+      setNotification({
+        message: `Something went wrong, please try again!`,
+        status: 'ERROR',
+      });
+    }
+  };
+
+  const updateBacklogHandler = (status) => {
+    updateBacklog(status);
+    setChangingBacklog(false);
+  };
+
   // Determine if user is updating or canceling playtime change
   const determinePlaytimeAction = (e) => {
     if (e.key === 'Enter') {
@@ -241,7 +288,6 @@ const UserGame = ({
         url: bannerLink,
         gameId: game.id,
       });
-      console.log(request);
       localStorage.setItem(
         'profile',
         JSON.stringify(request.data.response.profile)
@@ -261,6 +307,7 @@ const UserGame = ({
         status: 'ERROR',
       });
     }
+    setChangingBanner(false);
   };
 
   return (
@@ -374,12 +421,131 @@ const UserGame = ({
           </div>
 
           {/* ACHIEVEMENT COUNTER  */}
-          <div className='achievement_count_container'>
+          {/* <div className='achievement_count_container'>
             <FaMedal className='achievement_medal_icon' />
             <div className='stats_item'>
               <h3>ACHIEVEMENTS</h3>
               <span>{getAchievementCount(achievements)}</span>
             </div>
+          </div> */}
+
+          {/* BACKLOG STATUS */}
+          <div className='achievement_count_container'>
+            <div className='stats_item'>
+              <h3 style={{ paddingTop: '9px', marginBottom: '5px' }}>STATUS</h3>
+              <button
+                onClick={() => setChangingBacklog(!changingBacklog)}
+                style={{
+                  backgroundColor:
+                    backlogStatus == 'BACKLOG'
+                      ? 'dodgerblue'
+                      : backlogStatus == 'STARTED'
+                      ? 'aqua'
+                      : backlogStatus == 'FINISHED'
+                      ? 'green'
+                      : backlogStatus == 'PLAYING'
+                      ? 'pink'
+                      : backlogStatus == '100%'
+                      ? 'gold'
+                      : backlogStatus == 'ABANDONDED'
+                      ? 'red'
+                      : 'grey',
+                }}
+                className='status_btn'
+              >
+                {backlogStatus}
+              </button>
+            </div>
+            {changingBacklog && (
+              <div className='backlog_items'>
+                <ul className='backlog_items_list'>
+                  <li
+                    style={{
+                      backgroundColor: 'BACKLOG' == game.status && '#9147ff',
+                      color: 'BACKLOG' == game.status && 'white',
+                    }}
+                    className='backlog_items_item'
+                    onClick={() => {
+                      updateBacklogHandler('BACKLOG');
+                    }}
+                  >
+                    Backlog
+                  </li>
+                  <li
+                    style={{
+                      backgroundColor: 'STARTED' == game.status && '#9147ff',
+                      color: 'STARTED' == game.status && 'white',
+                    }}
+                    className='backlog_items_item'
+                    onClick={() => {
+                      updateBacklogHandler('STARTED');
+                    }}
+                  >
+                    Started
+                  </li>
+                  <li
+                    style={{
+                      backgroundColor: 'PLAYING' == game.status && '#9147ff',
+                      color: 'PLAYING' == game.status && 'white',
+                    }}
+                    className='backlog_items_item'
+                    onClick={() => {
+                      updateBacklogHandler('PLAYING');
+                    }}
+                  >
+                    Currently Playing
+                  </li>
+                  <li
+                    style={{
+                      backgroundColor: 'FINISHED' == game.status && '#9147ff',
+                      color: 'FINISHED' == game.status && 'white',
+                    }}
+                    className='backlog_items_item'
+                    onClick={() => {
+                      updateBacklogHandler('FINISHED');
+                    }}
+                  >
+                    Finished
+                  </li>
+                  <li
+                    style={{
+                      backgroundColor: '100%' == game.status && '#9147ff',
+                      color: '100%' == game.status && 'white',
+                    }}
+                    className='backlog_items_item'
+                    onClick={() => {
+                      updateBacklogHandler('100%');
+                    }}
+                  >
+                    100% Completed
+                  </li>
+                  <li
+                    style={{
+                      backgroundColor: 'ABANDONDED' == game.status && '#9147ff',
+                      color: 'ABANDONDED' == game.status && 'white',
+                    }}
+                    className='backlog_items_item'
+                    onClick={() => {
+                      updateBacklogHandler('ABANDONDED');
+                    }}
+                  >
+                    Abandonded
+                  </li>
+                  <li
+                    style={{
+                      backgroundColor: 'NOT OWNED' == game.status && '#9147ff',
+                      color: 'NOT OWNED' == game.status && 'white',
+                    }}
+                    className='backlog_items_item'
+                    onClick={() => {
+                      updateBacklogHandler('NOT OWNED');
+                    }}
+                  >
+                    Not Owned
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
 
           {/* SPOTIFY MUSIC */}
@@ -449,7 +615,10 @@ const UserGame = ({
               <ul className='user_game__achievements_list'>
                 {achievements.map((item) => (
                   <li className='achievement_item'>
-                    <div className='achievement_item_icon'>
+                    <div
+                      className='achievement_item_icon'
+                      style={{ border: `1px solid ${activeProfile.color}` }}
+                    >
                       <img
                         className='achievement_item_icon__img'
                         src={item.achieved ? item.icon : item.icongray}

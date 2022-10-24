@@ -741,6 +741,57 @@ router.put('/update_game_achievements', async (req, res) => {
   }
 });
 
+//* UPDATE GAME BACKLOG STATUS
+router.put('/update_game_backlog', async (req, res) => {
+  const email = req.body.email;
+  const gameId = req.body.gameId;
+  const name = req.body.currentProfile;
+  const backlogStatus = req.body.status;
+
+  try {
+    const request = await userModel.findOneAndUpdate(
+      {
+        email: email,
+        profiles: { $elemMatch: { name } },
+      },
+      {
+        $set: {
+          'profiles.$.collection.$[element].status': backlogStatus,
+        },
+      },
+      { arrayFilters: [{ 'element.id': { $eq: gameId } }], new: true }
+    );
+
+    if (request == null) {
+      res.send({
+        code: 400,
+        status: 'NOT OK',
+        message: 'Unable to update backlog, please try again!',
+        response: request,
+      });
+    } else {
+      const currentProfile = request.profiles.filter(
+        (profile) => profile.name === name
+      );
+      const currentPlaytime = currentProfile[0].collection.filter(
+        (game) => game.id === gameId
+      );
+
+      res.send({
+        code: 200,
+        status: 'OK',
+        message: 'Backlog status updated!',
+        response: { profile: currentProfile[0], game: currentPlaytime[0] },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400, {
+      message: 'There was an error with your request, please try again.',
+    });
+  }
+});
+
 //! CREATE A NEW PROFILE
 router.post('/create_new_profile', async (req, res) => {
   const userEmail = req.body.email;

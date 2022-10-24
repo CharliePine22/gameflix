@@ -1,0 +1,7 @@
+.user_notes__wrapper {
+  position: relative;
+  min-height: 250px;
+  min-width: 500px;
+  background: blue;
+  border: 1px solid white;
+}

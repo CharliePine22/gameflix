@@ -44,9 +44,10 @@ const UserLibrary = ({
       const gameNames = await Promise.all(
         updatedCollection.map((game) => {
           const exists = collection.some((element) => {
-            if (element.id === game.id) {
-              console.log(element, game);
+            if (element.id === game.appID) {
               return true;
+            } else {
+              return false;
             }
           });
 
@@ -109,6 +110,8 @@ const UserLibrary = ({
     const steamGames = new Map(
       steamCollection.map(({ name, ...rest }) => [name.toLowerCase(), rest])
     );
+
+    console.log(steamCollection);
 
     // If user has game in both gameflix and steam library, dont push gameflix game
     const newGames = collection.reduce(function (result, game) {

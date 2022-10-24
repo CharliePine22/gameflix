@@ -22,7 +22,7 @@ router.get('/get_owned_games', async (req, res) => {
   }
 });
 
-router.get('/get_game_achievements', async (req, res) => {
+router.get('/get_steam_achievements', async (req, res) => {
   const steamId = req.query.steamId;
   const gameId = req.query.gameId;
 

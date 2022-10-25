@@ -24,6 +24,7 @@ import UserLibrary from './components/UserLibrary/UserLibrary';
 import GameDetails from './components/GameDetails/GameDetails';
 import UserCollection from './components/UserCollectionPage/UserCollection';
 import Notification from './components/Notification/Notification';
+import Authentication from './components/Authentication/Authentication';
 
 const code = new URLSearchParams(window.location.search).get('code');
 const windowUrl = window.location.search;
@@ -54,8 +55,8 @@ function App() {
 
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
-  const userEmail = JSON.parse(localStorage.getItem('user'))?.email;
-  const userProfile = JSON.parse(localStorage.getItem('profile'))?.name;
+  const userEmail = localStorage.getItem('user');
+  const userProfile = JSON.parse(localStorage.getItem('profile'));
 
   let audio = new Audio(loginAudio);
 
@@ -68,21 +69,22 @@ function App() {
 
   // Refetch user data if any changes are made
   useEffect(() => {
+    const userEmail = localStorage.getItem('user');
+    if (!userEmail) return;
     const updateUser = async () => {
-      if (!loggedUser) return null;
       const request = await axios.get(`${baseURL}/app/get_user`, {
         params: {
-          email: loggedUser.email,
+          email: loggedUser,
         },
       });
-      localStorage.setItem('user', JSON.stringify(request.data));
+      setLoggedUser(request.data);
     };
     updateUser();
   }, []);
 
   // Check to see if user is logged in
   useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    const loggedInUser = localStorage.getItem('user');
     if (loggedInUser) {
       setLoggedUser(loggedInUser);
     }
@@ -92,10 +94,15 @@ function App() {
 
   // Check to see which profile is active
   useEffect(() => {
-    const userProfile = JSON.parse(localStorage.getItem('profile'));
-    sessionStorage.removeItem('steamID');
+    localStorage.removeItem('steamID');
+    localStorage.removeItem('steamConn');
+    if (!loggedUser || !userProfile) return;
     if (userProfile) {
-      setSelectedProfile(userProfile);
+      const currentProfile = loggedUser.profiles.filter((obj) => {
+        return obj.name === userProfile;
+      });
+      console.log(currentProfile);
+      setSelectedProfile(currentProfile[0]);
     }
   }, [userProfile]);
 
@@ -230,27 +237,22 @@ function App() {
 
   // Login user if verification succeeds.
   const loginAuthentication = (user) => {
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('user', user.email);
     setLoggedUser(user);
     audio.play();
   };
 
   // Logout the user
   const logoutHandler = () => {
-    window.location = '/';
-    localStorage.removeItem('user');
-    localStorage.removeItem('profile');
-    localStorage.removeItem('password');
-    localStorage.removeItem('spotify_token');
-    localStorage.removeItem('steamID');
-    setSelectedProfile(null);
     setLoggedUser(null);
+    setSelectedProfile(null);
+    localStorage.clear('user');
   };
 
   const changeProfile = (user) => {
     setChangingUser(true);
-    setSelectedProfile(user);
-    localStorage.setItem('profile', JSON.stringify(user));
+    // setSelectedProfile(user.name);
+    localStorage.setItem('profile', user.name);
     setTimeout(() => {
       setChangingUser(false);
     }, 2000);
@@ -261,9 +263,9 @@ function App() {
   };
 
   // Display login page if app detects sign out or sign in
-  if (!loggedUser && !toLanding) {
+  if (!loggedUser) {
     return (
-      <Login
+      <Authentication
         error={error}
         toLanding={() => setToLanding(true)}
         landing={toLanding}
@@ -296,7 +298,7 @@ function App() {
         saveEdit={() => setEditingUser(true)}
         updateUser={updatingUser}
         currentUser={loggedUser}
-        selectProfile={(user) => setSelectedProfile(user)}
+        selectProfile={(user) => setSelectedProfile(user.name)}
         twitchToken={twitchAccessToken}
       />
     );
@@ -385,7 +387,7 @@ function App() {
             twitchToken={twitchAccessToken}
             setGameDetails={(game) => setGameDetails(game)}
           />
-          <TrendingRow />
+          <TrendingRow twitchToken={twitchAccessToken} />
           <UserLibrary
             activeProfile={selectedProfile}
             playTrack={playTrack}

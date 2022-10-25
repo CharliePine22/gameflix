@@ -61,12 +61,12 @@
   width: 100%;
   cursor: pointer;
   position: relative;
-  margin-right: 15px;
+  margin-right: 25px;
   /* FLIP CARD TRANSITION */
   transition: all 250ms;
   z-index: -1;
-  max-width: 13rem;
-  min-width: 13rem;
+  max-width: 12.5rem;
+  min-width: 12.5rem;
   object-fit: cover;
   height: 100%;
   min-height: 320px;
@@ -183,7 +183,7 @@
 
 .row__posters {
   display: flex;
-  padding: 10px 20px 20px;
+  padding: 20px 20px 30px;
   position: relative;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -203,6 +203,12 @@
 .row__posters_container {
   display: flex;
   width: 100%;
+}
+
+.row__title {
+  font-size: 2rem;
+  font-style: italic;
+  text-shadow: 4px 5px black;
 }
 
 .soundtrack_container {

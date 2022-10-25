@@ -99,8 +99,7 @@
 
 .title_list__item {
   color: white;
-  padding: 4px 0;
-  padding-left: 5px;
+  padding: 4px 5px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -189,7 +188,13 @@
   overflow: hidden;
 }
 
-.user_collection__left h2 {
+.user_collection__left_header {
+  padding: 0 10px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.user_collection__left_header h2 {
   display: flex;
   text-align: center;
   color: white;
@@ -271,24 +276,24 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 8px;
   position: relative;
 }
 
 .user_collection__search_icon {
   height: 100%;
   position: absolute;
-  left: 15px;
+  /* left: 9px; */
+  left: 20px;
   color: white;
 }
 
 .user_collection__search_input {
-  width: 83%;
+  width: 80%;
   border: 1px solid darkgray;
   background: grey;
   border-radius: 4px;
   font-size: 1rem;
-  padding: 8px 0px 6px 30px;
+  padding: 7px 0px 7px 30px;
   color: white;
 }
 
@@ -316,12 +321,13 @@
 .user_collection__title_list {
   height: 100%;
   width: 100%;
-  /* background: rgba(0, 0, 0, 0.9); */
   padding: 0;
+  padding-left: 6px;
   list-style: none;
   overflow-y: scroll;
-  /* box-shadow: 0 0 5px white; */
+  overflow-x: hidden;
   border-radius: 5px;
+  position: relative;
 }
 
 .user_collection__title_list::-webkit-scrollbar {
@@ -338,7 +344,17 @@
 @media screen and (max-width: 1024px) {
   .user_collection__left {
     min-width: 210px;
-    padding: 0 12px 34px 12px;
+    /* padding: 0 12px 34px 12px; */
+  }
+
+  .user_collection__left_header {
+    padding: 0;
+    margin-bottom: 30px;
+    width: 100%;
+  }
+
+  .user_collection__left_header h2 {
+    margin: 20px 8px;
   }
 
   .user_collection__poster_container {
@@ -346,6 +362,12 @@
     min-width: 8.5rem;
     min-height: 210px;
     max-height: 210px;
+  }
+
+  .user_collection__search_icon {
+    /* left: 9px; */
+    left: 13px;
+    color: white;
   }
 }
 
@@ -355,10 +377,19 @@
   }
 
   .user_collection__poster_container {
-    max-width: 6.5rem;
-    min-width: 6.5rem;
-    min-height: 165px;
-    max-height: 165px;
+    max-width: 7.5rem;
+    min-width: 7.5rem;
+    min-height: 200px;
+    max-height: 200px;
+  }
+
+  .user_collection__left_header {
+    padding: 0 10px;
+  }
+
+  .user_collection__search_input {
+    width: 83%;
+    padding: 7px 0px 7px 30px;
   }
 }
 
@@ -426,7 +457,11 @@
   .user_collection__total {
     color: white;
     margin-bottom: 5px;
-    margin-left: 5px;
+    padding-left: 7px;
+    position: fixed;
+    top: 132px;
+    font-size: 0.95rem;
+    width: 100%;
   }
 
   .user_collection__total span {
@@ -463,6 +498,7 @@
   /* transform: translate(-50px, -70px); */
   .user_collection__spotlight_wrapper {
     height: 350px;
+    display: none;
   }
 }
 

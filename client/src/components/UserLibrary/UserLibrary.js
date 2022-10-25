@@ -30,12 +30,10 @@ const UserLibrary = ({
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const baseURL = process.env.REACT_APP_BASE_URL;
   // MongoDB Query Creds
-  const userEmail = JSON.parse(localStorage.getItem('user')).email;
-  const userProfile = JSON.parse(localStorage.getItem('profile')).name;
-  const userCurrentCollection = JSON.parse(
-    localStorage.getItem('profile')
-  ).collection;
+  const userEmail = localStorage.getItem('user');
+  const userProfile = localStorage.getItem('profile');
   const steamID = localStorage.getItem('steamID');
+  const steamConnected = localStorage.getItem('steamConn');
 
   // FOR 10TH SPOT HAVE 3 GAMES STACKED LIKE CARDS AND SLIGHTLY FADE TO SHOW ALL
   //  SHOW ALL WILL LOOK LIKE STEAM
@@ -83,6 +81,7 @@ const UserLibrary = ({
         return obj.name === userProfile;
       });
       localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
+      localStorage.setItem('steamConn', true);
       setSelectedProfile(currentProfile[0]);
       // setNotification({
       //   message: `Steam games sucessfully added to your collection!`,
@@ -94,13 +93,13 @@ const UserLibrary = ({
     }
   };
 
-  // List of every steam game to compare to alreaydy owned
+  // List of every steam game to compare to already owned
   useEffect(() => {
     if (
       steamCollection.length == 0 ||
-      collection ||
       !steamCollection ||
       !steamID ||
+      steamConnected ||
       typeof steamCollection == 'string'
     )
       return;

@@ -80,7 +80,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  margin: 0px 25px 5px;
+  margin: 0px auto 5px 15px;
 }
 
 .music_icon_container h4 {
@@ -146,10 +146,10 @@
 .rating_container {
   display: flex;
   align-items: center;
-  width: auto;
+  min-width: fit-content;
   height: 100%;
   position: relative;
-  margin: 0 25px 5px;
+  margin: 0 16px 5px;
 }
 
 .playtime_container span,
@@ -288,7 +288,7 @@
 
 .user_game__banner {
   width: 100%;
-  height: 400px;
+  height: 450px;
   position: relative;
   z-index: 1;
 }
@@ -326,7 +326,8 @@
 .user_game__data_img {
   height: 100%;
   z-index: -1;
-  position: absolute;
+  position: fixed;
+  top: 0;
   width: 100%;
   opacity: 0.35;
 }
@@ -459,6 +460,10 @@
     left: 35%;
     top: 100px;
     width: 55%;
+  }
+
+  .user_game__banner {
+    height: 400px;
   }
 }
 

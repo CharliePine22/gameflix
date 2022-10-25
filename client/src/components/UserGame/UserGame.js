@@ -17,7 +17,7 @@ const UserGame = ({
   // RATING, PLAYTIME, ACHIEVEMENTS, SPOTIFY, NOTES, STATUS(COMPLETED, BACKLOG, ETC.), PLATFORMS OWNED
   const { anchorPoint, showBannerMenu } = useContextMenu();
   // Achievement States
-  const [achievements, setAchievements] = useState(null);
+  const [achievements, setAchievements] = useState(game.achievements);
   const [achievementData, setAchievementData] = useState(null);
   // Playtime States
   const [playtime, setPlaytime] = useState(Math.floor(game.playtime / 60));
@@ -34,8 +34,9 @@ const UserGame = ({
   // Hooks and Storage Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
   const steamID = localStorage.getItem('steamID');
+  const achievementsIntegrated = localStorage.getItem('achivementsConn');
   const userEmail = JSON.parse(localStorage.getItem('user'))?.email;
-  // console.log(game);
+
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.keyCode === 27) {
@@ -58,6 +59,7 @@ const UserGame = ({
     setBacklogStatus(game.status || 'BACKLOG');
     setPlaytime(Math.floor(game.playtime / 60));
     setRating(game.user_rating);
+    setAchievements(game.achievements);
     if (!steamID) {
       console.log('No steam id');
       return;
@@ -97,20 +99,13 @@ const UserGame = ({
           },
         }
       );
-      let achievementRoute;
-
+      if (Object.keys(steamGameStats.data).length == 0) {
+        setAchievements(null);
+        return;
+      }
       try {
-        if (game.achievements !== null) {
-          achievementRoute = await axios.get(
-            `${baseURL}/app/get_game_achievements`,
-            {
-              params: {
-                gameId: game.id,
-              },
-            }
-          );
-        } else {
-          achievementRoute = await axios.get(
+        if (!game.achievements) {
+          const request = await axios.get(
             `${baseURL}/steam/get_steam_achievements`,
             {
               params: {
@@ -120,11 +115,8 @@ const UserGame = ({
             }
           );
 
-          console.log(achievementRoute);
-          return;
-
           const userAchievementData = getAchievementData(
-            achievementRoute.data.achievements,
+            request.data.achievements,
             steamGameStats.data.availableGameStats.achievements
           );
 
@@ -139,19 +131,10 @@ const UserGame = ({
           );
 
           console.log(addAchievements);
+          setProfile(addAchievements.data.response.profile);
+          setCurrentGame(addAchievements.data.response.game);
+          setAchievements(addAchievements.data.response.game.achievements);
         }
-        return;
-
-        // if (Object.keys(steamGameAchievements.data).length > 0) {
-        //   setAchievements(
-        //     getAchievementData(
-        //       steamGameAchievements.data.achievements,
-        //       steamGameStats.data.availableGameStats.achievements
-        //     )
-        //   );
-        //   } else {
-        //     setAchievements(null);
-        //   }
       } catch (error) {
         console.log(error);
       }

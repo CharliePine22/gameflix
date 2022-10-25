@@ -38,6 +38,7 @@ const GameDetails = ({
 }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const [gameDetails, setGameDetails] = useState({});
+  const [loading, setLoading] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [activeScreenshot, setActiveScreenshot] = useState('');
   const [error, setError] = useState('');
@@ -45,12 +46,14 @@ const GameDetails = ({
   const exists =
     currentCollection &&
     currentCollection.some((game) => game.id === gameDetails.id);
-  const searchGameDetails = async (id) => {
+
+  const searchGameDetails = async () => {
     try {
       const request = await axios.post(`${baseURL}/app/search_game_details`, {
         token: twitchToken,
         gameId: game.id,
       });
+
       const result = await request.data;
       if (!result[0].status < 400) {
         setGameDetails(result[0]);
@@ -65,6 +68,7 @@ const GameDetails = ({
       );
       console.log(error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -334,7 +338,7 @@ const GameDetails = ({
     }
   };
 
-  if (!gameDetails || !gameDetails.screenshots || !gameDetails.release_dates) {
+  if (Object.keys(gameDetails).length == 0 || loading) {
     return (
       <div className='game_details__wrapper' data-title='.dot-falling'>
         <div className='stage'>
@@ -343,6 +347,7 @@ const GameDetails = ({
       </div>
     );
   }
+
   return (
     <div className='game_details__wrapper'>
       <img
@@ -533,11 +538,7 @@ const GameDetails = ({
               </div>
               <div className='game_details__released'>
                 <h4 className='game_details__title'>Release Date</h4>
-                <p>
-                  {convertDate(
-                    gameDetails && gameDetails?.release_dates[0]?.human
-                  )}
-                </p>
+                <p>{convertDate(gameDetails?.release_dates[0]?.human)}</p>
               </div>
             </div>
             <div className='game_details__esrb'>

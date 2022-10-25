@@ -790,7 +790,7 @@
     maroon 99%
   );
   background-image: -webkit-linear-gradient(
-    left top,
+    to right top,
     pink 3%,
     red 22%,
     maroon 99%

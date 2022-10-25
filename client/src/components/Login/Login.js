@@ -1,51 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import './Login.css';
-import gameflixBrand from '../../assets/images/gameflix-brand.png';
-import requests from '../../requests';
-import rawgClient from '../../axios';
-import axios from 'axios';
 
-const Login = (props) => {
+const Login = ({ toLanding, authenticateUser, images }) => {
   // States
-  const [gameList, setGameList] = useState([]);
-  const [imgsLoading, setImgsLoading] = useState(true);
   const [hasEmailError, setHasEmailError] = useState(false);
   const [hasPasswordError, setHasPasswordError] = useState(false);
   const [currentFocus, setCurrentFocus] = useState(null);
   const [authError, setAuthError] = useState('');
   const [loading, setLoading] = useState(false);
-  const baseURL = process.env.REACT_APP_BASE_URL;
 
   // Refs
   const emailRef = useRef('');
   const passwordRef = useRef('');
-  const counter = useRef(0);
 
   // Regex for email validity
   const re =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  // Fetch games to display and create background image
-  useEffect(() => {
-    if (!props.twitchToken) return;
-    setImgsLoading(true);
-    async function fetchData() {
-      const request = await axios.post(`${baseURL}/app/popular_titles`, {
-        token: props.twitchToken,
-      });
-      setGameList(request.data);
-      return request;
-    }
-    fetchData();
-  }, [props.twitchToken]);
-
-  // Helper function to render all images when they're loaded
-  const imageLoaded = () => {
-    counter.current += 1;
-    if (counter.current >= gameList.length) {
-      setImgsLoading(false);
-    }
-  };
 
   // Email input error change error handler
   const checkEmailValidity = (e) => {
@@ -78,23 +48,7 @@ const Login = (props) => {
   };
 
   const toLandingPage = () => {
-    props.toLanding();
-  };
-
-  const authenticateUser = async (email, password) => {
-    try {
-      const response = await axios.post(`${baseURL}/authentication/signin`, {
-        email,
-        password,
-      });
-      setAuthError('');
-      props.onLogin(response.data.user);
-    } catch (e) {
-      setAuthError(e.response.data.message);
-    } finally {
-      setLoading(false);
-    }
-    emailRef.current = email;
+    toLanding();
   };
 
   // Submit user information to match authentication
@@ -110,24 +64,10 @@ const Login = (props) => {
     authenticateUser(email, password);
   };
 
-  // if (imgsLoading) {
-  //   console.log('loading');
-  //   return (
-  //     <div className='game_details__wrapper' data-title='.dot-falling'>
-  //       <div className='stage'>
-  //         <div className='dot-falling'></div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-  // else {
-  //   console.log('IMAGES DONE');
-  // }
-
   return (
     <div className='login__wrapper'>
       <div className='login'>
-        <img src={gameflixBrand} className='login__brand' />
+        {/* <img src={gameflixBrand} className='login__brand' /> */}
         <div className='login__form_wrapper'>
           <div className='login__form_container'>
             <form className='login__form' onSubmit={formSubmitHandler}>
@@ -204,18 +144,11 @@ const Login = (props) => {
       </div>
       {/* BACKGROUND */}
       <div className='login__background'>
-        {gameList &&
-          gameList.map((game) => (
-            <React.Fragment key={game.name}>
-              {/* <span className='login__name'>{game?.name.split(':')[0]}</span> */}
-              <img
-                className='login__img'
-                style={{ display: imgsLoading && 'none' }}
-                src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game?.cover.image_id}.jpg`}
-                onLoad={imageLoaded}
-              />
-            </React.Fragment>
-          ))}
+        {images.map((game) => (
+          <React.Fragment key={game.key}>
+            <img className='login__img' src={game.props.children.props.src} />
+          </React.Fragment>
+        ))}
       </div>
     </div>
   );

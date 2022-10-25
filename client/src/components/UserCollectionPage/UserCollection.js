@@ -125,30 +125,32 @@ const UserCollection = ({
             display: isMobile && currentGame && 'none',
           }}
         >
-          <h2>
-            <img
-              style={{
-                height: '50px',
-                width: '50px',
-                borderRadius: '4px',
-                // marginRight: '5px',
-              }}
-              src={activeProfile.avatar}
-            />
-            {activeProfile.name}'s Collection
-            <FaHome
-              className='user_collection__home_icon'
-              onClick={backToHome}
-            />
-          </h2>
+          <div className='user_collection__left_header'>
+            <h2>
+              <img
+                style={{
+                  height: '50px',
+                  width: '50px',
+                  borderRadius: '4px',
+                  // marginRight: '5px',
+                }}
+                src={activeProfile.avatar}
+              />
+              {activeProfile.name}'s Collection
+              <FaHome
+                className='user_collection__home_icon'
+                onClick={backToHome}
+              />
+            </h2>
 
-          <div className='user_collection__search'>
-            <FaSistrix className='user_collection__search_icon' />
-            <input
-              className='user_collection__search_input'
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
+            <div className='user_collection__search'>
+              <FaSistrix className='user_collection__search_icon' />
+              <input
+                className='user_collection__search_input'
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+            </div>
           </div>
 
           <ul
@@ -159,29 +161,31 @@ const UserCollection = ({
               overflowY: showTitleMenu ? 'hidden' : 'scroll',
             }}
           >
-            {searchList.length <= 0 ? (
-              <p
-                style={{
-                  color: 'white',
-                  marginLeft: '5px',
-                  marginBottom: '5px',
-                }}
-                className='user_collection__total'
-              >
-                All (<span>{collection.length}</span>)
-              </p>
-            ) : (
-              <p
-                style={{
-                  color: 'white',
-                  marginLeft: '5px',
-                  marginBottom: '5px',
-                }}
-                className='user_collection__total'
-              >
-                Results (<span>{searchList.length}</span>)
-              </p>
-            )}
+            <p
+              className='user_collection__total'
+              style={{
+                color: 'white',
+                paddingLeft: '7px',
+                marginBottom: '5px',
+                position: 'fixed',
+                top: '132px',
+                left: '1px',
+                fontSize: '.95rem',
+                width: '100%',
+                height: '22px',
+                background:
+                  'linear-gradient(to right, rgba(25,25,25,.5) 0%,rgba(17,17,17,1) 46%,rgba(1,1,1,1) 50%,rgba(10,10,10,1) 53%,rgba(78,78,78,1) 76%,rgba(56,56,56,1) 87%,rgba(27,27,27,1) 100%)',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              {searchList.length <= 0 ? 'All' : 'Results'} (
+              <span style={{ fontSize: '.75rem' }}>
+                {searchList.length <= 0 ? collection.length : searchList.length}
+              </span>
+              )
+            </p>
+
             {searchValue == ''
               ? collection.map((game) => (
                   <li

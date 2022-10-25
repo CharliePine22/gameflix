@@ -12,7 +12,7 @@ const ProfilesPage = (props) => {
 
   // Set active profile
   const chooseCurrentProfile = (user) => {
-    localStorage.setItem('profile', JSON.stringify(user));
+    localStorage.setItem('profile', JSON.stringify(user.name));
     props.selectProfile(user);
   };
 

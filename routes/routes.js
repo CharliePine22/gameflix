@@ -226,9 +226,8 @@ router.post('/popular_titles', async (req, res) => {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `fields *, artworks.*, age_ratings.*, name, cover.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; sort rating_count desc; where (rating != null & rating_count > 0); limit 50;`,
+      body: `fields *, artworks.*, age_ratings.*, name, cover.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; sort rating_count desc; where (rating != null & rating_count > 0); limit 100;`,
     });
-    console.log(request);
     const result = await request.json();
     res.send(result);
   } catch (error) {
@@ -287,9 +286,6 @@ router.post('/upcoming', async (req, res) => {
 router.post('/trending', async (req, res) => {
   const token = req.body.token;
   const currentDate = req.body.currentDate;
-  const targetDate = req.body.targetDate;
-
-  console.log(req.body);
 
   const headers = {
     'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
@@ -300,7 +296,7 @@ router.post('/trending', async (req, res) => {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `fields *, game.*, game.cover.*, game.genres.*, game.themes.*, game.platforms.*; sort date asc; where (game.category != (1,2,3) & game.themes != 27 & game.cover != null & date != null & game.hypes != null & category = 0 & date > ${currentDate} & date < ${targetDate}); limit: 150;`,
+      body: `fields *, game.*, game.cover.*, game.genres.*, game.themes.*, game.platforms.*; sort date desc; where (game.category != (1,2,3) & game.themes != 27 & game.cover != null & date != null & game.rating_count > 10 & game.rating != null & date < ${currentDate}); limit: 200;`,
     });
     const result = await request.json();
     res.send(result);
@@ -729,7 +725,7 @@ router.put('/update_game_achievements', async (req, res) => {
       res.send({
         code: 200,
         status: 'OK',
-        message: 'Rating updated!',
+        message: 'Achivements updated!',
         response: { profile: currentProfile[0], game: currentPlaytime[0] },
       });
     }

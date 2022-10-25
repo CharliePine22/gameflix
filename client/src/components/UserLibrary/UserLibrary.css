@@ -92,7 +92,7 @@
 
 .user_library__row_posters {
   display: flex;
-  padding: 10px 20px 30px;
+  padding: 15px 20px 40px;
   overflow-x: scroll;
   overflow-y: hidden;
   position: relative;
@@ -186,6 +186,9 @@
 
 .user_library_title h2 {
   opacity: 0.95;
+  font-size: 2rem;
+  font-style: italic;
+  text-shadow: 4px 5px black;
 }
 
 .user_library_title:hover .user_library_title h2 {
@@ -271,5 +274,9 @@
   .user_library__row {
     height: 280px;
     padding-bottom: 30px;
+  }
+
+  .user_library_title h2 {
+    font-size: 1.5rem;
   }
 }

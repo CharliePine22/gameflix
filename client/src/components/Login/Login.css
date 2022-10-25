@@ -9,6 +9,7 @@
   background-color: transparent;
   max-width: 450px;
   overflow: hidden;
+  padding: 0 20px;
 }
 
 .login__brand {
@@ -56,8 +57,7 @@
   border: 0;
   border-radius: 4px;
   color: #fff;
-  height: 10px;
-  line-height: 50px;
+  height: 20px;
   padding: 12px 14px 12px;
   outline: 0;
   background: #323232;
@@ -98,9 +98,9 @@
 
 .form_actions_placeholder {
   position: absolute;
-  top: 13px;
+  top: 16px;
   left: 13px;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: grey;
   pointer-events: none;
   transition: all 150ms ease-in;
@@ -108,14 +108,14 @@
 
 .focused {
   transition: all 150ms ease-in;
-  transform: scale(0.8) translate(-6px, -40px);
+  transform: scale(0.82) translate(-9px, -40px);
   font-size: 1rem;
   color: #fff;
 }
 
 .password_focused {
   transition: all 150ms ease-in;
-  transform: scale(0.8) translate(-9px, -40px);
+  transform: scale(0.82) translate(-12px, -40px);
   font-size: 1rem;
   color: #fff;
 }
@@ -162,7 +162,7 @@
   margin: 0;
   margin-bottom: 0px;
   width: 100%;
-  min-height: 475px;
+  min-height: 525px;
   padding: 60px 68px 40px;
   box-shadow: rgb(0 0 0 / 80%) 0px 3px 8px;
 }
@@ -174,25 +174,24 @@
 .login__form_wrapper {
   width: 100%;
   z-index: 2;
-  width: 90%;
+  width: 100%;
 }
 
 .login__background {
   position: absolute;
   z-index: -1;
-  top: -130px;
-  left: -300px;
+  top: -810px;
+  left: -400px;
   opacity: 0.7;
-  /* transform: perspective(1000px) rotateX(4deg) rotateY(-16deg) rotateZ(4deg); */
-  transform: perspective(1000px) rotateX(6deg) rotateY(-11deg) rotateZ(4deg);
-  width: 125%;
+  transform: perspective(1500px) rotateX(6deg) rotateY(-11deg) rotateZ(4deg);
+  width: 170%;
   mix-blend-mode: exclusion;
 }
 
 .login__img {
   height: 100%;
-  min-height: 12rem;
-  max-height: 12rem;
+  min-height: 22rem;
+  max-height: 22rem;
   width: 15rem;
   margin: 2.5px 6px;
   /* border: 3px solid transparent; */
@@ -243,9 +242,9 @@
   }
 
   .login__background {
-    top: -200px;
-    left: -150px;
-    width: 150%;
+    /* top: -200px; */
+    left: -240px;
+    width: 170%;
   }
 }
 
@@ -315,10 +314,6 @@
     margin-bottom: 36px;
   }
 
-  .login__form_wrapper {
-    width: 80%;
-  }
-
   .login__img {
     min-height: 11rem;
     max-height: 11rem;
@@ -332,27 +327,27 @@
 @media screen and (min-width: 751px) and (max-width: 1280px) {
   .login__background {
     width: 170%;
-    top: -250px;
-    left: -278px;
+    top: -570px;
+    left: -308px;
   }
 
   .login__img {
-    min-height: 14rem;
-    max-height: 14rem;
-    width: 15rem;
+    min-height: 16rem;
+    max-height: 16rem;
+    width: 13rem;
   }
 }
 
 /* For larger screens and desktops, increease image sizes */
 @media screen and (min-width: 1510px) {
   .login__background {
-    top: -180px;
-    left: -400px;
+    top: -440px;
+    left: -600px;
   }
 
-  .login__img {
+  /* .login__img {
     min-height: 15rem;
     max-height: 15rem;
     width: 18rem;
-  }
+  } */
 }

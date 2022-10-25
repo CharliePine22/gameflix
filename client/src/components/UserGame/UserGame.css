@@ -80,6 +80,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  margin: 0px 25px 5px;
 }
 
 .music_icon_container h4 {
@@ -91,8 +92,8 @@
 .music_icon {
   font-size: 1.25rem;
   position: relative;
-  top: 4px;
-  right: -8px;
+  top: 2px;
+  right: -9px;
   cursor: pointer;
 }
 
@@ -101,7 +102,6 @@
   border: 0;
   border-bottom: 1px solid transparent;
   width: 0px;
-  /* position: absolute; */
   display: none;
 }
 
@@ -149,10 +149,7 @@
   width: auto;
   height: 100%;
   position: relative;
-}
-
-.playtime_container {
-  width: 120px;
+  margin: 0 25px 5px;
 }
 
 .playtime_container span,
@@ -169,7 +166,7 @@
 .stats_item {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  /* height: 100%; */
   align-items: flex-start;
   justify-content: center;
 }
@@ -179,9 +176,9 @@
 }
 
 .stats_item h3 {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   line-height: 1;
-  margin-bottom: 3px;
+  margin-bottom: 6px;
 }
 
 .status_btn {
@@ -279,7 +276,7 @@
   width: 40%;
   min-width: 300px;
   height: 360px;
-  z-index: 5;
+  /* z-index: 5; */
 }
 
 .user_game__achievements_wrapper h3 {
@@ -337,7 +334,8 @@
 .user_game__current_stats {
   color: white;
   display: flex;
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  justify-content: flex-start;
   align-items: center;
   position: absolute;
   bottom: 0;
@@ -483,11 +481,24 @@
     width: 92%;
     min-width: 300px;
     height: 380px;
-    z-index: 5;
+    /* z-index: 5; */
   }
 }
 
 @media screen and (max-width: 533px) {
+  .backlog_items_item {
+    padding: 7px 5px;
+  }
+
+  .backlog_items {
+    width: 140px;
+  }
+
+  .stats_item h3 {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+  }
+
   .user_game__modal {
     left: 7%;
     width: 85%;
@@ -495,5 +506,16 @@
 
   .user_game__title {
     max-width: 90%;
+  }
+
+  .user_game__current_stats {
+    justify-content: space-between;
+  }
+
+  .achievement_count_container,
+  .playtime_container,
+  .rating_container,
+  .music_icon_container {
+    margin: 0 15px;
   }
 }

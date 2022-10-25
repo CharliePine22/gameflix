@@ -88,26 +88,21 @@ function App() {
     }
     setEditingUser(false);
     setUpdatingUser(false);
-  }, [editingUser, updatingUser]);
+  }, [editingUser, updatingUser, selectedProfile]);
 
   // Check to see which profile is active
   useEffect(() => {
-    const userProfile = localStorage.getItem('profile');
+    const userProfile = JSON.parse(localStorage.getItem('profile'));
     sessionStorage.removeItem('steamID');
     if (userProfile) {
-      setSelectedProfile(JSON.parse(userProfile));
+      setSelectedProfile(userProfile);
     }
   }, [userProfile]);
 
   // Fetch User Collection
   useEffect(() => {
     setIsLoading(true);
-    if (
-      selectedProfile == null ||
-      !twitchAccessToken ||
-      !selectedProfile.collection
-    )
-      return;
+    if (selectedProfile == null || !selectedProfile.collection) return;
     const fetchUserCollection = async () => {
       setUserCollection(
         selectedProfile.collection.filter((game) => game.id !== null)

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaPause, FaPlay, FaUpload, FaTrash, FaSteam } from 'react-icons/fa';
-import { SiApplemusic } from 'react-icons/si';
+import { SiApplemusic, SiCounterstrike } from 'react-icons/si';
 import './UserLibrary.css';
 import '../Row/Row.css';
 import Placeholder from '../Placeholder/Placeholder';
@@ -43,15 +43,11 @@ const UserLibrary = ({
     try {
       const gameNames = await Promise.all(
         updatedCollection.map((game) => {
-          const exists = collection.some((element) => {
-            if (element.id === game.appID) {
-              return true;
-            } else {
-              return false;
-            }
+          const existingTitle = collection.some((element) => {
+            return element.id === game.appID;
           });
 
-          if (!exists) {
+          if (!existingTitle) {
             let gameId;
             let imageURL;
             let origin;
@@ -102,6 +98,7 @@ const UserLibrary = ({
   useEffect(() => {
     if (
       steamCollection.length == 0 ||
+      collection ||
       !steamCollection ||
       !steamID ||
       typeof steamCollection == 'string'
@@ -110,8 +107,6 @@ const UserLibrary = ({
     const steamGames = new Map(
       steamCollection.map(({ name, ...rest }) => [name.toLowerCase(), rest])
     );
-
-    console.log(steamCollection);
 
     // If user has game in both gameflix and steam library, dont push gameflix game
     const newGames = collection.reduce(function (result, game) {
@@ -122,7 +117,7 @@ const UserLibrary = ({
     }, []);
 
     integrateSteamGames([...steamCollection, ...newGames]);
-  }, [steamCollection, steamID]);
+  }, [steamID, collection]);
 
   const fetchGameOST = async (game) => {
     setViewingSoundtrack(false);

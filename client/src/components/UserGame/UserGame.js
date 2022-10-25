@@ -89,42 +89,75 @@ const UserGame = ({
 
     // Sort by unlocked Achievements
     const fetchAppData = async () => {
+      const steamGameStats = await axios.get(
+        `${baseURL}/steam/get_game_stats`,
+        {
+          params: {
+            gameId: game.id,
+          },
+        }
+      );
+      let achievementRoute;
+
       try {
-        const steamGameAchievements = await axios.get(
-          `${baseURL}/steam/get_steam_achievements`,
-          {
-            params: {
-              gameId: game.id,
-              steamId: steamID,
-            },
-          }
-        );
-
-        const steamGameStats = await axios.get(
-          `${baseURL}/steam/get_game_stats`,
-          {
-            params: {
-              gameId: game.id,
-            },
-          }
-        );
-
-        if (Object.keys(steamGameAchievements.data).length > 0) {
-          setAchievements(
-            getAchievementData(
-              steamGameAchievements.data.achievements,
-              steamGameStats.data.availableGameStats.achievements
-            )
+        if (game.achievements !== null) {
+          achievementRoute = await axios.get(
+            `${baseURL}/app/get_game_achievements`,
+            {
+              params: {
+                gameId: game.id,
+              },
+            }
           );
         } else {
-          setAchievements(null);
+          achievementRoute = await axios.get(
+            `${baseURL}/steam/get_steam_achievements`,
+            {
+              params: {
+                gameId: game.id,
+                steamId: steamID,
+              },
+            }
+          );
+
+          console.log(achievementRoute);
+          return;
+
+          const userAchievementData = getAchievementData(
+            achievementRoute.data.achievements,
+            steamGameStats.data.availableGameStats.achievements
+          );
+
+          const addAchievements = await axios.put(
+            `${baseURL}/app/update_game_achievements`,
+            {
+              email: userEmail,
+              currentProfile: activeProfile.name,
+              achievements: userAchievementData,
+              gameId: game.id,
+            }
+          );
+
+          console.log(addAchievements);
         }
+        return;
+
+        // if (Object.keys(steamGameAchievements.data).length > 0) {
+        //   setAchievements(
+        //     getAchievementData(
+        //       steamGameAchievements.data.achievements,
+        //       steamGameStats.data.availableGameStats.achievements
+        //     )
+        //   );
+        //   } else {
+        //     setAchievements(null);
+        //   }
       } catch (error) {
         console.log(error);
       }
 
-      setPlaytime(Math.floor(game.playtime / 60));
-      setRating(game.user_rating);
+      // setPlaytime(Math.floor(game.playtime / 60));
+      // setRating(game.user_rating);
     };
     fetchAppData();
   }, [game]);
@@ -308,6 +341,7 @@ const UserGame = ({
       });
     }
     setChangingBanner(false);
+    setBannerLink('');
   };
 
   return (
@@ -432,7 +466,7 @@ const UserGame = ({
           {/* BACKLOG STATUS */}
           <div className='achievement_count_container'>
             <div className='stats_item'>
-              <h3 style={{ paddingTop: '9px', marginBottom: '5px' }}>STATUS</h3>
+              <h3 style={{ paddingTop: '5px' }}>STATUS</h3>
               <button
                 onClick={() => setChangingBacklog(!changingBacklog)}
                 style={{

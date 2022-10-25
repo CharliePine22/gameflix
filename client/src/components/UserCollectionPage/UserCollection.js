@@ -36,12 +36,16 @@ const UserCollection = ({
   const { anchorPoint, showTitleMenu } = useContextMenu();
   const trophies = [platinumTrophy, goldTrophy, bronzeTrophy];
 
+  // Playstation API key
   const npsso =
     'SmCxqqTxQJ11ZOVQFQo4ZBJZx1OEsffbmwC2hpUHusLeEHvoAyuMQFIIegudospP';
 
   // If user is typing, filter titles that reflect inputted value
   useEffect(() => {
-    if (searchValue == '') return;
+    if (searchValue == '') {
+      setSearchList([]);
+      return;
+    }
     const delaySearch = setTimeout(() => {
       const res = collection.filter((item) => item.name.includes(searchValue));
       setSearchList(res);
@@ -155,6 +159,29 @@ const UserCollection = ({
               overflowY: showTitleMenu ? 'hidden' : 'scroll',
             }}
           >
+            {searchList.length <= 0 ? (
+              <p
+                style={{
+                  color: 'white',
+                  marginLeft: '5px',
+                  marginBottom: '5px',
+                }}
+                className='user_collection__total'
+              >
+                All (<span>{collection.length}</span>)
+              </p>
+            ) : (
+              <p
+                style={{
+                  color: 'white',
+                  marginLeft: '5px',
+                  marginBottom: '5px',
+                }}
+                className='user_collection__total'
+              >
+                Results (<span>{searchList.length}</span>)
+              </p>
+            )}
             {searchValue == ''
               ? collection.map((game) => (
                   <li
@@ -245,7 +272,7 @@ const UserCollection = ({
                 </div>
                 <div className='user_collection__spotlight'>
                   {highestRated.map((top, i) => (
-                    <figure className='spotlight_container'>
+                    <figure key={top.id} className='spotlight_container'>
                       <img
                         className='spotlight_image'
                         src={top.banner_url || top.imageURL}

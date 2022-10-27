@@ -7,7 +7,7 @@ const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
 });
 
-const activeProfile = JSON.parse(localStorage.getItem('profile'));
+const activeProfile = localStorage.getItem('profile');
 
 const SpotifyPlayback = ({
   trackUri,

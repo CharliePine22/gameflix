@@ -12,9 +12,9 @@
 }
 
 .trending_row h2 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-style: italic;
-  text-shadow: 4px 5px black;
+  text-shadow: 6px 7px 2px black;
 }
 
 .hide-trending_row {

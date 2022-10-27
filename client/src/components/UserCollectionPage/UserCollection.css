@@ -56,14 +56,26 @@
 .spotlight_container {
   cursor: pointer;
   height: 100%;
-  width: 30%;
-  max-width: 435px;
+  width: 30.5%;
   position: relative;
   box-shadow: 3.1px 6.2px 6.2px hsl(0deg 0% 0% / 0.1);
   border-radius: 10px;
   filter: drop-shadow(0 0 5px #b0c4de);
-  /* filter: drop-shadow(1px 2px 8px hsl(220deg 60% 50%)); */
+  overflow: hidden;
 }
+
+.spotlight_container:hover .spotlight_image {
+  transform: scale(1.5);
+  opacity: 0.1;
+}
+
+.spotlight_container:hover .spotlight_details {
+  opacity: 1;
+}
+
+/* .spotlight_container:hover .spotlight_trophy_image {
+  opacity: 0;
+} */
 
 .spotlight_container:nth-last-of-type(2) {
   filter: drop-shadow(0 0 5px gold);
@@ -73,37 +85,49 @@
   filter: drop-shadow(0 0 5px #cd7f32);
 }
 
+.spotlight_details {
+  opacity: 0;
+  position: absolute;
+  top: 126px;
+  font-size: 5rem;
+  left: 65px;
+}
+
 .spotlight_filters {
   display: flex;
   color: white;
-  padding: 15px 12px 20px;
+  padding: 25px 22px 18px;
 }
 
 .spotlight_filter {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  letter-spacing: 2px;
 }
 
 .spotlight_image {
   border-radius: 10px;
   height: 100%;
   width: 100%;
+  transition: all 250ms ease-in-out;
+  filter: none;
 }
 
 .spotlight_trophy_image {
-  height: 40px;
-  width: 40px;
+  height: 80px;
+  width: 75px;
   position: absolute;
-  left: 2px;
-  bottom: 3px;
+  left: 10px;
+  bottom: 10px;
 }
 
 .title_list__item {
-  color: white;
+  color: rgba(255, 255, 255, 0.7);
   padding: 4px 5px;
   cursor: pointer;
   display: flex;
   align-items: center;
   margin: 1px 1px 5px;
+  font-size: 1.2rem;
 }
 
 .title_list__item p {
@@ -116,15 +140,17 @@
 
 .title_list__item:hover {
   background-color: rgb(71, 133, 156);
+  color: white;
   /* font-weight: 900; */
 }
 
 .title_list__item img {
-  height: 35px;
-  min-width: 35px;
-  max-width: 35px;
-  margin-right: 7px;
+  height: 30px;
+  min-width: 31px;
+  max-width: 31px;
+  margin-right: 4px;
   pointer-events: none;
+  border-radius: 2px;
 }
 
 .user_collection__actions {
@@ -189,8 +215,7 @@
 }
 
 .user_collection__left_header {
-  padding: 0 10px;
-  margin-bottom: 30px;
+  padding: 0 10px 45px;
   width: 100%;
 }
 
@@ -199,7 +224,7 @@
   text-align: center;
   color: white;
   font-size: 1rem;
-  margin: 20px 0;
+  margin: 15px 0;
   align-items: center;
   justify-content: space-around;
   width: 100%;
@@ -209,13 +234,15 @@
   height: 100%;
   width: 100%;
   padding: 0;
-  margin: 18px 0 20px;
+  padding-top: 20px;
+  margin-bottom: 20px;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   align-content: flex-start;
+  background: rgb(12, 12, 12);
   /* overflow-y: scroll; */
 }
 
@@ -233,11 +260,11 @@
   position: relative;
   transition: all 250ms;
   z-index: -1;
-  max-width: 12rem;
-  min-width: 12rem;
+  max-width: 12.7rem;
+  min-width: 12.7rem;
   height: 100%;
-  min-height: 280px;
-  max-height: 280px;
+  min-height: 320px;
+  max-height: 320px;
   transform-style: preserve-3d;
 }
 
@@ -265,7 +292,8 @@
   width: 100%;
   overflow-y: scroll;
   padding: 0;
-  /* padding: 0 5px; */
+  z-index: 2;
+  background: rgb(12, 12, 12);
 }
 
 .user_collection__right::-webkit-scrollbar {
@@ -302,7 +330,7 @@
 }
 
 .user_collection__spotlight {
-  height: 300px;
+  height: 380px;
   background: rgba(22, 22, 22, 0.85);
   color: white;
   margin: 0;
@@ -340,6 +368,12 @@
   height: 100vh;
 }
 
+@media screen and (max-width: 1440px) {
+  .spotlight_details {
+    left: 33px;
+  }
+}
+
 /* Laptops */
 @media screen and (max-width: 1024px) {
   .user_collection__left {
@@ -354,7 +388,7 @@
   }
 
   .user_collection__left_header h2 {
-    margin: 20px 8px;
+    margin: 20px auto;
   }
 
   .user_collection__poster_container {

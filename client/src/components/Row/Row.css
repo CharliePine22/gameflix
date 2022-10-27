@@ -65,12 +65,12 @@
   /* FLIP CARD TRANSITION */
   transition: all 250ms;
   z-index: -1;
-  max-width: 12.5rem;
-  min-width: 12.5rem;
+  max-width: 13.5rem;
+  min-width: 13.5rem;
   object-fit: cover;
   height: 100%;
-  min-height: 320px;
-  max-height: 320px;
+  min-height: 340px;
+  max-height: 340px;
   transform-style: preserve-3d;
   box-shadow: -3px 3px 5px #000;
 }
@@ -206,9 +206,9 @@
 }
 
 .row__title {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-style: italic;
-  text-shadow: 4px 5px black;
+  text-shadow: 6px 7px 2px black;
 }
 
 .soundtrack_container {

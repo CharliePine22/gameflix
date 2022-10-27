@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Login from '../Login/Login';
 import './Authentication.css';
-
 import axios from 'axios';
+import LandingPage from '../LandingPage/LandingPage';
 
-const Authentication = ({ loading, twitchToken }) => {
+const Authentication = ({ loading, twitchToken, onLogin }) => {
   const [gameList, setGameList] = useState([]);
   const [imgsLoading, setImgsLoading] = useState(true);
   const [toLandingPage, setToLandingPage] = useState(false);
@@ -14,17 +14,25 @@ const Authentication = ({ loading, twitchToken }) => {
   const counter = useRef(0);
 
   useEffect(() => {
-    if (!twitchToken || counter > 49) return;
+    if (!twitchToken || counter < 49) return;
     setImgsLoading(true);
     async function fetchData() {
-      const request = await axios.post(`${baseURL}/app/popular_titles`, {
-        token: twitchToken,
-      });
-      setGameList(request.data);
-      return request;
+      try {
+        const request = await axios.post(`${baseURL}/app/popular_titles`, {
+          token: twitchToken,
+        });
+        setGameList(request.data);
+        return request;
+      } catch (err) {
+        console.log(err);
+        return err;
+      }
     }
     fetchData();
   }, [twitchToken]);
+
+  console.log('AUTH');
+  console.log(gameList);
 
   const imageLoaded = () => {
     counter.current += 1;
@@ -53,9 +61,11 @@ const Authentication = ({ loading, twitchToken }) => {
       });
       setAuthError('');
       console.log(response);
-      // props.onLogin(response.data.user);
+      onLogin(response.data.user);
+      return response;
     } catch (e) {
       setAuthError(e.response.data.message);
+      return e;
     } finally {
       // setLoading(false);
     }
@@ -65,7 +75,6 @@ const Authentication = ({ loading, twitchToken }) => {
     if (!toLandingPage)
       return (
         <Login
-          gameList={gameList}
           images={loadedImages}
           toLanding={() => setToLandingPage(true)}
           authenticateUser={(email, password) =>
@@ -74,6 +83,22 @@ const Authentication = ({ loading, twitchToken }) => {
           authError={authError}
         />
       );
+
+    return (
+      <LandingPage
+        // loginAuthentication={loginAuthentication}
+        toSignIn={() => {
+          setToLandingPage(false);
+        }}
+        images={loadedImages}
+      />
+    );
+  } else {
+    return (
+      <div className='auth_login__loading'>
+        <div className='auth_loading_spinner' />
+      </div>
+    );
   }
 };
 

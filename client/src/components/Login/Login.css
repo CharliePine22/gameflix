@@ -7,7 +7,7 @@
   margin: 0 auto -236px;
   min-height: 100vh;
   background-color: transparent;
-  max-width: 450px;
+  max-width: 430px;
   overflow: hidden;
   padding: 0 20px;
 }
@@ -32,7 +32,7 @@
   width: 64px;
   height: 64px;
   border: 8px solid;
-  border-color: #3d5af1 transparent #3d5af1 transparent;
+  border-color: #9147ff transparent #9147ff transparent;
   border-radius: 50%;
   animation: spin-anim 1.2s linear infinite;
 }
@@ -58,7 +58,7 @@
   border-radius: 4px;
   color: #fff;
   height: 20px;
-  padding: 12px 14px 12px;
+  padding: 10px 14px 10px;
   outline: 0;
   background: #323232;
 }
@@ -98,7 +98,7 @@
 
 .form_actions_placeholder {
   position: absolute;
-  top: 16px;
+  top: 13px;
   left: 13px;
   font-size: 1rem;
   color: grey;

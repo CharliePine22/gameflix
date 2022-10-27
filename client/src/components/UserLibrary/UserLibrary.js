@@ -38,6 +38,7 @@ const UserLibrary = ({
   // FOR 10TH SPOT HAVE 3 GAMES STACKED LIKE CARDS AND SLIGHTLY FADE TO SHOW ALL
   //  SHOW ALL WILL LOOK LIKE STEAM
   const integrateSteamGames = async (updatedCollection) => {
+    // if (!steamID) return;
     try {
       const gameNames = await Promise.all(
         updatedCollection.map((game) => {
@@ -83,6 +84,7 @@ const UserLibrary = ({
       localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
       localStorage.setItem('steamConn', true);
       setSelectedProfile(currentProfile[0]);
+      console.log('UH OH');
       // setNotification({
       //   message: `Steam games sucessfully added to your collection!`,
       //   status: 'SUCCESS',

@@ -35,7 +35,7 @@ const UserGame = ({
   const baseURL = process.env.REACT_APP_BASE_URL;
   const steamID = localStorage.getItem('steamID');
   const achievementsIntegrated = localStorage.getItem('achivementsConn');
-  const userEmail = JSON.parse(localStorage.getItem('user'))?.email;
+  const userEmail = localStorage.getItem('user');
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -187,7 +187,7 @@ const UserGame = ({
       console.log(request);
       localStorage.setItem(
         'profile',
-        JSON.stringify(request.data.response.profile)
+        JSON.stringify(request.data.response.profile.name)
       );
       setProfile(request.data.response.profile);
       setCurrentGame(request.data.response.game);
@@ -221,7 +221,7 @@ const UserGame = ({
         console.log(request);
         localStorage.setItem(
           'profile',
-          JSON.stringify(request.data.response.profile)
+          JSON.stringify(request.data.response.profile.name)
         );
         setProfile(request.data.response.profile);
         setCurrentGame(request.data.response.game);
@@ -577,20 +577,9 @@ const UserGame = ({
 
       {/* GAME NEWS AND DATA */}
       <div className='user_game__data'>
-        <div
-          className='user_game__data_img'
-          style={{
-            backgroundSize: 'cover',
-            backgroundImage: `url(${game.imageURL.replace(
-              'cover_big_2x',
-              '1080p_2x'
-            )})`,
-            backgroundPosition: 'center center',
-          }}
-        />
-        <div className='user_game__header'>
+        {/* <div className='user_game__header'>
           <h2 className='user_game__title'>{game.name}</h2>
-        </div>
+        </div> */}
         {/* OWNED PLATFORMS */}
         <div className='user_game__platforms'>
           <h4>Platforms Owned</h4>
@@ -651,6 +640,17 @@ const UserGame = ({
             </div>
           </div>
         )}
+        <div
+          className='user_game__data_img'
+          style={{
+            backgroundSize: 'cover',
+            backgroundImage: `url(${game.imageURL.replace(
+              'cover_big_2x',
+              '1080p_2x'
+            )})`,
+            backgroundPosition: 'center center',
+          }}
+        />
       </div>
     </div>
   );

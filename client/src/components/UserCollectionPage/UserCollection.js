@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UserCollection.css';
-import { FaSistrix, FaHome, FaStar } from 'react-icons/fa';
+import { FaSistrix, FaHome, FaStar, FaAngleDown } from 'react-icons/fa';
 import UserGame from '../UserGame/UserGame';
 import Notification from '../Notification/Notification';
 import useContextMenu from '../../hooks/useContextMenu';
@@ -181,62 +181,74 @@ const UserCollection = ({
             >
               {searchList.length <= 0 ? 'All' : 'Results'} (
               <span style={{ fontSize: '.75rem' }}>
-                {searchList.length <= 0 ? collection.length : searchList.length}
+                {searchValue == '' ? collection.length : searchList.length}
               </span>
               )
             </p>
 
-            {searchValue == ''
-              ? collection.map((game) => (
-                  <li
-                    className='title_list__item'
-                    key={game.id}
-                    onClick={() => viewGameHandler(game)}
-                    onContextMenu={(e) => viewGameHeaders(e, game)}
-                    style={{
-                      background: currentGame?.id == game.id && '#9147ff',
-                    }}
-                  >
-                    {' '}
-                    <img src={game.imageURL} />
-                    <p>{game.name}</p>
-                    {game.name == activeProfile.favorite_game && (
-                      <FaStar className='list_item_favorite' />
-                    )}
-                    {showTitleMenu && contextMenuVisible && (
-                      <ul
-                        onMouseEnter={(e) => e.stopPropagation(true)}
-                        className='user_collection__game_context'
-                        style={{
-                          top: anchorPoint.y + 5,
-                          left: anchorPoint.x,
-                          zIndex: 6,
-                        }}
+            {searchValue == '' ? (
+              collection.map((game) => (
+                <li
+                  className='title_list__item'
+                  key={game.id}
+                  onClick={() => viewGameHandler(game)}
+                  onContextMenu={(e) => viewGameHeaders(e, game)}
+                  style={{
+                    background: currentGame?.id == game.id && '#9147ff',
+                  }}
+                >
+                  {' '}
+                  <img src={game.imageURL} />
+                  <p>{game.name}</p>
+                  {game.name == activeProfile.favorite_game && (
+                    <FaStar className='list_item_favorite' />
+                  )}
+                  {showTitleMenu && contextMenuVisible && (
+                    <ul
+                      onMouseEnter={(e) => e.stopPropagation(true)}
+                      className='user_collection__game_context'
+                      style={{
+                        top: anchorPoint.y + 5,
+                        left: anchorPoint.x,
+                        zIndex: 6,
+                      }}
+                    >
+                      <li className='banner_context__item'>Add to Favorites</li>
+                      <li
+                        className='banner_context__item'
+                        onClick={(e) => removeGameHandler(e, game)}
                       >
-                        <li className='banner_context__item'>
-                          Add to Favorites
-                        </li>
-                        <li
-                          className='banner_context__item'
-                          onClick={(e) => removeGameHandler(e, game)}
-                        >
-                          Delete Game
-                        </li>
-                      </ul>
-                    )}
-                  </li>
-                ))
-              : searchList.map((game) => (
-                  <li
-                    className='title_list__item'
-                    key={game.id}
-                    onClick={() => viewGameHandler(game)}
-                  >
-                    {' '}
-                    <img src={game.imageURL} />
-                    <p>{game.name}</p>
-                  </li>
-                ))}
+                        Delete Game
+                      </li>
+                    </ul>
+                  )}
+                </li>
+              ))
+            ) : searchList.length > 0 ? (
+              searchList.map((game) => (
+                <li
+                  className='title_list__item'
+                  key={game.id}
+                  onClick={() => viewGameHandler(game)}
+                >
+                  {' '}
+                  <img src={game.imageURL} />
+                  <p>{game.name}</p>
+                </li>
+              ))
+            ) : (
+              <p
+                style={{
+                  color: 'white',
+                  fontSize: '3.5rem',
+                  position: 'absolute',
+                  top: '38%',
+                  left: '26px',
+                }}
+              >
+                No Matches
+              </p>
+            )}
           </ul>
           <div className='user_collection__actions'>
             <button onClick={backToHome}>Back</button>
@@ -272,7 +284,7 @@ const UserCollection = ({
             <>
               <div className='user_collection__spotlight_wrapper'>
                 <div className='spotlight_filters'>
-                  <h3 className='spotlight_filter'>Most Played</h3>
+                  <h2 className='spotlight_filter'>Most Played</h2>
                 </div>
                 <div className='user_collection__spotlight'>
                   {highestRated.map((top, i) => (

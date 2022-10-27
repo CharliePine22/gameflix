@@ -12,7 +12,7 @@ const ProfilesPage = (props) => {
 
   // Set active profile
   const chooseCurrentProfile = (user) => {
-    localStorage.setItem('profile', JSON.stringify(user.name));
+    localStorage.setItem('profile', user.name);
     props.selectProfile(user);
   };
 
@@ -28,6 +28,8 @@ const ProfilesPage = (props) => {
       setCreatingProfile(user);
     }
   };
+
+  console.log(props);
 
   // Determine what user is selected and grab their profiles
   useEffect(() => {

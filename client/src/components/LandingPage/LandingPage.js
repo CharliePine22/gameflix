@@ -19,42 +19,16 @@ import spyro from '../../assets/images/spyro.png';
 import logos from '../../assets/images/console-logos.jpg';
 import NewUser from './NewUser/NewUser';
 
-const LandingPage = (props) => {
+const LandingPage = ({ toSignIn, images }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const [error, setError] = useState(null);
-  const [gameList, setGameList] = useState([]);
-  const [imgsLoading, setImgsLoading] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
   const [creatingNewUser, setCreatingNewUser] = useState(false);
 
-  const counter = useRef(0);
   const signUpRef = useRef('');
   // Regex for email validity
   const re =
     /^(([^ <>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  // Helper function to render all images when they're loaded
-  const imageLoaded = () => {
-    counter.current += 1;
-    if (counter.current >= gameList.length) {
-      setImgsLoading(false);
-    }
-  };
-
-  // Fetch games to display and create background image
-  useEffect(() => {
-    if (!props.twitchToken) return;
-    // setImgsLoading(true);
-    async function fetchData() {
-      const request = await axios.post(`${baseURL}/app/popular_titles`, {
-        token: props.twitchToken,
-      });
-      console.log(request);
-      setGameList(request.data);
-      return request;
-    }
-    fetchData();
-  }, []);
 
   // If there is a value in the input field, leave placeholder above value
   const inputBlurHandler = () => {
@@ -66,7 +40,7 @@ const LandingPage = (props) => {
   };
 
   const toLoginHandler = () => {
-    props.toSignIn();
+    toSignIn();
   };
 
   const formSubmitHandler = (e) => {
@@ -91,8 +65,8 @@ const LandingPage = (props) => {
   };
 
   const toWelcomeScreen = (email, password) => {
-    props.loginAuthentication(email, password);
-    props.toSignIn();
+    // .loginAuthentication(email, password);
+    // toSignIn();
   };
 
   const inputFocusHandler = () => {
@@ -158,15 +132,11 @@ const LandingPage = (props) => {
           </form>
         </div>
         <div className='landing_banner__background'>
-          {gameList.map((game) => (
-            <React.Fragment key={game.name}>
-              {/* <span className='landing_banner__name'>
-                {game?.name.split(':')[0]}
-              </span> */}
+          {images.map((game) => (
+            <React.Fragment key={game.key}>
               <img
                 className='landing_banner__img'
-                src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game?.cover.image_id}.jpg`}
-                onLoad={imageLoaded}
+                src={game.props.children.props.src}
               />
             </React.Fragment>
           ))}

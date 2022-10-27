@@ -7,7 +7,7 @@ import { SiApplemusic } from 'react-icons/si';
 import { FaPlay, FaPause, FaPlusSquare } from 'react-icons/fa';
 
 function Row({
-  title,
+  genreDetails,
   playTrack,
   currentTrack,
   resumePlayback,
@@ -15,14 +15,11 @@ function Row({
   isPlaying,
   spotifyToken,
   twitchToken,
-  genreId,
   activeProfile,
   setGameDetails,
   addGame,
   setNotification,
-  removeGame,
 }) {
-  const [games, setGames] = useState([]);
   const [currentGame, setCurrentGame] = useState('');
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
@@ -31,25 +28,10 @@ function Row({
   const [imgsLoaded, setImgsLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
-
-  useEffect(() => {
-    // Grab games from each genre
-    if (!twitchToken || games.length > 0) return;
-    setLoading(true);
-    async function fetchData() {
-      try {
-        const request = await axios.post(`${baseURL}/app/game_genre`, {
-          token: twitchToken,
-          genreId,
-        });
-        setGames(request.data);
-      } catch (error) {
-        console.log(error);
-      }
-      setLoading(false);
-    }
-    fetchData();
-  }, [genreId, twitchToken, games]);
+  // const games = Object.keys(title).map((game) => title[game])[0];
+  // console.log(games.map((game) => game.name));
+  const genreTitle = genreDetails[0][0];
+  const genreList = genreDetails[0][1];
 
   const fetchGameOST = async (game) => {
     if (!spotifyToken) {
@@ -119,20 +101,11 @@ function Row({
     return title.split('-')[0].split('(')[0];
   };
 
-  if (twitchToken == null || games == null || !games) {
-    return;
-  }
-
-  if (games.message == 'Too Many Requests') {
-    console.log(games.message);
-    window.location = '/';
-  }
-
   return (
-    <div className='row' key={title}>
-      <h2 className='row__title'>{title}</h2>
+    <div className='row'>
+      <h2 className='row__title'>{genreTitle}</h2>
       <div className='row__posters'>
-        {games?.map(
+        {genreList.map(
           (game) =>
             game.cover !== undefined && (
               <React.Fragment key={game.id}>

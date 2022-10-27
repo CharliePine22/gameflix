@@ -5,21 +5,6 @@ let filterDate = igdbDate * 1000;
 
 // List of endpoints for the Rawg.io API
 const requests = [
-  // {
-  //   requestId: 'fetchUpcomingTitles',
-  //   yearUrl: `games?dates=${nextQuarter},${nextYear}&ordering=-added&key=${API_KEY}`,
-  //   monthUrl: `games?dates=${nextWeek},${nextMonthDate}&ordering=-added&key=${API_KEY}`,
-  //   weekUrl: `games?dates=${currentDate},${determineDateCutoff(
-  //     todayDate.getMonth() + 1
-  //   )}&ordering=-added&key=${API_KEY}`,
-  //   title: 'COMING SOON',
-  //   todaysDate: currentDate,
-  // },
-  // {
-  //   requestId: 'fetchPopularTitles',
-  //   url: `games?dates=${lastMonthDate},${currentDate}&page_size=10&ordering=-added&key=${API_KEY}`,
-  //   title: 'TRENDING',
-  // },
   {
     requestId: 'fetchAdventureTitles',
     genreId: 31,

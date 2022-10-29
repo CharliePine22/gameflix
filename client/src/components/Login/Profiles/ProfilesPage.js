@@ -29,8 +29,6 @@ const ProfilesPage = (props) => {
     }
   };
 
-  console.log(props);
-
   // Determine what user is selected and grab their profiles
   useEffect(() => {
     setProfiles(props.currentUser.profiles);

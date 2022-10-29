@@ -67,7 +67,7 @@ const UserLibrary = ({
               id: gameId,
               imageURL,
               playtime: game.playTime || 0,
-              type: origin,
+              origin: origin,
             });
           }
         })

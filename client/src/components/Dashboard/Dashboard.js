@@ -30,6 +30,9 @@ const Dashboard = ({
   currentProfile,
   currentCollection,
   allGenres,
+  manageProfiles,
+  updateCollection,
+  selectProfile,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -109,7 +112,7 @@ const Dashboard = ({
   // Add game name and id to DB
   const addGameHandler = async (game) => {
     console.log('ADDING GAME');
-    const exists = userCollection.some((item) => item.id === game.id);
+    const exists = currentCollection.some((item) => item.id === game.id);
     if (exists) {
       setNotification({
         message: `${game.name} is already in your collection!`,
@@ -120,20 +123,21 @@ const Dashboard = ({
     }
     try {
       const request = await axios.post(`${baseURL}/app/update_collection`, {
-        email: currentUser,
-        currentProfile: currentProfile,
+        email: currentUser.email,
+        currentProfile: currentProfile.name,
         name: game.name,
         id: game.id,
         imageURL: `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`,
         playtime: 0,
         origin: 'gameflix',
       });
-      localStorage.setItem('user', JSON.stringify(request.data.response));
+      localStorage.setItem('user', request.data.response.email);
       const filteredProfile = request.data.response.profiles.filter((obj) => {
         return obj.name === currentProfile;
       });
-      localStorage.setItem('profile', JSON.stringify(filteredProfile[0]));
+      localStorage.setItem('profile', filteredProfile[0].name);
       setSelectedProfile(filteredProfile[0]);
+      updateCollection(filteredProfile[0].collection);
       setNotification({
         message: `${game.name} sucessfully added to your collection!`,
         status: 'SUCCESS',
@@ -151,19 +155,21 @@ const Dashboard = ({
   };
 
   const removeGameHandler = async (game) => {
-    console.log(game);
     try {
       const request = await axios.put(`${baseURL}/app/remove_game`, {
         email: currentUser,
-        currentProfile: currentProfile,
+        currentProfile: currentProfile.name,
         game: game.id,
       });
-      localStorage.setItem('user', JSON.stringify(request.data.response));
+      console.log(request);
+
+      localStorage.setItem('user', request.data.response.email);
       const filteredProfile = request.data.response.profiles.filter((obj) => {
         return obj.name === currentProfile;
       });
-      localStorage.setItem('profile', JSON.stringify(filteredProfile[0]));
+      localStorage.setItem('profile', filteredProfile[0].name);
       setSelectedProfile(filteredProfile[0]);
+      updateCollection(filteredProfile[0].collection);
       setNotification({
         message: `${game.name} sucessfully removed from your collection!`,
         status: 'SUCCESS',
@@ -253,6 +259,7 @@ const Dashboard = ({
           setSelectedProfile={(profile) => setSelectedProfile(profile)}
           spotifyToken={spotifyAccessToken}
           removeGame={(game) => removeGameHandler(game)}
+          updateCollection={updateCollection}
         />
       );
 

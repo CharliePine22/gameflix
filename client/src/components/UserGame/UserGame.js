@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './UserGame.css';
 import axios from 'axios';
 import { FiClock } from 'react-icons/fi';
-import { FaMedal, FaMusic } from 'react-icons/fa';
+import { FaMedal, FaMusic, FaAngleDown } from 'react-icons/fa';
 import { DynamicStar } from 'react-dynamic-star';
 import useContextMenu from '../../hooks/useContextMenu';
 
@@ -13,9 +13,10 @@ const UserGame = ({
   setProfile,
   setNotification,
   setCurrentGame,
+  updateCollection,
 }) => {
   // RATING, PLAYTIME, ACHIEVEMENTS, SPOTIFY, NOTES, STATUS(COMPLETED, BACKLOG, ETC.), PLATFORMS OWNED
-  const { anchorPoint, showBannerMenu } = useContextMenu();
+  const { anchorPoint, showBannerMenu, resetContext } = useContextMenu();
   // Achievement States
   const [achievements, setAchievements] = useState(game.achievements);
   const [achievementData, setAchievementData] = useState(null);
@@ -28,9 +29,9 @@ const UserGame = ({
   const [gameNews, setGameNews] = useState(null);
   const [changingBanner, setChangingBanner] = useState(false);
   const [bannerLink, setBannerLink] = useState('');
+  // BACKLOG, CURRENTLY PLAYING, COMPLETED, STARTED, ABANDONED, 100%, NOT OWNED
   const [backlogStatus, setBacklogStatus] = useState(game.status);
   const [changingBacklog, setChangingBacklog] = useState(false);
-  // BACKLOG, CURRENTLY PLAYING, COMPLETED, STARTED, ABANDONED, 100%, NOT OWNED
   // Hooks and Storage Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
   const steamID = localStorage.getItem('steamID');
@@ -131,8 +132,8 @@ const UserGame = ({
           );
 
           console.log(addAchievements);
-          setProfile(addAchievements.data.response.profile);
-          setCurrentGame(addAchievements.data.response.game);
+          setCurrentGame(request.data.response.game);
+          updateCollection(request.data.response.profile.collection);
           setAchievements(addAchievements.data.response.game.achievements);
         }
       } catch (error) {
@@ -148,9 +149,7 @@ const UserGame = ({
   const handleMouseMove = (event) => {
     const bounds = event.currentTarget.getBoundingClientRect();
     const position = Math.floor(event.clientX - bounds.left) / 20;
-    console.log(position * 20 - 20);
     setRating(Math.floor(event.clientX - bounds.left) / 20);
-    console.log(event);
   };
 
   const getAchievementCount = (list) => {
@@ -177,32 +176,34 @@ const UserGame = ({
   }
 
   const updateRatingHandler = async () => {
+    let ratingValue = rating * 20;
+    if (rating * 20 >= 100) {
+      ratingValue = 100;
+    }
+
     try {
       const request = await axios.put(`${baseURL}/app/update_game_rating`, {
         email: userEmail,
         currentProfile: activeProfile.name,
-        rating: rating * 20,
+        rating: ratingValue,
         gameId: game.id,
       });
       console.log(request);
-      localStorage.setItem(
-        'profile',
-        JSON.stringify(request.data.response.profile.name)
-      );
-      setProfile(request.data.response.profile);
+      localStorage.setItem('profile', request.data.response.profile.name);
+      // setProfile(request.data.response.profile);
       setCurrentGame(request.data.response.game);
-      setRating(request.data.response.game.rating);
-      setNotification({
-        message: `${game.name} playtime successfully updated!`,
-        status: 'SUCCESS',
-      });
+      updateCollection(request.data.response.profile.collection);
+      // setNotification({
+      //   message: `${game.name} playtime successfully updated!`,
+      //   status: 'SUCCESS',
+      // });
       setChangingRating(false);
     } catch (error) {
       console.log(error);
-      setNotification({
-        message: `Something went wrong, please try again!`,
-        status: 'ERROR',
-      });
+      // setNotification({
+      //   message: `Something went wrong, please try again!`,
+      //   status: 'ERROR',
+      // });
     }
   };
 
@@ -219,24 +220,21 @@ const UserGame = ({
           gameId: game.id,
         });
         console.log(request);
-        localStorage.setItem(
-          'profile',
-          JSON.stringify(request.data.response.profile.name)
-        );
-        setProfile(request.data.response.profile);
+        localStorage.setItem('profile', request.data.response.profile.name);
+        // setProfile(request.data.response.profile);
         setCurrentGame(request.data.response.game);
-        setPlaytime(request.data.response.game.playtime / 60);
-        setNotification({
-          message: `${game.name} playtime successfully updated!`,
-          status: 'SUCCESS',
-        });
+        updateCollection(request.data.response.profile.collection);
+        // setNotification({
+        //   message: `${game.name} playtime successfully updated!`,
+        //   status: 'SUCCESS',
+        // });
         setChangingPlaytime(false);
       } catch (error) {
         console.log(error);
-        setNotification({
-          message: `Something went wrong, please try again!`,
-          status: 'ERROR',
-        });
+        // setNotification({
+        //   message: `Something went wrong, please try again!`,
+        //   status: 'ERROR',
+        // });
       }
     }
   };
@@ -253,24 +251,20 @@ const UserGame = ({
         status: status,
         gameId: game.id,
       });
-      localStorage.setItem(
-        'profile',
-        JSON.stringify(request.data.response.profile)
-      );
-      setProfile(request.data.response.profile);
+      localStorage.setItem('profile', request.data.response.profile.name);
       setCurrentGame(request.data.response.game);
-      setBacklogStatus(request.data.response.game.status);
-      setNotification({
-        message: `${game.name} backlog successfully updated!`,
-        status: 'SUCCESS',
-      });
+      updateCollection(request.data.response.profile.collection);
+      // setNotification({
+      //   message: `${game.name} backlog successfully updated!`,
+      //   status: 'SUCCESS',
+      // });
       setChangingPlaytime(false);
     } catch (error) {
       console.log(error);
-      setNotification({
-        message: `Something went wrong, please try again!`,
-        status: 'ERROR',
-      });
+      // setNotification({
+      //   message: `Something went wrong, please try again!`,
+      //   status: 'ERROR',
+      // });
     }
   };
 
@@ -293,6 +287,7 @@ const UserGame = ({
   const changeBannerHandler = (e) => {
     e.preventDefault();
     setChangingBanner(true);
+    resetContext();
   };
 
   const updateBanner = async () => {
@@ -304,24 +299,19 @@ const UserGame = ({
         url: bannerLink,
         gameId: game.id,
       });
-      localStorage.setItem(
-        'profile',
-        JSON.stringify(request.data.response.profile)
-      );
-      setProfile(request.data.response.profile);
+      localStorage.setItem('profile', request.data.response.profile.name);
       setCurrentGame(request.data.response.game);
-      setPlaytime(request.data.response.game.playtime / 60);
-      setNotification({
-        message: `${game.name} playtime successfully updated!`,
-        status: 'SUCCESS',
-      });
-      setChangingPlaytime(false);
+      updateCollection(request.data.response.profile.collection);
+      // setNotification({
+      //   message: `${game.name} playtime successfully updated!`,
+      //   status: 'SUCCESS',
+      // });
     } catch (error) {
       console.log(error);
-      setNotification({
-        message: `Something went wrong, please try again!`,
-        status: 'ERROR',
-      });
+      //   setNotification({
+      //     message: `Something went wrong, please try again!`,
+      //     status: 'ERROR',
+      //   });
     }
     setChangingBanner(false);
     setBannerLink('');

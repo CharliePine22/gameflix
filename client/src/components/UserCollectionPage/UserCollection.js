@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './UserCollection.css';
 import { FaSistrix, FaHome, FaStar, FaAngleDown } from 'react-icons/fa';
 import UserGame from '../UserGame/UserGame';
-import Notification from '../Notification/Notification';
 import useContextMenu from '../../hooks/useContextMenu';
 import bronzeTrophy from '../../assets/images/ps-trophy-bronze.png';
 import goldTrophy from '../../assets/images/ps-trophy-gold.png';
@@ -20,6 +19,7 @@ const UserCollection = ({
   spotifyToken,
   setSelectedProfile,
   removeGame,
+  updateCollection,
 }) => {
   const [searchValue, setSearchValue] = useState('');
   const [searchList, setSearchList] = useState([]);
@@ -27,11 +27,8 @@ const UserCollection = ({
   const [isMobile, setIsMobile] = useState(false);
   const [currentGame, setCurrentGame] = useState(null);
   const [currentlyAdjusting, setCurrentlyAdjusting] = useState(null);
-  const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [changingGame, setChangingGame] = useState(false);
-  const [displayNotification, setDisplayNotification] = useState(false);
-  const [notification, setNotification] = useState({ status: '', message: '' });
-  const [alerttedUser, setAlerttedUser] = useState(false);
+  const [spotlightList, setSpotlightList] = useState([]);
   const [spotlightFilter, setSpotlightFilter] = useState('playtime');
   const { anchorPoint, showTitleMenu } = useContextMenu();
   const trophies = [platinumTrophy, goldTrophy, bronzeTrophy];
@@ -68,6 +65,33 @@ const UserCollection = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Listen for screen size to determine if user is on mobile
+  useEffect(() => {
+    if (spotlightFilter == 'playtime') {
+      setSpotlightList(
+        [...collection].sort((a, b) => b[spotlightFilter] - a[spotlightFilter])
+      );
+    } else if (spotlightFilter == 'user_rating') {
+      setSpotlightList(
+        collection
+          .filter((game) => game.user_rating)
+          .sort((a, b) => b['user_rating'] - a['user_rating'])
+      );
+    } else {
+      setSpotlightList(
+        collection
+          .filter((game) => game.achievements)
+          .sort((a, b) => b['achievements'] - a['achievements'])
+      );
+    }
+  }, [spotlightFilter, collection]);
+
+  console.log(
+    spotlightList
+      .map((game) => game?.achievements?.filter((el) => el.achieved))
+      .filter((item) => item.length)
+  );
+
   // Select which game is being viewed
   const viewGameHandler = (game) => {
     setCurrentGame(game);
@@ -77,36 +101,18 @@ const UserCollection = ({
   const viewGameHeaders = (e, game) => {
     e.preventDefault();
     setCurrentlyAdjusting(game);
-    setContextMenuVisible(true);
   };
 
   const removeGameHandler = (e) => {
     e.stopPropagation();
-    setContextMenuVisible(false);
-    console.log(currentlyAdjusting);
     if (
       Object.keys(currentGame).length > 0 &&
       currentlyAdjusting.id === currentGame.id
     )
       setCurrentGame(null);
-    const gameRemoval = removeGame(currentlyAdjusting);
-    console.log(gameRemoval);
+    removeGame(currentlyAdjusting);
     setCurrentlyAdjusting(null);
   };
-
-  const mostPlayed = collection
-    .sort((a, b) =>
-      a.playtime > b.playtime ? -1 : b.playtime > a.playtime ? 1 : 0
-    )
-    .slice(0, 3);
-
-  const highestRated = collection
-    .sort((a, b) =>
-      a.user_rating > b.user_rating ? -1 : b.user_rating > a.user_rating ? 1 : 0
-    )
-    .slice(0, 3);
-
-  collection.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
   return (
     <div className='user_collection__wrapper'>
@@ -132,7 +138,6 @@ const UserCollection = ({
                   height: '50px',
                   width: '50px',
                   borderRadius: '4px',
-                  // marginRight: '5px',
                 }}
                 src={activeProfile.avatar}
               />
@@ -158,7 +163,6 @@ const UserCollection = ({
             style={{
               height: viewingList && '100%',
               display: viewingList && 'flex',
-              overflowY: showTitleMenu ? 'hidden' : 'scroll',
             }}
           >
             <p
@@ -195,6 +199,8 @@ const UserCollection = ({
                   onContextMenu={(e) => viewGameHeaders(e, game)}
                   style={{
                     background: currentGame?.id == game.id && '#9147ff',
+                    // backgroundColor:
+                    //   currentlyAdjusting.id == game.id && 'rgb(71, 133, 156)',
                   }}
                 >
                   {' '}
@@ -203,12 +209,12 @@ const UserCollection = ({
                   {game.name == activeProfile.favorite_game && (
                     <FaStar className='list_item_favorite' />
                   )}
-                  {showTitleMenu && contextMenuVisible && (
+                  {showTitleMenu && (
                     <ul
                       onMouseEnter={(e) => e.stopPropagation(true)}
                       className='user_collection__game_context'
                       style={{
-                        top: anchorPoint.y + 5,
+                        top: anchorPoint.y,
                         left: anchorPoint.x,
                         zIndex: 6,
                       }}
@@ -223,6 +229,7 @@ const UserCollection = ({
                     </ul>
                   )}
                 </li>
+                // 255 - 124
               ))
             ) : searchList.length > 0 ? (
               searchList.map((game) => (
@@ -254,6 +261,7 @@ const UserCollection = ({
             <button onClick={backToHome}>Back</button>
           </div>
         </div>
+
         {/* RIGHT SIDE */}
         <div className='user_collection__right'>
           {currentGame !== null && (
@@ -264,18 +272,8 @@ const UserCollection = ({
                 closeStats={() => setCurrentGame(null)}
                 setProfile={(profile) => setSelectedProfile(profile)}
                 setCurrentGame={(game) => setCurrentGame(game)}
-                setNotification={(message, status) => {
-                  setNotification(message, status);
-                }}
+                updateCollection={updateCollection}
               />
-              {/* <Notification
-                notification={notification}
-                displayNotification={() => setDisplayNotification(true)}
-                hideNotification={() => {
-                  setDisplayNotification(false);
-                  setNotification({ message: '', status: '' });
-                }}
-              /> */}
             </>
           )}
 
@@ -284,11 +282,49 @@ const UserCollection = ({
             <>
               <div className='user_collection__spotlight_wrapper'>
                 <div className='spotlight_filters'>
-                  <h2 className='spotlight_filter'>Most Played</h2>
+                  {/* MOST PLAYED, HIGHEST RATED, MOST ACHIEVEMENTS */}
+                  <h2 className='spotlight_filter'>
+                    {spotlightFilter == 'playtime'
+                      ? 'Most Played'
+                      : spotlightFilter == 'user_rating'
+                      ? 'Highest Rated'
+                      : 'Most Achievements'}{' '}
+                    {/* <FaAngleDown className='spotlight_filter__arrow' /> */}
+                  </h2>
+                  <ul className='spotlight_filter__options'>
+                    <li
+                      onClick={() => setSpotlightFilter('playtime')}
+                      style={{
+                        color: spotlightFilter == 'playtime' && 'white',
+                      }}
+                    >
+                      Most Played
+                    </li>
+                    <li
+                      onClick={() => setSpotlightFilter('user_rating')}
+                      style={{
+                        color: spotlightFilter == 'user_rating' && 'white',
+                      }}
+                    >
+                      Highest Rated
+                    </li>
+                    <li
+                      onClick={() => setSpotlightFilter('achievements')}
+                      style={{
+                        color: spotlightFilter == 'achievements' && 'white',
+                      }}
+                    >
+                      Most Achievements
+                    </li>
+                  </ul>
                 </div>
                 <div className='user_collection__spotlight'>
-                  {highestRated.map((top, i) => (
-                    <figure key={top.id} className='spotlight_container'>
+                  {spotlightList.slice(0, 3).map((top, i) => (
+                    <figure
+                      key={top.id}
+                      className='spotlight_container'
+                      onClick={() => viewGameHandler(top)}
+                    >
                       <img
                         className='spotlight_image'
                         src={top.banner_url || top.imageURL}
@@ -298,7 +334,13 @@ const UserCollection = ({
                         src={trophies[i]}
                       />
                       <figcaption className='spotlight_details'>
-                        <p>{Math.floor(top.playtime / 60)} hours</p>
+                        <p>
+                          {spotlightFilter == 'playtime'
+                            ? `${Math.floor(top.playtime / 60)} hours`
+                            : spotlightFilter == 'user_rating'
+                            ? top.user_rating + '%'
+                            : 'ACHIEVE'}{' '}
+                        </p>
                       </figcaption>
                     </figure>
                   ))}
@@ -306,56 +348,63 @@ const UserCollection = ({
               </div>
 
               {/* COVER LIST */}
-              <ul className='user_collection__list'>
-                {!isMobile || (isMobile && searchValue == '')
-                  ? collection.map((game) => (
-                      <li
-                        className='list_item'
-                        key={game.id}
-                        onClick={() => viewGameHandler(game)}
-                      >
-                        <div className='user_collection__poster_container'>
-                          <div className='gradient' />
-                          <>
-                            {/* FRONT OF POSTER */}
-                            <div className='user_collection__poster_front'>
-                              <img
-                                loading='lazy'
-                                className='user_collection__poster'
-                                src={game.imageURL}
-                                alt={game.name}
-                              />
+              <div className='user_collection__list_container'>
+                <p className='user_collection__list_filter'>All Games</p>
+                <ul className='user_collection__list'>
+                  {!isMobile || (isMobile && searchValue == '')
+                    ? collection
+                        .sort((a, b) =>
+                          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+                        )
+                        .map((game) => (
+                          <li
+                            className='list_item'
+                            key={game.id}
+                            onClick={() => viewGameHandler(game)}
+                          >
+                            <div className='user_collection__poster_container'>
+                              <div className='gradient' />
+                              <>
+                                {/* FRONT OF POSTER */}
+                                <div className='user_collection__poster_front'>
+                                  <img
+                                    loading='lazy'
+                                    className='user_collection__poster'
+                                    src={game.imageURL}
+                                    alt={game.name}
+                                  />
+                                </div>
+                              </>
                             </div>
-                          </>
-                        </div>
-                      </li>
-                    ))
-                  : searchList.map((game) => (
-                      <li className='list_item' key={game.id}>
-                        <div className='user_collection__poster_container'>
-                          <div className='gradient' />
-                          <>
-                            {/* FRONT OF POSTER */}
-                            <div className='user_collection__poster_front'>
-                              <img
-                                loading='lazy'
-                                className='user_collection__poster'
-                                src={
-                                  isMobile
-                                    ? game.imageURL.replace(
-                                        'cover_big',
-                                        '1080p'
-                                      )
-                                    : game.imageURL
-                                }
-                                alt={game.name}
-                              />
-                            </div>
-                          </>
-                        </div>
-                      </li>
-                    ))}
-              </ul>
+                          </li>
+                        ))
+                    : searchList.map((game) => (
+                        <li className='list_item' key={game.id}>
+                          <div className='user_collection__poster_container'>
+                            <div className='gradient' />
+                            <>
+                              {/* FRONT OF POSTER */}
+                              <div className='user_collection__poster_front'>
+                                <img
+                                  loading='lazy'
+                                  className='user_collection__poster'
+                                  src={
+                                    isMobile
+                                      ? game.imageURL.replace(
+                                          'cover_big',
+                                          '1080p'
+                                        )
+                                      : game.imageURL
+                                  }
+                                  alt={game.name}
+                                />
+                              </div>
+                            </>
+                          </div>
+                        </li>
+                      ))}
+                </ul>
+              </div>
             </>
           )}
         </div>

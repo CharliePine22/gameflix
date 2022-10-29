@@ -108,14 +108,14 @@
 
 .focused {
   transition: all 150ms ease-in;
-  transform: scale(0.82) translate(-9px, -40px);
+  transform: scale(0.82) translate(-10px, -37px);
   font-size: 1rem;
   color: #fff;
 }
 
 .password_focused {
   transition: all 150ms ease-in;
-  transform: scale(0.82) translate(-12px, -40px);
+  transform: scale(0.82) translate(-13px, -37px);
   font-size: 1rem;
   color: #fff;
 }

@@ -59,6 +59,7 @@ function App() {
       const currentProfile = loggedUser.profiles.filter((obj) => {
         return obj.name === profile;
       });
+
       setSelectedProfile(currentProfile[0]);
       setProfileCollection(
         currentProfile[0].collection.filter((game) => game.id !== null)
@@ -204,7 +205,7 @@ function App() {
         saveEdit={() => setEditingUser(true)}
         updateUser={updatingUser}
         currentUser={loggedUser}
-        selectProfile={(user) => setSelectedProfile(user.name)}
+        selectProfile={(user) => setSelectedProfile(user)}
         twitchToken={twitchAccessToken}
       />
     );
@@ -216,7 +217,12 @@ function App() {
         twitchToken={twitchAccessToken}
         currentProfile={selectedProfile}
         currentCollection={profileCollection}
-        selectProfile={(user) => setSelectedProfile(user.name)}
+        updateCollection={(collection) =>
+          setProfileCollection(
+            collection.filter((game) => game.id !== null)
+          ).sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
+        }
+        selectProfile={(user) => setSelectedProfile(user)}
         manageProfiles={() => setSelectedProfile(null)}
         allGenres={genreList}
       />

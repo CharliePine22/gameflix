@@ -473,7 +473,7 @@ router.post('/update_collection', async (req, res) => {
   const imageURL = req.body.imageURL;
   const playtime = req.body.playtime;
   const name = req.body.currentProfile;
-  const origin = req.body.type;
+  const origin = req.body.origin;
 
   try {
     const request = await userModel.findOneAndUpdate(

@@ -113,6 +113,7 @@ function Nav(props) {
           <AccountEditor
             closeAccountSettings={cancelEdit}
             setLoggedUser={(user) => props.setLoggedUser(user)}
+            currentUser={props.currentUser}
           />{' '}
         </div>
       )}
@@ -179,6 +180,8 @@ function Nav(props) {
               spotifyToken={props.spotifyToken}
               editProfile={editProfileHandler}
               editAccount={editAccountHandler}
+              updateCollection={props.updateCollection}
+              currentCollection={props.currentCollection}
             />
           )}
         </div>

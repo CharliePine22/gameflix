@@ -36,6 +36,7 @@ function App() {
   let audio = new Audio(loginAudio);
 
   const twitchAccessToken = useTwitchAuth(code);
+  // console.log(twitchAccessToken);
 
   // Refetch user data if any changes are made
   useEffect(() => {
@@ -88,82 +89,6 @@ function App() {
     };
     fetchGenreGames();
   }, [twitchAccessToken]);
-
-  // Add game name and id to DB
-  const addGameHandler = async (game) => {
-    const exists = selectedProfile.collection.some(
-      (item) => item.id === game.id
-    );
-    if (exists) {
-      setNotification({
-        message: `${game.name} is already in your collection!`,
-        status: 'ERROR',
-      });
-      setDisplayNotification(true);
-      return;
-    }
-    try {
-      const request = await axios.post(`${baseURL}/app/update_collection`, {
-        email: userEmail,
-        currentProfile: currentProfile,
-        name: game.name,
-        id: game.id,
-        imageURL: `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`,
-        playtime: 0,
-        origin: 'gameflix',
-      });
-      localStorage.setItem('user', JSON.stringify(request.data.response));
-      const currentProfile = request.data.response.profiles.filter((obj) => {
-        return obj.name === currentProfile;
-      });
-      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
-      setSelectedProfile(currentProfile[0]);
-      setNotification({
-        message: `${game.name} sucessfully added to your collection!`,
-        status: 'SUCCESS',
-      });
-      setDisplayNotification(true);
-      return;
-    } catch (error) {
-      setNotification({
-        message: `Unable to add ${game.name} to your collection!`,
-        status: 'ERROR',
-      });
-      setDisplayNotification(true);
-      return error;
-    }
-  };
-
-  const removeGameHandler = async (game) => {
-    console.log(game);
-    try {
-      const request = await axios.put(`${baseURL}/app/remove_game`, {
-        email: userEmail,
-        currentProfile: userProfile,
-        game: game.id,
-      });
-      localStorage.setItem('user', JSON.stringify(request.data.response));
-      const currentProfile = request.data.response.profiles.filter((obj) => {
-        return obj.name === userProfile;
-      });
-      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
-      setSelectedProfile(currentProfile[0]);
-      setNotification({
-        message: `${game.name} sucessfully removed from your collection!`,
-        status: 'SUCCESS',
-      });
-      setDisplayNotification(true);
-      return;
-    } catch (error) {
-      console.log(error);
-      setNotification({
-        message: `Unable to remove ${game.name} from your collection!`,
-        status: 'ERROR',
-      });
-      setDisplayNotification(true);
-      return;
-    }
-  };
 
   // Login user if verification succeeds.
   const loginAuthentication = (user) => {

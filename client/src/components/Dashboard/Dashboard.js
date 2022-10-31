@@ -127,7 +127,7 @@ const Dashboard = ({
         currentProfile: currentProfile.name,
         name: game.name,
         id: game.id,
-        imageURL: `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`,
+        imageURL: `//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover.image_id}.jpg`,
         playtime: 0,
         origin: 'gameflix',
       });
@@ -279,6 +279,8 @@ const Dashboard = ({
           searchedGame={searchedGame}
           saveEdit={() => setEditingUser(true)}
           setLoggedUser={(user) => setLoggedUser(user)}
+          updateCollection={updateCollection}
+          currentCollection={currentCollection}
         />
         {!searchSubmitted ? (
           <>

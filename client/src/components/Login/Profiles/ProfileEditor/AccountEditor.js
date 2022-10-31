@@ -2,28 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import axios from 'axios';
 
-const AccountEditor = ({ closeAccountSettings, setLoggedUser }) => {
+const AccountEditor = ({
+  closeAccountSettings,
+  setLoggedUser,
+  currentUser,
+}) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
-  const user = JSON.parse(localStorage.getItem('user'));
   const [deletingAccount, setDeletingAccount] = useState(false);
   const [updateStatus, setUpdateStatus] = useState('');
   // EMAIL STATES
-  const [emailValue, setEmailValue] = useState(user.email);
+  const [emailValue, setEmailValue] = useState(currentUser.email);
   const [newEmailValue, setNewEmailValue] = useState('');
   let repeatValue = '';
   const [changingEmail, setChangingEmail] = useState(false);
   // PASSWORD STATES
-  const [passwordValue, setPasswordValue] = useState(user.password);
+  const [passwordValue, setPasswordValue] = useState(currentUser.password);
   const [hidePassword, setHidePassword] = useState(true);
   const [newPasswordValue, setNewPasswordValue] = useState('');
   const [changingPassword, setChangingPassword] = useState(false);
 
   useEffect(() => {
     if (hidePassword) {
-      const hiddenPassword = user.password.replace(/./gi, '*');
+      const hiddenPassword = currentUser.password.replace(/./gi, '*');
       setPasswordValue(hiddenPassword);
     } else {
-      setPasswordValue(user.password);
+      setPasswordValue(currentUser.password);
     }
   }, [hidePassword]);
 
@@ -31,16 +34,15 @@ const AccountEditor = ({ closeAccountSettings, setLoggedUser }) => {
     setUpdateStatus('');
     try {
       const request = await axios.post(`${baseURL}/app/update_user_email`, {
-        originalEmail: user.email,
+        originalEmail: currentUser.email,
         newEmail: email,
       });
 
       if (request.data.status < 400) {
-        localStorage.setItem('user', JSON.stringify(request.data.user));
+        setLoggedUser(request.data.user);
         setUpdateStatus({ type: 'success', message: request.data.message });
         setEmailValue(request.data.user.email);
         setNewEmailValue('');
-        setLoggedUser(request.data.user);
         setChangingEmail(false);
       } else {
         setUpdateStatus({ type: 'error', message: request.data.message });
@@ -68,7 +70,7 @@ const AccountEditor = ({ closeAccountSettings, setLoggedUser }) => {
   const deleteAccountHandler = async () => {
     try {
       await axios.delete(`${baseURL}/app/delete_account`, {
-        data: { id: user._id },
+        data: { id: currentUser._id },
       });
       window.location = '/';
       localStorage.removeItem('user');
@@ -92,7 +94,6 @@ const AccountEditor = ({ closeAccountSettings, setLoggedUser }) => {
     }
   };
 
-  console.log(repeatValue);
   const determineEmailValidity = async (e) => {
     e.preventDefault();
     try {

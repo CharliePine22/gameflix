@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import './NavDropdown.css';
 // React Icons
-import { FaSortUp, FaSpotify, FaUserEdit } from 'react-icons/fa';
+import { FaSortUp, FaSpotify, FaUserEdit, FaPlaystation } from 'react-icons/fa';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { MdEdit } from 'react-icons/md';
 
@@ -36,6 +36,44 @@ const NavDropdown = (props) => {
 
   const steamAuthHandler = async () => {
     const request = await axios.get(`${baseURL}/steam/steam_auth`);
+  };
+
+  const generatePlaystationTitles = async () => {
+    const request = await axios.get(`${baseURL}/playstation/user_titles`);
+    for (let game of request.data) {
+      for (let i = 0; i < game.earnedTrophies.length; i++) {
+        if (game.earnedTrophies[i].earned) {
+          game.allTrophies[i].earned = true;
+        } else game.allTrophies[i].earned = false;
+      }
+    }
+
+    props.currentCollection.filter((ownedGame) => {
+      const inCollection = request.data.some((game) => {
+        if (ownedGame.name.toLowerCase() === game.name.toLowerCase()) {
+          ownedGame.trophies = game.allTrophies;
+          axios.put(`${baseURL}/app/update_game_trophies`, {
+            email: localStorage.getItem('user'),
+            name: localStorage.getItem('profile'),
+            gameId: ownedGame.id,
+            trophies: game.allTrophies,
+          });
+        }
+        // else {
+        //   console.log('New game bruh');
+        // axios.post(`${baseURL}/app/update_collection`, {
+        //   email: localStorage.getItem('user'),
+        //   currentProfile: localStorage.getItem('profile'),
+        //   name: game.name,
+        //   id: game.id,
+        //   imageURL: `//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover.image_id}.jpg`,
+        //   playtime: 0,
+        //   origin: 'gameflix',
+        // });
+        // }
+      });
+      return inCollection;
+    });
   };
 
   allProfiles.sort((a, b) => (a.name - b.name ? 1 : -1));
@@ -87,6 +125,15 @@ const NavDropdown = (props) => {
             <IoSettingsOutline size={18} />
           </span>
           <p>Account Settings</p>
+        </div>
+        <div
+          className='dropdown__settings_item'
+          onClick={generatePlaystationTitles}
+        >
+          <span className='dropdown__settings_item_icon'>
+            <FaPlaystation size={18} />
+          </span>
+          <p>Link Playstation</p>
         </div>
         <div className='dropdown__settings_item'>
           <span className='dropdown__settings_item_icon'>

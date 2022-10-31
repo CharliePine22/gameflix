@@ -740,6 +740,60 @@ router.put('/update_game_achievements', async (req, res) => {
   }
 });
 
+//* UPDATE GAME TROPHIES
+router.put('/update_game_trophies', async (req, res) => {
+  const email = req.body.email;
+  const gameId = req.body.gameId;
+  const name = req.body.currentProfile;
+  const trophies = req.body.trophies;
+  console.log(name);
+
+  try {
+    const request = await userModel.findOneAndUpdate(
+      {
+        email: email,
+        profiles: { $elemMatch: { name } },
+      },
+      {
+        $set: {
+          'profiles.$.collection.$[element].trophies': trophies,
+        },
+      },
+      { arrayFilters: [{ 'element.id': { $eq: gameId } }], new: true }
+    );
+
+    console.log(request);
+
+    if (request == null) {
+      res.send({
+        code: 400,
+        status: 'NOT OK',
+        message: 'Unable to update trophies, please try again!',
+        response: request,
+      });
+    } else {
+      const currentProfile = request.profiles.filter(
+        (profile) => profile.name === name
+      );
+      const currentPlaytime = currentProfile[0].collection.filter(
+        (game) => game.id === gameId
+      );
+
+      res.send({
+        code: 200,
+        status: 'OK',
+        message: 'Trophies updated!',
+        response: { profile: currentProfile[0], game: currentPlaytime[0] },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400, {
+      message: 'There was an error with your request, please try again.',
+    });
+  }
+});
+
 //* UPDATE GAME BACKLOG STATUS
 router.put('/update_game_backlog', async (req, res) => {
   const email = req.body.email;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UserCollection.css';
-import { FaSistrix, FaHome, FaStar, FaAngleDown } from 'react-icons/fa';
+import { FaSistrix, FaHome, FaStar } from 'react-icons/fa';
 import UserGame from '../UserGame/UserGame';
 import useContextMenu from '../../hooks/useContextMenu';
 import bronzeTrophy from '../../assets/images/ps-trophy-bronze.png';
@@ -28,14 +28,18 @@ const UserCollection = ({
   const [currentGame, setCurrentGame] = useState(null);
   const [currentlyAdjusting, setCurrentlyAdjusting] = useState(null);
   const [changingGame, setChangingGame] = useState(false);
+  // SPOTLIGHT STATES
   const [spotlightList, setSpotlightList] = useState([]);
   const [spotlightFilter, setSpotlightFilter] = useState('playtime');
+  // COVER LIST STATES
+  const [listFilter, setListFilter] = useState('alphabetical');
+  const [filteredList, setFilteredList] = useState([]);
+  // STATUS LIST STATES
+  const [statusFilter, setStatusFilter] = useState('alphabetical');
+  const [statusList, setStatusList] = useState([]);
+
   const { anchorPoint, showTitleMenu } = useContextMenu();
   const trophies = [platinumTrophy, goldTrophy, bronzeTrophy];
-
-  // Playstation API key
-  const npsso =
-    'SmCxqqTxQJ11ZOVQFQo4ZBJZx1OEsffbmwC2hpUHusLeEHvoAyuMQFIIegudospP';
 
   // If user is typing, filter titles that reflect inputted value
   useEffect(() => {
@@ -65,7 +69,7 @@ const UserCollection = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Listen for screen size to determine if user is on mobile
+  // Listen for spotlight filter change
   useEffect(() => {
     if (spotlightFilter == 'playtime') {
       setSpotlightList(
@@ -86,11 +90,39 @@ const UserCollection = ({
     }
   }, [spotlightFilter, collection]);
 
-  console.log(
-    spotlightList
-      .map((game) => game?.achievements?.filter((el) => el.achieved))
-      .filter((item) => item.length)
-  );
+  // Listen for list filter change
+  useEffect(() => {
+    if (listFilter == 'achievements') {
+      setFilteredList(
+        [...collection]
+          .filter((game) => game.achievements)
+          .sort((a, b) => b['achievements'] - a['achievements'])
+      );
+    } else if (listFilter == 'playtime') {
+      setFilteredList([...collection].sort((a, b) => b.playtime - a.playtime));
+    } else if (listFilter == 'status') {
+      setFilteredList([...collection].sort((a, b) => b.status - a.status));
+    } else if (listFilter == 'rating') {
+      setFilteredList(
+        [...collection]
+          .filter((game) => game.user_rating)
+          .sort((a, b) => b.user_rating - a.user_rating)
+      );
+    } else {
+      setFilteredList(
+        [...collection].sort((a, b) =>
+          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+        )
+      );
+      console.log('Hello');
+    }
+  }, [listFilter]);
+
+  // console.log(
+  //   spotlightList
+  //     .map((game) => game?.achievements?.filter((el) => el.achieved))
+  //     .filter((item) => item.length)
+  // );
 
   // Select which game is being viewed
   const viewGameHandler = (game) => {
@@ -349,35 +381,94 @@ const UserCollection = ({
 
               {/* COVER LIST */}
               <div className='user_collection__list_container'>
-                <p className='user_collection__list_filter'>All Games</p>
+                <div className='user_collection__list_filters'>
+                  <p>All Games</p>
+                  <ul className='user_collection__list_filters__list'>
+                    <li
+                      style={{ color: listFilter == 'alphabetical' && 'white' }}
+                      onClick={() => setListFilter('alphabetical')}
+                    >
+                      Alphabetically
+                    </li>
+                    <span> | </span>
+                    <li
+                      style={{ color: listFilter == 'achievements' && 'white' }}
+                      onClick={() => setListFilter('achievements')}
+                    >
+                      Achievements
+                    </li>
+                    <span> | </span>
+
+                    <li
+                      style={{ color: listFilter == 'playtime' && 'white' }}
+                      onClick={() => setListFilter('playtime')}
+                    >
+                      Playtime
+                    </li>
+                    <span> | </span>
+
+                    <li
+                      style={{ color: listFilter == 'rating' && 'white' }}
+                      onClick={() => setListFilter('rating')}
+                    >
+                      Rating
+                    </li>
+                    <span> | </span>
+
+                    <li
+                      style={{ color: listFilter == 'status' && 'white' }}
+                      onClick={() => setListFilter('status')}
+                    >
+                      Status
+                    </li>
+                  </ul>
+                  {listFilter == 'status' && (
+                    <div className='user_collection__list_filters'>
+                      <ul
+                        className='user_collection__list_filters__list_status'
+                        style={{ flexDirection: 'row' }}
+                      >
+                        <li>Backlog</li>
+                        <span> | </span>
+                        <li>Started</li>
+                        <span> | </span>
+                        <li>Playing</li>
+                        <span> | </span>
+                        <li>Finished</li>
+                        <span> | </span>
+                        <li>100%</li>
+                        <span> | </span>
+                        <li>Abandonded</li>
+                        <span> | </span>
+                        <li>Not Owned</li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
                 <ul className='user_collection__list'>
                   {!isMobile || (isMobile && searchValue == '')
-                    ? collection
-                        .sort((a, b) =>
-                          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                        )
-                        .map((game) => (
-                          <li
-                            className='list_item'
-                            key={game.id}
-                            onClick={() => viewGameHandler(game)}
-                          >
-                            <div className='user_collection__poster_container'>
-                              <div className='gradient' />
-                              <>
-                                {/* FRONT OF POSTER */}
-                                <div className='user_collection__poster_front'>
-                                  <img
-                                    loading='lazy'
-                                    className='user_collection__poster'
-                                    src={game.imageURL}
-                                    alt={game.name}
-                                  />
-                                </div>
-                              </>
-                            </div>
-                          </li>
-                        ))
+                    ? filteredList.map((game) => (
+                        <li
+                          className='list_item'
+                          key={game.id}
+                          onClick={() => viewGameHandler(game)}
+                        >
+                          <div className='user_collection__poster_container'>
+                            <div className='gradient' />
+                            <>
+                              {/* FRONT OF POSTER */}
+                              <div className='user_collection__poster_front'>
+                                <img
+                                  loading='lazy'
+                                  className='user_collection__poster'
+                                  src={game.imageURL}
+                                  alt={game.name}
+                                />
+                              </div>
+                            </>
+                          </div>
+                        </li>
+                      ))
                     : searchList.map((game) => (
                         <li className='list_item' key={game.id}>
                           <div className='user_collection__poster_container'>

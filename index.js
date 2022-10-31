@@ -13,6 +13,7 @@ const routesUrls = require('./routes/routes');
 const authenticationRoutes = require('./routes/authentication_routes');
 const spotifyRoutes = require('./routes/spotify_routes');
 const igdbRoutes = require('./routes/igdb_routes');
+const playstationRoutes = require('./routes/psn_routes');
 const steamRoutes = require('./routes/steam_routes');
 const cors = require('cors');
 dotenv.config();
@@ -20,11 +21,6 @@ dotenv.config();
 mongoose.connect(process.env.MONGODB_URI, () => {
   console.log('Database Connected!');
 });
-
-let baseURL = process.env.PORT
-  ? 'https://gameflexx.herokuapp.com'
-  : 'http://localhost:';
-let port = process.env.PORT ? process.env.PORT : 3000;
 
 // Required to get data from user for sessions
 passport.serializeUser((user, done) => {
@@ -81,6 +77,7 @@ app.use('/app', routesUrls);
 app.use('/authentication', authenticationRoutes);
 app.use('/spotify', spotifyRoutes);
 app.use('/igdb', igdbRoutes);
+app.use('/playstation', playstationRoutes);
 app.use('/steam', steamRoutes);
 app.use('/uploads', express.static('uploads'));
 

@@ -10,6 +10,11 @@
   font-family: 'Ferrum';
   src: local('Ferrum'), url(./assets/fonts/ferrum.otf) format('opentype');
 }
+@font-face {
+  font-family: 'Persona';
+  src: local('Persona'),
+    url(./assets/fonts/Persona5MenuFontPrototype-Regular.ttf) format('opentype');
+}
 
 body {
   margin: 0;
@@ -24,6 +29,10 @@ body {
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+}
+
+.persona_font {
+  font-family: Persona;
 }
 
 p,

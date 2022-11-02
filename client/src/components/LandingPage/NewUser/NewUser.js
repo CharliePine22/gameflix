@@ -11,7 +11,7 @@ const NewUser = (props) => {
   const [error, setError] = useState(false);
 
   // Color Picker States
-  const [color, setColor] = useState('');
+  const [color, setColor] = useState('#9147ff');
 
   // Step 1 Refs
   const [stepOneData, setStepOneData] = useState({});
@@ -30,12 +30,15 @@ const NewUser = (props) => {
   const fileUploadHandler = (e) => {
     setImgPreview(URL.createObjectURL(e.target.files[0]));
     setImgFile(e.target.files[0]);
+    console.log(e);
   };
 
   const colorChangeHandler = (color) => setColor(color);
+  console.log(color);
 
   // Handler to go back and edit forms in previous steps
   const backStepHandler = () => {
+    setColor('#9147ff');
     setCurrentStep(currentStep - 1);
     if (error) setError(false);
   };
@@ -99,10 +102,10 @@ const NewUser = (props) => {
       formData.append('email', stepOneData.email);
       formData.append('password', stepOneData.password);
       formData.append('color', color.hex);
-      formData.append('avatar', imgFile ? imgFile : '');
+      formData.append('avatar', imgFile ? imgFile : defaultAvatar);
 
       const result = await validateEmail(formData);
-      console.log(result);
+      console.log(imgFile);
       if (
         !result &&
         imgFile !== null &&
@@ -121,6 +124,7 @@ const NewUser = (props) => {
         console.log(result);
         setCurrentStep(1);
         setError(null);
+        return;
       }
     }
   };

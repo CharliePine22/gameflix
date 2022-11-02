@@ -40,7 +40,7 @@ const UserGame = ({
   const achievementsIntegrated = localStorage.getItem('achivementsConn');
   const userEmail = localStorage.getItem('user');
 
-  console.log(trophies);
+  console.log(game);
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -247,10 +247,8 @@ const UserGame = ({
   };
 
   const updateBacklog = async (status) => {
-    if (status == backlogStatus) {
-      console.log('No new update');
-      return;
-    }
+    console.log('HAPPENING');
+
     try {
       const request = await axios.put(`${baseURL}/app/update_game_backlog`, {
         email: userEmail,
@@ -258,6 +256,7 @@ const UserGame = ({
         status: status,
         gameId: game.id,
       });
+      console.log(request);
       localStorage.setItem('profile', request.data.response.profile.name);
       console.log(request.data);
       console.log(request.data.response.profile.collection);
@@ -267,7 +266,7 @@ const UserGame = ({
       //   message: `${game.name} backlog successfully updated!`,
       //   status: 'SUCCESS',
       // });
-      setChangingPlaytime(false);
+      setChangingBacklog(false);
     } catch (error) {
       console.log(error);
       // setNotification({
@@ -635,15 +634,15 @@ const UserGame = ({
                 </div>
                 <ul className='user_game__achievements_list'>
                   {achievements
-                    .filter((trophy) =>
-                      trophyFilter == 'unlocked'
-                        ? trophy.earned
-                        : !trophy.earned
+                    .filter((achievement) =>
+                      achievementFilter == 'unlocked'
+                        ? achievement.achieved
+                        : !achievement.achieved
                     )
                     .sort((a, b) =>
-                      a.trophyName > b.trophyName
+                      a.displayName > b.displayName
                         ? 1
-                        : b.trophyName > a.trophyName
+                        : b.displayName > a.displayName
                         ? -1
                         : 0
                     )
@@ -659,11 +658,8 @@ const UserGame = ({
                           />
                         </div>
                         <div className='achievement_item_headers'>
-                          <h4>{item.displayName || item.trophyName}</h4>
-                          {item.description ||
-                            (item.trophyDetail && (
-                              <p>{item.description || item.trophyDetail}</p>
-                            ))}
+                          <h4>{item.displayName}</h4>
+                          {item.description && <p>{item.description}</p>}
                         </div>
                       </li>
                     ))}
@@ -754,17 +750,6 @@ const UserGame = ({
               </div>
             </div>
           )}
-          {/* <div
-            className='user_game__data_img'
-            style={{
-              backgroundSize: 'cover',
-              backgroundImage: `url(${game.imageURL.replace(
-                'cover_big_2x',
-                '1080p_2x'
-              )})`,
-              backgroundPosition: 'center center',
-            }}
-          /> */}
         </div>
       </div>
     </div>

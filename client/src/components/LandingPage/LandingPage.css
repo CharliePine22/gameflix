@@ -284,11 +284,13 @@
   display: flex;
   position: relative;
   z-index: 1;
+  overflow: hidden;
+  margin: 0 auto;
 }
 
 .information_tv_img {
-  height: 230px;
-  width: 290px;
+  height: 250px;
+  width: 350px;
 }
 
 .information_right {
@@ -397,12 +399,21 @@
   border-radius: 4px;
 }
 
+.sign_in_btn:hover {
+  background: #9d5cfe;
+}
+
 .sign_up_error {
   color: red;
   position: absolute;
   font-weight: 500;
   bottom: -45px;
   margin-left: 2px;
+}
+
+.sonic-img {
+  transform: translate(-471px, -28px) scale(0.7);
+  z-index: -1;
 }
 
 /* MOBILE DEVICES */
@@ -555,7 +566,7 @@
   .information_tv_img {
     height: 250px;
     margin-bottom: 30px;
-    width: 320px;
+    width: 400px;
   }
   .profiles__left {
     height: 60%;
@@ -604,13 +615,13 @@
   }
 }
 
-@media screen and (max-width: 1240px) {
+@media screen and (max-width: 1440px) {
   .landing__information {
     justify-content: space-evenly;
   }
 
-  .information_tv_img {
+  /* .information_tv_img {
     height: 250px;
     width: 350px;
-  }
+  } */
 }

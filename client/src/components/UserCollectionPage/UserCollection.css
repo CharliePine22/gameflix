@@ -25,14 +25,15 @@
   transform-style: preserve-3d;
   transition: all 250ms ease-in-out;
   z-index: 3;
-  margin: 6px auto 15px 15px;
+  margin: 6px auto 15px auto;
   overflow: hidden;
   transform-origin: 100% 0;
-  /* box-shadow: 3.1px 6.2px 6.2px hsl(0deg 0% 0% / 0.4); */
   box-shadow: 2.3px 4.6px 4.6px hsl(0deg 0% 0% / 0.43);
-
-  /* box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); */
 }
+
+/* .list_item:last-of-type {
+  margin: 6px auto 15px;
+} */
 
 .list_item:hover {
   transform: translate3d(0, 0, 0) scale(1.1);
@@ -194,8 +195,16 @@
 
 .user_collection__actions button {
   cursor: pointer;
-  padding: 9px 32px;
-  border-radius: 5px;
+  padding: 0;
+  font-size: 2rem;
+  background: transparent;
+  color: white;
+  text-shadow: 2px 3px 2px black;
+  border: 0;
+}
+
+.user_collection__actions button:hover {
+  animation: personaUI 150ms cubic-bezier(0.06, 0.975, 0.195, 0.985) forwards;
 }
 
 .user_collection__arrow {
@@ -262,7 +271,7 @@
 .user_collection__list_container {
   display: flex;
   flex-direction: column;
-  padding: 10px 0;
+  padding: 10px 8px;
 }
 
 .user_collection__list {
@@ -286,7 +295,7 @@
   flex-direction: column;
   align-items: center;
   color: white;
-  margin: 0 auto 5px;
+  margin: 0 auto 8px;
   padding: 0;
 }
 
@@ -326,7 +335,7 @@
   color: white;
   padding: 0;
   list-style: none;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
 .user_collection__list_filters__list_status li {
@@ -412,7 +421,7 @@
   height: 100%;
   position: absolute;
   /* left: 9px; */
-  left: 20px;
+  left: 23px;
   color: white;
 }
 
@@ -467,6 +476,18 @@
   position: relative;
   /* padding: 10px 15px; */
   height: 100vh;
+}
+
+@keyframes personaUI {
+  0% {
+    transform: scale(1) rotate(0);
+  }
+  75% {
+    transform: scale(1.5) rotate(0deg);
+  }
+  100% {
+    transform: scale(1.2) rotate(-9deg);
+  }
 }
 
 @media screen and (max-width: 1440px) {
@@ -542,6 +563,7 @@
     height: 60px;
     width: 55px;
     left: 5px;
+    top: 43px;
   }
 
   .user_collection__spotlight {

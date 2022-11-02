@@ -800,6 +800,7 @@ router.put('/update_game_backlog', async (req, res) => {
   const name = req.body.currentProfile;
   const backlogStatus = req.body.status;
 
+  console.log('HERE');
   try {
     const request = await userModel.findOneAndUpdate(
       {
@@ -814,6 +815,8 @@ router.put('/update_game_backlog', async (req, res) => {
       { arrayFilters: [{ 'element.id': { $eq: gameId } }], new: true }
     );
 
+    console.log(request);
+
     if (request == null) {
       res.send({
         code: 400,
@@ -821,6 +824,7 @@ router.put('/update_game_backlog', async (req, res) => {
         message: 'Unable to update backlog, please try again!',
         response: request,
       });
+      return;
     } else {
       const currentProfile = request.profiles.filter(
         (profile) => profile.name === name
@@ -835,12 +839,14 @@ router.put('/update_game_backlog', async (req, res) => {
         message: 'Backlog status updated!',
         response: { profile: currentProfile[0], game: currentPlaytime[0] },
       });
+      return;
     }
   } catch (error) {
     console.log(error);
     res.status(400, {
       message: 'There was an error with your request, please try again.',
     });
+    return;
   }
 });
 

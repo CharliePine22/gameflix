@@ -14,6 +14,7 @@ import mario from '../../assets/images/mario.png';
 import masterChief from '../../assets/images/master-chief.png';
 import lozLink from '../../assets/images/loz-link.png';
 import spyro from '../../assets/images/spyro.png';
+import sonic from '../../assets/images/sonic.png';
 import logos from '../../assets/images/console-logos.jpg';
 import NewUser from './NewUser/NewUser';
 
@@ -172,6 +173,7 @@ const LandingPage = ({ toSignIn, images }) => {
             <img className='mario-img' src={mario} />
             <img className='link-img' src={lozLink} />
             <img className='spyro-img' src={spyro} />
+            <img className='sonic-img' src={sonic} />
           </div>
         </div>
         <div className='information_right'>

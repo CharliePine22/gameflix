@@ -130,6 +130,7 @@ const Dashboard = ({
         imageURL: `//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover.image_id}.jpg`,
         playtime: 0,
         origin: 'gameflix',
+        status: 'BACKLOG',
       });
       localStorage.setItem('user', request.data.response.email);
       const filteredProfile = request.data.response.profiles.filter((obj) => {
@@ -192,7 +193,7 @@ const Dashboard = ({
     setLoggedUser(null);
     setSelectedProfile(null);
     localStorage.clear('user');
-    window.location = '/';
+    window.location.refresh();
   };
 
   const changeProfile = (user) => {

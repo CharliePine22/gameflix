@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import './Nav.css';
 import logo from '../../assets/images/gameflix-logo.png';
+import defaultAvatar from '../../assets/images/basic_avatar.png';
 import { useEffect, useState } from 'react';
 import { FaSistrix, FaAngleUp } from 'react-icons/fa';
 import NavDropdown from './NavDropdown';
@@ -155,7 +156,7 @@ function Nav(props) {
           >
             <img
               className='nav__avatar'
-              src={profile.avatar}
+              src={profile.avatar ? profile.avatar : defaultAvatar}
               // style={{ backgroundColor: profile.color }}
               alt="User's avatar"
             />

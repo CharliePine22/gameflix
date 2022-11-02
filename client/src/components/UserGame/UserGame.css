@@ -370,8 +370,8 @@
 .user_game__data {
   height: 100%;
   width: 100%;
-  background: rgba(11, 11, 11, 0.95);
-  z-index: 1;
+  /* background: rgba(11, 11, 11, 0.95); */
+  z-index: 0;
 }
 
 .user_game__data_wrapper {
@@ -524,7 +524,7 @@
   }
 
   .user_game__banner {
-    height: 450px;
+    height: 452px;
   }
 }
 

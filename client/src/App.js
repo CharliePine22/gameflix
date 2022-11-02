@@ -36,7 +36,6 @@ function App() {
   let audio = new Audio(loginAudio);
 
   const twitchAccessToken = useTwitchAuth(code);
-  // console.log(twitchAccessToken);
 
   // Refetch user data if any changes are made
   useEffect(() => {
@@ -53,6 +52,9 @@ function App() {
     updateUser();
   }, [userEmail, selectedProfile]);
 
+  console.log(loggedUser);
+  console.log(selectedProfile);
+
   // Check to see which profile is active
   useEffect(() => {
     if (!userProfile || !loggedUser) return;
@@ -62,9 +64,11 @@ function App() {
       });
 
       setSelectedProfile(currentProfile[0]);
-      setProfileCollection(
-        currentProfile[0].collection.filter((game) => game.id !== null)
-      );
+      if (currentProfile[0].collection) {
+        setProfileCollection(
+          currentProfile[0].collection.filter((game) => game.id !== null)
+        );
+      }
     };
     getProfileData(userProfile);
   }, [selectedProfile, userProfile, loggedUser]);
@@ -116,6 +120,8 @@ function App() {
       />
     );
   }
+
+  console.log(userEmail);
   if (!userProfile && loggedUser) {
     return (
       <ProfilesPage

@@ -35,11 +35,12 @@ const UserCollection = ({
   const [listFilter, setListFilter] = useState('alphabetical');
   const [filteredList, setFilteredList] = useState([]);
   // STATUS LIST STATES
-  const [statusFilter, setStatusFilter] = useState('alphabetical');
-  const [statusList, setStatusList] = useState([]);
+  const [statusFilter, setStatusFilter] = useState('backlog');
 
   const { anchorPoint, showTitleMenu } = useContextMenu();
   const trophies = [platinumTrophy, goldTrophy, bronzeTrophy];
+
+  console.log(statusFilter);
 
   // If user is typing, filter titles that reflect inputted value
   useEffect(() => {
@@ -101,7 +102,11 @@ const UserCollection = ({
     } else if (listFilter == 'playtime') {
       setFilteredList([...collection].sort((a, b) => b.playtime - a.playtime));
     } else if (listFilter == 'status') {
-      setFilteredList([...collection].sort((a, b) => b.status - a.status));
+      setFilteredList(
+        [...collection].filter(
+          (game) => game.status == statusFilter.toUpperCase()
+        )
+      );
     } else if (listFilter == 'rating') {
       setFilteredList(
         [...collection]
@@ -122,7 +127,34 @@ const UserCollection = ({
       );
       console.log('Hello');
     }
-  }, [listFilter]);
+  }, [listFilter, statusFilter]);
+
+  // Listen for list filter change
+  // useEffect(() => {
+  //   if (!collection || listFilter !== 'status') return;
+  //   if (statusFilter == 'backlog') {
+  //     setStatusList(
+  //       [...collection].filter((game) => game.status == 'BACKLOG')
+  //       // .sort(a.name > b.name ? 1 : b.name > a.name ? -1 : 0)
+  //     );
+  //   } else if (statusFilter == 'started') {
+  //     setStatusList([...collection].filter((game) => game.status == 'STARTED'));
+  //   } else if (statusFilter == 'playing') {
+  //     setStatusList([...collection].filter((game) => game.status == 'PLAYING'));
+  //   } else if (statusFilter == 'finished') {
+  //     setStatusList(
+  //       [...collection].filter((game) => game.status == 'FINISHED')
+  //     );
+  //   } else if (statusFilter == '100%') {
+  //     setStatusList([...collection].filter((game) => game.status == '100%'));
+  //   } else if (statusFilter == 'abandonded') {
+  //     setStatusList(
+  //       [...collection].filter((game) => game.status == 'ABANDONDED')
+  //     );
+  //   } else {
+  //     setStatusList([...collection].filter((game) => game.status == 'N'));
+  //   }
+  // }, [statusFilter, listFilter]);
 
   // console.log(
   //   spotlightList
@@ -221,7 +253,8 @@ const UserCollection = ({
                 alignItems: 'center',
               }}
             >
-              {searchList.length <= 0 ? 'All' : 'Results'} (
+              {searchList.length <= 0 && searchValue == '' ? 'All' : 'Results'}{' '}
+              (
               <span style={{ fontSize: '.75rem' }}>
                 {searchValue == '' ? collection.length : searchList.length}
               </span>
@@ -273,7 +306,7 @@ const UserCollection = ({
                   </li>
                   // 255 - 124
                 ))
-            ) : searchList.length > 0 ? (
+            ) : searchList.length > 0 && searchValue != '' ? (
               searchList.map((game) => (
                 <li
                   className='title_list__item'
@@ -300,7 +333,9 @@ const UserCollection = ({
             )}
           </ul>
           <div className='user_collection__actions'>
-            <button onClick={backToHome}>Back</button>
+            <button className='persona_font' onClick={backToHome}>
+              Back
+            </button>
           </div>
         </div>
 
@@ -392,12 +427,18 @@ const UserCollection = ({
               {/* COVER LIST */}
               <div className='user_collection__list_container'>
                 <div className='user_collection__list_filters'>
-                  <p>
+                  <p style={{ marginBottom: '2px', fontSize: '1.5rem' }}>
                     {listFilter == 'alphabetical'
                       ? 'All Games'
                       : listFilter == 'achievements'
-                      ? 'All (Achievements)'
-                      : listFilter == 'playtime'}
+                      ? 'Achievements'
+                      : listFilter == 'playtime'
+                      ? 'Playtime'
+                      : listFilter == 'rating'
+                      ? 'Rating'
+                      : listFilter == 'status'
+                      ? 'Status'
+                      : 'Trophies'}
                   </p>
                   <ul className='user_collection__list_filters__list'>
                     <li
@@ -433,7 +474,10 @@ const UserCollection = ({
 
                     <li
                       style={{ color: listFilter == 'status' && 'white' }}
-                      onClick={() => setListFilter('status')}
+                      onClick={() => {
+                        setListFilter('status');
+                        setStatusFilter('backlog');
+                      }}
                     >
                       Status
                     </li>
@@ -447,24 +491,76 @@ const UserCollection = ({
                     </li>
                   </ul>
                   {listFilter == 'status' && (
-                    <div className='user_collection__list_filters'>
+                    <div
+                      className='user_collection__list_filters'
+                      style={{ margin: '0' }}
+                    >
                       <ul
                         className='user_collection__list_filters__list_status'
                         style={{ flexDirection: 'row' }}
                       >
-                        <li>Backlog</li>
+                        <li
+                          style={{
+                            color: statusFilter == 'backlog' && 'white',
+                          }}
+                          onClick={() => setStatusFilter('backlog')}
+                        >
+                          Backlog
+                        </li>
                         <span> | </span>
-                        <li>Started</li>
+                        <li
+                          style={{
+                            color: statusFilter == 'started' && 'white',
+                          }}
+                          onClick={() => setStatusFilter('started')}
+                        >
+                          Started
+                        </li>
                         <span> | </span>
-                        <li>Playing</li>
+                        <li
+                          style={{
+                            color: statusFilter == 'playing' && 'white',
+                          }}
+                          onClick={() => setStatusFilter('playing')}
+                        >
+                          Playing
+                        </li>
                         <span> | </span>
-                        <li>Finished</li>
+                        <li
+                          style={{
+                            color: statusFilter == 'finished' && 'white',
+                          }}
+                          onClick={() => setStatusFilter('finished')}
+                        >
+                          Finished
+                        </li>
                         <span> | </span>
-                        <li>100%</li>
+                        <li
+                          style={{
+                            color: statusFilter == '100%' && 'white',
+                          }}
+                          onClick={() => setStatusFilter('100%')}
+                        >
+                          100%
+                        </li>
                         <span> | </span>
-                        <li>Abandonded</li>
+                        <li
+                          style={{
+                            color: statusFilter == 'abandonded' && 'white',
+                          }}
+                          onClick={() => setStatusFilter('abandonded')}
+                        >
+                          Abandonded
+                        </li>
                         <span> | </span>
-                        <li>Not Owned</li>
+                        <li
+                          style={{
+                            color: statusFilter == 'not owned' && 'white',
+                          }}
+                          onClick={() => setStatusFilter('not owned')}
+                        >
+                          Not Owned
+                        </li>
                       </ul>
                     </div>
                   )}

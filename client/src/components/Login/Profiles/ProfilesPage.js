@@ -38,6 +38,8 @@ const ProfilesPage = (props) => {
     return;
   }
 
+  console.log(profiles);
+
   if (creatingProfile !== null && creatingProfile !== 'new') {
     return (
       <ProfileEditor
@@ -82,7 +84,7 @@ const ProfilesPage = (props) => {
                   editingProfiles && 'editing'
                 }`}
                 style={{ backgroundColor: user.color }}
-                src={user.avatar !== null ? `${user.avatar}` : defaultAvatar}
+                src={user.avatar ? `${user.avatar}` : defaultAvatar}
               />
               {editingProfiles && <MdEdit className='edit-icon' />}
               <span className='profile__user_name'>{user.name}</span>

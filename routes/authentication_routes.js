@@ -67,14 +67,26 @@ router.post('/signin', (req, res) => {
 
 //! SIGN UP
 router.post('/signup', upload.single('avatar'), (req, res) => {
-  const avatar = req.file.destination + '/' + req.file.filename;
+  let avatar;
+  let color;
+  if (!req.file) {
+    avatar = '';
+  } else {
+    avatar = req.file.destination + '/' + req.file.filename;
+  }
+
+  if (!req.body.color) {
+    color = '#9147ff';
+  } else {
+    color = req.body.color;
+  }
 
   const newUser = new userModel({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
-    color: req.body.color,
+    color: color,
     avatar: avatar,
   });
 

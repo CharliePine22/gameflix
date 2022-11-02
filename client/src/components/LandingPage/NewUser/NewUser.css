@@ -252,6 +252,24 @@
   margin-bottom: 50px;
 }
 
+.new_user__loading {
+  position: relative;
+  top: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.new_user__spinner {
+  width: 74px;
+  height: 74px;
+  border: 11px solid;
+  border-color: #9147ff transparent #9147ff transparent;
+  border-radius: 50%;
+  animation: spin-anim 1.2s linear infinite;
+}
+
 .new_user__page {
   position: relative;
   background-color: white;
@@ -267,6 +285,16 @@
   font-size: 0.9rem;
   left: 0px;
   top: -19px;
+}
+
+/* LOGIN AUTH LOAD SPIN ANIMATION */
+@keyframes spin-anim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* ! MEDIA QUERIES ! */

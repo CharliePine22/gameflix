@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 // File Imports
 import './LandingPage.css';
-import requests from '../../requests';
-import rawgClient from '../../axios';
 // Package Imports
 import axios from 'axios';
 import { FaAngleRight } from 'react-icons/fa';

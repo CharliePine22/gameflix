@@ -58,7 +58,7 @@ const UserCollection = ({
   // Listen for screen size to determine if user is on mobile
   useEffect(() => {
     function handleResize() {
-      if (window.innerWidth <= 533) {
+      if (window.innerWidth <= 650) {
         setIsMobile(true);
       } else {
         setIsMobile(false);
@@ -107,6 +107,12 @@ const UserCollection = ({
         [...collection]
           .filter((game) => game.user_rating)
           .sort((a, b) => b.user_rating - a.user_rating)
+      );
+    } else if (listFilter == 'trophies') {
+      setFilteredList(
+        [...collection]
+          .filter((game) => game.trophies)
+          .sort((a, b) => b.trophies - a.trophies)
       );
     } else {
       setFilteredList(
@@ -160,7 +166,7 @@ const UserCollection = ({
           style={{
             height: viewingList && '250%',
             marginBottom: viewingList && '25px',
-            display: isMobile && currentGame && 'none',
+            display: isMobile && currentGame !== null && 'none',
           }}
         >
           <div className='user_collection__left_header'>
@@ -223,46 +229,50 @@ const UserCollection = ({
             </p>
 
             {searchValue == '' ? (
-              collection.map((game) => (
-                <li
-                  className='title_list__item'
-                  key={game.id}
-                  onClick={() => viewGameHandler(game)}
-                  onContextMenu={(e) => viewGameHeaders(e, game)}
-                  style={{
-                    background: currentGame?.id == game.id && '#9147ff',
-                    // backgroundColor:
-                    //   currentlyAdjusting.id == game.id && 'rgb(71, 133, 156)',
-                  }}
-                >
-                  {' '}
-                  <img src={game.imageURL} />
-                  <p>{game.name}</p>
-                  {game.name == activeProfile.favorite_game && (
-                    <FaStar className='list_item_favorite' />
-                  )}
-                  {showTitleMenu && (
-                    <ul
-                      onMouseEnter={(e) => e.stopPropagation(true)}
-                      className='user_collection__game_context'
-                      style={{
-                        top: anchorPoint.y,
-                        left: anchorPoint.x,
-                        zIndex: 6,
-                      }}
-                    >
-                      <li className='banner_context__item'>Add to Favorites</li>
-                      <li
-                        className='banner_context__item'
-                        onClick={(e) => removeGameHandler(e, game)}
+              collection
+                .sort((a, b) =>
+                  a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+                )
+                .map((game) => (
+                  <li
+                    className='title_list__item'
+                    key={game.id}
+                    onClick={() => viewGameHandler(game)}
+                    onContextMenu={(e) => viewGameHeaders(e, game)}
+                    style={{
+                      background: currentGame?.id == game.id && '#9147ff',
+                    }}
+                  >
+                    {' '}
+                    <img src={game.imageURL} />
+                    <p>{game.name}</p>
+                    {game.name == activeProfile.favorite_game && (
+                      <FaStar className='list_item_favorite' />
+                    )}
+                    {showTitleMenu && (
+                      <ul
+                        onMouseEnter={(e) => e.stopPropagation(true)}
+                        className='user_collection__game_context'
+                        style={{
+                          top: anchorPoint.y,
+                          left: anchorPoint.x,
+                          zIndex: 6,
+                        }}
                       >
-                        Delete Game
-                      </li>
-                    </ul>
-                  )}
-                </li>
-                // 255 - 124
-              ))
+                        <li className='banner_context__item'>
+                          Add to Favorites
+                        </li>
+                        <li
+                          className='banner_context__item'
+                          onClick={(e) => removeGameHandler(e, game)}
+                        >
+                          Delete Game
+                        </li>
+                      </ul>
+                    )}
+                  </li>
+                  // 255 - 124
+                ))
             ) : searchList.length > 0 ? (
               searchList.map((game) => (
                 <li
@@ -382,13 +392,19 @@ const UserCollection = ({
               {/* COVER LIST */}
               <div className='user_collection__list_container'>
                 <div className='user_collection__list_filters'>
-                  <p>All Games</p>
+                  <p>
+                    {listFilter == 'alphabetical'
+                      ? 'All Games'
+                      : listFilter == 'achievements'
+                      ? 'All (Achievements)'
+                      : listFilter == 'playtime'}
+                  </p>
                   <ul className='user_collection__list_filters__list'>
                     <li
                       style={{ color: listFilter == 'alphabetical' && 'white' }}
                       onClick={() => setListFilter('alphabetical')}
                     >
-                      Alphabetically
+                      All
                     </li>
                     <span> | </span>
                     <li
@@ -420,6 +436,14 @@ const UserCollection = ({
                       onClick={() => setListFilter('status')}
                     >
                       Status
+                    </li>
+                    <span> | </span>
+
+                    <li
+                      style={{ color: listFilter == 'trophies' && 'white' }}
+                      onClick={() => setListFilter('trophies')}
+                    >
+                      Trophies
                     </li>
                   </ul>
                   {listFilter == 'status' && (
@@ -470,7 +494,11 @@ const UserCollection = ({
                         </li>
                       ))
                     : searchList.map((game) => (
-                        <li className='list_item' key={game.id}>
+                        <li
+                          className='list_item'
+                          key={game.id}
+                          onClick={() => viewGameHandler(game)}
+                        >
                           <div className='user_collection__poster_container'>
                             <div className='gradient' />
                             <>

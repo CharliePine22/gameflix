@@ -156,7 +156,7 @@ function Nav(props) {
             <img
               className='nav__avatar'
               src={profile.avatar}
-              style={{ backgroundColor: profile.color }}
+              // style={{ backgroundColor: profile.color }}
               alt="User's avatar"
             />
           </div>
@@ -182,6 +182,7 @@ function Nav(props) {
               editAccount={editAccountHandler}
               updateCollection={props.updateCollection}
               currentCollection={props.currentCollection}
+              viewCollection={props.viewCollection}
             />
           )}
         </div>

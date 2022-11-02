@@ -51,7 +51,7 @@ function App() {
       setLoggedUser(result);
     };
     updateUser();
-  }, [userEmail]);
+  }, [userEmail, selectedProfile]);
 
   // Check to see which profile is active
   useEffect(() => {
@@ -97,13 +97,6 @@ function App() {
     audio.play();
   };
 
-  // Logout the user
-  const logoutHandler = () => {
-    setLoggedUser(null);
-    setSelectedProfile(null);
-    localStorage.clear('user');
-  };
-
   const changeProfile = (user) => {
     setChangingUser(true);
     // setSelectedProfile(user.name);
@@ -143,9 +136,7 @@ function App() {
         currentProfile={selectedProfile}
         currentCollection={profileCollection}
         updateCollection={(collection) =>
-          setProfileCollection(
-            collection.filter((game) => game.id !== null)
-          ).sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
+          setProfileCollection(collection.filter((game) => game.id !== null))
         }
         selectProfile={(user) => setSelectedProfile(user)}
         manageProfiles={() => setSelectedProfile(null)}

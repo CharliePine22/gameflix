@@ -500,10 +500,10 @@
   }
 
   .user_collection__poster_container {
-    max-width: 8.5rem;
-    min-width: 8.5rem;
-    min-height: 210px;
-    max-height: 210px;
+    max-width: 9.5rem;
+    min-width: 9.5rem;
+    min-height: 240px;
+    max-height: 240px;
   }
 
   .user_collection__search_icon {
@@ -557,10 +557,10 @@
 
 @media screen and (max-width: 750px) {
   .user_collection__poster_container {
-    max-width: 7.5rem;
-    min-width: 7.5rem;
-    min-height: 200px;
-    max-height: 200px;
+    max-width: 8.5rem;
+    min-width: 8.5rem;
+    min-height: 220px;
+    max-height: 220px;
   }
 
   .user_collection__left_header {
@@ -574,9 +574,9 @@
 }
 
 /* MOBILE DEVICES */
-@media screen and (max-width: 533px) {
+@media screen and (max-width: 650px) {
   .list_item {
-    margin: 5px 10px 10px;
+    margin: 5px 4px 10px;
   }
 
   .user_collection__actions {
@@ -611,11 +611,11 @@
     width: 100%;
     /* overflow: hidden; */
     padding: 0;
+    position: relative;
   }
 
   .user_collection__search_icon {
-    left: 40px;
-    /* left: 31px; */
+    left: 50px;
   }
 
   .user_collection__search_input {

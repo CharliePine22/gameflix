@@ -2,7 +2,13 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import './NavDropdown.css';
 // React Icons
-import { FaSortUp, FaSpotify, FaUserEdit, FaPlaystation } from 'react-icons/fa';
+import {
+  FaSortUp,
+  FaSpotify,
+  FaUserEdit,
+  FaPlaystation,
+  FaGamepad,
+} from 'react-icons/fa';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { MdEdit } from 'react-icons/md';
 
@@ -54,7 +60,7 @@ const NavDropdown = (props) => {
           ownedGame.trophies = game.allTrophies;
           axios.put(`${baseURL}/app/update_game_trophies`, {
             email: localStorage.getItem('user'),
-            name: localStorage.getItem('profile'),
+            name: props.activeProfile.name,
             gameId: ownedGame.id,
             trophies: game.allTrophies,
           });
@@ -120,12 +126,23 @@ const NavDropdown = (props) => {
           </span>
           <p>My Profile</p>
         </div>
+        <div
+          className='dropdown__settings_item'
+          onClick={() => props.viewCollection()}
+        >
+          <span className='dropdown__settings_item_icon'>
+            <FaGamepad size={18} />
+          </span>
+          <p>My Collection</p>
+        </div>
         <div className='dropdown__settings_item' onClick={props.editAccount}>
           <span className='dropdown__settings_item_icon'>
             <IoSettingsOutline size={18} />
           </span>
           <p>Account Settings</p>
         </div>
+      </div>
+      <div className='dropdown__settings'>
         <div
           className='dropdown__settings_item'
           onClick={generatePlaystationTitles}
@@ -163,9 +180,9 @@ const NavDropdown = (props) => {
         </div>
       </div>
       <div className='dropdown__settings_links'>
-        <a className='dropdown__settings_link' onClick={props.logoutHandler}>
+        <p className='dropdown__settings_link' onClick={props.logoutHandler}>
           Sign out of GameFlix
-        </a>
+        </p>
       </div>
     </div>
   );

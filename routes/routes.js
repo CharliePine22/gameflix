@@ -744,9 +744,8 @@ router.put('/update_game_achievements', async (req, res) => {
 router.put('/update_game_trophies', async (req, res) => {
   const email = req.body.email;
   const gameId = req.body.gameId;
-  const name = req.body.currentProfile;
+  const name = req.body.name;
   const trophies = req.body.trophies;
-  console.log(name);
 
   try {
     const request = await userModel.findOneAndUpdate(

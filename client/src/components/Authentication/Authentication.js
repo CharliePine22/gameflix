@@ -31,9 +31,6 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
     fetchData();
   }, [twitchToken]);
 
-  console.log('AUTH');
-  console.log(gameList);
-
   const imageLoaded = () => {
     counter.current += 1;
     if (counter.current >= gameList.length) {
@@ -60,7 +57,6 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
         password,
       });
       setAuthError('');
-      console.log(response);
       onLogin(response.data.user);
       return response;
     } catch (e) {

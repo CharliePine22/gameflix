@@ -19,7 +19,9 @@ const UserGame = ({
   const { anchorPoint, showBannerMenu, resetContext } = useContextMenu();
   // Achievement States
   const [achievements, setAchievements] = useState(game.achievements);
-  const [achievementData, setAchievementData] = useState(null);
+  const [trophies, setTrophies] = useState(game.trophies);
+  const [achievementFilter, setAchievementFilter] = useState('unlocked');
+  const [trophyFilter, setTrophyFilter] = useState('unlocked');
   // Playtime States
   const [playtime, setPlaytime] = useState(Math.floor(game.playtime / 60));
   const [changingPlaytime, setChangingPlaytime] = useState(false);
@@ -37,6 +39,8 @@ const UserGame = ({
   const steamID = localStorage.getItem('steamID');
   const achievementsIntegrated = localStorage.getItem('achivementsConn');
   const userEmail = localStorage.getItem('user');
+
+  console.log(trophies);
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -61,6 +65,7 @@ const UserGame = ({
     setPlaytime(Math.floor(game.playtime / 60));
     setRating(game.user_rating);
     setAchievements(game.achievements);
+    setTrophies(game.trophies);
     if (!steamID) {
       console.log('No steam id');
       return;
@@ -154,7 +159,9 @@ const UserGame = ({
 
   const getAchievementCount = (list) => {
     if (!list) return 'N/A';
-    const numberAchieved = list.filter((game) => game.achieved == true).length;
+    const numberAchieved = list.filter(
+      (game) => game.achieved == true || game.earned == true
+    ).length;
     return numberAchieved + '/' + list.length;
   };
 
@@ -252,6 +259,8 @@ const UserGame = ({
         gameId: game.id,
       });
       localStorage.setItem('profile', request.data.response.profile.name);
+      console.log(request.data);
+      console.log(request.data.response.profile.collection);
       setCurrentGame(request.data.response.game);
       updateCollection(request.data.response.profile.collection);
       // setNotification({
@@ -566,81 +575,197 @@ const UserGame = ({
       </div>
 
       {/* GAME NEWS AND DATA */}
-      <div className='user_game__data'>
-        {/* <div className='user_game__header'>
+      <div className='user_game__data_wrapper'>
+        <div className='user_game__data'>
+          {/* <div className='user_game__header'>
           <h2 className='user_game__title'>{game.name}</h2>
         </div> */}
-        {/* OWNED PLATFORMS */}
-        <div className='user_game__platforms'>
-          <h4>Platforms Owned</h4>
-          <ul>{game.origin == 'steam' && <li>Steam</li>}</ul>
-        </div>
-
-        {/* ACHIEVEMENT LIST */}
-        {achievements && (
-          <div className='user_game__achievements_wrapper'>
-            <h3>Achievements</h3>
-
-            <div className='user_game__achievements'>
-              <div className='user_game__achievements_banner'>
-                <p>
-                  You've unlocked {getAchievementCount(achievements)} (
-                  {Math.floor(
-                    (achievements.filter((game) => game.achieved == true)
-                      .length /
-                      achievements.length) *
-                      100
-                  )}
-                  %)
-                </p>
-                <div className='user_game__achievements_progress_bar_container'>
-                  <div
-                    className='user_game__achievements_progress_bar'
-                    style={{
-                      width: `${Math.floor(
-                        (achievements.filter((game) => game.achieved == true)
-                          .length /
-                          achievements.length) *
-                          100
-                      )}%`,
-                      background: activeProfile.color,
-                    }}
-                  />
-                </div>
-              </div>
-              <ul className='user_game__achievements_list'>
-                {achievements.map((item) => (
-                  <li className='achievement_item'>
-                    <div
-                      className='achievement_item_icon'
-                      style={{ border: `1px solid ${activeProfile.color}` }}
-                    >
-                      <img
-                        className='achievement_item_icon__img'
-                        src={item.achieved ? item.icon : item.icongray}
-                      />
-                    </div>
-                    <div className='achievement_item_headers'>
-                      <h4>{item.displayName}</h4>
-                      {item.description && <p>{item.description}</p>}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* OWNED PLATFORMS */}
+          <div className='user_game__platforms'>
+            <h4>Platforms Owned</h4>
+            <ul>{game.origin == 'steam' && <li>Steam</li>}</ul>
           </div>
-        )}
-        <div
-          className='user_game__data_img'
-          style={{
-            backgroundSize: 'cover',
-            backgroundImage: `url(${game.imageURL.replace(
-              'cover_big_2x',
-              '1080p_2x'
-            )})`,
-            backgroundPosition: 'center center',
-          }}
-        />
+
+          {/* ACHIEVEMENT LIST */}
+          {achievements && (
+            <div className='user_game__achievements_wrapper'>
+              <h3>Achievements</h3>
+
+              <div className='user_game__achievements'>
+                <div className='user_game__achievements_banner'>
+                  <p>
+                    You've unlocked {getAchievementCount(achievements)} (
+                    {Math.floor(
+                      (achievements.filter(
+                        (game) => game.achieved == true || game.earned == true
+                      ).length /
+                        achievements.length) *
+                        100
+                    )}
+                    %)
+                  </p>
+                  <div className='user_game__achievements_progress_bar_container'>
+                    <div
+                      className='user_game__achievements_progress_bar'
+                      style={{
+                        width: `${Math.floor(
+                          (achievements.filter((game) => game.achieved == true)
+                            .length /
+                            achievements.length) *
+                            100
+                        )}%`,
+                        background: activeProfile.color,
+                      }}
+                    />
+                  </div>
+                  <div className='user_game__achievements_actions'>
+                    <button
+                      className={achievementFilter == 'unlocked' && 'active'}
+                      onClick={() => setAchievementFilter('unlocked')}
+                    >
+                      Unlocked
+                    </button>
+                    <button
+                      className={`${achievementFilter == 'locked' && 'active'}`}
+                      onClick={() => setAchievementFilter('locked')}
+                    >
+                      In Progress
+                    </button>
+                  </div>
+                </div>
+                <ul className='user_game__achievements_list'>
+                  {achievements
+                    .filter((trophy) =>
+                      trophyFilter == 'unlocked'
+                        ? trophy.earned
+                        : !trophy.earned
+                    )
+                    .sort((a, b) =>
+                      a.trophyName > b.trophyName
+                        ? 1
+                        : b.trophyName > a.trophyName
+                        ? -1
+                        : 0
+                    )
+                    .map((item) => (
+                      <li className='achievement_item'>
+                        <div
+                          className='achievement_item_icon'
+                          style={{ border: `1px solid ${activeProfile.color}` }}
+                        >
+                          <img
+                            className='achievement_item_icon__img'
+                            src={item.achieved ? item.icon : item.icongray}
+                          />
+                        </div>
+                        <div className='achievement_item_headers'>
+                          <h4>{item.displayName || item.trophyName}</h4>
+                          {item.description ||
+                            (item.trophyDetail && (
+                              <p>{item.description || item.trophyDetail}</p>
+                            ))}
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+          )}
+          {/* PLAYSTATION TROPHIES */}
+          {trophies && (
+            <div className='user_game__achievements_wrapper'>
+              <h3>Trophies</h3>
+
+              <div className='user_game__achievements'>
+                <div className='user_game__achievements_banner'>
+                  <p>
+                    You've unlocked {getAchievementCount(trophies)} (
+                    {Math.floor(
+                      (trophies.filter((game) => game.earned == true).length /
+                        trophies.length) *
+                        100
+                    )}
+                    %)
+                  </p>
+                  <div className='user_game__achievements_progress_bar_container'>
+                    <div
+                      className='user_game__achievements_progress_bar'
+                      style={{
+                        width: `${Math.floor(
+                          (trophies.filter((game) => game.earned == true)
+                            .length /
+                            trophies.length) *
+                            100
+                        )}%`,
+                        background: activeProfile.color,
+                      }}
+                    />
+                  </div>
+
+                  <div className='user_game__achievements_actions'>
+                    <button
+                      className={trophyFilter == 'unlocked' && 'active'}
+                      onClick={() => setTrophyFilter('unlocked')}
+                    >
+                      Unlocked
+                    </button>
+                    <button
+                      className={`${trophyFilter == 'locked' && 'active'}`}
+                      onClick={() => setTrophyFilter('locked')}
+                    >
+                      In Progress
+                    </button>
+                  </div>
+                </div>
+                <ul className='user_game__achievements_list'>
+                  {trophies
+                    .filter((trophy) =>
+                      trophyFilter == 'unlocked'
+                        ? trophy.earned
+                        : !trophy.earned
+                    )
+                    .sort((a, b) =>
+                      a.trophyName > b.trophyName
+                        ? 1
+                        : b.trophyName > a.trophyName
+                        ? -1
+                        : 0
+                    )
+                    .map((item) => (
+                      <li className='achievement_item'>
+                        <div
+                          className='achievement_item_icon'
+                          style={{ border: `1px solid ${activeProfile.color}` }}
+                        >
+                          <img
+                            className={`achievement_item_icon__img ${
+                              !item.earned && 'greyscale'
+                            }`}
+                            src={item.trophyIconUrl}
+                          />
+                        </div>
+                        <div className='achievement_item_headers'>
+                          <h4>{item.trophyName}</h4>
+                          {item.trophyDetail && <p>{item.trophyDetail}</p>}
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+          )}
+          {/* <div
+            className='user_game__data_img'
+            style={{
+              backgroundSize: 'cover',
+              backgroundImage: `url(${game.imageURL.replace(
+                'cover_big_2x',
+                '1080p_2x'
+              )})`,
+              backgroundPosition: 'center center',
+            }}
+          /> */}
+        </div>
       </div>
     </div>
   );

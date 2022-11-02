@@ -25,6 +25,8 @@ const NewUser = (props) => {
   const [imgFile, setImgFile] = useState(null);
   const [imgPreview, setImgPreview] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   const fileUploadHandler = (e) => {
     setImgPreview(URL.createObjectURL(e.target.files[0]));
     setImgFile(e.target.files[0]);
@@ -90,31 +92,34 @@ const NewUser = (props) => {
     }
     // Step 3
     else {
+      setLoading(true);
       const formData = new FormData();
       formData.append('firstName', stepTwoData.firstName);
       formData.append('lastName', stepTwoData.lastName);
       formData.append('email', stepOneData.email);
       formData.append('password', stepOneData.password);
       formData.append('color', color.hex);
-      formData.append('avatar', imgFile);
-      console.log(imgFile);
+      formData.append('avatar', imgFile ? imgFile : '');
 
       const result = await validateEmail(formData);
+      console.log(result);
       if (
         !result &&
+        imgFile !== null &&
         (imgFile.type.split('/')[1] == 'mp4' || imgFile.type == '')
       ) {
         setError(
           'Invalid file type not supported, please use a valid PNG, JPG, JPEG, GIF, or ICO file.'
         );
+        setLoading(false);
         return;
       } else if (!error && result && !result.data.message) {
-        localStorage.setItem('user', JSON.stringify(result.data));
+        localStorage.setItem('user', result.data.email);
         window.location.reload();
       } else {
-        console.log('issue');
+        setLoading(false);
+        console.log(result);
         setCurrentStep(1);
-        emailRef.current.value = stepOneData.email;
         setError(null);
       }
     }
@@ -133,112 +138,127 @@ const NewUser = (props) => {
 
       <div className='new_user__forms_container'>
         <div className='new_user__forms'>
-          <p className='forms_step'>
-            STEP <span className='bold'>{currentStep}</span> OF{' '}
-            <span className='bold'>3</span>
-          </p>
-          <div className='forms_info'>
-            <h1 className='info_title'>
-              {currentStep == 1
-                ? 'Start now by creating an account to gain acess to your personal collection of games!'
-                : currentStep == 2
-                ? 'Tell us a little more about yourself, enter your first and last name in the boxes below!'
-                : 'Click the image below to set your profile picture and select your favorite color!'}
-            </h1>
-          </div>
-          <form
-            className='new_user__form'
-            style={{ alignItems: currentStep >= 3 && 'center' }}
-            onSubmit={formSubmitHandler}
-            encType='multipart/form-data'
-          >
-            {/* STEP ONE INPUTS */}
-            {currentStep == 1 && (
-              <>
-                <input
-                  ref={emailRef}
-                  className={`form_text_input ${error && 'input_error'}`}
-                  type='email'
-                  onBlur={() => error && setError(null)}
-                  defaultValue={!error ? props.email : stepOneData.email}
-                />
-                <span className='form_placeholder__email'>Email</span>
-                {error && <p className='user_email_error'>{error}</p>}
-                <input
-                  ref={passwordRef}
-                  className='form_text_input'
-                  type='password'
-                />
-                <span className='form_placeholder__password'>Password</span>
-              </>
-            )}
-            {/* STEP TWO INPUTS */}
-            {currentStep == 2 && (
-              <>
-                <input
-                  ref={firstNameRef}
-                  defaultValue={stepTwoData?.firstName}
-                  className='form_text_input'
-                />
-                {error && <p className='step_two__error'>{error}</p>}
-                <span className='form_placeholder__first_name'>First Name</span>
-                <input
-                  ref={lastNameRef}
-                  defaultValue={stepTwoData?.lastName}
-                  className='form_text_input'
-                />
-                <span className='form_placeholder__last_name'>Last Name</span>
-              </>
-            )}
-            {/* STEP THREE INPUTS */}
-            {currentStep >= 3 && (
-              <>
-                {error && <p className='form_file_error'>{error}</p>}
-                <div className='form_file_container'>
-                  <div
-                    className='form_file'
-                    style={{
-                      backgroundImage: `url(${
-                        imgFile == null ? defaultAvatar : imgPreview
-                      })`,
-                      backgroundSize: 'contain',
-                      backgroundPosition: 'center center',
-                      backgroundColor: color.hex,
-                    }}
-                  >
-                    <input
-                      onChange={fileUploadHandler}
-                      className='form_file_input'
-                      type='file'
-                    />
-                    {/* <img src={imgPreview} /> */}
-                  </div>
-                  <div className='color_picker_container'>
-                    <TwitterPicker
-                      color={color}
-                      onChangeComplete={colorChangeHandler}
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-            <button
-              className='form_actions_btn'
-              type='submit'
-              style={{ width: currentStep == 3 && '52%' }}
-            >
-              {currentStep !== 3 ? 'Next' : 'Submit'}
-            </button>
-            {currentStep !== 1 && (
-              <button
-                type='button'
-                onClick={backStepHandler}
-                className='form_back_btn'
+          {!loading && (
+            <p className='forms_step'>
+              STEP <span className='bold'>{currentStep}</span> OF{' '}
+              <span className='bold'>3</span>
+            </p>
+          )}
+          {!loading && (
+            <>
+              <div className='forms_info'>
+                <h1 className='info_title'>
+                  {currentStep == 1
+                    ? 'Start now by creating an account to gain acess to your personal collection of games!'
+                    : currentStep == 2
+                    ? 'Tell us a little more about yourself, enter your first and last name in the boxes below!'
+                    : 'Click the image below to set your profile picture and select your favorite color!'}
+                </h1>
+              </div>
+              <form
+                className='new_user__form'
+                style={{ alignItems: currentStep >= 3 && 'center' }}
+                onSubmit={formSubmitHandler}
+                encType='multipart/form-data'
               >
-                Back
-              </button>
-            )}
-          </form>
+                {/* STEP ONE INPUTS */}
+                {currentStep == 1 && (
+                  <>
+                    <input
+                      ref={emailRef}
+                      className={`form_text_input ${error && 'input_error'}`}
+                      type='email'
+                      onBlur={() => error && setError(null)}
+                      defaultValue={!error ? props.email : stepOneData.email}
+                    />
+                    <span className='form_placeholder__email'>Email</span>
+                    {error && <p className='user_email_error'>{error}</p>}
+                    <input
+                      ref={passwordRef}
+                      className='form_text_input'
+                      type='password'
+                    />
+                    <span className='form_placeholder__password'>Password</span>
+                  </>
+                )}
+                {/* STEP TWO INPUTS */}
+                {currentStep == 2 && (
+                  <>
+                    <input
+                      ref={firstNameRef}
+                      defaultValue={stepTwoData?.firstName}
+                      className='form_text_input'
+                    />
+                    {error && <p className='step_two__error'>{error}</p>}
+                    <span className='form_placeholder__first_name'>
+                      First Name
+                    </span>
+                    <input
+                      ref={lastNameRef}
+                      defaultValue={stepTwoData?.lastName}
+                      className='form_text_input'
+                    />
+                    <span className='form_placeholder__last_name'>
+                      Last Name
+                    </span>
+                  </>
+                )}
+                {/* STEP THREE INPUTS */}
+                {currentStep >= 3 && (
+                  <>
+                    {error && <p className='form_file_error'>{error}</p>}
+                    <div className='form_file_container'>
+                      <div
+                        className='form_file'
+                        style={{
+                          backgroundImage: `url(${
+                            imgFile == null ? defaultAvatar : imgPreview
+                          })`,
+                          backgroundSize: 'contain',
+                          backgroundPosition: 'center center',
+                          backgroundColor: color.hex,
+                        }}
+                      >
+                        <input
+                          onChange={fileUploadHandler}
+                          className='form_file_input'
+                          type='file'
+                        />
+                        {/* <img srsc={imgPreview} /> */}
+                      </div>
+                      <div className='color_picker_container'>
+                        <TwitterPicker
+                          color={color}
+                          onChangeComplete={colorChangeHandler}
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+                <button
+                  className='form_actions_btn'
+                  type='submit'
+                  style={{ width: currentStep == 3 && '52%' }}
+                >
+                  {currentStep !== 3 ? 'Next' : 'Submit'}
+                </button>
+                {currentStep !== 1 && (
+                  <button
+                    type='button'
+                    onClick={backStepHandler}
+                    className='form_back_btn'
+                  >
+                    Back
+                  </button>
+                )}
+              </form>
+            </>
+          )}
+          {loading && (
+            <div className='new_user__loading'>
+              <div className='new_user__spinner' />
+            </div>
+          )}
         </div>
       </div>
     </div>

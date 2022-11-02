@@ -16,7 +16,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 3.1rem;
   position: relative;
 }
 
@@ -33,9 +32,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 32px;
-  width: 32px;
-  background-color: black;
+  height: 35px;
+  width: 35px;
+  background-color: transparent;
   border-radius: 6px;
 }
 

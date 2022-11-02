@@ -212,7 +212,7 @@ const Dashboard = ({
     return (
       <div className='loading_profile__container'>
         <div className='loading_profile'>
-          <img src={selectedProfile.avatar} alt='current user avatar' />
+          <img src={currentProfile.avatar} alt='current user avatar' />
         </div>
       </div>
     );
@@ -281,6 +281,7 @@ const Dashboard = ({
           setLoggedUser={(user) => setLoggedUser(user)}
           updateCollection={updateCollection}
           currentCollection={currentCollection}
+          viewCollection={() => setViewingCollection(true)}
         />
         {!searchSubmitted ? (
           <>

@@ -7,6 +7,10 @@
   /* margin-bottom: 5px; */
 }
 
+.achievement_item:last-of-type {
+  margin-bottom: 22px;
+}
+
 .achievement_item_headers {
   display: flex;
   flex-direction: column;
@@ -72,6 +76,10 @@
 
 .banner_context__item:last-of-type {
   border-bottom: 0;
+}
+
+.greyscale {
+  filter: grayscale(1);
 }
 
 .music_icon_container {
@@ -151,7 +159,6 @@
   height: 100%;
   position: relative;
   margin: 0 35px 5px;
-  /* margin: 0 16px 5px; */
 }
 
 .playtime_container {
@@ -216,6 +223,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: 0px 2px 4px 3px #000000;
+  /* padding-bottom: 60px; */
 }
 
 .user_game__achievements h3 {
@@ -224,21 +232,57 @@
   top: -25px;
 }
 
+.user_game__achievements_actions {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-top: 9px;
+}
+
+.user_game__achievements_actions button {
+  cursor: pointer;
+  border: 1px solid #778;
+  background: transparent;
+  color: white;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: 1px solid #778;
+  /* border-bottom: 1px solid rgba(19, 19, 19, 0.25); */
+  outline: none;
+  padding: 3px 18px;
+  user-select: none;
+}
+
+/* .user_game__achievements_actions button:active {
+  background: #e5e5e5;
+  -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+  -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+  box-shadow: inset 0px 0px 5px #c1c1c1;
+  outline: none;
+} */
+
+.active {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: 1px solid transparent !important;
+  box-shadow: inset 0px 0px 5px black;
+}
+
 .user_game__achievements_banner {
   width: 100%;
-  height: 50px;
+  height: 70px;
   background: linear-gradient(to right, rgba(200, 200, 200, 0.1), #111111);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: flex-start;
   color: white;
   padding-bottom: 5px;
-  /* padding-left: 15px; */
 }
 
 .user_game__achievements_banner p {
   padding-left: 12px;
+  padding-top: 7px;
 }
 
 .user_game__achievements_list {
@@ -282,6 +326,7 @@
   width: 50%;
   min-width: 400px;
   height: 360px;
+  padding-bottom: 60px;
 }
 
 .user_game__achievements_wrapper h3 {
@@ -294,6 +339,7 @@
 .user_game__banner {
   width: 100%;
   height: 520px;
+  /* position: absolute; */
   position: relative;
   z-index: 1;
 }
@@ -328,13 +374,21 @@
   z-index: 1;
 }
 
+.user_game__data_wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
 .user_game__data_img {
   height: 100%;
   z-index: -1;
-  position: fixed;
+  position: absolute;
   top: 0;
   width: 100%;
-  opacity: 0.35;
+  opacity: 0.05;
 }
 
 .user_game__current_stats {
@@ -359,7 +413,7 @@
 .user_game__exit {
   color: white;
   background: #111;
-  position: absolute;
+  position: fixed;
   top: 10px;
   right: 10px;
   display: flex;
@@ -427,6 +481,7 @@
 
 .user_game__wrapper {
   position: relative;
+  /* left: 1px; */
   height: 100%;
   width: 100%;
   padding: 0;
@@ -474,33 +529,62 @@
 }
 
 @media screen and (max-width: 900px) {
+  .achievement_count_container,
+  .playtime_container,
+  .rating_container {
+    margin: 0 20px 5px;
+  }
+
+  .music_icon_container {
+    margin: 0px auto 5px 25px;
+  }
+
   .user_game__banner img {
-    width: 100%;
+    width: 101%;
     height: 100%;
     object-fit: cover;
     object-position: top;
   }
 
   .user_game__data {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 100%;
   }
 
   .user_game__achievements_wrapper {
-    margin-right: 0px;
-    width: 92%;
+    margin-right: 10px;
+    width: 50%;
     min-width: 300px;
     height: 380px;
+    margin-left: auto;
     /* z-index: 5; */
   }
 
   .user_game__data_img {
-    left: 273px;
+    /* left: 273px; */
   }
 }
 
-@media screen and (max-width: 533px) {
+@media screen and (max-width: 680px) {
+  .achievement_count_container,
+  .playtime_container,
+  .rating_container {
+    margin: 0 18px 5px;
+  }
+
+  .music_icon_container {
+    margin: 0px auto 5px 20px;
+  }
+
+  .playtime_container {
+    margin-left: 12px;
+  }
+
+  .user_collection__left {
+    min-width: 249px;
+  }
+}
+
+@media screen and (max-width: 650px) {
   .user_game__data_img {
     left: 0;
   }
@@ -514,9 +598,16 @@
   }
 
   .stats_item h3 {
-    font-size: 0.8rem;
     margin-bottom: 4px;
   }
+
+  .user_game__data {
+    height: 550px;
+  }
+
+  /* .user_game__exit {
+    top: 170px;
+  } */
 
   .user_game__modal {
     left: 7%;
@@ -535,6 +626,6 @@
   .playtime_container,
   .rating_container,
   .music_icon_container {
-    margin: 0 15px;
+    margin: 0 auto;
   }
 }

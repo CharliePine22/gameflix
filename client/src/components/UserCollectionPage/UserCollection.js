@@ -40,8 +40,6 @@ const UserCollection = ({
   const { anchorPoint, showTitleMenu } = useContextMenu();
   const trophies = [platinumTrophy, goldTrophy, bronzeTrophy];
 
-  console.log(statusFilter);
-
   // If user is typing, filter titles that reflect inputted value
   useEffect(() => {
     if (searchValue == '') {
@@ -128,39 +126,6 @@ const UserCollection = ({
       console.log('Hello');
     }
   }, [listFilter, statusFilter]);
-
-  // Listen for list filter change
-  // useEffect(() => {
-  //   if (!collection || listFilter !== 'status') return;
-  //   if (statusFilter == 'backlog') {
-  //     setStatusList(
-  //       [...collection].filter((game) => game.status == 'BACKLOG')
-  //       // .sort(a.name > b.name ? 1 : b.name > a.name ? -1 : 0)
-  //     );
-  //   } else if (statusFilter == 'started') {
-  //     setStatusList([...collection].filter((game) => game.status == 'STARTED'));
-  //   } else if (statusFilter == 'playing') {
-  //     setStatusList([...collection].filter((game) => game.status == 'PLAYING'));
-  //   } else if (statusFilter == 'finished') {
-  //     setStatusList(
-  //       [...collection].filter((game) => game.status == 'FINISHED')
-  //     );
-  //   } else if (statusFilter == '100%') {
-  //     setStatusList([...collection].filter((game) => game.status == '100%'));
-  //   } else if (statusFilter == 'abandonded') {
-  //     setStatusList(
-  //       [...collection].filter((game) => game.status == 'ABANDONDED')
-  //     );
-  //   } else {
-  //     setStatusList([...collection].filter((game) => game.status == 'N'));
-  //   }
-  // }, [statusFilter, listFilter]);
-
-  // console.log(
-  //   spotlightList
-  //     .map((game) => game?.achievements?.filter((el) => el.achieved))
-  //     .filter((item) => item.length)
-  // );
 
   // Select which game is being viewed
   const viewGameHandler = (game) => {
@@ -335,6 +300,9 @@ const UserCollection = ({
           <div className='user_collection__actions'>
             <button className='persona_font' onClick={backToHome}>
               Back
+              {/* <div className='persona_box' style={{ background: '#1cfeff' }} />
+              <div className='persona_box' style={{ background: 'white' }} />
+              <div className='persona_box' style={{ background: '#ff0022' }} /> */}
             </button>
           </div>
         </div>

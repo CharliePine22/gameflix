@@ -188,7 +188,8 @@
   opacity: 0.95;
   font-size: 2.2rem;
   font-style: italic;
-  text-shadow: 6px 7px 2px black;
+  text-shadow: 4px 4px 2px black;
+  /* text-shadow: 6px 7px 2px black; */
 }
 
 .user_library_title:hover .user_library_title h2 {

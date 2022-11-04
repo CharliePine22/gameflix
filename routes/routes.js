@@ -28,6 +28,7 @@ const upload = multer({ storage: storage });
 // Find user helper function
 const findUser = async (email) => {
   const result = await userModel.findOne({ email: email });
+  console.log(result);
   return result;
 };
 
@@ -260,6 +261,8 @@ router.post('/game_genre', async (req, res) => {
     console.log(error);
   }
 });
+
+router.post('/');
 
 //* IGDB UPCOMING GAME RELEASES
 router.post('/upcoming', async (req, res) => {
@@ -800,7 +803,6 @@ router.put('/update_game_backlog', async (req, res) => {
   const name = req.body.currentProfile;
   const backlogStatus = req.body.status;
 
-  console.log('HERE');
   try {
     const request = await userModel.findOneAndUpdate(
       {
@@ -814,8 +816,6 @@ router.put('/update_game_backlog', async (req, res) => {
       },
       { arrayFilters: [{ 'element.id': { $eq: gameId } }], new: true }
     );
-
-    console.log(request);
 
     if (request == null) {
       res.send({
@@ -839,7 +839,6 @@ router.put('/update_game_backlog', async (req, res) => {
         message: 'Backlog status updated!',
         response: { profile: currentProfile[0], game: currentPlaytime[0] },
       });
-      return;
     }
   } catch (error) {
     console.log(error);

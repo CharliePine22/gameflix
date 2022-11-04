@@ -223,7 +223,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: 0px 2px 4px 3px #000000;
-  /* padding-bottom: 60px; */
+  padding-bottom: 65px;
 }
 
 .user_game__achievements h3 {
@@ -293,6 +293,7 @@
   padding: 0;
   list-style: none;
   padding-top: 6px;
+  padding-bottom: 60px;
 }
 
 .user_game__achievements_list::-webkit-scrollbar {
@@ -321,19 +322,17 @@
 }
 
 .user_game__achievements_wrapper {
-  float: right;
-  margin-right: 20px;
   width: 50%;
   min-width: 400px;
   height: 360px;
-  padding-bottom: 60px;
+  margin: 10px 20px;
 }
 
 .user_game__achievements_wrapper h3 {
   color: white;
   text-align: center;
   margin-bottom: 5px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .user_game__banner {

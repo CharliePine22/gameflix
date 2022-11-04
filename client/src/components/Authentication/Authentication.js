@@ -56,14 +56,13 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
         email,
         password,
       });
+      console.log(response);
       setAuthError('');
       onLogin(response.data.user);
       return response;
     } catch (e) {
       setAuthError(e.response.data.message);
       return e;
-    } finally {
-      // setLoading(false);
     }
   };
 

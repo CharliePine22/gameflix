@@ -199,8 +199,11 @@
   font-size: 2rem;
   background: transparent;
   color: white;
-  text-shadow: 2px 3px 2px black;
+  /* text-shadow: 2px 3px 2px black; */
+  text-shadow: 2px 2px 4px black, 0px 0px 4px black, 0px 0px 4px black;
   border: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .user_collection__actions button:hover {
@@ -271,19 +274,18 @@
 .user_collection__list_container {
   display: flex;
   flex-direction: column;
-  padding: 10px 8px;
+  padding: 10px 4px;
 }
 
 .user_collection__list {
   height: 100%;
   width: 100%;
   padding: 0;
-  margin-bottom: 20px;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   align-content: flex-start;
   background: rgb(12, 12, 12);
   user-select: none;
@@ -585,10 +587,6 @@
     max-height: 220px;
   }
 
-  .user_collection__left_header {
-    padding: 0 10px;
-  }
-
   .user_collection__search_input {
     width: 83%;
     padding: 7px 0px 7px 30px;
@@ -622,9 +620,9 @@
     padding: 0 14px 0px 14px;
   }
 
-  .user_collection__list {
+  /* .user_collection__list {
     margin: 10px 0 15px;
-  }
+  } */
 
   .user_collection__right {
     display: flex;

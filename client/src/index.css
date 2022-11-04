@@ -35,6 +35,14 @@ html {
   font-family: Persona;
 }
 
+.persona_box {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  z-index: -1;
+}
+
 p,
 a,
 li {

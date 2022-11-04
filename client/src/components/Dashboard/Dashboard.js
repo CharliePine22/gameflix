@@ -193,7 +193,7 @@ const Dashboard = ({
     setLoggedUser(null);
     setSelectedProfile(null);
     localStorage.clear('user');
-    window.location.refresh();
+    window.location.reload();
   };
 
   const changeProfile = (user) => {

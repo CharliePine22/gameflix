@@ -40,8 +40,6 @@ const UserGame = ({
   const achievementsIntegrated = localStorage.getItem('achivementsConn');
   const userEmail = localStorage.getItem('user');
 
-  console.log(game);
-
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.keyCode === 27) {
@@ -576,14 +574,11 @@ const UserGame = ({
       {/* GAME NEWS AND DATA */}
       <div className='user_game__data_wrapper'>
         <div className='user_game__data'>
-          {/* <div className='user_game__header'>
-          <h2 className='user_game__title'>{game.name}</h2>
-        </div> */}
           {/* OWNED PLATFORMS */}
-          <div className='user_game__platforms'>
+          {/* <div className='user_game__platforms'>
             <h4>Platforms Owned</h4>
             <ul>{game.origin == 'steam' && <li>Steam</li>}</ul>
-          </div>
+          </div> */}
 
           {/* ACHIEVEMENT LIST */}
           {achievements && (
@@ -728,7 +723,7 @@ const UserGame = ({
                         : 0
                     )
                     .map((item) => (
-                      <li className='achievement_item'>
+                      <li className='achievement_item' key={item.trophyName}>
                         <div
                           className='achievement_item_icon'
                           style={{ border: `1px solid ${activeProfile.color}` }}

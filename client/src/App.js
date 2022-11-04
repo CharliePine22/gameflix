@@ -39,21 +39,32 @@ function App() {
 
   // Refetch user data if any changes are made
   useEffect(() => {
+    if (!userEmail) return;
     const updateUser = async () => {
-      if (!userEmail) return;
-      const request = await axios.get(`${baseURL}/app/get_user`, {
-        params: {
-          email: userEmail,
-        },
-      });
-      const result = await request.data;
-      setLoggedUser(result);
+      try {
+        const request = await axios.get(`${baseURL}/app/get_user`, {
+          params: {
+            email: userEmail,
+          },
+        });
+        console.log(request);
+        const result = await request.data;
+        setLoggedUser(result);
+        return result;
+      } catch (error) {
+        console.log(error);
+        return error;
+      }
+    };
+    const getGenreGames = async () => {
+      try {
+        const request = await axios.get(`${baseURL}/game_genres`);
+      } catch (error) {
+        console.log(error);
+      }
     };
     updateUser();
-  }, [userEmail, selectedProfile]);
-
-  console.log(loggedUser);
-  console.log(selectedProfile);
+  }, [userEmail]);
 
   // Check to see which profile is active
   useEffect(() => {
@@ -121,7 +132,6 @@ function App() {
     );
   }
 
-  console.log(userEmail);
   if (!userProfile && loggedUser) {
     return (
       <ProfilesPage
@@ -134,7 +144,7 @@ function App() {
       />
     );
   }
-  if (genreList.length > 0) {
+  if (loggedUser) {
     return (
       <Dashboard
         currentUser={loggedUser}

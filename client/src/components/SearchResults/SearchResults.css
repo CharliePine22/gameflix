@@ -1,22 +1,26 @@
 .game_name {
-  font-size: 1rem;
+  font-size: 1.4rem;
   width: 100%;
-  max-width: 50%;
-  margin-left: 120px;
+  max-width: 70%;
+  margin-left: 123px;
+  margin-top: 2px;
+  text-shadow: 3px 3px 3px black;
 }
 
 .game_name_remainder {
-  font-size: 1rem;
+  font-size: 1.2rem;
   width: 100%;
   max-width: 95%;
-  padding: 5px 5px 3px;
+  padding: 10px 5px 3px;
+  text-align: center;
+  text-shadow: 3px 2px 3px blac;
 }
 
 .game_cover {
   height: 158px;
   width: 107px;
   position: absolute;
-  top: 91px;
+  bottom: 60px;
   left: 8px;
   box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px,
     rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px,
@@ -41,14 +45,14 @@
 }
 
 .game_theme_list_lower {
-  font-size: 0.9rem;
+  font-size: 1rem;
   padding: 0;
   list-style: none;
   width: 100%;
   display: flex;
   justify-content: space-evenly;
   position: absolute;
-  bottom: 5px;
+  bottom: 10px;
 }
 
 .game_theme_list_lower li {
@@ -61,7 +65,7 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background-color: rgb(35, 35, 35);
+  background-color: rgb(65, 65, 65);
   border-radius: 50%;
 }
 
@@ -82,10 +86,11 @@
 
 .results_container {
   display: inline-flex;
-  height: 6.5rem;
+  height: 8.5rem;
   margin: 8px 4px;
-  width: 22rem;
-  background-color: rgb(35, 35, 35);
+  width: 23rem;
+  background-color: rgb(65, 65, 65);
+  box-shadow: rgb(0 0 0 / 60%) 0px 0px 11px 4px;
   position: relative;
   cursor: pointer;
 }
@@ -98,12 +103,12 @@
 
 .results_container_img {
   height: 100%;
-  min-width: 120px;
+  min-width: 140px;
 }
 
 .search_bottom_fade {
   pointer-events: none;
-  height: 7rem;
+  height: 7.5rem;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -126,15 +131,17 @@
 
 .search_results__container {
   margin: 0 50px;
+  padding-bottom: 15px;
 }
 
 .search_results__container_skeleton {
-  margin: 0 40px;
+  margin: 0 50px;
 }
 
 .search_results__container h2 {
   margin-bottom: 15px;
   width: 100%;
+  font-size: 2rem;
 }
 
 .search_results__error {
@@ -150,7 +157,7 @@
 
 .top_results_row {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -162,11 +169,12 @@
 }
 
 .top_result_container {
-  background-color: rgb(35, 35, 35);
+  background-color: rgb(65, 65, 65);
   width: 31.5%;
   border-radius: 6px;
   position: relative;
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 18px 3px;
 }
 
 .top_result_details_icon,
@@ -202,7 +210,7 @@
 }
 
 .top_result_upper {
-  height: 12.5rem;
+  height: 18.5rem;
 }
 
 .top_result_upper img {
@@ -213,7 +221,7 @@
 }
 
 .top_result_lower {
-  height: 7rem;
+  height: 8.5rem;
 }
 
 /* MOBILE */
@@ -347,8 +355,8 @@
 
   .game_name {
     max-width: 60%;
-    font-size: 1rem;
-    margin-left: 110px;
+    font-size: 1.1rem;
+    margin-left: 115px;
   }
 
   .game_name_remainder {
@@ -366,9 +374,9 @@
 
   .results_container {
     display: inline-flex;
-    height: 5rem;
-    margin: 5px;
-    width: 12rem;
+    height: 5.5rem;
+    margin: 5px 0px;
+    width: 11.4rem;
     background-color: rgb(35, 35, 35);
     position: relative;
   }
@@ -383,7 +391,7 @@
   }
 
   .search_results__container {
-    margin: 0 20px;
+    margin: 0;
   }
 
   .search_results__container h2 {
@@ -392,7 +400,7 @@
   }
 
   .top_result_container {
-    width: 100%;
+    width: 92%;
     margin-bottom: 15px;
   }
 
@@ -409,7 +417,7 @@
   }
 
   .top_result_lower {
-    height: 5rem;
+    height: 5.5rem;
   }
 
   .top_result_upper {

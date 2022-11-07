@@ -8,6 +8,8 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
   const [topGames, setTopGames] = useState([]);
   const [remainderGames, setRemainderGames] = useState([]);
 
+  console.log(searchedGame);
+
   useEffect(() => {
     setTopGames(searchedGame?.slice(0, 3));
     setRemainderGames(searchedGame?.slice(3));
@@ -60,14 +62,14 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
                   className='result_publisher'
                   style={{
                     backgroundSize: 'cover',
-                    backgroundImage: `url(${game.cover?.url})`,
+                    backgroundImage: `url(${game.screenshots[0]?.url})`,
                     backgroundPosition: 'center',
                   }}
                 />
                 <img
                   src={`//images.igdb.com/igdb/image/upload/t_screenshot_big/${
-                    game.screenshots
-                      ? game.screenshots[0]?.image_id
+                    game.artworks
+                      ? game.artworks[0]?.image_id
                       : game.cover?.image_id
                   }.jpg`}
                 />

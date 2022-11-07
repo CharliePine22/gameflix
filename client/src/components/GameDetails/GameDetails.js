@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import './GameDetails.css';
 import youtube from '../../youtubeAPI';
 import ReactPlayer from 'react-player/lazy';
-import './GameDetails.css';
 import axios from 'axios';
 // ESRB Logos
 import eRating from '../../assets/images/ESRB_E.png';
@@ -26,7 +26,9 @@ import androidLogo from '../../assets/images/android-logo.png';
 import segaLogo from '../../assets/images/sega-logo.png';
 import snesLogo from '../../assets/images/snes-logo.png';
 import gamecubeLogo from '../../assets/images/gamecube-logo.png';
+// Modules
 import Carousel, { CarouselItem } from './Carousel';
+import { VscLibrary } from 'react-icons/vsc';
 
 const GameDetails = ({
   game,
@@ -224,6 +226,7 @@ const GameDetails = ({
           <img src={nesLogo} alt={platform} className='game_platform_logo' />
         );
       case 'Xbox':
+      case 'XBOX':
       case 'XONE':
       case 'Xbox One':
       case 'Xbox 360':
@@ -359,6 +362,7 @@ const GameDetails = ({
         <div className='game_details__details'>
           <div className='game_details__media'>
             <div className='media_placeholder'>
+              <VscLibrary className='game_details__swap_icon' />
               <img
                 className='details_img'
                 src={
@@ -367,67 +371,127 @@ const GameDetails = ({
                     : activeScreenshot
                 }
               />
+              <div className='game_details__screenshots'>
+                <img
+                  src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover?.image_id}.jpg`}
+                  className='screenshot_thumbnail'
+                  onClick={() =>
+                    setActiveScreenshot(
+                      `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover?.image_id}.jpg`
+                    )
+                  }
+                  style={{
+                    border:
+                      game.background_image == activeScreenshot
+                        ? '1px solid lightblue'
+                        : '1px solid transparent',
+                  }}
+                />
+                {/* SCREENSHOTS */}
+                {gameDetails.screenshots?.map((screenshot) => (
+                  <img
+                    key={screenshot.id}
+                    style={{
+                      border:
+                        screenshot.image == activeScreenshot
+                          ? '1px solid lightblue'
+                          : '1px solid transparent',
+                    }}
+                    src={`//images.igdb.com/igdb/image/upload/t_screenshot_big_2x/${screenshot.image_id}.jpg`}
+                    onClick={() =>
+                      setActiveScreenshot(
+                        `//images.igdb.com/igdb/image/upload/t_screenshot_big_2x/${screenshot.image_id}.jpg`
+                      )
+                    }
+                    className='screenshot_thumbnail'
+                  />
+                ))}
+
+                {/* ARTWORKS */}
+                {gameDetails.artworks?.map((screenshot) => (
+                  <img
+                    key={screenshot.id}
+                    style={{
+                      border:
+                        screenshot.image == activeScreenshot
+                          ? '1px solid lightblue'
+                          : '1px solid transparent',
+                      objectFit: 'fill',
+                    }}
+                    src={`//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`}
+                    onClick={() =>
+                      setActiveScreenshot(
+                        `//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`
+                      )
+                    }
+                    className='screenshot_thumbnail'
+                  />
+                ))}
+              </div>
             </div>
 
-            <div className='game_details__screenshots'>
-              <img
-                src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover?.image_id}.jpg`}
-                className='screenshot_thumbnail'
-                onClick={() =>
-                  setActiveScreenshot(
-                    `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover?.image_id}.jpg`
-                  )
-                }
-                style={{
-                  border:
-                    game.background_image == activeScreenshot
-                      ? '1px solid lightblue'
-                      : '1px solid transparent',
-                }}
-              />
-              {/* SCREENSHOTS */}
-              {gameDetails.screenshots?.map((screenshot) => (
-                <img
-                  key={screenshot.id}
-                  style={{
-                    border:
-                      screenshot.image == activeScreenshot
-                        ? '1px solid lightblue'
-                        : '1px solid transparent',
-                  }}
-                  src={`//images.igdb.com/igdb/image/upload/t_screenshot_big_2x/${screenshot.image_id}.jpg`}
-                  onClick={() =>
-                    setActiveScreenshot(
-                      `//images.igdb.com/igdb/image/upload/t_screenshot_big_2x/${screenshot.image_id}.jpg`
-                    )
-                  }
-                  className='screenshot_thumbnail'
-                />
-              ))}
+            {/* GAME INFORMATION */}
+            <div className='game_details__info_container_top'>
+              <div className='game_details__data'>
+                {/* PUBLISHERS */}
+                <div className='game_details__publishers'>
+                  <h4 className='game_details__title'>Publishers</h4>
+                  <ul className='publishers_list'>
+                    {gameDetails.involved_companies?.map((company) => (
+                      <li key={company.id} className='publisher'>
+                        {company.company.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-              {/* ARTWORKS */}
-              {gameDetails.artworks?.map((screenshot) => (
-                <img
-                  key={screenshot.id}
-                  style={{
-                    border:
-                      screenshot.image == activeScreenshot
-                        ? '1px solid lightblue'
-                        : '1px solid transparent',
-                    objectFit: 'fill',
-                  }}
-                  src={`//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`}
-                  onClick={() =>
-                    setActiveScreenshot(
-                      `//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`
-                    )
-                  }
-                  className='screenshot_thumbnail'
-                />
-              ))}
+                {/* PLATFORMS */}
+                <div className='game_details__platforms'>
+                  <h4 className='game_details__title'>Platforms</h4>
+                  <ul className='platforms_list'>
+                    {gameDetails.platforms?.map((platform, i) => {
+                      if (platform.category == 1 || platform.category == 5) {
+                        if (
+                          platform.name !== 'Super Famicom' &&
+                          platform.name !== 'Family Computer' &&
+                          platform.name !== 'Nintendo DSi' &&
+                          platform.name !== 'Family Computer Disk System'
+                        ) {
+                          return (
+                            <li
+                              key={platform.id}
+                              className='platform'
+                              alt='platform'
+                            >
+                              {displayConsoleIcons(
+                                platform.abbreviation || platform.name
+                              )}
+                              <p>{platform.abbreviation || platform.name}</p>
+                            </li>
+                          );
+                        }
+                      }
+                    })}
+                  </ul>
+                </div>
+                {gameDetails.rating && (
+                  <div className='game_details__rating'>
+                    <h4 className='game_details__title'>Rating</h4>
+                    <p>{Math.round(gameDetails.rating) + '%'}</p>
+                  </div>
+                )}
+                <div className='game_details__released'>
+                  <h4 className='game_details__title'>Release Date</h4>
+                  <p>{convertDate(gameDetails?.release_dates[0]?.human)}</p>
+                </div>
+                <div className='game_details__esrb'>
+                  <h4 className='game_details__title'>ESRB</h4>
+                  {determineESRB(gameDetails)}
+                </div>
+              </div>
             </div>
             {/* SIMILAR GAMES  */}
-            <div className='media_soundtrack__container'>
+            {/* <div className='media_soundtrack__container'>
               <Carousel>
                 {gameDetails.similar_games?.map((game) => (
                   <CarouselItem
@@ -459,93 +523,30 @@ const GameDetails = ({
                   </CarouselItem>
                 ))}
               </Carousel>
-            </div>
+            </div> */}
           </div>
-
-          {/* GAME INFORMATION */}
-          <div className='game_details__info_container'>
-            <h4 className='game_details__title'>Description</h4>
-            {/* DESCRIPTION */}
-            <p
-              className='game_details__description'
-              style={{
-                maxWidth: gameDetails.summary == '' && '100%',
-              }}
+        </div>
+        <div className='game_details__description_container'>
+          <h4 className='game_details__title'>Description</h4>
+          {/* DESCRIPTION */}
+          <p
+            className='game_details__description'
+            style={{
+              maxWidth: gameDetails.summary == '' && '100%',
+            }}
+          >
+            {shortenDescription(gameDetails)}{' '}
+            <button
+              className='game_details__info_toggler'
+              onClick={toggleFullDescription}
             >
-              {shortenDescription(gameDetails)}{' '}
-              <button
-                className='game_details__info_toggler'
-                onClick={toggleFullDescription}
-              >
-                {gameDetails.summary !== ''
-                  ? showFullDescription
-                    ? 'Hide Full Description'
-                    : 'Show Full Description'
-                  : ''}
-              </button>
-            </p>
-          </div>
-          <div className='game_details__data'>
-            {/* PUBLISHERS */}
-            <div className='game_details__publishers'>
-              <h4 className='game_details__title'>Publishers</h4>
-              <ul className='publishers_list'>
-                {gameDetails.involved_companies?.map((company) => (
-                  <li key={company.id} className='publisher'>
-                    {company.company.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* PLATFORMS */}
-            <div className='game_details__platforms'>
-              <h4 className='game_details__title'>Platforms</h4>
-              <ul className='platforms_list'>
-                {gameDetails.platforms?.map((platform, i) => {
-                  if (platform.category == 1 || platform.category == 5) {
-                    if (
-                      platform.name !== 'Super Famicom' &&
-                      platform.name !== 'Family Computer' &&
-                      platform.name !== 'Nintendo DSi' &&
-                      platform.name !== 'Family Computer Disk System'
-                    ) {
-                      return (
-                        <li
-                          key={platform.id}
-                          className='platform'
-                          alt='platform'
-                        >
-                          {displayConsoleIcons(
-                            platform.abbreviation || platform.name
-                          )}
-                          <p>{platform.abbreviation || platform.name}</p>
-                        </li>
-                      );
-                    }
-                  }
-                })}
-              </ul>
-            </div>
-            <div className='game_details__column'>
-              <div className='game_details__rating'>
-                <h4 className='game_details__title'>Rating</h4>
-                <p>
-                  {gameDetails.rating
-                    ? Math.round(gameDetails.rating) + '%'
-                    : 'N/A'}
-                </p>
-              </div>
-              <div className='game_details__released'>
-                <h4 className='game_details__title'>Release Date</h4>
-                <p>{convertDate(gameDetails?.release_dates[0]?.human)}</p>
-              </div>
-            </div>
-            <div className='game_details__esrb'>
-              <h4 className='game_details__title'>ESRB</h4>
-              {determineESRB(gameDetails)}
-            </div>
-          </div>
+              {gameDetails.summary !== ''
+                ? showFullDescription
+                  ? 'Hide Full Description'
+                  : 'Show Full Description'
+                : ''}
+            </button>
+          </p>
         </div>
         <div className='game_details__actions'>
           {!currentCollection || !exists ? (

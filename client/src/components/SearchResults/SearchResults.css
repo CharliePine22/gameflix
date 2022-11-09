@@ -2,7 +2,7 @@
   font-size: 1.4rem;
   width: 100%;
   max-width: 70%;
-  margin-left: 123px;
+  margin-left: 122px;
   margin-top: 2px;
   text-shadow: 3px 3px 3px black;
 }
@@ -65,7 +65,7 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background-color: rgb(65, 65, 65);
+  background-color: rgb(55, 55, 55);
   border-radius: 50%;
 }
 
@@ -89,8 +89,8 @@
   height: 8.5rem;
   margin: 8px 4px;
   width: 23rem;
-  background-color: rgb(65, 65, 65);
-  box-shadow: rgb(0 0 0 / 60%) 0px 0px 11px 4px;
+  background-color: rgb(55, 55, 55);
+  box-shadow: rgb(0 0 0 / 45%) 0px 0px 5px 4px;
   position: relative;
   cursor: pointer;
 }
@@ -123,19 +123,20 @@
 
 .search_results {
   width: 100%;
-  position: relative;
-  top: 6rem;
-  /* left: 0.3rem; */
   color: #fff;
 }
 
 .search_results__container {
-  margin: 0 50px;
+  margin: 0 14px;
   padding-bottom: 15px;
+  position: relative;
+  top: 13rem;
 }
 
 .search_results__container_skeleton {
   margin: 0 50px;
+  position: relative;
+  top: 15rem;
 }
 
 .search_results__container h2 {
@@ -155,6 +156,60 @@
   text-align: center;
 }
 
+.search_results__nav {
+  display: flex;
+  height: 180px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid rgb(55, 55, 55);
+  z-index: 2;
+  background-color: #111;
+  position: fixed;
+  box-shadow: 0px 5px 9px black;
+}
+
+.search_results__nav span {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.search_results__nav_search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.search_results__nav_search input {
+  min-width: 500px;
+  max-width: 700px;
+  width: 100%;
+  padding: 10px 8px 2px;
+  border: 0;
+  transition: border 250ms ease-in-out;
+  border-bottom: 3px solid rgb(55, 55, 55);
+  background: transparent;
+  color: white;
+  font-size: 1.75rem;
+}
+
+.search_results__nav_search input:focus {
+  outline: 0;
+  border-bottom: 3px solid #9147ff;
+}
+
+.search_results__nav_search_icon {
+  font-size: 1.3rem;
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+}
+
 .top_results_row {
   display: flex;
   justify-content: space-between;
@@ -169,12 +224,12 @@
 }
 
 .top_result_container {
-  background-color: rgb(65, 65, 65);
-  width: 31.5%;
+  background-color: rgb(55, 55, 55);
+  width: 32%;
   border-radius: 6px;
   position: relative;
   cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 18px 3px;
+  box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 6px 3px;
 }
 
 .top_result_details_icon,
@@ -318,6 +373,10 @@
     font-size: 2rem;
   }
 
+  .search_results__nav_search input {
+    min-width: 330px;
+  }
+
   .top_result_container {
     width: 90%;
     margin-bottom: 28px;
@@ -353,6 +412,10 @@
     left: 10px;
   }
 
+  .game_theme_list_lower {
+    bottom: 5px;
+  }
+
   .game_name {
     max-width: 60%;
     font-size: 1.1rem;
@@ -362,6 +425,7 @@
   .game_name_remainder {
     font-size: 0.7rem;
     max-width: 90%;
+    padding: 5px 5px 3px;
   }
 
   .remainder_results {
@@ -422,5 +486,32 @@
 
   .top_result_upper {
     height: 10rem;
+  }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  .game_name {
+    font-size: 1rem;
+    max-width: 65%;
+    margin-left: 90px;
+  }
+
+  .game_cover {
+    height: 118px;
+    width: 80px;
+    bottom: 60px;
+    left: 5px;
+  }
+
+  .search_results__nav_search input {
+    min-width: 570px;
+  }
+
+  .top_result_upper {
+    height: 12.5rem;
+  }
+
+  .top_result_lower {
+    height: 7.5rem;
   }
 }

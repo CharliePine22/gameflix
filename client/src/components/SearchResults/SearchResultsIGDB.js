@@ -3,22 +3,50 @@ import './SearchResults.css';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import SkeletonCard from '../SkeletonCard/SkeletonCard';
+import { FaSearch } from 'react-icons/fa';
 
-const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
+const SearchResultsIGDB = ({
+  searchedGame,
+  setGameDetails,
+  closeSearchResults,
+  searchGame,
+}) => {
   const [topGames, setTopGames] = useState([]);
   const [remainderGames, setRemainderGames] = useState([]);
-
-  console.log(searchedGame);
+  const [recentSearchList, setRecentSearchList] = useState([]);
+  const [searchValue, setSearchValue] = useState(searchedGame.name);
+  const recentSearches = localStorage.getItem('searches');
+  console.log(recentSearches);
 
   useEffect(() => {
-    setTopGames(searchedGame?.slice(0, 3));
-    setRemainderGames(searchedGame?.slice(3));
+    window.scrollTo(0, 0);
+    setTopGames(searchedGame.data?.slice(0, 3));
+    setRemainderGames(searchedGame.data?.slice(3));
+    if (
+      !recentSearchList.includes(searchedGame.name) &&
+      searchedGame.name !== ''
+    ) {
+      setRecentSearchList((prev) => [...prev, searchedGame.name]);
+      localStorage.setItem('searches', JSON.stringify(recentSearchList));
+    }
   }, [searchedGame]);
 
+  const submitSearchHandler = (e) => {
+    if (e.key === 'Enter') {
+      searchGame(searchValue);
+    }
+  };
+
   // Skeleton Loader
-  if (!searchedGame || !topGames || !remainderGames) {
+  if (searchedGame.data.length == 0 || !topGames || !remainderGames) {
     return (
       <div className='search_results'>
+        <div className='search_results__nav'>
+          <span onClick={closeSearchResults}>X</span>
+          <div className='search_results__nav_search'>
+            <input placeholder='Search..' value={searchValue} />
+          </div>
+        </div>
         <div className='search_results__container_skeleton'>
           <div className='top_results_row_skeleton'>
             <h2>Top Results</h2>
@@ -33,7 +61,7 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
     );
   }
 
-  if (searchedGame.length == 0) {
+  if (searchedGame.data == null) {
     return (
       <div className='search_results__error'>
         <p>
@@ -46,7 +74,23 @@ const SearchResultsIGDB = ({ searchedGame, setGameDetails }) => {
 
   return (
     <div className='search_results'>
+      <div className='search_results__nav'>
+        <span onClick={closeSearchResults}>X</span>
+        <div className='search_results__nav_search'>
+          <input
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder='Search..'
+            onKeyDown={submitSearchHandler}
+          />
+          <FaSearch className='search_results__nav_search_icon' />
+        </div>
+      </div>
+
       <div className='search_results__container'>
+        <div className='search_results__recents'>
+          <h2>Recent Searches</h2>
+        </div>
         <h2>Top Results</h2>
 
         {/* Top 3 Search Results */}

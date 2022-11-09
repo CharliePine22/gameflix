@@ -55,7 +55,7 @@ const Dashboard = ({
 
   // Search States
   const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const [searchedGame, setSearchedGame] = useState('');
+  const [searchedGame, setSearchedGame] = useState({ name: '', data: [] });
   const [gameDetails, setGameDetails] = useState(null);
 
   // Local Variables
@@ -63,22 +63,6 @@ const Dashboard = ({
 
   const spotifyAccessToken = useSpotifyAuth(code);
   const steamCollection = useSteamAuth(id);
-
-  const closeSearchResults = () => {
-    setSearchSubmitted(false);
-    setSearchedGame(null);
-  };
-
-  // Search for the game, publisher, or developer that the user types in from nav
-  const fetchSubmittedGame = async (game) => {
-    if (searchedGame !== null) setSearchedGame(null);
-    setSearchSubmitted(true);
-    const request = await axios.post('/app/search_game', {
-      token: twitchToken,
-      gameName: game,
-    });
-    setSearchedGame(request.data);
-  };
 
   useEffect(() => {
     if (!currentProfile) console.log('No Current Profile');
@@ -208,6 +192,26 @@ const Dashboard = ({
     setCurrentTrack(track);
   };
 
+  const closeSearchResults = () => {
+    setSearchSubmitted(false);
+    setSearchedGame({ name: '', data: [] });
+  };
+
+  // Search for the game, publisher, or developer that the user types in from nav
+  const fetchSubmittedGame = async (game) => {
+    if (searchedGame.name !== null) setSearchedGame({ name: '', data: [] });
+    setSearchSubmitted(true);
+    const request = await axios.post('/app/search_game', {
+      token: twitchToken,
+      gameName: game,
+    });
+
+    if (request.data.length == 0) {
+      setSearchedGame({ name: game, data: null });
+    }
+    setSearchedGame({ name: game, data: request.data });
+  };
+
   // Loading screen for profile change
   if (changingUser) {
     return (
@@ -266,93 +270,97 @@ const Dashboard = ({
 
     return (
       <div className='App'>
-        <Nav
-          currentUser={currentUser}
-          activeProfile={currentProfile}
-          changeUser={changeProfile}
-          onLogout={logoutHandler}
-          fetchSubmittedGame={fetchSubmittedGame}
-          closeSearchResults={closeSearchResults}
-          toProfilePage={() => localStorage.removeItem('profile')}
-          selectProfile={(profile) => setSelectedProfile(profile)}
-          spotifyToken={spotifyAccessToken}
-          twitchToken={twitchToken}
-          searchedGame={searchedGame}
-          saveEdit={() => setEditingUser(true)}
-          setLoggedUser={(user) => setLoggedUser(user)}
-          updateCollection={updateCollection}
-          currentCollection={currentCollection}
-          viewCollection={() => setViewingCollection(true)}
-        />
         {!searchSubmitted ? (
           <>
-            <Banner
-              setGameDetails={(id) => setGameDetails(id)}
-              twitchToken={twitchToken}
-              addGame={(game) => addGameHandler(game)}
+            <Nav
+              currentUser={currentUser}
               activeProfile={currentProfile}
-            />
-            <MainRow
-              twitchToken={twitchToken}
-              setGameDetails={(game) => setGameDetails(game)}
-            />
-            <TrendingRow twitchToken={twitchToken} />
-            <UserLibrary
-              activeProfile={currentProfile}
-              playTrack={playTrack}
-              currentTrack={currentTrack}
-              isPlaying={playAudio}
-              pausePlayback={() => setPlayAudio(false)}
-              resumePlayback={() => setPlayAudio(true)}
+              changeUser={changeProfile}
+              onLogout={logoutHandler}
+              fetchSubmittedGame={fetchSubmittedGame}
+              closeSearchResults={closeSearchResults}
+              toProfilePage={() => localStorage.removeItem('profile')}
+              selectProfile={(profile) => setSelectedProfile(profile)}
               spotifyToken={spotifyAccessToken}
-              collection={currentCollection}
-              setSelectedProfile={(profile) => setSelectedProfile(profile)}
-              setGameDetails={(game) => setGameDetails(game)}
-              steamCollection={steamCollection}
-              removeGame={removeGameHandler}
+              twitchToken={twitchToken}
+              searchedGame={searchedGame}
+              saveEdit={() => setEditingUser(true)}
+              setLoggedUser={(user) => setLoggedUser(user)}
+              updateCollection={updateCollection}
+              currentCollection={currentCollection}
               viewCollection={() => setViewingCollection(true)}
-              setNotification={(status, message) => {
-                setNotification({ status, message });
-                setDisplayNotification(true);
-              }}
-              setCompleteCollection={(collection) =>
-                setUserCollection(collection)
-              }
             />
-
-            {allGenres.map((request) => (
-              <Row
-                key={Object.keys(request)}
+            <>
+              <Banner
+                setGameDetails={(id) => setGameDetails(id)}
+                twitchToken={twitchToken}
+                addGame={(game) => addGameHandler(game)}
                 activeProfile={currentProfile}
-                spotifyToken={spotifyAccessToken}
-                genreDetails={Object.entries(request)}
+              />
+              <MainRow
+                twitchToken={twitchToken}
+                setGameDetails={(game) => setGameDetails(game)}
+              />
+              <TrendingRow twitchToken={twitchToken} />
+              <UserLibrary
+                activeProfile={currentProfile}
                 playTrack={playTrack}
                 currentTrack={currentTrack}
                 isPlaying={playAudio}
+                pausePlayback={() => setPlayAudio(false)}
+                resumePlayback={() => setPlayAudio(true)}
+                spotifyToken={spotifyAccessToken}
+                collection={currentCollection}
+                setSelectedProfile={(profile) => setSelectedProfile(profile)}
                 setGameDetails={(game) => setGameDetails(game)}
-                pausePlayback={(e) => setPlayAudio(false)}
-                resumePlayback={(e) => setPlayAudio(true)}
-                addGame={(game) => addGameHandler(game)}
-                removeGame={(game) => removeGameHandler(game)}
-                setNotification={(status, message) =>
-                  setNotification({ status, message })
+                steamCollection={steamCollection}
+                removeGame={removeGameHandler}
+                viewCollection={() => setViewingCollection(true)}
+                setNotification={(status, message) => {
+                  setNotification({ status, message });
+                  setDisplayNotification(true);
+                }}
+                setCompleteCollection={(collection) =>
+                  setUserCollection(collection)
                 }
               />
-            ))}
-            {spotifyAccessToken && (
-              <SpotifyPlayback
-                spotifyToken={spotifyAccessToken}
-                playAudio={playAudio}
-                beginPlayback={(e) => setPlayAudio(true)}
-                pausePlayback={(e) => setPlayAudio(false)}
-                trackUri={currentTrack?.uri}
-              />
-            )}
+
+              {allGenres.map((request) => (
+                <Row
+                  key={Object.keys(request)}
+                  activeProfile={currentProfile}
+                  spotifyToken={spotifyAccessToken}
+                  genreDetails={Object.entries(request)}
+                  playTrack={playTrack}
+                  currentTrack={currentTrack}
+                  isPlaying={playAudio}
+                  setGameDetails={(game) => setGameDetails(game)}
+                  pausePlayback={(e) => setPlayAudio(false)}
+                  resumePlayback={(e) => setPlayAudio(true)}
+                  addGame={(game) => addGameHandler(game)}
+                  removeGame={(game) => removeGameHandler(game)}
+                  setNotification={(status, message) =>
+                    setNotification({ status, message })
+                  }
+                />
+              ))}
+              {spotifyAccessToken && (
+                <SpotifyPlayback
+                  spotifyToken={spotifyAccessToken}
+                  playAudio={playAudio}
+                  beginPlayback={(e) => setPlayAudio(true)}
+                  pausePlayback={(e) => setPlayAudio(false)}
+                  trackUri={currentTrack?.uri}
+                />
+              )}
+            </>
           </>
         ) : (
           <SearchResultsIGDB
             searchedGame={searchedGame}
             setGameDetails={(id) => setGameDetails(id)}
+            closeSearchResults={closeSearchResults}
+            searchGame={fetchSubmittedGame}
           />
         )}
         <Notification

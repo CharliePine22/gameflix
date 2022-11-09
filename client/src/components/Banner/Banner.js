@@ -81,7 +81,7 @@ function Banner({ setGameDetails, twitchToken, addGame, activeProfile }) {
           <div className='banner__buttons'>
             <button
               className='banner__button'
-              onClick={() => setGameDetails(game.id)}
+              onClick={() => setGameDetails(game)}
             >
               See Details
             </button>

@@ -115,12 +115,13 @@
   animation: displayDetails 300ms ease-in;
   margin: 0 8px;
   height: 100%;
+  padding-bottom: 12px;
 }
 
 .game_details__container h2 {
   text-align: center;
   color: white;
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin: 15px 0px 15px;
   text-shadow: 5px 4px 3px black;
 }
@@ -201,6 +202,7 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
+  width: 270px;
 }
 
 .game_details__info_toggler {
@@ -224,7 +226,7 @@
   width: 100%;
   display: flex;
   position: relative;
-  height: 580px;
+  height: 550px;
   justify-content: space-evenly;
 }
 
@@ -518,13 +520,18 @@
   .details_img {
     width: 450px;
   }
+
+  .game_details__info_container_top {
+    width: auto;
+  }
 }
 
 /* TABLETS */
 @media screen and (max-width: 750px) {
   .details_img {
-    width: 340px;
+    width: 325px;
   }
+
   .game_details__description {
     max-width: 95%;
   }
@@ -534,7 +541,7 @@
   }
 
   .game_details__media {
-    /* height: 350px; */
+    height: 520px;
   }
 
   .game_details__title {
@@ -544,7 +551,7 @@
 
 @media screen and (max-width: 590px) {
   .details_img {
-    width: 78%;
+    width: 75%;
   }
 
   .game_details__actions {
@@ -553,16 +560,16 @@
 
   .game_details__data {
     flex-direction: row;
-    height: 110px;
+    /* height: 110px; */
   }
 
   .game_details__description_container {
-    margin-top: auto;
+    margin-top: 220px;
     height: auto;
   }
 
   .game_details__details {
-    height: 100%;
+    height: 500px;
     justify-content: space-between;
   }
 
@@ -575,10 +582,13 @@
     margin: 10px 0px 20px;
   }
 
+  .game_details__info_container_top {
+    width: 100%;
+  }
+
   .game_details__media {
     flex-direction: column;
     justify-content: flex-start;
-    height: 500px;
   }
 
   .game_details__screenshots {
@@ -586,10 +596,13 @@
     max-width: 100px;
   }
 
+  .game_details__title {
+    font-size: 1.2rem;
+  }
+
   .media_placeholder {
     justify-content: center;
     width: 100%;
-    margin-bottom: 25px;
   }
 
   .game_details__publishers,
@@ -604,10 +617,10 @@
     display: none;
   }
 
-  .platforms_list {
+  /* .platforms_list {
     display: block;
     column-count: 2;
-  }
+  } */
 }
 
 /* MOBILE DEVICES */
@@ -627,7 +640,7 @@
 
   .game_details__data {
     margin: 0;
-    width: 400px;
+    /* width: 400px; */
     flex-wrap: wrap;
   }
 

@@ -49,6 +49,7 @@ const GameDetails = ({
     currentCollection &&
     currentCollection.some((game) => game.id === gameDetails.id);
 
+  console.log(gameDetails);
   const searchGameDetails = async () => {
     try {
       const request = await axios.post(`${baseURL}/app/search_game_details`, {
@@ -382,7 +383,7 @@ const GameDetails = ({
                   }
                   style={{
                     border:
-                      game.background_image == activeScreenshot
+                      gameDetails.cover.image_id == activeScreenshot
                         ? '1px solid lightblue'
                         : '1px solid transparent',
                   }}
@@ -418,10 +419,10 @@ const GameDetails = ({
                           : '1px solid transparent',
                       objectFit: 'fill',
                     }}
-                    src={`//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`}
+                    src={`//images.igdb.com/igdb/image/upload/t_screenshot_big_2x/${screenshot.image_id}.jpg`}
                     onClick={() =>
                       setActiveScreenshot(
-                        `//images.igdb.com/igdb/image/upload/t_screenshot_med/${screenshot.image_id}.jpg`
+                        `//images.igdb.com/igdb/image/upload/t_screenshot_big_2x/${screenshot.image_id}.jpg`
                       )
                     }
                     className='screenshot_thumbnail'

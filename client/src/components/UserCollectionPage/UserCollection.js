@@ -287,10 +287,10 @@ const UserCollection = ({
               <p
                 style={{
                   color: 'white',
-                  fontSize: '3.5rem',
+                  fontSize: '3.2rem',
                   position: 'absolute',
-                  top: '38%',
-                  left: '26px',
+                  top: '44%',
+                  left: '16px',
                 }}
               >
                 No Matches
@@ -554,6 +554,7 @@ const UserCollection = ({
                                 />
                               </div>
                             </>
+                            <span className='filter_stat'>{game.playtime}</span>
                           </div>
                         </li>
                       ))

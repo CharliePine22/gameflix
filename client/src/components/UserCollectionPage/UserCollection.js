@@ -98,7 +98,11 @@ const UserCollection = ({
           .sort((a, b) => b['achievements'] - a['achievements'])
       );
     } else if (listFilter == 'playtime') {
-      setFilteredList([...collection].sort((a, b) => b.playtime - a.playtime));
+      setFilteredList(
+        [...collection]
+          .filter((game) => game.playtime > 0)
+          .sort((a, b) => b.playtime - a.playtime)
+      );
     } else if (listFilter == 'status') {
       setFilteredList(
         [...collection].filter(
@@ -112,10 +116,11 @@ const UserCollection = ({
           .sort((a, b) => b.user_rating - a.user_rating)
       );
     } else if (listFilter == 'trophies') {
+      // const earnedTrophyCount = game.trophies.filter((game) => game.earned);
       setFilteredList(
         [...collection]
           .filter((game) => game.trophies)
-          .sort((a, b) => b.trophies - a.trophies)
+          .sort((a, b) => a.trophies - b.trophies)
       );
     } else {
       setFilteredList(
@@ -138,6 +143,44 @@ const UserCollection = ({
     setCurrentlyAdjusting(game);
   };
 
+  // Determine what stat to show based on current filter
+  const getFilterStat = (game) => {
+    switch (listFilter) {
+      case 'playtime':
+        if (Math.floor(game.playtime / 60) >= 1) {
+          return (
+            <span className='filter_stat'>
+              {Math.floor(game.playtime / 60)}{' '}
+              {Math.floor(game.playtime / 60) == 1 ? 'hour' : 'hours'}
+            </span>
+          );
+        } else {
+          return (
+            <span className='filter_stat'>
+              {game.playtime} {game.playtime == 1 ? 'minute' : 'minutes'}
+            </span>
+          );
+        }
+      case 'rating':
+        return (
+          <span className='filter_stat rating_stat'>{game.user_rating}%</span>
+        );
+      case 'trophies':
+        if (!game.trophies) break;
+        const earnedTrophyCount = game?.trophies?.filter((game) => game.earned);
+        return (
+          <span className='filter_stat'>
+            {Math.floor(
+              (earnedTrophyCount.length / game.trophies.length) * 100
+            )}
+            % earned
+          </span>
+        );
+      default:
+        break;
+    }
+  };
+
   const removeGameHandler = (e) => {
     e.stopPropagation();
     if (
@@ -149,6 +192,7 @@ const UserCollection = ({
     setCurrentlyAdjusting(null);
   };
 
+  // HTML RENDER
   return (
     <div className='user_collection__wrapper'>
       <div
@@ -269,7 +313,6 @@ const UserCollection = ({
                       </ul>
                     )}
                   </li>
-                  // 255 - 124
                 ))
             ) : searchList.length > 0 && searchValue != '' ? (
               searchList.map((game) => (
@@ -554,8 +597,8 @@ const UserCollection = ({
                                 />
                               </div>
                             </>
-                            <span className='filter_stat'>{game.playtime}</span>
                           </div>
+                          {getFilterStat(game)}
                         </li>
                       ))
                     : searchList.map((game) => (

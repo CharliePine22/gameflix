@@ -577,10 +577,6 @@
   .playtime_container {
     margin-left: 12px;
   }
-
-  .user_collection__left {
-    min-width: 249px;
-  }
 }
 
 @media screen and (max-width: 650px) {

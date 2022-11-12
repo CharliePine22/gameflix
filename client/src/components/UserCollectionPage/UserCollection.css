@@ -2,6 +2,16 @@
   z-index: 8;
   color: white;
   position: absolute;
+  background: #9147ff;
+  border-radius: 3px;
+  padding: 2px 2px;
+  bottom: -8px;
+  left: 32px;
+  min-width: 65px;
+  width: 50%;
+  text-align: center;
+  font-size: 0.95rem;
+  box-shadow: 0px 4px 6px black;
 }
 
 .gradient {
@@ -32,21 +42,14 @@
   transition: all 250ms ease-in-out;
   z-index: 3;
   margin: 6px 15px 25px 15px;
-  /* margin: 6px auto 15px auto; */
-  overflow: hidden;
   transform-origin: 100% 0;
   box-shadow: 2.3px 4.6px 4.6px hsl(0deg 0% 0% / 0.43);
 }
-
-/* .list_item:last-of-type {
-  margin: 6px auto 15px;
-} */
 
 .list_item:hover {
   transform: translate3d(0, 0, 0) scale(1.1);
   transform: rotateX(10deg);
   box-shadow: 4.8px 9.6px 9.6px hsl(0deg 0% 0% / 0.35);
-  /* box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); */
 }
 
 .list_item:hover .gradient {
@@ -59,6 +62,15 @@
   position: relative;
   left: 15px;
   color: gold;
+}
+
+.rating_stat {
+  min-width: 26px;
+  max-width: 26px;
+  border-radius: 50%;
+  padding: 6px 3px;
+  background-color: green;
+  left: 50px;
 }
 
 .spotlight_container {
@@ -229,11 +241,8 @@
 
 .user_collection__game_context {
   position: absolute;
-  /* box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.05); */
-  /* box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5); */
   background: #333;
   border: 1px solid white;
-  /* height: 100px; */
   width: 248px;
   padding: 0;
   list-style: none;
@@ -321,7 +330,6 @@
 }
 
 .user_collection__list_filters__list li {
-  /* margin: 0 5px; */
   font-size: 0.9rem;
   cursor: pointer;
   color: grey;
@@ -349,7 +357,6 @@
 }
 
 .user_collection__list_filters__list_status li {
-  /* margin: 0 5px; */
   font-size: 0.9rem;
   cursor: pointer;
   color: grey;
@@ -386,6 +393,7 @@
   min-height: 350px;
   max-height: 350px;
   transform-style: preserve-3d;
+  overflow: hidden;
 }
 
 .user_collection__poster_front,
@@ -545,6 +553,26 @@
 }
 
 @media screen and (max-width: 950px) {
+  .filter_stat {
+    padding: 2px 2px;
+    bottom: -8px;
+    left: 36px;
+    min-width: 65px;
+    width: 50%;
+    font-size: 0.95rem;
+  }
+
+  .rating_stat {
+    min-width: 30px;
+    max-width: 30px;
+    border-radius: 50%;
+    padding: 9px 4px;
+    background-color: green;
+    left: 50px;
+    bottom: -14px;
+    pointer-events: none;
+  }
+
   .spotlight_container {
     width: 85%;
   }
@@ -577,7 +605,7 @@
   }
 
   .user_collection__spotlight {
-    height: 460px;
+    height: 500px;
     flex-direction: column;
     align-items: center;
   }
@@ -591,8 +619,8 @@
   .user_collection__poster_container {
     max-width: 8.5rem;
     min-width: 8.5rem;
-    min-height: 220px;
-    max-height: 220px;
+    min-height: 235px;
+    max-height: 235px;
   }
 
   .user_collection__search_input {
@@ -604,7 +632,7 @@
 /* MOBILE DEVICES */
 @media screen and (max-width: 650px) {
   .list_item {
-    margin: 5px 4px 10px;
+    margin: 5px 4px 20px;
   }
 
   .user_collection__actions {
@@ -619,25 +647,20 @@
     display: block;
     font-size: 2.5rem;
     position: absolute;
-    right: 60px;
+    right: 90px;
     cursor: pointer;
   }
 
   .user_collection__left {
     height: 20%;
-    padding: 0 14px 0px 14px;
+    max-width: 100%;
   }
-
-  /* .user_collection__list {
-    margin: 10px 0 15px;
-  } */
 
   .user_collection__right {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
-    /* overflow: hidden; */
     padding: 0;
     position: relative;
   }
@@ -648,7 +671,6 @@
 
   .user_collection__search_input {
     width: 80%;
-    /* width: 275px; */
     border: 1px solid darkgray;
     background: grey;
     border-radius: 4px;
@@ -680,7 +702,7 @@
 
   .user_collection__left h2 {
     justify-content: flex-start;
-    margin: 20px 0px 25px 50px;
+    margin: 20px 0px 25px 45px;
     position: relative;
   }
 
@@ -704,7 +726,7 @@
     align-items: center;
     justify-content: flex-start;
   }
-  /* transform: translate(-50px, -70px); */
+
   .user_collection__spotlight_wrapper {
     height: 350px;
     display: none;

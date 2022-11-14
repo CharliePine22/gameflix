@@ -59,6 +59,63 @@
   font-size: 0.75rem;
 }
 
+.recent_searches {
+  padding: 0;
+  list-style: none;
+  align-items: center;
+  display: flex;
+}
+
+.recent_searches__item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  /* padding: 4px 4px; */
+  height: 40px;
+  border: 1px solid #9147ff;
+  border-radius: 2px;
+  margin: 0 5px;
+  cursor: pointer;
+  min-width: 75px;
+  transition: all 200ms ease-in-out;
+}
+
+.recent_searches__item p {
+  /* width: 80%; */
+  text-align: center;
+  white-space: nowrap;
+  padding: 0 10px 5px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  transition: all 200ms ease-in-out;
+}
+
+.recent_searches__item span {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  height: 100%;
+  border-left: 1px solid white;
+  /* width: 25px; */
+  padding: 0 10px;
+  justify-content: center;
+}
+
+.recent_searches__item:hover {
+  border: 1px solid white;
+}
+
+.recent_searches__item p:hover {
+  background: #9147ff;
+}
+
+.recent_searches__item span:hover {
+  background: #9147ff;
+}
+
 .result_publisher {
   height: 35px;
   width: 35px;
@@ -210,6 +267,19 @@
   cursor: pointer;
 }
 
+.search_results__recents {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin: 0 0 50px;
+}
+
+.search_results__recents h2 {
+  text-align: left !important;
+  font-size: 1.3rem !important;
+  margin-bottom: 10px !important;
+}
+
 .top_results_row {
   display: flex;
   justify-content: space-between;
@@ -321,6 +391,15 @@
     display: none;
   }
 
+  .recent_searches__item {
+    height: 30px;
+  }
+
+  .recent_searches__item p {
+    padding: 0 6px 2px;
+    font-size: 1rem;
+  }
+
   .remainder_results {
     margin-top: 15px;
   }
@@ -428,6 +507,16 @@
     padding: 5px 5px 3px;
   }
 
+  .recent_searches__item {
+    height: 30px;
+    min-width: 75px;
+  }
+
+  .recent_searches__item span {
+    font-size: 0.85rem;
+    padding: 0 10px;
+  }
+
   .remainder_results {
     margin-top: 25px;
   }
@@ -461,6 +550,14 @@
   .search_results__container h2 {
     text-align: center;
     font-size: 2rem;
+  }
+
+  .search_results__recents {
+    align-items: center;
+  }
+
+  .search_results__recents h2 {
+    text-align: center !important;
   }
 
   .top_result_container {

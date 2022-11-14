@@ -11,30 +11,45 @@ const SearchResultsIGDB = ({
   closeSearchResults,
   searchGame,
 }) => {
+  const recentSearches = JSON.parse(localStorage.getItem('searches'));
   const [topGames, setTopGames] = useState([]);
   const [remainderGames, setRemainderGames] = useState([]);
-  const [recentSearchList, setRecentSearchList] = useState([]);
+  const [recentSearchList, setRecentSearchList] = useState(recentSearches);
   const [searchValue, setSearchValue] = useState(searchedGame.name);
-  const recentSearches = localStorage.getItem('searches');
-  console.log(recentSearches);
 
+  console.log(recentSearches);
   useEffect(() => {
     window.scrollTo(0, 0);
     setTopGames(searchedGame.data?.slice(0, 3));
     setRemainderGames(searchedGame.data?.slice(3));
-    if (
-      !recentSearchList.includes(searchedGame.name) &&
-      searchedGame.name !== ''
-    ) {
-      setRecentSearchList((prev) => [...prev, searchedGame.name]);
-      localStorage.setItem('searches', JSON.stringify(recentSearchList));
+    if (searchedGame.name !== '') {
+      recentSearches.push(searchedGame.name);
+      localStorage.setItem('searches', JSON.stringify(recentSearches));
     }
   }, [searchedGame]);
+
+  const removeRecentSearchItem = (name) => {
+    const newList = recentSearches.filter((item) => item !== name);
+    console.log(newList);
+    setRecentSearchList([]);
+    localStorage.setItem('searches', JSON.stringify(newList));
+  };
 
   const submitSearchHandler = (e) => {
     if (e.key === 'Enter') {
       searchGame(searchValue);
     }
+  };
+
+  const uniqueSearches = (searches) => {
+    let result = [];
+    for (let item of searches) {
+      if (result.indexOf(item) === -1) {
+        result.push(item);
+      }
+    }
+    localStorage.setItem('searches', JSON.stringify(result));
+    return result.reverse();
   };
 
   // Skeleton Loader
@@ -44,10 +59,31 @@ const SearchResultsIGDB = ({
         <div className='search_results__nav'>
           <span onClick={closeSearchResults}>X</span>
           <div className='search_results__nav_search'>
-            <input placeholder='Search..' value={searchValue} />
+            <input
+              placeholder='Search..'
+              value={searchValue}
+              onKeyDown={submitSearchHandler}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
           </div>
         </div>
         <div className='search_results__container_skeleton'>
+          <div className='search_results__recents'>
+            <h2>Recent Searches</h2>
+            <ul className='recent_searches'>
+              {recentSearches &&
+                uniqueSearches(recentSearches)
+                  .slice(0, 4)
+                  .map((name, i) => (
+                    <li key={i} className='recent_searches__item'>
+                      <p onClick={() => searchGame(name)}>{name}</p>
+                      <span onClick={() => removeRecentSearchItem(name)}>
+                        X
+                      </span>
+                    </li>
+                  ))}
+            </ul>
+          </div>
           <div className='top_results_row_skeleton'>
             <h2>Top Results</h2>
             <SkeletonCard count={3} type='full' />
@@ -90,6 +126,17 @@ const SearchResultsIGDB = ({
       <div className='search_results__container'>
         <div className='search_results__recents'>
           <h2>Recent Searches</h2>
+          <ul className='recent_searches'>
+            {recentSearches &&
+              uniqueSearches(recentSearches)
+                .slice(0, 4)
+                .map((name, i) => (
+                  <li key={i} className='recent_searches__item'>
+                    <p onClick={() => searchGame(name)}>{name}</p>
+                    <span onClick={() => removeRecentSearchItem(name)}>X</span>
+                  </li>
+                ))}
+          </ul>
         </div>
         <h2>Top Results</h2>
 

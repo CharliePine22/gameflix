@@ -5,6 +5,7 @@ import { FiClock } from 'react-icons/fi';
 import { FaMedal, FaMusic, FaAngleDown } from 'react-icons/fa';
 import { DynamicStar } from 'react-dynamic-star';
 import useContextMenu from '../../hooks/useContextMenu';
+import UserGameNotes from './UserNotes';
 
 const UserGame = ({
   game,
@@ -433,15 +434,6 @@ const UserGame = ({
             </div>
           </div>
 
-          {/* ACHIEVEMENT COUNTER  */}
-          {/* <div className='achievement_count_container'>
-            <FaMedal className='achievement_medal_icon' />
-            <div className='stats_item'>
-              <h3>ACHIEVEMENTS</h3>
-              <span>{getAchievementCount(achievements)}</span>
-            </div>
-          </div> */}
-
           {/* BACKLOG STATUS */}
           <div className='achievement_count_container'>
             <div className='stats_item'>
@@ -745,6 +737,7 @@ const UserGame = ({
               </div>
             </div>
           )}
+          <UserGameNotes />
         </div>
       </div>
     </div>

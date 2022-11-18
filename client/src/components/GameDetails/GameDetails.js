@@ -30,6 +30,8 @@ import gamecubeLogo from '../../assets/images/gamecube-logo.png';
 import Carousel, { CarouselItem } from './Carousel';
 import { VscLibrary } from 'react-icons/vsc';
 
+// ('https://www.youtube.com/watch?v=${GAMEVIDEOID}');
+
 const GameDetails = ({
   game,
   closeDetails,
@@ -40,6 +42,7 @@ const GameDetails = ({
 }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const [gameDetails, setGameDetails] = useState({});
+  const [gameTrailer, setGameTrailer] = useState('');
   const [loading, setLoading] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [activeScreenshot, setActiveScreenshot] = useState('');
@@ -49,7 +52,7 @@ const GameDetails = ({
     currentCollection &&
     currentCollection.some((game) => game.id === gameDetails.id);
 
-  console.log(gameDetails);
+  console.log(game);
   const searchGameDetails = async () => {
     try {
       const request = await axios.post(`${baseURL}/app/search_game_details`, {
@@ -58,8 +61,13 @@ const GameDetails = ({
       });
 
       const result = await request.data;
+      if (game.name !== result[0].name)
+        setError(
+          `Sorry ${activeProfile.name} but our princess is in another castle! Please try again!`
+        );
       if (!result[0].status < 400) {
         setGameDetails(result[0]);
+        if (result[0].videos) setGameTrailer(result[0]?.videos[0]?.video_id);
       } else {
         setError(
           `Sorry ${activeProfile.name} but our princess is in another castle! Please try again!`

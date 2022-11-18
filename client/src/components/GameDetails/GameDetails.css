@@ -114,7 +114,7 @@
   flex-direction: column;
   animation: displayDetails 300ms ease-in;
   margin: 0 8px;
-  height: 100%;
+  /* height: 100%; */
   padding-bottom: 12px;
 }
 
@@ -226,7 +226,7 @@
   width: 100%;
   display: flex;
   position: relative;
-  height: 550px;
+  height: 620px;
   justify-content: space-evenly;
 }
 
@@ -281,9 +281,10 @@
 }
 
 .game_details__title {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   text-shadow: 5px 4px 3px black;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .game_details__wrapper {
@@ -518,7 +519,7 @@
 
 @media screen and (max-width: 925px) {
   .details_img {
-    width: 450px;
+    width: 400px;
   }
 
   .game_details__info_container_top {
@@ -560,11 +561,12 @@
 
   .game_details__data {
     flex-direction: row;
-    /* height: 110px; */
+    margin-top: 20px;
   }
 
   .game_details__description_container {
-    margin-top: 220px;
+    margin-top: 230px;
+    /* margin-top: 190px; */
     height: auto;
   }
 
@@ -574,12 +576,12 @@
   }
 
   .game_details__esrb {
-    margin-top: 50px;
+    /* margin-top: 50px; */
     height: 100%;
   }
 
   .game_details__container h2 {
-    margin: 10px 0px 20px;
+    margin: 10px 0px 15px;
   }
 
   .game_details__info_container_top {
@@ -625,6 +627,10 @@
 
 /* MOBILE DEVICES */
 @media screen and (max-width: 500px) {
+  .game_details__actions {
+    margin: 20px 0 15px;
+  }
+
   .game_details__column {
     max-height: 125px;
   }
@@ -635,12 +641,12 @@
 
   .game_details__container h2 {
     font-size: 2.2rem;
-    margin: 10px 0px 20px;
+    margin: 5px 0px 10px;
   }
 
   .game_details__data {
     margin: 0;
-    /* width: 400px; */
+    width: 300px;
     flex-wrap: wrap;
   }
 
@@ -649,14 +655,27 @@
     font-size: 1rem;
   }
 
+  .game_details__description_container {
+    margin-top: 210px;
+  }
+
   .game_details__details {
     margin: 0;
     height: auto;
   }
 
+  .game_details__media {
+    height: 450px;
+  }
+
   .game_details__screenshots {
     min-width: 70px;
     max-width: 70px;
+  }
+
+  .game_details__swap_icon {
+    top: 8px;
+    left: 25px;
   }
 
   .game_details__data p {
@@ -696,6 +715,7 @@
 
   .media_placeholder {
     width: 100%;
+    margin-bottom: 20px;
   }
 
   .media_soundtrack__container {
@@ -733,9 +753,9 @@
   .game_details__esrb {
     right: -65px;
   }
-  .game_details__screenshots {
-    right: -79px;
-    margin: 0;
+
+  .snes_button {
+    padding: 10px 40px;
   }
 }
 

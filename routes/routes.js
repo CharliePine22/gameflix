@@ -28,7 +28,6 @@ const upload = multer({ storage: storage });
 // Find user helper function
 const findUser = async (email) => {
   const result = await userModel.findOne({ email: email });
-  console.log(result);
   return result;
 };
 
@@ -205,7 +204,7 @@ router.post('/search_game_details', async (req, res) => {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `fields *, artworks.*, age_ratings.*, name, cover.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; where id = ${gameId}; limit 1;`,
+      body: `fields *, artworks.*, age_ratings.*, name, cover.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name, videos.*; where id = ${gameId}; limit 1;`,
     });
     const result = await request.json();
     res.send(result);

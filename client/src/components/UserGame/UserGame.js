@@ -575,10 +575,9 @@ const UserGame = ({
           {/* ACHIEVEMENT LIST */}
           {achievements && (
             <div className='user_game__achievements_wrapper'>
-              <h3>Achievements</h3>
-
               <div className='user_game__achievements'>
                 <div className='user_game__achievements_banner'>
+                  <h3>Achievements</h3>
                   <p>
                     You've unlocked {getAchievementCount(achievements)} (
                     {Math.floor(

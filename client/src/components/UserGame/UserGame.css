@@ -217,7 +217,6 @@
   height: 100%;
   width: 100%;
   background: rgba(11, 11, 11, 0.65);
-  float: right;
   border: 1px solid white;
   border-radius: 4px;
   position: relative;
@@ -226,18 +225,12 @@
   padding-bottom: 65px;
 }
 
-.user_game__achievements h3 {
-  position: absolute;
-  color: white;
-  top: -25px;
-}
-
 .user_game__achievements_actions {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: center;
-  margin-top: 9px;
+  margin-top: 8px;
 }
 
 .user_game__achievements_actions button {
@@ -250,7 +243,7 @@
   border-bottom: 1px solid #778;
   /* border-bottom: 1px solid rgba(19, 19, 19, 0.25); */
   outline: none;
-  padding: 3px 18px;
+  padding: 5px 18px;
   user-select: none;
 }
 
@@ -271,18 +264,16 @@
 
 .user_game__achievements_banner {
   width: 100%;
-  height: 70px;
   background: linear-gradient(to right, rgba(200, 200, 200, 0.1), #111111);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   color: white;
-  padding-bottom: 5px;
 }
 
 .user_game__achievements_banner p {
   padding-left: 12px;
-  padding-top: 7px;
+  padding-top: 3px;
 }
 
 .user_game__achievements_list {
@@ -293,7 +284,7 @@
   padding: 0;
   list-style: none;
   padding-top: 6px;
-  padding-bottom: 60px;
+  /* padding-bottom: 60px; */
 }
 
 .user_game__achievements_list::-webkit-scrollbar {
@@ -325,19 +316,21 @@
   width: 50%;
   min-width: 400px;
   height: 360px;
-  margin: 10px 20px;
+  margin: 0px 25px;
 }
 
 .user_game__achievements_wrapper h3 {
   color: white;
   text-align: center;
-  margin-bottom: 5px;
   font-weight: 700;
+  padding-left: 12px;
+  padding-top: 4px;
+  font-size: 1.3rem;
 }
 
 .user_game__banner {
   width: 100%;
-  height: 520px;
+  height: 475px;
   /* position: absolute; */
   position: relative;
   z-index: 1;
@@ -371,9 +364,9 @@
   width: 100%;
   z-index: 0;
   display: flex;
-  align-items: center;
   justify-content: center;
-  flex-direction: column;
+  padding-top: 25px;
+  padding-bottom: 10px;
 }
 
 .user_game__data_wrapper {
@@ -400,7 +393,7 @@
   justify-content: flex-start;
   align-items: center;
   position: absolute;
-  bottom: 0;
+  bottom: -1px;
   width: 100%;
   height: 75px;
   background-image: linear-gradient(
@@ -542,7 +535,7 @@
   }
 
   .user_game__banner img {
-    width: 101%;
+    width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: top;

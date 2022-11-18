@@ -207,7 +207,7 @@ const UserCollection = ({
           style={{
             height: viewingList && '250%',
             marginBottom: viewingList && '25px',
-            display: isMobile && currentGame !== null && 'none',
+            display: isMobile && currentGame && 'none',
           }}
         >
           <div className='user_collection__left_header'>

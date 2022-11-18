@@ -1,30 +1,241 @@
-.user_notes__form {
+.add_tab {
+  font-size: 1.2rem;
+}
+
+.delete_note_icon {
+  font-size: 1rem;
+  margin-left: 6px;
+}
+
+.edit_tab_icon {
+  font-size: 1.15rem;
+  cursor: pointer;
+  opacity: 0.5;
+  position: relative;
+  transition: opacity 250ms ease-in-out;
+  right: 6px;
+}
+
+.edit_tab_icon:hover {
+  opacity: 1;
+}
+
+.new_tab {
+  /* animation: extendTab 250ms ease-in forwards; */
+}
+
+.no_notes_msg {
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  font-size: 2.5rem;
+  -webkit-text-stroke: thin;
+  font-style: italic;
+  margin-top: 65px;
+}
+
+.new_tab__container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.new_tab__container form {
+  display: flex;
+}
+
+.new_tab__container input {
+  height: 20px;
+  padding: 0;
+  padding-left: 5px;
+  border: 0;
+  outline: 0;
+  animation: extendTab 250ms cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.new_tab__container p {
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 2;
+  padding-left: 8px;
+}
+
+.user_notes__form_container {
+  height: 70px;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  /* overflow: hidden; */
+  z-index: 2;
+  background: #333;
+}
+
+.user_notes__form_container form {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  height: 100%;
+  position: relative;
 }
 
 .user_notes__header {
-  height: 55px;
-  border-bottom: 2px solid black;
+  height: 30px;
   display: flex;
   justify-content: center;
+  position: relative;
+}
+
+.user_notes__input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0px 0px 0px 6px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  outline: 0;
+  font-size: 1.1rem;
+  background: transparent;
+  color: white;
+  position: absolute;
+  top: 0px;
+  box-shadow: 0 1px 15px rgb(0 0 0 / 50%);
+}
+
+.user_notes__notes {
+  height: 100%;
+  padding: 6px 15px 0;
+  list-style-type: none;
+  list-style-type: '-';
+  overflow-y: scroll;
+}
+
+.user_notes__notes_wrapper {
+  height: 265px;
+  position: relative;
+  border-top: 1px solid black;
+}
+
+.user_notes__notes::-webkit-scrollbar {
+  display: none;
+}
+
+.user_note {
+  color: white;
+  width: fit-content;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  padding-left: 8px;
+  cursor: pointer;
+  position: relative;
+}
+
+/* .user_note:before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f11b';
+  position: absolute;
+  left: -12px;
+  top: 4px;
+} */
+
+.user_notes__tabs {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  padding: 0;
+  list-style: none;
+  overflow-x: scroll;
+  position: absolute;
+  bottom: -1px;
+}
+
+.user_notes__tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.user_notes__tab {
+  color: white;
+  background: #55d;
+  padding: 2px 15px;
+  font-size: 1.2rem;
+  margin: 0 2px;
+  cursor: pointer;
+  user-select: none;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.85);
+  z-index: 2;
+  transform: translateY(0px);
+}
+
+.user_notes__tab:first-child {
+  margin-left: 8px;
+}
+
+.user_notes__tab:hover {
+  background: rgb(94, 94, 239);
+  transform: translateY(0px);
 }
 
 .user_notes__wrapper {
-  width: 100%;
   position: relative;
-  min-height: 420px;
+  width: 85%;
+  min-height: 430px;
+  border-radius: 10px;
   height: 100%;
-  max-width: 600px;
+  max-width: 800px;
   max-height: 460px;
-  background: blue;
+  background: #222;
   border: 1px solid white;
-  margin: 10px 20px;
+  margin: 0px 25px;
   position: relative;
+  overflow: hidden;
+}
+
+.user_notes__wrapper h4 {
+  text-align: center;
+  color: white;
+  padding-top: 5px;
+  padding-bottom: 8px;
+  font-size: 2rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  outline: 0;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+@keyframes extendTab {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 120px;
+  }
+}
+
+@keyframes closeTab {
+  0% {
+    width: 120px;
+  }
+  100% {
+    width: 0;
+  }
 }
 
 @media screen and (max-width: 650px) {
+  .user_notes__tab {
+    padding: 0px 10px;
+    font-size: 1.2rem;
+    margin: 0 5px;
+  }
+
   .user_notes__wrapper {
     max-width: none;
     width: 94%;
-    min-height: 380px;
+    min-height: 420px;
+  }
+
+  .user_notes__notes_wrapper {
+    height: 250px;
   }
 }

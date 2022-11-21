@@ -16,6 +16,7 @@ const igdbRoutes = require('./routes/igdb_routes');
 const playstationRoutes = require('./routes/psn_routes');
 const steamRoutes = require('./routes/steam_routes');
 const genreRoutes = require('./routes/genre_routes');
+const notesRoutes = require('./routes/notes_routes');
 const cors = require('cors');
 dotenv.config();
 

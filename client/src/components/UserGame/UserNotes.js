@@ -2,49 +2,86 @@ import React, { useState, useEffect, useRef } from 'react';
 import './UserNotes.css';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { MdEditNote } from 'react-icons/md';
+import { FaAngleDown } from 'react-icons/fa';
 import { IoTrashOutline } from 'react-icons/io5';
-
+import axios from 'axios';
 import NoteDetails from './NoteDetails';
 
-const UserGameNotes = () => {
-  const today = new Date();
+// Get current date and format it
+const today = new Date();
+const yyyy = today.getFullYear();
+let mm = today.getMonth() + 1; // Months start at 0!
+let dd = today.getDate();
+if (dd < 10) dd = '0' + dd;
+if (mm < 10) mm = '0' + mm;
+const formattedToday = mm + '/' + dd + '/' + yyyy;
+
+const UserGameNotes = ({ game, profile, windowViewHandler, viewStatus }) => {
+  const baseURL = process.env.REACT_APP_BASE_URL;
+  const userEmail = localStorage.getItem('user');
+  console.log(profile);
+
   const DUMMYDATA = [
     {
       id: 1,
       noteTitle: 'Thoughts',
       notes: [
-        'Good pick up and put down game',
-        'Wish it was a more immersive coop experience (Do island together).',
+        { note: 'Good pick up and put down game', date: '11/21/2022' },
+        {
+          note: 'Wish it was a more immersive coop experience (Do island together).',
+          date: '11/21/2022',
+        },
       ],
     },
     {
       id: 2,
       noteTitle: 'Stats',
       notes: [
-        'Island name is Destiny',
-        'Island has 3 stars',
-        '30/50 recipes unlocked',
-        '540,424 Bells',
+        { note: 'Island name is Destiny', date: '11/21/2022' },
+        { note: 'Island has 3 stars', date: '11/21/2022' },
+        { note: '30/50 recipes unlocked', date: '11/21/2022' },
+        { note: '540,424 Bells', date: '11/21/2022' },
       ],
     },
     {
       id: 3,
       noteTitle: 'Villagers',
-      notes: ['Agent S', 'Cherri', 'Beardo', 'Tom Nook'],
+      notes: [
+        { note: 'Agent S', date: '11/21/2022' },
+        { note: 'Cherri', date: '11/21/2022' },
+        { note: 'Beardo', date: '11/21/2022' },
+        { note: 'Tom Nook', date: '11/21/2022' },
+      ],
     },
   ];
+  // Tab Hooks
   const [currentTab, setCurrentTab] = useState('Thoughts');
   const [editingTab, setEditingTab] = useState(false);
-  const [noteValue, setNoteValue] = useState('');
   const [tabValue, setTabValue] = useState('');
+  const [addingTab, setAddingTab] = useState(false);
+  // Note Hooks
+  const [noteValue, setNoteValue] = useState('');
   const [userNotes, setUserNotes] = useState(DUMMYDATA);
   const [currentNote, setCurrentNote] = useState(null);
-  const [addingTab, setAddingTab] = useState(false);
   let noteTab = userNotes.filter((item) => item.noteTitle == currentTab)[0];
   const notesRef = useRef(null);
   const tabRef = useRef(null);
+  const tabEndRef = useRef(null);
+
+  const createNotes = async () => {
+    const request = await axios.put(`${baseURL}/notes/create_note`, {
+      email: userEmail,
+      profile: profile.name,
+    });
+
+    console.log(request.data);
+  };
 
   useEffect(() => {
+    if (!profile.notes) {
+      // const request = axios.get(`${baseURL}/notes/get_notes`);
+      createNotes();
+    }
     if (currentNote !== null) return;
     notesRef?.current?.scrollIntoView({ behavior: 'smooth' });
   }, [userNotes, currentTab]);
@@ -57,14 +94,30 @@ const UserGameNotes = () => {
     setTabValue('');
   }, [tabRef, noteTab]);
 
+  useEffect(() => {
+    // tabEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    return () => clearTimeout(timer);
+  }, []);
+
   const editTabHandler = () => {
     if (!editingTab) {
       setEditingTab(true);
     } else {
       noteTab.noteTitle = tabRef.current.innerText;
       setUserNotes((prev) => [...prev]);
+      setCurrentTab(tabRef.current.innerText);
       setEditingTab(false);
     }
+  };
+
+  let timer;
+  const addTabHandler = (e) => {
+    e.stopPropagation();
+    setAddingTab(true);
+    timer = setTimeout(
+      () => tabEndRef.current.scrollIntoView({ behavior: 'smooth' }),
+      150
+    );
   };
 
   const formSubmitHandler = (e) => {
@@ -75,9 +128,17 @@ const UserGameNotes = () => {
     setNoteValue('');
   };
 
-  const tabFormSubmitHandler = (e) => {
+  const tabFormSubmitHandler = async (e) => {
     e.preventDefault();
     if (tabValue == '') return;
+
+    const request = await axios.post(`${baseURL}/notes/create_note`, {
+      id: game.id,
+      tab: tabValue,
+    });
+
+    console.log(request);
+
     setUserNotes((prev) => [
       ...prev,
       {
@@ -96,23 +157,33 @@ const UserGameNotes = () => {
   };
 
   const saveNoteHandler = (oldNote, newNote) => {
-    const resultArr = noteTab.notes.map(function (x) {
-      return x.replace(oldNote, newNote);
-    });
-    noteTab.notes = resultArr;
+    console.log(oldNote);
+    oldNote.note = newNote;
+    oldNote.date = formattedToday;
     setUserNotes((prev) => [...prev]);
     setCurrentNote(null);
   };
 
   const deleteNoteHandler = (note) => {
-    const updatedList = noteTab.notes.filter((item) => item !== note);
+    const updatedList = noteTab.notes.filter((item) => item.note !== note);
     noteTab.notes = updatedList;
     setUserNotes((prev) => [...prev]);
     setCurrentNote(null);
   };
 
   return (
-    <div className='user_notes__wrapper'>
+    <div
+      className={`user_notes__wrapper ${
+        !viewStatus.notes && 'minimized_notes'
+      }`}
+    >
+      <FaAngleDown
+        style={{
+          transform: !viewStatus.notes ? 'rotate(0)' : 'rotate(180deg)',
+        }}
+        className='user_game__minimize_icon'
+        onClick={() => windowViewHandler('notes')}
+      />
       {currentNote ? (
         <NoteDetails
           note={currentNote}
@@ -165,7 +236,8 @@ const UserGameNotes = () => {
                   className={`user_notes__tab ${
                     addingTab ? 'add_tab' : 'new_tab'
                   }`}
-                  onClick={() => !addingTab && setAddingTab(true)}
+                  // onClick={() => !addingTab && setAddingTab(true)}
+                  onClick={addTabHandler}
                 >
                   {!addingTab ? (
                     <AiOutlinePlus />
@@ -177,10 +249,18 @@ const UserGameNotes = () => {
                           onChange={(e) => setTabValue(e.target.value)}
                         />
                       </form>
-                      <p onClick={() => setAddingTab(false)}>X</p>
+                      <p
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setAddingTab(false);
+                        }}
+                      >
+                        X
+                      </p>
                     </div>
                   )}
                 </li>
+                <div ref={tabEndRef} />
               </ul>
             </div>
           </>
@@ -192,21 +272,23 @@ const UserGameNotes = () => {
                   .filter((item) => item.noteTitle == currentTab)[0]
                   ?.notes.map((note) => (
                     <li
-                      key={note}
+                      key={note.note}
                       className='user_note'
                       onClick={() => viewNoteHandler(note)}
                     >
-                      {note}
-                      {/* <IoTrashOutline className='delete_note_icon' /> */}
+                      {note.note}
                     </li>
                   ))
               ) : (
                 <p className='no_notes_msg'>No Notes</p>
               )}
-              <div ref={notesRef} />
             </ul>
           </div>
-          <div className='user_notes__form_container'>
+          <div ref={notesRef} style={{ width: '10px', marginLeft: '5px' }} />
+          <div
+            className='user_notes__form_container'
+            style={{ display: `${!viewStatus.notes ? 'none' : 'block'}` }}
+          >
             <form className='user_notes__form' onSubmit={formSubmitHandler}>
               <input
                 value={noteValue}

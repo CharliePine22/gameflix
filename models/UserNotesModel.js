@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
-const MyObjectId = mongoose.Types.ObjectId;
 
 const userNotesModel = new mongoose.Schema({
   notesID: {
-    type: Number,
+    type: mongoose.ObjectId,
     required: true,
   },
-  notes: {
+  notes_collection: {
     type: Array,
     required: true,
   },

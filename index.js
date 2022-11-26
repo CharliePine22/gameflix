@@ -16,7 +16,7 @@ const igdbRoutes = require('./routes/igdb_routes');
 const playstationRoutes = require('./routes/psn_routes');
 const steamRoutes = require('./routes/steam_routes');
 const genreRoutes = require('./routes/genre_routes');
-const notesRoutes = require('./routes/notes_routes');
+const noteRoutes = require('./routes/notes_routes');
 const cors = require('cors');
 dotenv.config();
 
@@ -82,6 +82,7 @@ app.use('/igdb', igdbRoutes);
 app.use('/playstation', playstationRoutes);
 app.use('/steam', steamRoutes);
 app.use('/genres', genreRoutes);
+app.use('/notes', noteRoutes);
 app.use('/uploads', express.static('uploads'));
 
 if (process.env.PORT) {

@@ -64,6 +64,8 @@
   list-style: none;
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .recent_searches__item {

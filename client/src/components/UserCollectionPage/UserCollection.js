@@ -283,6 +283,7 @@ const UserCollection = ({
                     onContextMenu={(e) => viewGameHeaders(e, game)}
                     style={{
                       background: currentGame?.id == game.id && '#9147ff',
+                      color: currentGame?.id == game.id && 'white',
                     }}
                   >
                     {' '}
@@ -339,6 +340,7 @@ const UserCollection = ({
                 No Matches
               </p>
             )}
+            <div className='user_collection__title_list_shadow' />
           </ul>
           <div className='user_collection__actions'>
             <button className='persona_font' onClick={backToHome}>

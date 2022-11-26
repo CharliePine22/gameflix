@@ -3,11 +3,11 @@ import './UserNotes.css';
 import { BsArrowLeft } from 'react-icons/bs';
 
 const NoteDetails = ({ note, closeNote, updateNote, deleteNote }) => {
-  const [noteValue, setNoteValue] = useState(note);
+  const [noteValue, setNoteValue] = useState(note.note);
 
   return (
     <div className='note_details__container'>
-      <span className='note_details__date'>11/24/2022</span>
+      <span className='note_details__date'>{note.date}</span>
       <BsArrowLeft className='note_details__back_icon' onClick={closeNote} />
       <div className='note_details__details'>
         <h4 className='note_details_note'>Note Details</h4>
@@ -19,7 +19,7 @@ const NoteDetails = ({ note, closeNote, updateNote, deleteNote }) => {
       </div>
       <div className='note_details__actions'>
         <button onClick={() => updateNote(note, noteValue)}>Save Note</button>
-        <button onClick={() => deleteNote(note)}>Delete Note</button>
+        <button onClick={() => deleteNote(note.note)}>Delete Note</button>
       </div>
     </div>
   );

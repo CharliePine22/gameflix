@@ -19,6 +19,10 @@ const UserGame = ({
   // RATING, PLAYTIME, ACHIEVEMENTS, SPOTIFY, NOTES, STATUS(COMPLETED, BACKLOG, ETC.), PLATFORMS OWNED
   const { anchorPoint, showBannerMenu, resetContext } = useContextMenu();
   // Achievement States
+  const [viewStatus, setViewStatus] = useState({
+    achievements: true,
+    notes: true,
+  });
   const [achievements, setAchievements] = useState(game.achievements);
   const [trophies, setTrophies] = useState(game.trophies);
   const [achievementFilter, setAchievementFilter] = useState('unlocked');
@@ -278,6 +282,12 @@ const UserGame = ({
   const updateBacklogHandler = (status) => {
     updateBacklog(status);
     setChangingBacklog(false);
+  };
+
+  // Minimzie or Maximize Height of Game Component
+  const windowViewHandler = (data) => {
+    console.log(viewStatus);
+    setViewStatus({ ...viewStatus, [data]: !viewStatus[data] });
   };
 
   // Determine if user is updating or canceling playtime change
@@ -574,10 +584,25 @@ const UserGame = ({
 
           {/* ACHIEVEMENT LIST */}
           {achievements && (
-            <div className='user_game__achievements_wrapper'>
+            <div
+              className={`user_game__achievements_wrapper ${
+                !viewStatus.achievements && 'minimized'
+              }`}
+            >
               <div className='user_game__achievements'>
                 <div className='user_game__achievements_banner'>
-                  <h3>Achievements</h3>
+                  <FaAngleDown
+                    style={{
+                      transform: !viewStatus.achievements
+                        ? 'rotate(0)'
+                        : 'rotate(180deg)',
+                    }}
+                    className='user_game__minimize_icon'
+                    onClick={() => windowViewHandler('achievements')}
+                  />
+                  <h4>
+                    <p>Achievements</p>
+                  </h4>
                   <p>
                     You've unlocked {getAchievementCount(achievements)} (
                     {Math.floor(
@@ -656,10 +681,9 @@ const UserGame = ({
           {/* PLAYSTATION TROPHIES */}
           {trophies && (
             <div className='user_game__achievements_wrapper'>
-              <h3>Trophies</h3>
-
               <div className='user_game__achievements'>
                 <div className='user_game__achievements_banner'>
+                  <h3>Trophies</h3>
                   <p>
                     You've unlocked {getAchievementCount(trophies)} (
                     {Math.floor(
@@ -736,7 +760,12 @@ const UserGame = ({
               </div>
             </div>
           )}
-          <UserGameNotes />
+          <UserGameNotes
+            game={game}
+            profile={activeProfile}
+            windowViewHandler={windowViewHandler}
+            viewStatus={viewStatus}
+          />
         </div>
       </div>
     </div>

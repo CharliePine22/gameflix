@@ -30,6 +30,7 @@ const Dashboard = ({
   currentProfile,
   currentCollection,
   allGenres,
+  userNotes,
   manageProfiles,
   updateCollection,
   selectProfile,
@@ -66,7 +67,7 @@ const Dashboard = ({
 
   useEffect(() => {
     if (!currentProfile) console.log('No Current Profile');
-  }, [currentProfile]);
+  }, []);
 
   //   setViewingSoundtrack(false);
   //   if (!spotifyToken) {
@@ -118,8 +119,9 @@ const Dashboard = ({
       });
       localStorage.setItem('user', request.data.response.email);
       const filteredProfile = request.data.response.profiles.filter((obj) => {
-        return obj.name === currentProfile;
+        return obj.name === currentProfile.name;
       });
+
       localStorage.setItem('profile', filteredProfile[0].name);
       setSelectedProfile(filteredProfile[0]);
       updateCollection(filteredProfile[0].collection);
@@ -130,6 +132,7 @@ const Dashboard = ({
       setDisplayNotification(true);
       return;
     } catch (error) {
+      console.log(error);
       setNotification({
         message: `Unable to add ${game.name} to your collection!`,
         status: 'ERROR',
@@ -142,15 +145,14 @@ const Dashboard = ({
   const removeGameHandler = async (game) => {
     try {
       const request = await axios.put(`${baseURL}/app/remove_game`, {
-        email: currentUser,
+        email: currentUser.email,
         currentProfile: currentProfile.name,
         game: game.id,
       });
-      console.log(request);
 
       localStorage.setItem('user', request.data.response.email);
       const filteredProfile = request.data.response.profiles.filter((obj) => {
-        return obj.name === currentProfile;
+        return obj.name === currentProfile.name;
       });
       localStorage.setItem('profile', filteredProfile[0].name);
       setSelectedProfile(filteredProfile[0]);
@@ -168,7 +170,7 @@ const Dashboard = ({
         status: 'ERROR',
       });
       setDisplayNotification(true);
-      return;
+      return error;
     }
   };
 
@@ -176,8 +178,8 @@ const Dashboard = ({
   const logoutHandler = () => {
     setLoggedUser(null);
     setSelectedProfile(null);
-    localStorage.clear('user');
-    window.location.reload();
+    localStorage.clear();
+    localStorage.setItem('twitch_auth', twitchToken);
   };
 
   const changeProfile = (user) => {

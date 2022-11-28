@@ -189,7 +189,7 @@
 }
 
 .title_list__item:hover {
-  background-color: rgb(71, 133, 156);
+  background-color: #a96fff;
   color: white;
   /* font-weight: 900; */
 }
@@ -495,11 +495,19 @@
 .user_collection__title_list_shadow {
   width: 260px;
   height: 50px;
-  background: blue;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.1) 11%,
+    rgba(0, 0, 0, 0.25) 51%,
+    rgba(0, 0, 0, 0.65) 100%
+  );
   z-index: 6;
   position: fixed;
-  bottom: 84px;
+  bottom: 70px;
   left: 0px;
+  pointer-events: none;
 }
 
 .user_collection__wrapper {
@@ -629,10 +637,10 @@
 
 @media screen and (max-width: 750px) {
   .user_collection__poster_container {
-    max-width: 8.5rem;
-    min-width: 8.5rem;
-    min-height: 235px;
-    max-height: 235px;
+    /* max-width: 8.5rem;
+    min-width: 8.5rem; */
+    /* min-height: 235px;
+    max-height: 235px; */
   }
 
   .user_collection__search_input {
@@ -664,7 +672,7 @@
   }
 
   .user_collection__left {
-    height: 20%;
+    height: 16%;
     max-width: 100%;
   }
 
@@ -678,7 +686,8 @@
   }
 
   .user_collection__search_icon {
-    left: 40px;
+    left: 9%;
+    /* left: 40px; */
   }
 
   .user_collection__search_input {

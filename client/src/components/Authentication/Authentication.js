@@ -29,7 +29,7 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
       }
     }
     fetchData();
-  }, [twitchToken]);
+  }, [twitchToken, counter]);
 
   const imageLoaded = () => {
     counter.current += 1;
@@ -81,7 +81,6 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
 
     return (
       <LandingPage
-        // loginAuthentication={loginAuthentication}
         toSignIn={() => {
           setToLandingPage(false);
         }}

@@ -73,15 +73,14 @@ const UserGameNotes = ({ game, profile, windowViewHandler, viewStatus }) => {
       email: userEmail,
       profile: profile.name,
     });
-
-    console.log(request.data);
+    console.log(request);
   };
 
   useEffect(() => {
-    if (!profile.notes) {
-      // const request = axios.get(`${baseURL}/notes/get_notes`);
+    if (!profile.notesId) {
       createNotes();
     }
+
     if (currentNote !== null) return;
     notesRef?.current?.scrollIntoView({ behavior: 'smooth' });
   }, [userNotes, currentTab]);
@@ -123,7 +122,8 @@ const UserGameNotes = ({ game, profile, windowViewHandler, viewStatus }) => {
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (noteValue == '') return;
-    noteTab.notes.push(noteValue);
+    console.log(noteTab.notes);
+    noteTab.notes.push({ note: noteValue, date: formattedToday });
     setUserNotes((prev) => [...prev]);
     setNoteValue('');
   };
@@ -180,6 +180,7 @@ const UserGameNotes = ({ game, profile, windowViewHandler, viewStatus }) => {
       <FaAngleDown
         style={{
           transform: !viewStatus.notes ? 'rotate(0)' : 'rotate(180deg)',
+          display: currentNote && 'none',
         }}
         className='user_game__minimize_icon'
         onClick={() => windowViewHandler('notes')}

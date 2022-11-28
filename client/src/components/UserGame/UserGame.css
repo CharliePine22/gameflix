@@ -79,6 +79,10 @@
   border-bottom: 0;
 }
 
+.completed {
+  animation: breatheEffect 1.5s ease-in-out infinite;
+}
+
 .greyscale {
   filter: grayscale(1);
 }
@@ -218,11 +222,9 @@
   height: 100%;
   width: 100%;
   background: rgba(11, 11, 11, 0.65);
-  border: 1px solid white;
-  border-radius: 10px;
   position: relative;
   overflow: hidden;
-  box-shadow: -1px 4px 5px 3px #000000;
+  border-radius: 10px;
 }
 
 .user_game__achievements_actions {
@@ -313,9 +315,12 @@
 
 .user_game__achievements_wrapper {
   margin: 0px 10px;
+  border-radius: 10px;
+  border: 2px solid white;
   width: 100%;
   animation: maximizeViewDesktop 500ms cubic-bezier(0.075, 0.82, 0.165, 1)
     forwards;
+  box-shadow: 0px 5px 3px 0px rgb(0 0 0 / 50%);
 }
 
 .user_game__achievements_wrapper h4 {
@@ -356,6 +361,15 @@
   object-position: center;
   z-index: 0;
   position: absolute;
+  user-select: none;
+}
+
+.user_game__completion_medal {
+  position: absolute;
+  left: 78px;
+  top: 7px;
+  color: gold;
+  font-size: 1.1rem;
 }
 
 .user_game__data {
@@ -419,6 +433,7 @@
   padding: 6px 12px;
   opacity: 0.5;
   z-index: 10;
+  transition: opacity 150ms ease-in-out;
 }
 
 .user_game__exit:hover {
@@ -457,6 +472,12 @@
   cursor: pointer;
   font-size: 1.3rem;
   color: white;
+  opacity: 0.5;
+  transition: opacity 150ms ease-in-out, transform 200ms ease-in-out;
+}
+
+.user_game__minimize_icon:hover {
+  opacity: 1;
 }
 
 .user_game__platforms {
@@ -518,6 +539,26 @@
   }
 }
 
+/* Animation for glowing effect on completed achievements */
+@keyframes breatheEffect {
+  0%,
+  100% {
+    box-shadow: 0 0 2px gold;
+  }
+  20%,
+  80% {
+    box-shadow: 0 0 5px gold;
+  }
+  40%,
+  60% {
+    box-shadow: 0 0 8px gold;
+  }
+  50% {
+    box-shadow: 0 0 10px gold;
+  }
+}
+
+/* Animation for hiding the achievements/trophies on mobile */
 @keyframes minimizeView {
   0% {
     height: 380px;
@@ -527,6 +568,7 @@
   }
 }
 
+/* Animation for revealing the achievements/trophies on mobile */
 @keyframes maximizeView {
   0% {
     height: 75px;
@@ -536,6 +578,7 @@
   }
 }
 
+/* Animation for hiding the achievements/trophies */
 @keyframes minimizeViewDesktop {
   0% {
     height: 430px;
@@ -545,6 +588,7 @@
   }
 }
 
+/* Animation for revealing the achievements/trophies */
 @keyframes maximizeViewDesktop {
   0% {
     /* 15px */

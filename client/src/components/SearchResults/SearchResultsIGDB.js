@@ -17,14 +17,17 @@ const SearchResultsIGDB = ({
   const [recentSearchList, setRecentSearchList] = useState(recentSearches);
   const [searchValue, setSearchValue] = useState(searchedGame.name);
 
-  console.log(recentSearches);
   useEffect(() => {
     window.scrollTo(0, 0);
     setTopGames(searchedGame.data?.slice(0, 3));
     setRemainderGames(searchedGame.data?.slice(3));
     if (searchedGame.name !== '') {
-      recentSearches.push(searchedGame.name);
-      localStorage.setItem('searches', JSON.stringify(recentSearches));
+      if (!recentSearches) {
+        localStorage.setItem('searches', JSON.stringify([searchedGame.name]));
+      } else {
+        recentSearches.push(searchedGame.name);
+        localStorage.setItem('searches', JSON.stringify(recentSearches));
+      }
     }
   }, [searchedGame]);
 

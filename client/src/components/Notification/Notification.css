@@ -1,35 +1,35 @@
 .notification__container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
   height: 100%;
 }
 
 .notification__message {
-  font-size: 1.35rem;
+  font-size: 1.25rem;
+  padding: 0 10px;
   text-align: center;
+  text-shadow: 2px 2px 1px black;
 }
 
 .notification__title {
   font-size: 2.2rem;
   font-weight: 900;
-  padding: 10px 0;
-  margin-bottom: 15px;
+  padding: 7px 0;
   text-align: center;
+  text-shadow: 3px 2px 1px rgb(255 255 255 / 30%);
 }
 
 .notification__wrapper {
-  padding: 10px 18px;
+  padding: 2px 0;
   position: fixed;
   bottom: 15px;
   right: 15px;
-  height: 180px;
+  height: 170px;
   width: 250px;
   z-index: 10;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.95);
   border: 1px solid white;
+  color: white;
+  box-shadow: 0px 5px 3px 0px rgb(0 0 0 / 50%);
 }
 
 .notification__fade-in {

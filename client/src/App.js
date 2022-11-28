@@ -27,6 +27,7 @@ function App() {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [profileCollection, setProfileCollection] = useState([]);
   const [genreList, setGenreList] = useState([]);
+  const [profileNotesData, setProfileNotesData] = useState(null);
 
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
@@ -36,6 +37,16 @@ function App() {
   let audio = new Audio(loginAudio);
 
   const twitchAccessToken = useTwitchAuth(code);
+
+  const getUserNotes = async (id) => {
+    const request = await axios.get(`${baseURL}/notes/get_notes`, {
+      params: {
+        id: id,
+      },
+    });
+    const notes = await request.data;
+    return notes;
+  };
 
   // Refetch user data if any changes are made
   useEffect(() => {
@@ -47,15 +58,13 @@ function App() {
             email: userEmail,
           },
         });
-        console.log(request);
         const result = await request.data;
         setLoggedUser(result);
-        return result;
       } catch (error) {
         console.log(error);
-        return error;
       }
     };
+
     const getGenreGames = async () => {
       try {
         const request = await axios.get(`${baseURL}/game_genres`);
@@ -64,7 +73,7 @@ function App() {
       }
     };
     updateUser();
-  }, [userEmail]);
+  }, [userEmail, userProfile]);
 
   // Check to see which profile is active
   useEffect(() => {
@@ -73,8 +82,8 @@ function App() {
       const currentProfile = loggedUser.profiles.filter((obj) => {
         return obj.name === profile;
       });
-
       setSelectedProfile(currentProfile[0]);
+
       if (currentProfile[0].collection) {
         setProfileCollection(
           currentProfile[0].collection.filter((game) => game.id !== null)
@@ -82,7 +91,14 @@ function App() {
       }
     };
     getProfileData(userProfile);
-  }, [selectedProfile, userProfile, loggedUser]);
+  }, [selectedProfile, loggedUser]);
+
+  useEffect(() => {
+    if (selectedProfile && selectedProfile.notesId) {
+      const userNoteData = getUserNotes(selectedProfile.notesId);
+      setProfileNotesData(userNoteData);
+    }
+  }, [selectedProfile]);
 
   useEffect(() => {
     if (!twitchAccessToken) return;
@@ -96,7 +112,6 @@ function App() {
           });
         })
       );
-
       const completeGenreList = genreTitles.map((genre) => genre.data);
 
       setGenreList(completeGenreList);
@@ -157,6 +172,7 @@ function App() {
         selectProfile={(user) => setSelectedProfile(user)}
         manageProfiles={() => setSelectedProfile(null)}
         allGenres={genreList}
+        userNotes={profileNotesData}
       />
     );
   } else {

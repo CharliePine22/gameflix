@@ -280,4 +280,10 @@
   .user_library_title h2 {
     font-size: 1.5rem;
   }
+
+  .user_library__stack_collection_container h2 {
+    top: 76px;
+    font-size: 1.7rem;
+    left: 14px;
+  }
 }

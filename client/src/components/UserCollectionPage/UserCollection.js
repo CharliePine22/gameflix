@@ -128,7 +128,6 @@ const UserCollection = ({
           a.name > b.name ? 1 : b.name > a.name ? -1 : 0
         )
       );
-      console.log('Hello');
     }
   }, [listFilter, statusFilter]);
 
@@ -370,72 +369,74 @@ const UserCollection = ({
           {!currentGame && (
             // SPOTLIGHT
             <>
-              <div className='user_collection__spotlight_wrapper'>
-                <div className='spotlight_filters'>
-                  {/* MOST PLAYED, HIGHEST RATED, MOST ACHIEVEMENTS */}
-                  <h2 className='spotlight_filter'>
-                    {spotlightFilter == 'playtime'
-                      ? 'Most Played'
-                      : spotlightFilter == 'user_rating'
-                      ? 'Highest Rated'
-                      : 'Most Achievements'}{' '}
-                    {/* <FaAngleDown className='spotlight_filter__arrow' /> */}
-                  </h2>
-                  <ul className='spotlight_filter__options'>
-                    <li
-                      onClick={() => setSpotlightFilter('playtime')}
-                      style={{
-                        color: spotlightFilter == 'playtime' && 'white',
-                      }}
-                    >
-                      Most Played
-                    </li>
-                    <li
-                      onClick={() => setSpotlightFilter('user_rating')}
-                      style={{
-                        color: spotlightFilter == 'user_rating' && 'white',
-                      }}
-                    >
-                      Highest Rated
-                    </li>
-                    <li
-                      onClick={() => setSpotlightFilter('achievements')}
-                      style={{
-                        color: spotlightFilter == 'achievements' && 'white',
-                      }}
-                    >
-                      Most Achievements
-                    </li>
-                  </ul>
+              {!isMobile && (
+                <div className='user_collection__spotlight_wrapper'>
+                  <div className='spotlight_filters'>
+                    {/* MOST PLAYED, HIGHEST RATED, MOST ACHIEVEMENTS */}
+                    <h2 className='spotlight_filter'>
+                      {spotlightFilter == 'playtime'
+                        ? 'Most Played'
+                        : spotlightFilter == 'user_rating'
+                        ? 'Highest Rated'
+                        : 'Most Achievements'}{' '}
+                      {/* <FaAngleDown className='spotlight_filter__arrow' /> */}
+                    </h2>
+                    <ul className='spotlight_filter__options'>
+                      <li
+                        onClick={() => setSpotlightFilter('playtime')}
+                        style={{
+                          color: spotlightFilter == 'playtime' && 'white',
+                        }}
+                      >
+                        Most Played
+                      </li>
+                      <li
+                        onClick={() => setSpotlightFilter('user_rating')}
+                        style={{
+                          color: spotlightFilter == 'user_rating' && 'white',
+                        }}
+                      >
+                        Highest Rated
+                      </li>
+                      <li
+                        onClick={() => setSpotlightFilter('achievements')}
+                        style={{
+                          color: spotlightFilter == 'achievements' && 'white',
+                        }}
+                      >
+                        Most Achievements
+                      </li>
+                    </ul>
+                  </div>
+                  <div className='user_collection__spotlight'>
+                    {spotlightList.slice(0, 3).map((top, i) => (
+                      <figure
+                        key={top.id}
+                        className='spotlight_container'
+                        onClick={() => viewGameHandler(top)}
+                      >
+                        <img
+                          className='spotlight_image'
+                          src={top.banner_url || top.imageURL}
+                        />
+                        <img
+                          className='spotlight_trophy_image'
+                          src={trophies[i]}
+                        />
+                        <figcaption className='spotlight_details'>
+                          <p>
+                            {spotlightFilter == 'playtime'
+                              ? `${Math.floor(top.playtime / 60)} hours`
+                              : spotlightFilter == 'user_rating'
+                              ? top.user_rating + '%'
+                              : 'ACHIEVE'}{' '}
+                          </p>
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
                 </div>
-                <div className='user_collection__spotlight'>
-                  {spotlightList.slice(0, 3).map((top, i) => (
-                    <figure
-                      key={top.id}
-                      className='spotlight_container'
-                      onClick={() => viewGameHandler(top)}
-                    >
-                      <img
-                        className='spotlight_image'
-                        src={top.banner_url || top.imageURL}
-                      />
-                      <img
-                        className='spotlight_trophy_image'
-                        src={trophies[i]}
-                      />
-                      <figcaption className='spotlight_details'>
-                        <p>
-                          {spotlightFilter == 'playtime'
-                            ? `${Math.floor(top.playtime / 60)} hours`
-                            : spotlightFilter == 'user_rating'
-                            ? top.user_rating + '%'
-                            : 'ACHIEVE'}{' '}
-                        </p>
-                      </figcaption>
-                    </figure>
-                  ))}
-                </div>
-              </div>
+              )}
 
               {/* COVER LIST */}
               <div className='user_collection__list_container'>

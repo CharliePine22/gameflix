@@ -22,6 +22,7 @@ const UserGame = ({
   const [viewStatus, setViewStatus] = useState({
     achievements: true,
     notes: true,
+    trophies: true,
   });
   const [achievements, setAchievements] = useState(game.achievements);
   const [trophies, setTrophies] = useState(game.trophies);
@@ -44,6 +45,18 @@ const UserGame = ({
   const steamID = localStorage.getItem('steamID');
   const achievementsIntegrated = localStorage.getItem('achivementsConn');
   const userEmail = localStorage.getItem('user');
+  const trophyPercentage = Math.floor(
+    (trophies?.filter((game) => game.earned == true).length /
+      trophies?.length) *
+      100
+  );
+  const achievementPercentage = Math.floor(
+    (achievements?.filter(
+      (game) => game.achieved == true || game.earned == true
+    ).length /
+      achievements?.length) *
+      100
+  );
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -286,7 +299,6 @@ const UserGame = ({
 
   // Minimzie or Maximize Height of Game Component
   const windowViewHandler = (data) => {
-    console.log(viewStatus);
     setViewStatus({ ...viewStatus, [data]: !viewStatus[data] });
   };
 
@@ -600,30 +612,22 @@ const UserGame = ({
                     className='user_game__minimize_icon'
                     onClick={() => windowViewHandler('achievements')}
                   />
+                  {achievementPercentage === 100 && (
+                    <FaMedal className='user_game__completion_medal' />
+                  )}
                   <h4>
                     <p>Achievements</p>
                   </h4>
                   <p>
                     You've unlocked {getAchievementCount(achievements)} (
-                    {Math.floor(
-                      (achievements.filter(
-                        (game) => game.achieved == true || game.earned == true
-                      ).length /
-                        achievements.length) *
-                        100
-                    )}
+                    {achievementPercentage}
                     %)
                   </p>
                   <div className='user_game__achievements_progress_bar_container'>
                     <div
                       className='user_game__achievements_progress_bar'
                       style={{
-                        width: `${Math.floor(
-                          (achievements.filter((game) => game.achieved == true)
-                            .length /
-                            achievements.length) *
-                            100
-                        )}%`,
+                        width: `${achievementPercentage}%`,
                         background: activeProfile.color,
                       }}
                     />
@@ -680,29 +684,41 @@ const UserGame = ({
           )}
           {/* PLAYSTATION TROPHIES */}
           {trophies && (
-            <div className='user_game__achievements_wrapper'>
-              <div className='user_game__achievements'>
+            <div
+              className={`user_game__achievements_wrapper ${
+                !viewStatus.trophies && 'minimized'
+              }`}
+            >
+              <div
+                className={`user_game__achievements ${
+                  trophyPercentage == 100 && 'completed'
+                }`}
+              >
                 <div className='user_game__achievements_banner'>
-                  <h3>Trophies</h3>
+                  <FaAngleDown
+                    style={{
+                      transform: !viewStatus.trophies
+                        ? 'rotate(0)'
+                        : 'rotate(180deg)',
+                    }}
+                    className='user_game__minimize_icon'
+                    onClick={() => windowViewHandler('trophies')}
+                  />
+                  {trophyPercentage === 100 && (
+                    <FaMedal className='user_game__completion_medal' />
+                  )}
+                  <h4>
+                    <p>Trophies</p>
+                  </h4>
                   <p>
                     You've unlocked {getAchievementCount(trophies)} (
-                    {Math.floor(
-                      (trophies.filter((game) => game.earned == true).length /
-                        trophies.length) *
-                        100
-                    )}
-                    %)
+                    {trophyPercentage}%)
                   </p>
                   <div className='user_game__achievements_progress_bar_container'>
                     <div
                       className='user_game__achievements_progress_bar'
                       style={{
-                        width: `${Math.floor(
-                          (trophies.filter((game) => game.earned == true)
-                            .length /
-                            trophies.length) *
-                            100
-                        )}%`,
+                        width: `${trophyPercentage}%`,
                         background: activeProfile.color,
                       }}
                     />
@@ -715,12 +731,14 @@ const UserGame = ({
                     >
                       Unlocked
                     </button>
-                    <button
-                      className={`${trophyFilter == 'locked' && 'active'}`}
-                      onClick={() => setTrophyFilter('locked')}
-                    >
-                      In Progress
-                    </button>
+                    {trophyPercentage < 100 && (
+                      <button
+                        className={`${trophyFilter == 'locked' && 'active'}`}
+                        onClick={() => setTrophyFilter('locked')}
+                      >
+                        In Progress
+                      </button>
+                    )}
                   </div>
                 </div>
                 <ul className='user_game__achievements_list'>

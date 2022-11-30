@@ -31,6 +31,8 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
     fetchData();
   }, [twitchToken, counter]);
 
+  console.log(counter);
+
   const imageLoaded = () => {
     counter.current += 1;
     if (counter.current >= gameList.length) {

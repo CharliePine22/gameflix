@@ -476,6 +476,7 @@ router.post('/update_collection', async (req, res) => {
   const playtime = req.body.playtime;
   const name = req.body.currentProfile;
   const origin = req.body.origin;
+  const status = req.body.status;
 
   try {
     const request = await userModel.findOneAndUpdate(
@@ -488,6 +489,7 @@ router.post('/update_collection', async (req, res) => {
             imageURL,
             playtime,
             origin,
+            status,
           },
         },
       }, // list fields you like to change

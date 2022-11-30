@@ -150,7 +150,7 @@ function Row({
                           <img
                             loading='lazy'
                             className='row__poster_back_img'
-                            src={game.background_image}
+                            src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                             alt={game.name}
                           />
                           <div className='soundtrack_container'>

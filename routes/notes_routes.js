@@ -4,13 +4,7 @@ const noteModel = require('../models/UserNotesModel');
 const userModel = require('../models/NewUserModels');
 const mongoose = require('mongoose');
 
-// Find user helper function
-const findUser = async (email) => {
-  const result = await userModel.findOne({ email: email });
-  return result;
-};
-
-router.put('/create_note', async (req, res) => {
+router.post('/create_note', async (req, res) => {
   const noteId = mongoose.Types.ObjectId();
   const profileName = req.body.profile;
   const email = req.body.email;
@@ -59,6 +53,23 @@ router.put('/create_note', async (req, res) => {
       message: 'There was an error with your request, please try again.',
     });
   }
+});
+
+router.put('/update_notes', async (req, res) => {
+  const notesId = req.body.noteId;
+  const notesCollection = req.body.notes;
+  const userNotesId = req.body.userNotesId;
+
+  const request = await noteModel.findOneAndUpdate(
+    { notesID: userNotesId },
+    {
+      $addToSet: {
+        notes_collection: notesCollection,
+      },
+    },
+    { arrayFilters: [{ 'el.id': notesId }], new: true }
+  );
+  res.send(request);
 });
 
 router.get('/get_notes', async (req, res) => {

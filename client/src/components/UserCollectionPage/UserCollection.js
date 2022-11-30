@@ -20,6 +20,7 @@ const UserCollection = ({
   setSelectedProfile,
   removeGame,
   updateCollection,
+  userNotes,
 }) => {
   const [searchValue, setSearchValue] = useState('');
   const [searchList, setSearchList] = useState([]);
@@ -56,6 +57,9 @@ const UserCollection = ({
 
   // Listen for screen size to determine if user is on mobile
   useEffect(() => {
+    if (window.innerWidth <= 650) {
+      setIsMobile(true);
+    }
     function handleResize() {
       if (window.innerWidth <= 650) {
         setIsMobile(true);
@@ -340,6 +344,7 @@ const UserCollection = ({
               </p>
             )}
             <div className='user_collection__title_list_shadow' />
+            <div className='user_collection__title_list_shadow top_shadow' />
           </ul>
           <div className='user_collection__actions'>
             <button className='persona_font' onClick={backToHome}>
@@ -362,6 +367,7 @@ const UserCollection = ({
                 setProfile={(profile) => setSelectedProfile(profile)}
                 setCurrentGame={(game) => setCurrentGame(game)}
                 updateCollection={updateCollection}
+                userNotes={userNotes}
               />
             </>
           )}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Notification.css';
+import notifyAudio from '../../assets/sounds/notify.mp3';
 
 const Notification = ({
   notification,
@@ -10,6 +11,8 @@ const Notification = ({
     fade: 'notification__fade-out',
   });
 
+  let audio = new Audio(notifyAudio);
+
   useEffect(() => {
     const timeout = setInterval(() => {
       setFadeProp({
@@ -18,6 +21,8 @@ const Notification = ({
     }, 3000);
 
     return () => {
+      audio.play();
+
       clearInterval(timeout);
       setFadeProp({
         fade: 'notification__fade-in',

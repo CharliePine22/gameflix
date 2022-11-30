@@ -35,7 +35,6 @@ function App() {
   const userProfile = localStorage.getItem('profile');
 
   let audio = new Audio(loginAudio);
-
   const twitchAccessToken = useTwitchAuth(code);
 
   const getUserNotes = async (id) => {
@@ -44,8 +43,8 @@ function App() {
         id: id,
       },
     });
-    const notes = await request.data;
-    return notes;
+    setProfileNotesData(request.data);
+    return request.data;
   };
 
   // Refetch user data if any changes are made
@@ -95,8 +94,7 @@ function App() {
 
   useEffect(() => {
     if (selectedProfile && selectedProfile.notesId) {
-      const userNoteData = getUserNotes(selectedProfile.notesId);
-      setProfileNotesData(userNoteData);
+      getUserNotes(selectedProfile.notesId);
     }
   }, [selectedProfile]);
 
@@ -137,7 +135,7 @@ function App() {
   };
 
   // Display login page if app detects sign out or sign in
-  if (!userEmail) {
+  if (!userEmail || !loggedUser) {
     return (
       <Authentication
         loading={isLoading}

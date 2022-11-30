@@ -16,60 +16,64 @@ if (dd < 10) dd = '0' + dd;
 if (mm < 10) mm = '0' + mm;
 const formattedToday = mm + '/' + dd + '/' + yyyy;
 
-const UserGameNotes = ({ game, profile, windowViewHandler, viewStatus }) => {
+const UserGameNotes = ({
+  profile,
+  windowViewHandler,
+  viewStatus,
+  gameNotes,
+}) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const userEmail = localStorage.getItem('user');
-  console.log(profile);
-
-  const DUMMYDATA = [
-    {
-      id: 1,
-      noteTitle: 'Thoughts',
-      notes: [
-        { note: 'Good pick up and put down game', date: '11/21/2022' },
-        {
-          note: 'Wish it was a more immersive coop experience (Do island together).',
-          date: '11/21/2022',
-        },
-      ],
-    },
-    {
-      id: 2,
-      noteTitle: 'Stats',
-      notes: [
-        { note: 'Island name is Destiny', date: '11/21/2022' },
-        { note: 'Island has 3 stars', date: '11/21/2022' },
-        { note: '30/50 recipes unlocked', date: '11/21/2022' },
-        { note: '540,424 Bells', date: '11/21/2022' },
-      ],
-    },
-    {
-      id: 3,
-      noteTitle: 'Villagers',
-      notes: [
-        { note: 'Agent S', date: '11/21/2022' },
-        { note: 'Cherri', date: '11/21/2022' },
-        { note: 'Beardo', date: '11/21/2022' },
-        { note: 'Tom Nook', date: '11/21/2022' },
-      ],
-    },
-  ];
+  // const DUMMYDATA = [
+  //   {
+  //     id: 1,
+  //     noteTitle: 'Thoughts',
+  //     notes: [
+  //       { note: 'Good pick up and put down game', date: '11/21/2022' },
+  //       {
+  //         note: 'Wish it was a more immersive coop experience (Do island together).',
+  //         date: '11/21/2022',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 2,
+  //     noteTitle: 'Stats',
+  //     notes: [
+  //       { note: 'Island name is Destiny', date: '11/21/2022' },
+  //       { note: 'Island has 3 stars', date: '11/21/2022' },
+  //       { note: '30/50 recipes unlocked', date: '11/21/2022' },
+  //       { note: '540,424 Bells', date: '11/21/2022' },
+  //     ],
+  //   },
+  //   {
+  //     id: 3,
+  //     noteTitle: 'Villagers',
+  //     notes: [
+  //       { note: 'Agent S', date: '11/21/2022' },
+  //       { note: 'Cherri', date: '11/21/2022' },
+  //       { note: 'Beardo', date: '11/21/2022' },
+  //       { note: 'Tom Nook', date: '11/21/2022' },
+  //     ],
+  //   },
+  // ];
   // Tab Hooks
-  const [currentTab, setCurrentTab] = useState('Thoughts');
+  const [currentTab, setCurrentTab] = useState('');
   const [editingTab, setEditingTab] = useState(false);
   const [tabValue, setTabValue] = useState('');
   const [addingTab, setAddingTab] = useState(false);
   // Note Hooks
   const [noteValue, setNoteValue] = useState('');
-  const [userNotes, setUserNotes] = useState(DUMMYDATA);
   const [currentNote, setCurrentNote] = useState(null);
-  let noteTab = userNotes.filter((item) => item.noteTitle == currentTab)[0];
+  let noteTab = gameNotes?.gameNotes?.filter(
+    (item) => item.tabName == currentTab
+  )[0];
   const notesRef = useRef(null);
   const tabRef = useRef(null);
   const tabEndRef = useRef(null);
 
   const createNotes = async () => {
-    const request = await axios.put(`${baseURL}/notes/create_note`, {
+    const request = await axios.post(`${baseURL}/notes/create_note`, {
       email: userEmail,
       profile: profile.name,
     });
@@ -77,13 +81,19 @@ const UserGameNotes = ({ game, profile, windowViewHandler, viewStatus }) => {
   };
 
   useEffect(() => {
+    if (!gameNotes) return;
+    setCurrentTab(gameNotes?.gameNotes[0]?.tabName);
+    console.log('new game');
+  }, [gameNotes]);
+
+  useEffect(() => {
     if (!profile.notesId) {
       createNotes();
+    } else {
+      if (currentNote !== null) return;
+      notesRef?.current?.scrollIntoView({ behavior: 'smooth' });
     }
-
-    if (currentNote !== null) return;
-    notesRef?.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [userNotes, currentTab]);
+  }, [gameNotes, currentTab]);
 
   useEffect(() => {
     if (currentNote !== null) return;
@@ -97,13 +107,25 @@ const UserGameNotes = ({ game, profile, windowViewHandler, viewStatus }) => {
     // tabEndRef.current.scrollIntoView({ behavior: 'smooth' });
     return () => clearTimeout(timer);
   }, []);
+  console.log(gameNotes);
+
+  const updateProfileNotes = async () => {
+    if (!gameNotes) return;
+    const request = await axios.put(`${baseURL}/notes/update_notes`, {
+      userNotesId: profile.notesId,
+      noteId: gameNotes.id,
+      notes: gameNotes,
+    });
+
+    console.log(request);
+  };
 
   const editTabHandler = () => {
     if (!editingTab) {
       setEditingTab(true);
     } else {
       noteTab.noteTitle = tabRef.current.innerText;
-      setUserNotes((prev) => [...prev]);
+      updateProfileNotes();
       setCurrentTab(tabRef.current.innerText);
       setEditingTab(false);
     }
@@ -122,52 +144,48 @@ const UserGameNotes = ({ game, profile, windowViewHandler, viewStatus }) => {
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (noteValue == '') return;
-    console.log(noteTab.notes);
-    noteTab.notes.push({ note: noteValue, date: formattedToday });
-    setUserNotes((prev) => [...prev]);
+    noteTab.notes.push({
+      id: noteTab.notes.length + 1,
+      note: noteValue,
+      date: formattedToday,
+    });
+    updateProfileNotes();
     setNoteValue('');
   };
 
   const tabFormSubmitHandler = async (e) => {
     e.preventDefault();
     if (tabValue == '') return;
-
-    const request = await axios.post(`${baseURL}/notes/create_note`, {
-      id: game.id,
-      tab: tabValue,
+    gameNotes.gameNotes.push({
+      tabName: tabValue,
+      notes: [],
     });
-
-    console.log(request);
-
-    setUserNotes((prev) => [
-      ...prev,
-      {
-        id: 4,
-        noteTitle: tabValue,
-        notes: [],
-      },
-    ]);
     setCurrentTab(tabValue);
+    updateProfileNotes();
     setTabValue('');
     setAddingTab(false);
   };
 
   const viewNoteHandler = (note) => {
     setCurrentNote(note);
+    setAddingTab(false);
+    setEditingTab(false);
   };
 
   const saveNoteHandler = (oldNote, newNote) => {
     console.log(oldNote);
     oldNote.note = newNote;
     oldNote.date = formattedToday;
-    setUserNotes((prev) => [...prev]);
+    updateProfileNotes();
+
     setCurrentNote(null);
   };
 
   const deleteNoteHandler = (note) => {
     const updatedList = noteTab.notes.filter((item) => item.note !== note);
     noteTab.notes = updatedList;
-    setUserNotes((prev) => [...prev]);
+    updateProfileNotes();
+
     setCurrentNote(null);
   };
 
@@ -220,17 +238,17 @@ const UserGameNotes = ({ game, profile, windowViewHandler, viewStatus }) => {
             </h4>
             <div className='user_notes__header'>
               <ul className='user_notes__tabs'>
-                {userNotes.map((item) => (
+                {gameNotes?.gameNotes?.map((item) => (
                   <li
-                    key={item.id}
+                    key={item.tabName}
                     className='user_notes__tab'
-                    onClick={() => setCurrentTab(item.noteTitle)}
+                    onClick={() => setCurrentTab(item.tabName)}
                     style={{
                       borderBottom:
-                        currentTab == item.noteTitle && '1px solid transparent',
+                        currentTab == item.tabName && '1px solid transparent',
                     }}
                   >
-                    {item.noteTitle}
+                    {item.tabName}
                   </li>
                 ))}
                 <li
@@ -267,10 +285,11 @@ const UserGameNotes = ({ game, profile, windowViewHandler, viewStatus }) => {
           </>
           <div className='user_notes__notes_wrapper'>
             <ul className='user_notes__notes'>
-              {userNotes.filter((item) => item.noteTitle == currentTab)[0]
-                ?.notes?.length > 0 ? (
-                userNotes
-                  .filter((item) => item.noteTitle == currentTab)[0]
+              {gameNotes?.gameNotes?.filter(
+                (item) => item.tabName == currentTab
+              )[0]?.notes?.length > 0 ? (
+                gameNotes?.gameNotes
+                  ?.filter((item) => item.tabName == currentTab)[0]
                   ?.notes.map((note) => (
                     <li
                       key={note.note}

@@ -7,6 +7,14 @@ import { DynamicStar } from 'react-dynamic-star';
 import useContextMenu from '../../hooks/useContextMenu';
 import UserGameNotes from './UserNotes';
 
+const today = new Date();
+const yyyy = today.getFullYear();
+let mm = today.getMonth() + 1; // Months start at 0!
+let dd = today.getDate();
+if (dd < 10) dd = '0' + dd;
+if (mm < 10) mm = '0' + mm;
+const formattedToday = mm + '/' + dd + '/' + yyyy;
+
 const UserGame = ({
   game,
   activeProfile,
@@ -15,6 +23,7 @@ const UserGame = ({
   setNotification,
   setCurrentGame,
   updateCollection,
+  userNotes,
 }) => {
   // RATING, PLAYTIME, ACHIEVEMENTS, SPOTIFY, NOTES, STATUS(COMPLETED, BACKLOG, ETC.), PLATFORMS OWNED
   const { anchorPoint, showBannerMenu, resetContext } = useContextMenu();
@@ -57,6 +66,35 @@ const UserGame = ({
       achievements?.length) *
       100
   );
+
+  const gamefaqsURL = `https://gamefaqs.gamespot.com/search?game=${game.name.replaceAll(
+    ' ',
+    '+'
+  )}`;
+
+  const addNoteItem = () => {
+    userNotes.notes_collection.push({
+      id: game.id,
+      gameNotes: [
+        {
+          tabName: 'Notes',
+          notes: [
+            {
+              id: 0,
+              note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +!`,
+              date: formattedToday,
+            },
+          ],
+        },
+      ],
+    });
+  };
+
+  useEffect(() => {
+    if (userNotes.notes_collection.filter((g) => g.id == game.id).length > 0)
+      return;
+    else addNoteItem();
+  }, [game]);
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -577,7 +615,7 @@ const UserGame = ({
 
           {/* SPOTIFY MUSIC */}
           <div className='music_icon_container'>
-            <div className='stats_item'>
+            <div className='stats_item' style={{ alignItems: 'center' }}>
               <h3>MUSIC</h3>
               <FaMusic className='music_icon' />
             </div>
@@ -779,10 +817,12 @@ const UserGame = ({
             </div>
           )}
           <UserGameNotes
-            game={game}
             profile={activeProfile}
             windowViewHandler={windowViewHandler}
             viewStatus={viewStatus}
+            gameNotes={
+              userNotes.notes_collection.filter((item) => item.id == game.id)[0]
+            }
           />
         </div>
       </div>

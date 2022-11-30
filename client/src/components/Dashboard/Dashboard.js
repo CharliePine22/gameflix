@@ -13,7 +13,6 @@ import requestsIGDB from '../../requestsIGDB';
 import axios from 'axios';
 import SpotifyPlayback from '../SpotifyPlayback/SpotifyPlayback';
 import useSpotifyAuth from '../../hooks/useSpotifyAuth';
-import useTwitchAuth from '../../hooks/useTwitchAuth';
 import useSteamAuth from '../../hooks/useSteamAuth';
 import UserLibrary from '../UserLibrary/UserLibrary';
 import GameDetails from '../GameDetails/GameDetails';
@@ -267,6 +266,7 @@ const Dashboard = ({
           spotifyToken={spotifyAccessToken}
           removeGame={(game) => removeGameHandler(game)}
           updateCollection={updateCollection}
+          userNotes={userNotes}
         />
       );
 

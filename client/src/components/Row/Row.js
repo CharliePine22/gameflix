@@ -3,20 +3,21 @@ import GamePreview from './GamePreview/GamePreview';
 import './Row.css';
 import axios from 'axios';
 import Placeholder from '../Placeholder/Placeholder';
-import { SiApplemusic } from 'react-icons/si';
-import { FaPlay, FaPause, FaPlusSquare } from 'react-icons/fa';
+import { FaPlay, FaPause } from 'react-icons/fa';
 
 function Row({
+  activeProfile,
+  spotifyToken,
   genreDetails,
   playTrack,
   currentTrack,
+  setGameDetails,
   resumePlayback,
   pausePlayback,
   isPlaying,
-  spotifyToken,
-  twitchToken,
-  activeProfile,
-  setGameDetails,
+  currentGameOpen,
+  closeGameWindow,
+  openGame,
   addGame,
   setNotification,
 }) {
@@ -24,12 +25,9 @@ function Row({
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [displayDetails, setDisplayDetails] = useState(false);
-  const [currentlyOpen, setCurrentlyOpen] = useState(null);
-  const [imgsLoaded, setImgsLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
-  // const games = Object.keys(title).map((game) => title[game])[0];
-  // console.log(games.map((game) => game.name));
+
   const genreTitle = genreDetails[0][0];
   const genreList = genreDetails[0][1];
 
@@ -64,12 +62,8 @@ function Row({
 
   // Grab trailer video from selected game
   const fetchGameDetails = (game) => {
+    closeGameWindow();
     setGameDetails(game);
-  };
-
-  const closeGameDetails = () => {
-    setCurrentlyOpen(null);
-    setCurrentGame(null);
   };
 
   const addGameHandler = (e, game) => {
@@ -79,6 +73,7 @@ function Row({
 
   const viewGameSoundtrack = (e, game) => {
     e.stopPropagation();
+    closeGameWindow();
     fetchGameOST(game.name);
     setCurrentGame(game.name);
   };
@@ -110,21 +105,23 @@ function Row({
             game.cover !== undefined && (
               <React.Fragment key={game.id}>
                 {!loading && (
-                  <div className='row__poster_wrapper'>
+                  <div
+                    className='row__poster_wrapper'
+                    style={{ zIndex: currentGameOpen == game.name && '4' }}
+                  >
                     <div
                       className={`row__poster_container ${
-                        viewingSoundtrack && currentGame == game.name
+                        viewingSoundtrack && currentGameOpen == game.name
                           ? 'flip'
                           : ''
                       }`}
-                      onClick={() => fetchGameDetails(game)}
+                      onClick={() => openGame(game)}
+                      // onClick={() => fetchGameDetails(game)}
                     >
-                      {' '}
-                      {/* {!loading && ( */}
                       <>
                         {/* FRONT OF POSTER */}
                         <div className='row__poster_front'>
-                          <SiApplemusic
+                          {/* <SiApplemusic
                             onClick={(e) => viewGameSoundtrack(e, game)}
                             className='row__poster_music_icon'
                             style={{ color: activeProfile.color }}
@@ -133,7 +130,7 @@ function Row({
                             onClick={(e) => addGameHandler(e, game)}
                             className='row__poster_add_icon'
                             style={{ color: activeProfile.color }}
-                          />
+                          /> */}
                           <img
                             loading='lazy'
                             className='row__poster'
@@ -194,8 +191,21 @@ function Row({
                           </div>
                         </div>
                       </>
-                      {/* )} */}
                     </div>
+                    {currentGameOpen === game.name && (
+                      <GamePreview
+                        game={game}
+                        addGame={addGameHandler}
+                        displayDetails={displayDetails}
+                        hideDetails={closeGameWindow}
+                        fetchGameDetails={(game) => {
+                          fetchGameDetails(game);
+                        }}
+                        viewGameSoundtrack={(e, game) => {
+                          viewGameSoundtrack(e, game);
+                        }}
+                      />
+                    )}
                   </div>
                 )}
               </React.Fragment>

@@ -53,6 +53,10 @@ const Dashboard = ({
   const [userCollection, setUserCollection] = useState([]);
   const [viewingCollection, setViewingCollection] = useState(false);
 
+  // Row States
+  const [currentGameOpen, setCurrentGameOpen] = useState(null);
+  const [openWindow, setOpenWindow] = useState(false);
+
   // Search States
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchedGame, setSearchedGame] = useState({ name: '', data: [] });
@@ -179,6 +183,7 @@ const Dashboard = ({
     setSelectedProfile(null);
     localStorage.clear();
     localStorage.setItem('twitch_auth', twitchToken);
+    window.location.reload();
   };
 
   const changeProfile = (user) => {
@@ -187,6 +192,19 @@ const Dashboard = ({
     setTimeout(() => {
       setChangingUser(false);
     }, 2000);
+  };
+
+  const fetchGameDetails = (game) => {
+    setCurrentGameOpen(game.name);
+    // setCurrentGame(game);
+  };
+
+  const openGameWindow = (game) => {
+    setCurrentGameOpen(game.name);
+  };
+
+  const closeGameWindow = () => {
+    setCurrentGameOpen(null);
   };
 
   const playTrack = (track) => {
@@ -243,7 +261,6 @@ const Dashboard = ({
             notification={notification}
             displayNotification={displayNotification}
             hideNotification={() => {
-              setDisplayNotification(false);
               setNotification({ message: '', status: '' });
             }}
           />
@@ -335,12 +352,14 @@ const Dashboard = ({
                   genreDetails={Object.entries(request)}
                   playTrack={playTrack}
                   currentTrack={currentTrack}
-                  isPlaying={playAudio}
                   setGameDetails={(game) => setGameDetails(game)}
-                  pausePlayback={(e) => setPlayAudio(false)}
                   resumePlayback={(e) => setPlayAudio(true)}
+                  pausePlayback={(e) => setPlayAudio(false)}
+                  isPlaying={playAudio}
+                  currentGameOpen={currentGameOpen}
+                  openGame={(game) => openGameWindow(game)}
+                  closeGameWindow={closeGameWindow}
                   addGame={(game) => addGameHandler(game)}
-                  removeGame={(game) => removeGameHandler(game)}
                   setNotification={(status, message) =>
                     setNotification({ status, message })
                   }
@@ -372,7 +391,6 @@ const Dashboard = ({
             setNotification({ message: '', status: '' });
           }}
         />
-        {/* <Notification message={notificationMessage} status={notificationStatus} /> */}
       </div>
     );
   }

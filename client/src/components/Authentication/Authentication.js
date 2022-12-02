@@ -9,12 +9,14 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
   const [imgsLoading, setImgsLoading] = useState(true);
   const [toLandingPage, setToLandingPage] = useState(false);
   const [authError, setAuthError] = useState('');
+  const userLoggedIn = localStorage.getItem('user');
+  console.log(userLoggedIn);
 
   const baseURL = process.env.REACT_APP_BASE_URL;
   const counter = useRef(0);
 
   useEffect(() => {
-    if (!twitchToken || counter < 49) return;
+    if (!twitchToken || counter < 49 || userLoggedIn) return;
     setImgsLoading(true);
     async function fetchData() {
       try {
@@ -30,8 +32,6 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
     }
     fetchData();
   }, [twitchToken, counter]);
-
-  console.log(counter);
 
   const imageLoaded = () => {
     counter.current += 1;

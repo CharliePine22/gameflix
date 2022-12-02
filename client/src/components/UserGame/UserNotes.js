@@ -24,39 +24,7 @@ const UserGameNotes = ({
 }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const userEmail = localStorage.getItem('user');
-  // const DUMMYDATA = [
-  //   {
-  //     id: 1,
-  //     noteTitle: 'Thoughts',
-  //     notes: [
-  //       { note: 'Good pick up and put down game', date: '11/21/2022' },
-  //       {
-  //         note: 'Wish it was a more immersive coop experience (Do island together).',
-  //         date: '11/21/2022',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     noteTitle: 'Stats',
-  //     notes: [
-  //       { note: 'Island name is Destiny', date: '11/21/2022' },
-  //       { note: 'Island has 3 stars', date: '11/21/2022' },
-  //       { note: '30/50 recipes unlocked', date: '11/21/2022' },
-  //       { note: '540,424 Bells', date: '11/21/2022' },
-  //     ],
-  //   },
-  //   {
-  //     id: 3,
-  //     noteTitle: 'Villagers',
-  //     notes: [
-  //       { note: 'Agent S', date: '11/21/2022' },
-  //       { note: 'Cherri', date: '11/21/2022' },
-  //       { note: 'Beardo', date: '11/21/2022' },
-  //       { note: 'Tom Nook', date: '11/21/2022' },
-  //     ],
-  //   },
-  // ];
+
   // Tab Hooks
   const [currentTab, setCurrentTab] = useState('');
   const [editingTab, setEditingTab] = useState(false);
@@ -79,6 +47,21 @@ const UserGameNotes = ({
     });
     console.log(request);
   };
+
+  useEffect(() => {
+    const handleEnter = (event) => {
+      if (editingTab) {
+        if (event.keyCode == 13) {
+          console.log(tabValue);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleEnter);
+
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, []);
 
   useEffect(() => {
     if (!gameNotes) return;
@@ -124,7 +107,7 @@ const UserGameNotes = ({
     if (!editingTab) {
       setEditingTab(true);
     } else {
-      noteTab.noteTitle = tabRef.current.innerText;
+      noteTab.tabName = tabRef.current.innerText;
       updateProfileNotes();
       setCurrentTab(tabRef.current.innerText);
       setEditingTab(false);
@@ -217,6 +200,15 @@ const UserGameNotes = ({
               contentEditable={editingTab}
               suppressContentEditableWarning={true}
               onBlur={editTabHandler}
+              // onInput={(e) => e.preventDefault()}
+              onKeyPress={(e) => {
+                e.preventDefault();
+                console.log(e.currentTarget);
+                if (e.key === 'Enter') editTabHandler();
+              }}
+              // onKeyUp={(e) => {
+              //   if (e.key === 'Enter') editTabHandler();
+              // }}
             >
               <p
                 ref={tabRef}

@@ -52,7 +52,6 @@ const GameDetails = ({
     currentCollection &&
     currentCollection.some((game) => game.id === gameDetails.id);
 
-  console.log(game);
   const searchGameDetails = async () => {
     try {
       const request = await axios.post(`${baseURL}/app/search_game_details`, {
@@ -96,6 +95,8 @@ const GameDetails = ({
             q: game.name + ' Trailer',
           },
         });
+        // https://www.youtube.com/watch?v=NmNn5jfoUH0
+
         // setDetails((previousDetails) => ({
         //   ...previousDetails,
         //   trailer: trailerRequest.data.items[0],

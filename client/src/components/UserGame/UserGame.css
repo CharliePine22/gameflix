@@ -87,6 +87,11 @@
   filter: grayscale(1);
 }
 
+.minimized {
+  animation: minimizeViewDesktop 500ms cubic-bezier(0.075, 0.82, 0.165, 1)
+    forwards !important;
+}
+
 .music_icon_container {
   display: flex;
   flex-direction: column;
@@ -584,7 +589,7 @@
     height: 430px;
   }
   100% {
-    height: 78px;
+    height: 98px;
   }
 }
 
@@ -592,7 +597,7 @@
 @keyframes maximizeViewDesktop {
   0% {
     /* 15px */
-    height: 78px;
+    height: 98px;
   }
   100% {
     height: 430px;

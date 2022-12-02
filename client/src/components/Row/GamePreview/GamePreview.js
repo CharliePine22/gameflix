@@ -1,51 +1,159 @@
 import React, { useEffect, useState } from 'react';
-import youtube from '../../../youtubeAPI';
-import useFetchDetails from '../../../hooks/useFetchDetails';
+import { SiApplemusic, SiAddthis } from 'react-icons/si';
 import ReactPlayer from 'react-player/lazy';
 import './GamePreview.css';
 
 // Game Platform Logo Images
 import playstationLogo from '../../../assets/images/playstation-logo.png';
+import pspLogo from '../../../assets/images/psp-logo.png';
+import psVitaLogo from '../../../assets/images/psvita-logo.png';
+import nesLogo from '../../../assets/images/nes-logo.png';
 import nintendoLogo from '../../../assets/images/nintendo-logo.png';
+import nintendoDs from '../../../assets/images/nintendo-ds.png';
+import nintendo3ds from '../../../assets/images/nintendo-3ds.png';
+import gbaLogo from '../../../assets/images/gba-logo.png';
+import wiiLogo from '../../../assets/images/wii-logo.png';
+import wiiULogo from '../../../assets/images/wiiu-logo.png';
 import xboxLogo from '../../../assets/images/xbox-logo.png';
 import steamLogo from '../../../assets/images/steam-logo.png';
 import iosLogo from '../../../assets/images/apple-logo.png';
 import androidLogo from '../../../assets/images/android-logo.png';
+import segaLogo from '../../../assets/images/sega-logo.png';
+import snesLogo from '../../../assets/images/snes-logo.png';
+import gamecubeLogo from '../../../assets/images/gamecube-logo.png';
 
-const GamePreview = ({ game, hideDetails, displayDetails }) => {
-  const { isLoading, gameDetails, serverError } = useFetchDetails(game);
+const GamePreview = ({
+  game,
+  hideDetails,
+  displayDetails,
+  fetchGameDetails,
+  addGame,
+  viewGameSoundtrack,
+}) => {
   const [loading, setLoading] = useState(false);
-  const [youtubeTrailer, setYoutubeTrailer] = useState(null);
   const [unmounting, setUnmounting] = useState(false);
+  console.log(game);
 
-  // Convert name of platforms into pulisher icon
+  // Convert name of platforms into a PNG icon
   const displayConsoleIcons = (platform) => {
     switch (platform) {
+      case 'PC (Microsoft Windows)':
       case 'PC':
-        return <img src={steamLogo} alt='PC' className='platform_logo' />;
+        return <img src={steamLogo} alt='PC' className='game_platform_logo' />;
       case 'PlayStation':
+      case 'PS1':
+      case 'PlayStation 2':
+      case 'PS2':
+      case 'PlayStation 3':
+      case 'PS3':
+      case 'PlayStation 4':
+      case 'PS4':
+      case 'PlayStation 5':
+      case 'PS5':
         return (
           <img
             src={playstationLogo}
-            alt='Playstation'
-            className='platform_logo'
+            alt={platform}
+            className='game_platform_logo'
           />
         );
-      case 'Nintendo':
+      case 'PlayStation Portable':
+      case 'PSP':
         return (
-          <img src={nintendoLogo} alt='Nintendo' className='platform_logo' />
+          <img src={pspLogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'Vita':
+        return (
+          <img src={psVitaLogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'Nintendo 64':
+      case 'N64':
+      case 'Nintendo 64DD':
+      case 'Nintendo Switch':
+      case 'Switch':
+        return (
+          <img
+            src={nintendoLogo}
+            alt={platform}
+            className='game_platform_logo'
+          />
+        );
+      case 'Nintendo DS':
+      case 'NDS':
+        return (
+          <img src={nintendoDs} alt={platform} className='game_platform_logo' />
+        );
+      case 'GBA':
+        return (
+          <img src={gbaLogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'Nintendo 3DS':
+      case 'New Nintendo 3DS':
+      case '3DS':
+        return (
+          <img
+            src={nintendo3ds}
+            alt={platform}
+            className='game_platform_logo'
+          />
+        );
+      case 'Nintendo GameCube':
+      case 'NGC':
+        return (
+          <img
+            src={gamecubeLogo}
+            alt={platform}
+            className='game_platform_logo'
+          />
+        );
+      case 'Wii':
+        return (
+          <img src={wiiLogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'Wii U':
+      case 'WiiU':
+        return (
+          <img src={wiiULogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'SNES':
+        return (
+          <img src={snesLogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'NES':
+        return (
+          <img src={nesLogo} alt={platform} className='game_platform_logo' />
         );
       case 'Xbox':
-        return <img src={xboxLogo} alt='Xbox' className='platform_logo' />;
-      case 'iOS':
-        return <img src={iosLogo} alt='iOS' className='platform_logo' />;
-      case 'Android':
+      case 'XBOX':
+      case 'XONE':
+      case 'Xbox One':
+      case 'Xbox 360':
+      case 'X360':
+      case 'Series X':
         return (
-          <img src={androidLogo} alt='Android' className='platform_logo' />
+          <img src={xboxLogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'iOS':
+      case 'Mac':
+        return (
+          <img src={iosLogo} alt={platform} className='game_platform_logo' />
+        );
+      case 'Android':
+      case 'Linux':
+        return (
+          <img
+            src={androidLogo}
+            alt={platform}
+            className='game_platform_logo'
+          />
+        );
+      case 'SEGA':
+      case 'Dreamcast':
+        return (
+          <img src={segaLogo} alt={platform} className='game_platform_logo' />
         );
     }
   };
-
   // Go to the game website
   const goToGameWebsite = (url) => {
     window.open(url, '_blank');
@@ -58,24 +166,6 @@ const GamePreview = ({ game, hideDetails, displayDetails }) => {
       hideDetails();
     }, 150);
   };
-
-  // If game has no metacritic, calculate average score users gave the game
-  const calculateRating = (game) => {};
-
-  // Fetch trailer when component renders
-  useEffect(() => {
-    setLoading(true);
-    const fetchYoutubeTrailer = async () => {
-      const request = await youtube.youtubeAPI.get('/search', {
-        params: {
-          q: gameDetails?.name + ' Trailer',
-        },
-      });
-      setYoutubeTrailer(request.data.items[0]);
-      setLoading(false);
-    };
-    // fetchYoutubeTrailer();
-  }, [gameDetails]);
 
   // Convert the YYYY-MM-DD to Month, Day, Year
   const convertDate = (date) => {
@@ -122,7 +212,7 @@ const GamePreview = ({ game, hideDetails, displayDetails }) => {
     );
   };
 
-  if (!gameDetails) {
+  if (!game) {
     return null;
   }
 
@@ -133,62 +223,55 @@ const GamePreview = ({ game, hideDetails, displayDetails }) => {
     >
       {/* Container for Game Trailer */}
       <div className='game-details__trailer'>
-        {!isLoading && youtubeTrailer?.id.videoId !== undefined ? (
+        {game.videos ? (
           <ReactPlayer
-            url={`https://www.youtube.com/embed/${youtubeTrailer?.id.videoId}`}
+            url={`https://www.youtube.com/watch?v=${game?.videos[0]?.video_id}`}
             className='trailer'
-            width='342px'
+            width='100%'
             height='192px'
             playing={true}
+            onReady={() => setLoading(false)}
           />
         ) : (
           <img
             className='trailer_placeholder'
-            src={gameDetails?.background_image}
+            src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
           />
         )}
       </div>
 
       {/* Game Details Container */}
       <div className='game-details__container'>
+        <SiApplemusic
+          onClick={(e) => viewGameSoundtrack(e, game)}
+          className='row__poster_music_icon'
+          // style={{ color: activeProfile.color }}
+        />
+        <SiAddthis
+          onClick={(e) => addGame(e, game)}
+          className='row__poster_add_icon'
+          // style={{ color: activeProfile.color }}
+        />
         <div className='game-details__details'>
           <h3
             className='game-details__name'
-            // onClick={goToGameWebsite(gameDetails?.website)}
+            // onClick={goToGameWebsite(game?.website)}
           >
-            {gameDetails?.name}
+            {game?.name}
           </h3>
-          <ul className='game-details__publishers'>
-            {gameDetails?.publishers.map((publisher) => (
-              <li className='game-details__publisher' key={publisher.id}>
-                {publisher.name}
-              </li>
-            ))}
-          </ul>
           <p className='game-details__released'>
-            Release Date: {convertDate(gameDetails?.released)}
+            Release Date: {convertDate(game?.release_dates[0].human)}
           </p>
-          <p className='game-details__released'>
-            Metacritic: {gameDetails?.metacritic}%
+          <p
+            className='game-details__more'
+            onClick={() => fetchGameDetails(game)}
+          >
+            See More Details
           </p>
-          <ul className='game-details__platforms'>
-            {gameDetails?.parent_platforms.map(
-              (platform) =>
-                platform.platform.name !== 'Apple Macintosh' &&
-                platform.platform.name !== 'Linux' && (
-                  <li
-                    key={platform.platform.name}
-                    className='game-details__platform'
-                  >
-                    {displayConsoleIcons(platform.platform.name)}
-                  </li>
-                )
-            )}
-          </ul>
         </div>
         <div className='game-details__tags'>
           <ul className='game-details__tags_list'>
-            {gameDetails?.tags.slice(0, 3).map((tag, i) => (
+            {game.themes.slice(0, 3).map((tag, i) => (
               <li className='game-details__tag' key={tag.name}>
                 {i == 0 ? (
                   <span className={'tag_no_border'}>{tag.name}</span>

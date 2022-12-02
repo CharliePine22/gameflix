@@ -274,11 +274,11 @@
 @media screen and (max-width: 500px) {
   .user_library__row {
     height: 280px;
-    padding-bottom: 30px;
+    padding-bottom: 40px;
   }
 
   .user_library_title h2 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .user_library__stack_collection_container h2 {

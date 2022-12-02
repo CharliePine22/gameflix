@@ -252,7 +252,7 @@ router.post('/game_genre', async (req, res) => {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `fields *, artworks.*, age_ratings.*, name, cover.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name; sort rating_count desc; where (rating != null & rating_count > 0 & category != (1,5) & themes != 42 & genres = ${genreId}); limit 30;`,
+      body: `fields *, artworks.*, age_ratings.*, name, cover.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, similar_games.*, similar_games.cover.*, similar_games.screenshots.*, similar_games.genres.*, similar_games.platforms.*, similar_games.platforms.platform_logo.*, similar_games.release_dates.*, similar_games.involved_companies.company.name, videos.*; sort rating_count desc; where (rating != null & rating_count > 0 & category != (1,5) & themes != 42 & genres = ${genreId}); limit 30;`,
     });
     const result = await request.json();
     res.send({ [genreTitle]: result });

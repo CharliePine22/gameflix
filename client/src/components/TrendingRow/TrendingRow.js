@@ -107,9 +107,6 @@ const TrendingRow = ({ twitchToken }) => {
                 {' '}
                 {!loading && (
                   <>
-                    {/* <span className='trending_row__poster_name'>
-                      {game?.name}
-                    </span> */}
                     <img
                       loading='lazy'
                       className='trending_row__poster'

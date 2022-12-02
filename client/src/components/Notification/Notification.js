@@ -21,14 +21,13 @@ const Notification = ({
     }, 3000);
 
     return () => {
-      audio.play();
-
+      if (notification.message !== '') audio.play();
       clearInterval(timeout);
       setFadeProp({
         fade: 'notification__fade-in',
       });
     };
-  }, [displayNotification, notification]);
+  }, [notification]);
 
   const userProfile = localStorage.getItem('profile');
   {

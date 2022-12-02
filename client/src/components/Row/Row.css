@@ -26,15 +26,14 @@
   height: 100%;
   cursor: pointer;
   border-radius: 6px;
-  /* opacity: .8; */
 }
 
 .row__poster_add_icon {
   position: absolute;
-  height: 25px;
-  width: 25px;
-  right: 6px;
-  top: 6px;
+  height: 24px;
+  width: 24px;
+  right: 3px;
+  top: 4.4px;
   z-index: 2;
   transition: transform 250ms ease-in-out, opacity 100ms ease-in-out;
   color: black;
@@ -47,7 +46,6 @@
   width: 100%;
   height: 100%;
   cursor: pointer;
-  /* box-shadow: -3px 3px 10px #000; */
   transition: all 250ms ease-in-out;
   border-radius: 6px;
   opacity: 0.25;
@@ -61,7 +59,6 @@
   width: 100%;
   cursor: pointer;
   position: relative;
-  margin-right: 25px;
   /* FLIP CARD TRANSITION */
   transition: all 250ms;
   z-index: -1;
@@ -96,17 +93,6 @@
   transition: transform 300ms;
 }
 
-/* .row__poster_front::before {
-  content: '';
-  position: absolute;
-  top: 0.25em;
-  bottom: 0.25em;
-  left: 0.25em;
-  right: 0.25em;
-  border: 3px solid currentColor;
-  transform: translateZ(3rem);
-} */
-
 .row__poster_back {
   transform: rotateY(0.5turn);
   box-shadow: -5px 7px 10px #000;
@@ -129,18 +115,26 @@
   position: absolute;
   height: 25px;
   width: 25px;
-  left: 6px;
-  top: 6px;
+  right: 31px;
+  top: 3.5px;
   z-index: 2;
-  transition: transform 250ms ease-in-out, opacity 100ms ease-in-out;
+  transition: transform 250ms ease-in-out, opacity 100ms ease-in-out,
+    border-radius 250ms ease-in-out, color 250ms ease-in-out;
   color: black;
   opacity: 0.75;
   backface-visibility: hidden;
+  border-radius: 0;
+}
+
+.row__poster_music_icon:hover {
+  color: blue;
 }
 
 .row__poster_music_icon:hover,
 .row__poster_add_icon:hover {
   opacity: 1;
+  cursor: pointer;
+  border-radius: 12px;
 }
 
 .row__placeholder__wrapper {
@@ -149,24 +143,6 @@
   min-height: 300px;
   max-height: 300px;
   margin-right: 10px;
-}
-
-.row__poster_container:hover .row__poster_front {
-  box-shadow: -5px 5px 5px #000;
-  transform: translate3d(1px, -3px, 0px);
-}
-
-.row__poster_container:hover .row__poster_front {
-  box-shadow: -5px 5px 5px #000;
-  transform: translate3d(1px, -3px, 0px);
-}
-
-.row__poster_container:hover > .row__poster_name {
-  transform: translate3d(1px, -3px, 0px);
-}
-
-.row__poster_container:hover > .row__poster_music_icon {
-  transform: translate3d(1px, -3px, 0px);
 }
 
 .row__poster_name {
@@ -194,6 +170,21 @@
   transform-style: preserve-3d;
   transition: all 250ms ease-in-out;
   z-index: 3;
+  border-radius: 6px;
+  margin-right: 10px;
+}
+
+.row__poster_wrapper:hover {
+  box-shadow: -7px 8px 8px #000;
+  transform: translate3d(1px, -3px, 0px);
+}
+
+.row__poster_wrapper:hover > .row__poster_name {
+  transform: translate3d(1px, -3px, 0px);
+}
+
+.row__poster_wrapper:hover > .row__poster_music_icon {
+  transform: translate3d(1px, -3px, 0px);
 }
 
 .row__posters::-webkit-scrollbar {
@@ -209,8 +200,6 @@
   font-size: 2.2rem;
   font-style: italic;
   text-shadow: 4px 4px 2px black;
-
-  /* text-shadow: 6px 7px 2px black; */
 }
 
 .soundtrack_container {

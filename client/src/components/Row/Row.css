@@ -25,7 +25,7 @@
   width: 100%;
   height: 100%;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 .row__poster_add_icon {
@@ -47,7 +47,7 @@
   height: 100%;
   cursor: pointer;
   transition: all 250ms ease-in-out;
-  border-radius: 6px;
+  border-radius: 4px;
   opacity: 0.25;
   position: absolute;
   top: 0px;
@@ -55,21 +55,22 @@
 }
 
 .row__poster_container {
-  border-radius: 6px;
+  border-radius: 4px;
   width: 100%;
   cursor: pointer;
   position: relative;
   /* FLIP CARD TRANSITION */
   transition: all 250ms;
   z-index: -1;
-  max-width: 13.5rem;
-  min-width: 13.5rem;
+  max-width: 13rem;
+  min-width: 13rem;
   object-fit: cover;
   height: 100%;
   min-height: 340px;
   max-height: 340px;
   transform-style: preserve-3d;
-  box-shadow: -3px 3px 5px #000;
+  /* box-shadow: -3px 3px 5px #000; */
+  /* box-shadow: 0 2px 9px 3px #000; */
 }
 
 .row__poster_container.flip {
@@ -88,14 +89,14 @@
   width: 100%;
   backface-visibility: hidden;
   transform-style: preserve-3d;
-  border-radius: 6px;
+  border-radius: 4px;
   /* CARD MOVING UP TRANSITION */
   transition: transform 300ms;
 }
 
 .row__poster_back {
   transform: rotateY(0.5turn);
-  box-shadow: -5px 7px 10px #000;
+  box-shadow: 0 2px 9px 3px #000;
   overflow-y: scroll;
 }
 
@@ -109,6 +110,15 @@
   width: 100%;
   font-size: 1.25rem;
   margin-bottom: 5px;
+}
+
+.row__poster__esrb_img {
+  height: 100%;
+  width: 48px;
+  max-height: 70px;
+  position: absolute;
+  bottom: 4px;
+  left: 3px;
 }
 
 .row__poster_music_icon {
@@ -170,12 +180,16 @@
   transform-style: preserve-3d;
   transition: all 250ms ease-in-out;
   z-index: 3;
-  border-radius: 6px;
-  margin-right: 10px;
+  border-radius: 4px;
+  margin-right: 25px;
+  /* margin-right: 15px; */
+  height: 100%;
+  width: 100%;
+  box-shadow: -2px 2px 9px 3px #000;
 }
 
 .row__poster_wrapper:hover {
-  box-shadow: -7px 8px 8px #000;
+  box-shadow: -5px 9px 7px 2px #000;
   transform: translate3d(1px, -3px, 0px);
 }
 
@@ -229,6 +243,39 @@
   font-size: 0.8rem;
 }
 
+.viewing_game {
+  /* position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  z-index: 4;
+  pointer-events: none;
+  height: auto;
+  width: auto;
+  animation: displayGame 500ms ease-in-out forwards;
+}
+
+@keyframes displayGame {
+  0% {
+    position: relative;
+    transform: translate(0, 0) scale(1);
+  }
+  1% {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+  /* 50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  } */
+  100% {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
 /* Mobile Devices */
 @media screen and (min-width: 320px) and (max-width: 500px) {
   .row {
@@ -246,5 +293,9 @@
     min-width: 11rem;
     min-height: 240px;
     max-height: 240px;
+  }
+
+  .row__posters {
+    padding: 15px 15px 30px;
   }
 }

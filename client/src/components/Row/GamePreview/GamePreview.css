@@ -61,6 +61,7 @@
   line-height: 20px;
   text-shadow: 3px 4px 5px #000;
   cursor: pointer;
+  max-width: 85%;
 }
 
 .game-details__platforms {
@@ -194,25 +195,50 @@
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 650px) {
   .game-details__trailer {
-    height: 13rem;
+    height: 11rem;
   }
+
   .game-details {
-    width: 21.8rem;
-    height: 22rem;
-    top: 0px;
+    width: 20rem;
+    height: 17.7rem;
+    top: -13px;
     left: -50px;
   }
+
   .game-details__details {
-    /* padding: 1.3em 0.8em; */
+    padding: 0.35em 0.8em 1em;
+  }
+
+  .game-details__name {
+    font-size: 1.05rem;
+    padding-bottom: 2px;
   }
 
   .game-details__platforms {
     padding: 10px 0 0;
   }
+
+  .game-details__released {
+    margin-bottom: 5px;
+  }
+
   .game-details__tags {
-    /* position: relative;
-    top: -5px; */
+    bottom: 16px;
+  }
+
+  .row__poster_add_icon {
+    height: 19px;
+    width: 19px;
+    right: 6px;
+    top: 3.4px;
+  }
+
+  .row__poster_music_icon {
+    height: 20px;
+    width: 20px;
+    right: 36px;
+    top: 3px;
   }
 }

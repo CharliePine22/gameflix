@@ -293,6 +293,15 @@
   height: 100vh;
 }
 
+.game_preview__modal {
+  position: fixed;
+  height: 100vh;
+  width: 200vh;
+  background: rgba(0, 0, 0, 0.1);
+  left: 0;
+  top: 0;
+}
+
 .game_soundtrack {
   color: white;
   border-bottom: 1px solid white;

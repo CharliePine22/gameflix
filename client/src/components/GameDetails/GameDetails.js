@@ -326,31 +326,6 @@ const GameDetails = ({
     );
   };
 
-  // Return a ESRB rating picture according to fetched game
-  const determineESRB = (game) => {
-    if (gameDetails == null || gameDetails.age_ratings == null) {
-      return <img className='game_details__esrb_img' src={rpRating} />;
-    }
-    const esrb = gameDetails?.age_ratings[0].rating;
-
-    switch (esrb) {
-      case 1:
-      case 2:
-      case 8:
-      case 9:
-        return <img className='game_details__esrb_img' src={eRating} />;
-      case 3:
-      case 4:
-      case 10:
-        return <img className='game_details__esrb_img' src={tRating} />;
-      case 5:
-      case 11:
-        return <img className='game_details__esrb_img' src={mRating} />;
-      default:
-        return <img className='game_details__esrb_img' src={rpRating} />;
-    }
-  };
-
   if (Object.keys(gameDetails).length == 0 || loading) {
     return (
       <div className='game_details__wrapper' data-title='.dot-falling'>
@@ -493,10 +468,6 @@ const GameDetails = ({
                 <div className='game_details__released'>
                   <h4 className='game_details__title'>Release Date</h4>
                   <p>{convertDate(gameDetails?.release_dates[0]?.human)}</p>
-                </div>
-                <div className='game_details__esrb'>
-                  <h4 className='game_details__title'>ESRB</h4>
-                  {determineESRB(gameDetails)}
                 </div>
               </div>
             </div>

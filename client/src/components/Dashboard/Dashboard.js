@@ -196,7 +196,6 @@ const Dashboard = ({
 
   const fetchGameDetails = (game) => {
     setCurrentGameOpen(game.name);
-    // setCurrentGame(game);
   };
 
   const openGameWindow = (game) => {

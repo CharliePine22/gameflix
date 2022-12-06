@@ -64,6 +64,7 @@
 
 .nav__hide {
   background-color: #111;
+  box-shadow: 1px 1px 6px 2px black;
 }
 
 .nav__logo {

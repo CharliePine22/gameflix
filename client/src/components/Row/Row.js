@@ -4,6 +4,11 @@ import './Row.css';
 import axios from 'axios';
 import Placeholder from '../Placeholder/Placeholder';
 import { FaPlay, FaPause } from 'react-icons/fa';
+// ESRB Logos
+import eRating from '../../assets/images/ESRB_E.png';
+import tRating from '../../assets/images/ESRB_T.png';
+import mRating from '../../assets/images/ESRB_M.png';
+import rpRating from '../../assets/images/ESRB_RP.png';
 
 function Row({
   activeProfile,
@@ -96,8 +101,39 @@ function Row({
     return title.split('-')[0].split('(')[0];
   };
 
+  // Return a ESRB rating picture according to fetched game
+  const determineESRB = (game) => {
+    if (!game || !game.age_ratings)
+      return <img className='row__poster__esrb_img' src={rpRating} />;
+    const hasRating = game?.age_ratings.filter(
+      (rating) => rating.category == 1 || rating.category == 2
+    );
+
+    if (hasRating.length == 0 || !game.age_ratings)
+      return <img className='row__poster__esrb_img' src={rpRating} />;
+    const esrb = hasRating[0].rating;
+
+    switch (esrb) {
+      case 1:
+      case 2:
+      case 8:
+      case 9:
+        return <img className='row__poster__esrb_img' src={eRating} />;
+      case 3:
+      case 4:
+      case 10:
+        return <img className='row__poster__esrb_img' src={tRating} />;
+      case 5:
+      case 11:
+        return <img className='row__poster__esrb_img' src={mRating} />;
+      default:
+        return <img className='row__poster__esrb_img' src={rpRating} />;
+    }
+  };
+
   return (
     <div className='row'>
+      <div className={`${currentGameOpen !== null && 'game_preview__modal'}`} />
       <h2 className='row__title'>{genreTitle}</h2>
       <div className='row__posters'>
         {genreList.map(
@@ -106,8 +142,10 @@ function Row({
               <React.Fragment key={game.id}>
                 {!loading && (
                   <div
-                    className='row__poster_wrapper'
-                    style={{ zIndex: currentGameOpen == game.name && '4' }}
+                    className={`row__poster_wrapper ${
+                      currentGameOpen == game.name && 'viewing_game'
+                    }`}
+                    stylw
                   >
                     <div
                       className={`row__poster_container ${
@@ -116,27 +154,18 @@ function Row({
                           : ''
                       }`}
                       onClick={() => openGame(game)}
-                      // onClick={() => fetchGameDetails(game)}
+                      onMouseOver={() => determineESRB(game)}
                     >
                       <>
                         {/* FRONT OF POSTER */}
                         <div className='row__poster_front'>
-                          {/* <SiApplemusic
-                            onClick={(e) => viewGameSoundtrack(e, game)}
-                            className='row__poster_music_icon'
-                            style={{ color: activeProfile.color }}
-                          />
-                          <FaPlusSquare
-                            onClick={(e) => addGameHandler(e, game)}
-                            className='row__poster_add_icon'
-                            style={{ color: activeProfile.color }}
-                          /> */}
                           <img
                             loading='lazy'
                             className='row__poster'
                             src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                             alt={game.name}
                           />
+                          {determineESRB(game)}
                         </div>
                         {/* BACK OF POSTER */}
                         <div

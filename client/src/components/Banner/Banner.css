@@ -25,10 +25,10 @@
 
 .banner__contents {
   margin-left: 30px;
-  /* padding-top: 140px; */
   height: 190px;
   padding-top: 100px;
   padding-bottom: 40px;
+  background: rgba(0, 0, 0, 0.4);
   /* animation: fadeInBannerContent 2s cubic-bezier(0.075, 0.82, 0.165, 1) forwards; */
 }
 

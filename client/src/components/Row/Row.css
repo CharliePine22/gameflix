@@ -185,11 +185,11 @@
   /* margin-right: 15px; */
   height: 100%;
   width: 100%;
-  box-shadow: -2px 2px 9px 3px #000;
+  box-shadow: -1px 3px 5px 1px #000;
 }
 
 .row__poster_wrapper:hover {
-  box-shadow: -5px 9px 7px 2px #000;
+  box-shadow: -5px 8px 4px 1px rgb(0 0 0 / 50%);
   transform: translate3d(1px, -3px, 0px);
 }
 
@@ -208,6 +208,25 @@
 .row__posters_container {
   display: flex;
   width: 100%;
+}
+
+.row__preview_close {
+  color: white;
+  position: fixed;
+  z-index: 10;
+  font-size: 1.5rem;
+  top: 76px;
+  right: 15px;
+  cursor: pointer;
+  padding: 5px 8px;
+  line-height: 1;
+  border-radius: 3px;
+  background: #222;
+  opacity: 0.5;
+}
+
+.row__preview_close:hover {
+  opacity: 1;
 }
 
 .row__title {
@@ -244,15 +263,18 @@
 }
 
 .viewing_game {
-  /* position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
   z-index: 4;
-  pointer-events: none;
+  cursor: pointer;
   height: auto;
   width: auto;
-  animation: displayGame 500ms ease-in-out forwards;
+  transform-style: preserve-3d;
+  animation: displayGame 350ms ease-in-out forwards;
+  box-shadow: none;
+  /* box-shadow: 0px 0px 5px 2px rgb(255 255 255 / 90%); */
+}
+
+.viewing_game:hover {
+  box-shadow: 0px 0px 5px 2px rgb(255 255 255 / 90%);
 }
 
 @keyframes displayGame {
@@ -291,8 +313,8 @@
   .row__poster_container {
     max-width: 11rem;
     min-width: 11rem;
-    min-height: 240px;
-    max-height: 240px;
+    min-height: 260px;
+    max-height: 260px;
   }
 
   .row__posters {

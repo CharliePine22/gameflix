@@ -200,9 +200,11 @@ const Dashboard = ({
 
   const openGameWindow = (game) => {
     setCurrentGameOpen(game.name);
+    document.body.style.overflow = 'hidden';
   };
 
   const closeGameWindow = () => {
+    document.body.style.overflow = 'auto';
     setCurrentGameOpen(null);
   };
 
@@ -287,7 +289,7 @@ const Dashboard = ({
       );
 
     return (
-      <div className='App'>
+      <div className='App' style={{ overflow: 'hidden' }}>
         {!searchSubmitted ? (
           <>
             <Nav
@@ -342,6 +344,11 @@ const Dashboard = ({
                   setUserCollection(collection)
                 }
               />
+              {currentGameOpen && (
+                <h1 className='row__preview_close' onClick={closeGameWindow}>
+                  X
+                </h1>
+              )}
 
               {allGenres.map((request) => (
                 <Row

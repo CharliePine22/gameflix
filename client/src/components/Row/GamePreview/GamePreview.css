@@ -157,6 +157,15 @@
   height: 13.5rem;
 }
 
+.game_preview__modal {
+  position: fixed;
+  height: 100vh;
+  width: 200vh;
+  background: rgba(0, 0, 0, 0.2);
+  left: 0;
+  top: 0;
+}
+
 .trailer {
   width: 100% !important;
   height: 100% !important;

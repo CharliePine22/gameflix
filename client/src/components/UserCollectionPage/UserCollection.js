@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './UserCollection.css';
 import { FaSistrix, FaHome, FaStar } from 'react-icons/fa';
 import UserGame from '../UserGame/UserGame';
@@ -37,6 +37,7 @@ const UserCollection = ({
   const [filteredList, setFilteredList] = useState([]);
   // STATUS LIST STATES
   const [statusFilter, setStatusFilter] = useState('backlog');
+  const filterRef = useRef();
 
   const { anchorPoint, showTitleMenu } = useContextMenu();
   const trophies = [platinumTrophy, goldTrophy, bronzeTrophy];
@@ -385,7 +386,6 @@ const UserCollection = ({
                         : spotlightFilter == 'user_rating'
                         ? 'Highest Rated'
                         : 'Most Achievements'}{' '}
-                      {/* <FaAngleDown className='spotlight_filter__arrow' /> */}
                     </h2>
                     <ul className='spotlight_filter__options'>
                       <li
@@ -512,7 +512,7 @@ const UserCollection = ({
                   </ul>
                   {listFilter == 'status' && (
                     <div
-                      className='user_collection__list_filters'
+                      className='user_collection__list_filters__list'
                       style={{ margin: '0' }}
                     >
                       <ul

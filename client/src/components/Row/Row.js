@@ -145,7 +145,7 @@ function Row({
                     className={`row__poster_wrapper ${
                       currentGameOpen == game.name && 'viewing_game'
                     }`}
-                    stylw
+                    style={{ zIndex: currentGameOpen !== game.name && '0' }}
                   >
                     <div
                       className={`row__poster_container ${
@@ -154,11 +154,15 @@ function Row({
                           : ''
                       }`}
                       onClick={() => openGame(game)}
-                      onMouseOver={() => determineESRB(game)}
                     >
                       <>
                         {/* FRONT OF POSTER */}
-                        <div className='row__poster_front'>
+                        <div
+                          className='row__poster_front'
+                          style={{
+                            transformStyle: currentGameOpen && 'revert',
+                          }}
+                        >
                           <img
                             loading='lazy'
                             className='row__poster'

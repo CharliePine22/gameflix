@@ -3,10 +3,10 @@
 }
 
 .App {
-  background-color: #0d0d29;
+  /* background-color: #0d0d29; */
   /* background-color: #02020f; */
   /* background-color: rgb(32, 32, 32); POTENTIAL NEW COLOR*/
-  /* background-color: rgb(22, 22, 22);  OLD COLOR*/
+  /* background-color: rgb(22, 22, 22);  OLD COLOR */
   user-select: none;
   /* overflow-y: hidden;
   overflow-x: scroll; */

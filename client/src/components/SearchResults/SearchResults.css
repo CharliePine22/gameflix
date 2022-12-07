@@ -72,7 +72,6 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  /* padding: 4px 4px; */
   height: 40px;
   border: 1px solid #9147ff;
   border-radius: 2px;
@@ -83,7 +82,6 @@
 }
 
 .recent_searches__item p {
-  /* width: 80%; */
   text-align: center;
   white-space: nowrap;
   padding: 0 10px 5px;
@@ -101,7 +99,6 @@
   font-size: 0.85rem;
   height: 100%;
   border-left: 1px solid white;
-  /* width: 25px; */
   padding: 0 10px;
   justify-content: center;
 }

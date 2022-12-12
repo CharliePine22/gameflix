@@ -8,8 +8,9 @@ import playstationLogo from '../../../assets/images/playstation-logo.png';
 import pspLogo from '../../../assets/images/psp-logo.png';
 import psVitaLogo from '../../../assets/images/psvita-logo.png';
 import nesLogo from '../../../assets/images/nes-logo.png';
-import nintendoLogo from '../../../assets/images/nintendo-logo.png';
-import nintendoDs from '../../../assets/images/nintendo-ds.png';
+import nintendo64Logo from '../../../assets/images/nintendo-logo.png';
+import nintendoSwitchLogo from '../../../assets/images/switch_logo.png';
+import nintendoDs from '../../../assets/images/ds-logo.png';
 import nintendo3ds from '../../../assets/images/nintendo-3ds.png';
 import gbaLogo from '../../../assets/images/gba-logo.png';
 import wiiLogo from '../../../assets/images/wii-logo.png';
@@ -25,6 +26,7 @@ import gamecubeLogo from '../../../assets/images/gamecube-logo.png';
 const GamePreview = ({
   game,
   hideDetails,
+  gameCover,
   displayDetails,
   fetchGameDetails,
   addGame,
@@ -33,12 +35,23 @@ const GamePreview = ({
   const [loading, setLoading] = useState(false);
   const [unmounting, setUnmounting] = useState(false);
 
+  const gamePlatformId = game.release_dates[0].platform;
+  const gamePlatform = game.platforms.filter(
+    (platform) => platform.id == gamePlatformId
+  )[0];
+
   // Convert name of platforms into a PNG icon
   const displayConsoleIcons = (platform) => {
     switch (platform) {
       case 'PC (Microsoft Windows)':
       case 'PC':
-        return <img src={steamLogo} alt='PC' className='game_platform_logo' />;
+        return (
+          <img
+            src={steamLogo}
+            alt='PC'
+            className='game_preview__platform_logo'
+          />
+        );
       case 'PlayStation':
       case 'PS1':
       case 'PlayStation 2':
@@ -49,42 +62,66 @@ const GamePreview = ({
       case 'PS4':
       case 'PlayStation 5':
       case 'PS5':
+      case 'PSP':
         return (
           <img
             src={playstationLogo}
             alt={platform}
-            className='game_platform_logo'
+            className='game_preview__platform_logo playstation'
           />
         );
       case 'PlayStation Portable':
       case 'PSP':
         return (
-          <img src={pspLogo} alt={platform} className='game_platform_logo' />
+          <img
+            src={pspLogo}
+            alt={platform}
+            className='game_preview__platform_logo'
+          />
         );
       case 'Vita':
         return (
-          <img src={psVitaLogo} alt={platform} className='game_platform_logo' />
+          <img
+            src={psVitaLogo}
+            alt={platform}
+            className='game_preview__platform_logo'
+          />
+        );
+      case 'Switch':
+        return (
+          <img
+            src={nintendoSwitchLogo}
+            alt={platform}
+            className='game_preview__platform_logo'
+          />
         );
       case 'Nintendo 64':
       case 'N64':
       case 'Nintendo 64DD':
       case 'Nintendo Switch':
-      case 'Switch':
         return (
           <img
-            src={nintendoLogo}
+            src={nintendo64Logo}
             alt={platform}
-            className='game_platform_logo'
+            className='game_preview__platform_logo'
           />
         );
       case 'Nintendo DS':
       case 'NDS':
         return (
-          <img src={nintendoDs} alt={platform} className='game_platform_logo' />
+          <img
+            src={nintendoDs}
+            alt={platform}
+            className='game_preview__platform_logo nintendo-ds'
+          />
         );
       case 'GBA':
         return (
-          <img src={gbaLogo} alt={platform} className='game_platform_logo' />
+          <img
+            src={gbaLogo}
+            alt={platform}
+            className='game_preview__platform_logo'
+          />
         );
       case 'Nintendo 3DS':
       case 'New Nintendo 3DS':
@@ -93,7 +130,7 @@ const GamePreview = ({
           <img
             src={nintendo3ds}
             alt={platform}
-            className='game_platform_logo'
+            className='game_preview__platform_logo'
           />
         );
       case 'Nintendo GameCube':
@@ -102,25 +139,41 @@ const GamePreview = ({
           <img
             src={gamecubeLogo}
             alt={platform}
-            className='game_platform_logo'
+            className='game_preview__platform_logo'
           />
         );
       case 'Wii':
         return (
-          <img src={wiiLogo} alt={platform} className='game_platform_logo' />
+          <img
+            src={wiiLogo}
+            alt={platform}
+            className='game_preview__platform_logo'
+          />
         );
       case 'Wii U':
       case 'WiiU':
         return (
-          <img src={wiiULogo} alt={platform} className='game_platform_logo' />
+          <img
+            src={wiiULogo}
+            alt={platform}
+            className='game_preview__platform_logo'
+          />
         );
       case 'SNES':
         return (
-          <img src={snesLogo} alt={platform} className='game_platform_logo' />
+          <img
+            src={snesLogo}
+            alt={platform}
+            className='game_preview__platform_logo'
+          />
         );
       case 'NES':
         return (
-          <img src={nesLogo} alt={platform} className='game_platform_logo' />
+          <img
+            src={nesLogo}
+            alt={platform}
+            className='game_preview__platform_logo'
+          />
         );
       case 'Xbox':
       case 'XBOX':
@@ -130,12 +183,20 @@ const GamePreview = ({
       case 'X360':
       case 'Series X':
         return (
-          <img src={xboxLogo} alt={platform} className='game_platform_logo' />
+          <img
+            src={xboxLogo}
+            alt={platform}
+            className='game_preview__platform_logo'
+          />
         );
       case 'iOS':
       case 'Mac':
         return (
-          <img src={iosLogo} alt={platform} className='game_platform_logo' />
+          <img
+            src={iosLogo}
+            alt={platform}
+            className='game_preview__platform_logo'
+          />
         );
       case 'Android':
       case 'Linux':
@@ -143,13 +204,17 @@ const GamePreview = ({
           <img
             src={androidLogo}
             alt={platform}
-            className='game_platform_logo'
+            className='game_preview__platform_logo'
           />
         );
       case 'SEGA':
       case 'Dreamcast':
         return (
-          <img src={segaLogo} alt={platform} className='game_platform_logo' />
+          <img
+            src={segaLogo}
+            alt={platform}
+            className='game_preview__platform_logo'
+          />
         );
     }
   };
@@ -215,7 +280,76 @@ const GamePreview = ({
     return null;
   }
 
-  // return <div className='game_preview__modal' />;
+  const determineCoverColor = () => {
+    if (!gamePlatform) return;
+
+    switch (gamePlatform.abbreviation) {
+      case 'DC':
+      case 'PS1':
+      case 'PS2':
+      case 'PSP':
+        return '#100e0e';
+      case 'PS3':
+      case 'N64':
+        return 'red';
+      case 'Switch':
+        return '#e4000f';
+      case 'PS4':
+        return 'blue';
+      case 'PS5':
+      case 'NDS':
+      case '3DS':
+      case 'Wii':
+        return '#f0ead6';
+      case 'NGC':
+        return '#645097';
+      case 'XONE':
+      case 'XBOX':
+      case 'X360':
+        return '#107C10';
+      case 'fds':
+        return 'yellow';
+      default:
+        return '#1b2838';
+    }
+  };
+
+  console.log(gamePlatform);
+
+  return (
+    <div className='game_preview__wrapper' onClick={() => console.log(game)}>
+      <div className='game_preview__box'>
+        <div
+          className='game_preview__front'
+          style={{
+            backgroundImage: `url(${gameCover})`,
+            backgroundPosition: 'center center',
+            backgroundSize: 'cover',
+            borderTop: `${determineCoverColor()} solid 25px`,
+            borderBottom: `${determineCoverColor()} solid 5px`,
+            borderRight: `${determineCoverColor()} solid 5px`,
+          }}
+        >
+          <div className='game_preview__front_banner'>
+            {displayConsoleIcons(gamePlatform.abbreviation)}
+            <p>{gamePlatform.abbreviation}</p>
+          </div>
+        </div>
+        <div
+          className='game_preview__back'
+          style={{
+            borderTop: `${determineCoverColor()} solid 5px`,
+            borderBottom: `${determineCoverColor()} solid 5px`,
+            borderLeft: `${determineCoverColor()} solid 5px`,
+          }}
+        ></div>
+        <div className='game_preview__left'></div>
+        <div className='game_preview__right'></div>
+        <div className='game_preview__top'></div>
+        <div className='game_preview__bottom'></div>
+      </div>
+    </div>
+  );
 };
 // const GamePreview = ({
 //   game,
@@ -225,129 +359,7 @@ const GamePreview = ({
 //   addGame,
 //   viewGameSoundtrack,
 // }) => {
-//   const [loading, setLoading] = useState(false);
-//   const [unmounting, setUnmounting] = useState(false);
 
-//   // Convert name of platforms into a PNG icon
-//   const displayConsoleIcons = (platform) => {
-//     switch (platform) {
-//       case 'PC (Microsoft Windows)':
-//       case 'PC':
-//         return <img src={steamLogo} alt='PC' className='game_platform_logo' />;
-//       case 'PlayStation':
-//       case 'PS1':
-//       case 'PlayStation 2':
-//       case 'PS2':
-//       case 'PlayStation 3':
-//       case 'PS3':
-//       case 'PlayStation 4':
-//       case 'PS4':
-//       case 'PlayStation 5':
-//       case 'PS5':
-//         return (
-//           <img
-//             src={playstationLogo}
-//             alt={platform}
-//             className='game_platform_logo'
-//           />
-//         );
-//       case 'PlayStation Portable':
-//       case 'PSP':
-//         return (
-//           <img src={pspLogo} alt={platform} className='game_platform_logo' />
-//         );
-//       case 'Vita':
-//         return (
-//           <img src={psVitaLogo} alt={platform} className='game_platform_logo' />
-//         );
-//       case 'Nintendo 64':
-//       case 'N64':
-//       case 'Nintendo 64DD':
-//       case 'Nintendo Switch':
-//       case 'Switch':
-//         return (
-//           <img
-//             src={nintendoLogo}
-//             alt={platform}
-//             className='game_platform_logo'
-//           />
-//         );
-//       case 'Nintendo DS':
-//       case 'NDS':
-//         return (
-//           <img src={nintendoDs} alt={platform} className='game_platform_logo' />
-//         );
-//       case 'GBA':
-//         return (
-//           <img src={gbaLogo} alt={platform} className='game_platform_logo' />
-//         );
-//       case 'Nintendo 3DS':
-//       case 'New Nintendo 3DS':
-//       case '3DS':
-//         return (
-//           <img
-//             src={nintendo3ds}
-//             alt={platform}
-//             className='game_platform_logo'
-//           />
-//         );
-//       case 'Nintendo GameCube':
-//       case 'NGC':
-//         return (
-//           <img
-//             src={gamecubeLogo}
-//             alt={platform}
-//             className='game_platform_logo'
-//           />
-//         );
-//       case 'Wii':
-//         return (
-//           <img src={wiiLogo} alt={platform} className='game_platform_logo' />
-//         );
-//       case 'Wii U':
-//       case 'WiiU':
-//         return (
-//           <img src={wiiULogo} alt={platform} className='game_platform_logo' />
-//         );
-//       case 'SNES':
-//         return (
-//           <img src={snesLogo} alt={platform} className='game_platform_logo' />
-//         );
-//       case 'NES':
-//         return (
-//           <img src={nesLogo} alt={platform} className='game_platform_logo' />
-//         );
-//       case 'Xbox':
-//       case 'XBOX':
-//       case 'XONE':
-//       case 'Xbox One':
-//       case 'Xbox 360':
-//       case 'X360':
-//       case 'Series X':
-//         return (
-//           <img src={xboxLogo} alt={platform} className='game_platform_logo' />
-//         );
-//       case 'iOS':
-//       case 'Mac':
-//         return (
-//           <img src={iosLogo} alt={platform} className='game_platform_logo' />
-//         );
-//       case 'Android':
-//       case 'Linux':
-//         return (
-//           <img
-//             src={androidLogo}
-//             alt={platform}
-//             className='game_platform_logo'
-//           />
-//         );
-//       case 'SEGA':
-//       case 'Dreamcast':
-//         return (
-//           <img src={segaLogo} alt={platform} className='game_platform_logo' />
-//         );
-//     }
-//   };
 //   // Go to the game website
 //   const goToGameWebsite = (url) => {
 //     window.open(url, '_blank');

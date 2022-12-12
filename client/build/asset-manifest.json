@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.5c69eec9.css",
-    "main.js": "/static/js/main.2918a145.js",
+    "main.css": "/static/css/main.1b0bab41.css",
+    "main.js": "/static/js/main.5e421158.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -32,7 +32,6 @@
     "static/media/xbox-logo.png": "/static/media/xbox-logo.1470ebd18d88807af6fe.png",
     "static/media/retro-tv.png": "/static/media/retro-tv.f53bcec5f8dd7413f844.png",
     "static/media/computer_screen.png": "/static/media/computer_screen.4272856e6a7a6e935764.png",
-    "static/media/gamecube-logo.png": "/static/media/gamecube-logo.946c6e7469abaad7b304.png",
     "static/media/psp-logo.png": "/static/media/psp-logo.90012714acf7142e3bda.png",
     "static/media/wiiu-logo.png": "/static/media/wiiu-logo.4300903ffb4e0b57de37.png",
     "static/media/ESRB_M.png": "/static/media/ESRB_M.4a41f5f352b1c2ff77a9.png",
@@ -43,6 +42,7 @@
     "static/media/snes-logo.png": "/static/media/snes-logo.7c5f712cf6dc5c4b0aa0.png",
     "static/media/ESRB_RP.png": "/static/media/ESRB_RP.57aa50a6ca1272626835.png",
     "static/media/steam-logo.png": "/static/media/steam-logo.ae35c358ce32663bcab0.png",
+    "static/media/gamecube-logo.png": "/static/media/gamecube-logo.fac4aac6a10225540dee.png",
     "static/media/basic_avatar.png": "/static/media/basic_avatar.28e44cb7f5d2425541e5.png",
     "static/media/sega-logo.png": "/static/media/sega-logo.ebdd6709ff0639c959c7.png",
     "static/media/ESRB_E.png": "/static/media/ESRB_E.c6e4123839651e70a8d1.png",
@@ -53,12 +53,13 @@
     "static/media/Persona5MenuFontPrototype-Regular.ttf": "/static/media/Persona5MenuFontPrototype-Regular.eaf9adfa13ad3376ffd6.ttf",
     "static/media/playstation-logo.png": "/static/media/playstation-logo.630dfedda6273efed3a8.png",
     "static/media/nes-logo.png": "/static/media/nes-logo.b0fe8b9dba6d6bc5fa53.png",
+    "static/media/switch_logo.png": "/static/media/switch_logo.4da6d068a57d6f343553.png",
     "static/media/ferrum.otf": "/static/media/ferrum.0db9aba7b1cb9fa47318.otf",
     "static/media/Gasalt-Black.ttf": "/static/media/Gasalt-Black.8284ab3fce3818248705.ttf",
     "static/media/gba-logo.png": "/static/media/gba-logo.d897fee67c639798373a.png",
     "index.html": "/index.html",
-    "main.5c69eec9.css.map": "/static/css/main.5c69eec9.css.map",
-    "main.2918a145.js.map": "/static/js/main.2918a145.js.map",
+    "main.1b0bab41.css.map": "/static/css/main.1b0bab41.css.map",
+    "main.5e421158.js.map": "/static/js/main.5e421158.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -75,7 +76,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5c69eec9.css",
-    "static/js/main.2918a145.js"
+    "static/css/main.1b0bab41.css",
+    "static/js/main.5e421158.js"
   ]
 }

@@ -17,8 +17,6 @@ const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
-  const [displayNotification, setDisplayNotification] = useState(false);
-  const [notification, setNotification] = useState({ status: '', message: '' });
   // User states
   const [changingUser, setChangingUser] = useState(false);
   const [updatingUser, setUpdatingUser] = useState(false);

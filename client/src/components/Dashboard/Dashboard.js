@@ -349,6 +349,11 @@ const Dashboard = ({
                   X
                 </h1>
               )}
+              <div
+                className={`${
+                  currentGameOpen !== null && 'game_preview__modal'
+                }`}
+              />
 
               {allGenres.map((request) => (
                 <Row

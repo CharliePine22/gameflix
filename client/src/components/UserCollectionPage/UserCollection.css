@@ -328,7 +328,8 @@
   align-items: center;
   color: white;
   margin: 0 auto 8px;
-  padding: 6px 0 0px;
+  padding: 6px 0 4px;
+  /* padding: 6px 0 0px; */
   position: sticky;
   top: 0;
   z-index: 5;
@@ -368,7 +369,8 @@
   display: flex;
   justify-content: center;
   color: white;
-  padding: 3px 0;
+  padding: 0;
+  /* padding: 3px 0; */
   list-style: none;
   transform: translateY(-3px);
 }
@@ -520,7 +522,7 @@
   );
   z-index: 6;
   position: fixed;
-  bottom: 70px;
+  bottom: 69px;
   left: 0px;
   pointer-events: none;
 }

@@ -133,7 +133,6 @@ function Row({
 
   return (
     <div className='row'>
-      <div className={`${currentGameOpen !== null && 'game_preview__modal'}`} />
       <h2 className='row__title'>{genreTitle}</h2>
       <div className='row__posters'>
         {genreList.map(
@@ -145,7 +144,12 @@ function Row({
                     className={`row__poster_wrapper ${
                       currentGameOpen == game.name && 'viewing_game'
                     }`}
-                    style={{ zIndex: currentGameOpen !== game.name && '0' }}
+                    style={{
+                      zIndex:
+                        currentGameOpen !== game.name &&
+                        currentGameOpen !== null &&
+                        '-1',
+                    }}
                   >
                     <div
                       className={`row__poster_container ${
@@ -228,6 +232,7 @@ function Row({
                     {currentGameOpen === game.name && (
                       <GamePreview
                         game={game}
+                        gameCover={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                         addGame={addGameHandler}
                         displayDetails={displayDetails}
                         hideDetails={closeGameWindow}

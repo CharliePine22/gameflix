@@ -49,7 +49,9 @@ const UserCollection = ({
       return;
     }
     const delaySearch = setTimeout(() => {
-      const res = collection.filter((item) => item.name.includes(searchValue));
+      const res = collection.filter((item) =>
+        item.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
       setSearchList(res);
     }, 250);
 

@@ -157,13 +157,144 @@
   height: 13.5rem;
 }
 
+.game_preview__back {
+  width: 243px;
+  height: 345px;
+  background-position: 0px 0px;
+  border-top: solid 5px #333;
+  border-left: solid 5px #333;
+  border-bottom: solid 5px #333;
+  transform: rotateY(180deg) translateZ(14px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.game_preview__bottom {
+  width: 243px;
+  height: 28px;
+  transform: rotateX(-90deg) translateZ(331px);
+  background-image: none;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 0;
+}
+
+.game_preview__box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: translateZ(-14px);
+  transition: all 750ms ease-in-out;
+  transform: rotateY(-8deg) rotateX(5deg);
+}
+
+.game_preview__box:hover {
+  transform: rotateY(-20deg) rotateX(5deg);
+}
+
+.game_preview__front {
+  width: 243px;
+  height: 345px;
+  background-position: 243px 0px;
+  border-top: solid 25px #333;
+  /* border-top: solid 5px #333; */
+  border-right: solid 5px #333;
+  border-bottom: solid 5px #333;
+  z-index: 10;
+  transform: rotateY(0deg) translateZ(14px);
+  position: absolute;
+  top: 0;
+}
+
+.game_preview__front_banner {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: -25px;
+  width: 100%;
+}
+
+.game_preview__left {
+  width: 28px;
+  height: 345px;
+  background-position: 265px 0px;
+  border-top: solid 5px #333;
+  border-bottom: solid 5px #333;
+  transform: rotateY(-90deg) translateZ(14px);
+  position: absolute;
+  top: 0;
+  left: 0px;
+}
+
+.game_preview__right {
+  width: 28px;
+  height: 345px;
+  transform: rotateY(90deg) translateZ(230px);
+  background-image: none;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 0;
+}
+
+.game_preview__top {
+  width: 243px;
+  height: 28px;
+  transform: rotateX(90deg) translateZ(14px);
+  background-image: none;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 0;
+}
+
 .game_preview__modal {
   position: fixed;
   height: 100vh;
-  width: 200vh;
-  background: rgba(0, 0, 0, 0.2);
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.8);
   left: 0;
   top: 0;
+}
+
+.game_preview__platform_logo {
+  height: 24px;
+  width: 35px;
+  /* filter: drop-shadow(3px 4px 1px #000); */
+  /* margin-right: 10px; */
+  object-fit: contain;
+}
+
+.playstation {
+  height: 16px;
+  width: 32px;
+}
+
+.nintendo-ds {
+  height: 98px;
+  width: 98px;
+  position: absolute;
+  top: -35px;
+}
+
+.game_preview__wrapper {
+  background-size: 500px 345px;
+  backface-visibility: visible;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  width: 243px;
+  height: 445px; /* The width is 345px but we have to enlarge the area because of the drop shadow. */
+  margin: 0 auto;
+  overflow: visible;
+  perspective: 690px;
+  perspective-origin: 50% 50%;
+  filter: drop-shadow(0px 10px 4px rgba(0, 0, 0, 0.5));
+  /* filter: drop-shadow(0px 10px 7px rgba(0, 0, 0, 0.5)); */
+  /* filter: drop-shadow(10px 10px 7px rgba(0, 0, 0, 0.3)); */
 }
 
 .trailer {

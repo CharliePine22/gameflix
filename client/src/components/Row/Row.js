@@ -32,6 +32,7 @@ function Row({
   const [displayDetails, setDisplayDetails] = useState(false);
   const [loading, setLoading] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
+  const [viewingPreview, setViewingPreview] = useState(false);
 
   const genreTitle = genreDetails[0][0];
   const genreList = genreDetails[0][1];
@@ -149,6 +150,8 @@ function Row({
                         currentGameOpen !== game.name &&
                         currentGameOpen !== null &&
                         '-1',
+                      pointerEvents:
+                        currentGameOpen && viewingPreview ? 'none' : 'revert',
                     }}
                   >
                     <div
@@ -233,6 +236,7 @@ function Row({
                       <GamePreview
                         game={game}
                         gameCover={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
+                        ratingImage={determineESRB(game)}
                         addGame={addGameHandler}
                         displayDetails={displayDetails}
                         hideDetails={closeGameWindow}
@@ -242,6 +246,9 @@ function Row({
                         viewGameSoundtrack={(e, game) => {
                           viewGameSoundtrack(e, game);
                         }}
+                        viewingPreview={viewingPreview}
+                        openGame={() => setViewingPreview(true)}
+                        closeGame={() => setViewingPreview(false)}
                       />
                     )}
                   </div>

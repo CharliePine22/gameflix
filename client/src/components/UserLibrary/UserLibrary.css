@@ -152,6 +152,8 @@
   z-index: 3;
   transform-origin: center center;
   border-radius: 6px;
+  height: auto;
+  width: auto;
 }
 
 .stack_card img {

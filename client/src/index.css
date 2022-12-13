@@ -15,6 +15,23 @@
   src: local('Persona'),
     url(./assets/fonts/Persona5MenuFontPrototype-Regular.ttf) format('opentype');
 }
+@font-face {
+  font-family: 'ModernPlaystation';
+  src: local('ModernPlaystation'),
+    url(./assets/fonts/PsBold.ttf) format('opentype');
+}
+@font-face {
+  font-family: 'OldPlaystation';
+  src: local('OldPlaystation'), url(./assets/fonts/PsOld.ttf) format('opentype');
+}
+@font-face {
+  font-family: 'Xbox';
+  src: local('Xbox'), url(./assets/fonts/Xbox.ttf) format('opentype');
+}
+@font-face {
+  font-family: 'Mario';
+  src: local('MarioFont'), url(./assets/fonts/MarioFont.ttf) format('opentype');
+}
 
 body {
   margin: 0;
@@ -24,6 +41,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #111;
+  overflow: visible;
 }
 
 html {
@@ -35,6 +53,27 @@ html {
   font-family: Persona;
 }
 
+.old_playstation_font {
+  font-family: OldPlaystation;
+  font-size: 0.65rem;
+}
+
+.modern_playstation_font {
+  font-family: ModernPlaystation;
+  text-shadow: 1px 1px 2px black;
+}
+
+.nintendo_font {
+  font-family: Mario;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+}
+
+.xbox_font {
+  font-family: Xbox;
+  font-size: 0.9rem;
+}
+
 .persona_box {
   height: 100%;
   width: 100%;
@@ -43,7 +82,7 @@ html {
   z-index: -1;
 }
 
-p,
+/* p, */
 a,
 li {
   font-family: Ferrum;

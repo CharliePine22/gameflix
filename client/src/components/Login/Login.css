@@ -7,7 +7,7 @@
   margin: 0 auto -236px;
   min-height: 100vh;
   background-color: transparent;
-  max-width: 430px;
+  max-width: 390px;
   overflow: hidden;
   padding: 0 20px;
 }
@@ -165,7 +165,7 @@
   margin-bottom: 0px;
   width: 100%;
   min-height: 525px;
-  padding: 60px 68px 40px;
+  padding: 60px 48px 40px;
   box-shadow: rgb(0 0 0 / 80%) 0px 3px 8px;
 }
 

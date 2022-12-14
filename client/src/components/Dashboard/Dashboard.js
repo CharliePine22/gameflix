@@ -70,6 +70,7 @@ const Dashboard = ({
 
   useEffect(() => {
     if (!currentProfile) console.log('No Current Profile');
+    if (!currentGameOpen) document.body.style.overflow = 'auto';
   }, []);
 
   //   setViewingSoundtrack(false);
@@ -289,7 +290,7 @@ const Dashboard = ({
       );
 
     return (
-      <div className='App' style={{ overflow: 'hidden' }}>
+      <div className='App'>
         {!searchSubmitted ? (
           <>
             <Nav

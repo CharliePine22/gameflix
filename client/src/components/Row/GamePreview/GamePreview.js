@@ -297,6 +297,7 @@ const GamePreview = ({
     return null;
   }
 
+  // Based on the game platform, adjust the colors to reflect the platform/console color scheme
   const determineCoverColor = () => {
     if (!gamePlatform) return;
 
@@ -305,7 +306,6 @@ const GamePreview = ({
       case 'PS1':
       case 'PS2':
       case 'PSP':
-        return 'black';
       case 'fds':
         return '#100e0e';
       case 'PS3':
@@ -339,10 +339,15 @@ const GamePreview = ({
   return (
     <div
       className='game_preview__wrapper'
-      style={{ pointerEvents: viewingPreview && 'none' }}
+      // style={{ pointerEvents: viewingPreview && 'none' }}
       onClick={() => console.log(game)}
     >
-      <div className='game_preview__box' onClick={() => openGame()}>
+      <div
+        className={`game_preview__box ${viewingPreview && 'box_open'}`}
+        onClick={() => openGame()}
+      >
+        {/* FRONT SIDE OF CASE */}
+
         <div
           className={`game_preview__front ${
             gamePlatform.abbreviation == 'Switch' && 'switch_case'
@@ -359,7 +364,7 @@ const GamePreview = ({
             className={`game_preview__front_banner ${
               gamePlatform.abbreviation == 'Switch' && 'switch_banner'
             }`}
-            // style={{ background: 'linear-gradient(120deg, #00adee, #000000)' }}
+            style={{ background: determineCoverColor() }}
           >
             {displayConsoleIcons(gamePlatform.abbreviation)}
             {/* PLATFORM NAME */}
@@ -415,14 +420,43 @@ const GamePreview = ({
           </div>
           {ratingImage}
         </div>
+
+        {/* INSIDE OF FRONT COVER */}
+
         {viewingPreview && (
           <div
             className='game_preview__front_inside'
-            style={{ background: determineCoverColor() }}
+            style={{
+              background: 'black',
+              borderTop: `${determineCoverColor()} solid 7px`,
+              borderBottom: `${determineCoverColor()} solid 7px`,
+              borderLeft: `${determineCoverColor()} solid 7px`,
+            }}
           >
-            TEST
+            <img
+              src={
+                game?.artworks?.length > 0
+                  ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.artworks[0]?.image_id}.jpg`
+                  : gameCover
+              }
+            />
+            <div className='game_preview__front_inside_details'>
+              {game.videos && (
+                <ReactPlayer
+                  url={`https://www.youtube.com/watch?v=${game?.videos[0]?.video_id}`}
+                  className='trailer'
+                  width='100%'
+                  height='250px'
+                  playing={true}
+                  onReady={() => setLoading(false)}
+                />
+              )}
+            </div>
           </div>
         )}
+
+        {/* BACK SIDE OF CASE */}
+
         <div
           className={`game_preview__back ${
             gamePlatform.abbreviation == 'Switch' && 'switch_case_back'
@@ -440,27 +474,102 @@ const GamePreview = ({
             borderBottom: `${determineCoverColor()} solid 7px`,
             borderLeft: `${determineCoverColor()} solid 7px`,
           }}
-        />
+        >
+          <div
+            className='game_preview__back_open_details'
+            onClick={() => console.log('WORKS')}
+          >
+            <img
+              src={
+                game?.artworks?.length > 1
+                  ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.artworks[1]?.image_id}.jpg`
+                  : gameCover
+              }
+            />
+
+            <div className='game_preview__actions'>
+              <button>Add</button>
+              <button>See More Details</button>
+            </div>
+
+            {/* DISC ART */}
+            <div
+              className='game_preview__disc'
+              style={{
+                '--color-theme': determineCoverColor(),
+                backgroundImage: `url(${gameCover})`,
+                // backgroundImage: `url(https://www.kindpng.com/picc/m/470-4706184_transparent-kingdom-hearts-birth-by-sleep-logo-hd.png)`,
+              }}
+            >
+              <div className='game_preview__disc_center' />
+              <div
+                className='game_preview__disc_console_banner'
+                style={{
+                  background: determineCoverColor(),
+                }}
+              >
+                <p
+                  className={
+                    gamePlatform.abbreviation == 'N64'
+                      ? 'nintendo_font'
+                      : gamePlatform.abbreviation == 'X360'
+                      ? 'xbox_font'
+                      : gamePlatform.abbreviation == 'PS4'
+                      ? 'modern_playstation_font'
+                      : gamePlatform.abbreviation == 'PS5'
+                      ? 'modern_playstation_font'
+                      : gamePlatform.abbreviation == 'PS3'
+                      ? 'modern_playstation_font'
+                      : gamePlatform.abbreviation == 'PS2'
+                      ? 'old_playstation_font'
+                      : gamePlatform.abbreviation == 'PS1'
+                      ? 'old_playstation_font'
+                      : ''
+                  }
+                >
+                  {gamePlatform.abbreviation}
+                </p>
+                {displayConsoleIcons(gamePlatform.abbreviation)}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* LEFT SIDE OF CASE */}
+
         <div
           className={`game_preview__left ${viewingPreview && 'left_open'}`}
           style={{
             background: determineCoverColor(),
             borderTop: `${determineCoverColor()} solid 7px`,
             borderBottom: `${determineCoverColor()} solid 7px`,
-            // display: viewingPreview && 'none',
           }}
         />
+
+        {/* RIGHT SIDE OF CASE */}
+
         <div
           className={`game_preview__right ${viewingPreview && 'right_open'}`}
-          style={{ background: determineCoverColor() }}
+          style={{
+            '--color-theme': determineCoverColor(),
+            background: determineCoverColor(),
+          }}
+        />
+
+        {/* TOP OF CASE */}
+
+        <div
+          className={`game_preview__top ${viewingPreview && 'top_open_right'}`}
         />
         <div
-          className='game_preview__top'
-          // style={{ display: viewingPreview && 'none' }}
+          className='top_open_left'
+          style={{ display: !viewingPreview && 'none' }}
         />
+
+        {/* BOTTOM OF CASE */}
+
         <div
-          className='game_preview__bottom'
-          // style={{ display: viewingPreview && 'none' }}
+          className={`game_preview__bottom ${viewingPreview && 'bottom_open'}`}
         />
       </div>
     </div>

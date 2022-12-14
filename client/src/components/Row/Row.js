@@ -150,8 +150,8 @@ function Row({
                         currentGameOpen !== game.name &&
                         currentGameOpen !== null &&
                         '-1',
-                      pointerEvents:
-                        currentGameOpen && viewingPreview ? 'none' : 'revert',
+                      // pointerEvents:
+                      //   currentGameOpen && viewingPreview ? 'none' : 'revert',
                     }}
                   >
                     <div

@@ -28,7 +28,8 @@
   height: 190px;
   padding-top: 100px;
   padding-bottom: 40px;
-  background: rgba(0, 0, 0, 0.4);
+  position: relative;
+  /* background: rgba(0, 0, 0, 0.4); */
   /* animation: fadeInBannerContent 2s cubic-bezier(0.075, 0.82, 0.165, 1) forwards; */
 }
 
@@ -105,9 +106,8 @@
 @media screen and (min-width: 320px) and (max-width: 500px) {
   .banner__contents {
     padding-top: 70px;
-    position: relative;
-    top: 15px;
-    margin-left: 10px;
+    top: 35px;
+    margin-left: 20px;
   }
 
   .banner__description {

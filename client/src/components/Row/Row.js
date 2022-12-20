@@ -235,7 +235,7 @@ function Row({
                     {currentGameOpen === game.name && (
                       <GamePreview
                         game={game}
-                        gameCover={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
+                        gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
                         ratingImage={determineESRB(game)}
                         addGame={addGameHandler}
                         displayDetails={displayDetails}

@@ -39,6 +39,7 @@ const GamePreview = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [unmounting, setUnmounting] = useState(false);
+  const [playingDisc, setPlayingDisc] = useState(false);
 
   useEffect(() => {
     closeGame();
@@ -309,7 +310,7 @@ const GamePreview = ({
       case 'fds':
         return '#100e0e';
       case 'PS3':
-        return 'rgba(158,158,158, .95)';
+        return '#9e9e9e';
       case 'N64':
         return '#CC0000';
       case 'Switch':
@@ -328,8 +329,9 @@ const GamePreview = ({
       // return '#645097';
       case 'XONE':
       case 'XBOX':
-      case 'X360':
         return '#107C10';
+      case 'X360':
+        return '#5dc21e';
       default:
         return 'rgb(23 45 62)';
       // return 'linear-gradient(120deg, #00adee, #000000);';
@@ -337,17 +339,12 @@ const GamePreview = ({
   };
 
   return (
-    <div
-      className='game_preview__wrapper'
-      // style={{ pointerEvents: viewingPreview && 'none' }}
-      onClick={() => console.log(game)}
-    >
+    <div className='game_preview__wrapper' onClick={() => console.log(game)}>
       <div
         className={`game_preview__box ${viewingPreview && 'box_open'}`}
         onClick={() => openGame()}
       >
         {/* FRONT SIDE OF CASE */}
-
         <div
           className={`game_preview__front ${
             gamePlatform.abbreviation == 'Switch' && 'switch_case'
@@ -367,6 +364,7 @@ const GamePreview = ({
             style={{ background: determineCoverColor() }}
           >
             {displayConsoleIcons(gamePlatform.abbreviation)}
+
             {/* PLATFORM NAME */}
             <p
               className={
@@ -421,27 +419,41 @@ const GamePreview = ({
           {ratingImage}
         </div>
 
-        {/* INSIDE OF FRONT COVER */}
-
+        {/* INSIDE OF FRONT  */}
         {viewingPreview && (
           <div
-            className='game_preview__front_inside'
+            className={`game_preview__front_inside ${
+              gamePlatform.abbreviation == 'Switch' && 'switch_case_back'
+            }`}
             style={{
-              background: 'black',
+              background: `${determineCoverColor()}`,
               borderTop: `${determineCoverColor()} solid 7px`,
               borderBottom: `${determineCoverColor()} solid 7px`,
               borderLeft: `${determineCoverColor()} solid 7px`,
             }}
           >
-            <img
-              src={
-                game?.artworks?.length > 0
-                  ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.artworks[0]?.image_id}.jpg`
-                  : gameCover
-              }
-            />
+            {/* Game Manual */}
+            <img src={gameCover} className='game_preview__manual' />
+            {/* The crease to give 3D Effect */}
+            <div className='game_preview__manual_crease' />
+            {/* ESRB IMAGE */}
+            {ratingImage}
+
             <div className='game_preview__front_inside_details'>
-              {game.videos && (
+              {/* TABS */}
+              <div
+                className='game_preview__manual_tab_top'
+                style={{
+                  '--color-theme': determineCoverColor(),
+                }}
+              />
+              <div
+                className='game_preview__manual_tab_bottom'
+                style={{
+                  '--color-theme': determineCoverColor(),
+                }}
+              />
+              {/* {game.videos && (
                 <ReactPlayer
                   url={`https://www.youtube.com/watch?v=${game?.videos[0]?.video_id}`}
                   className='trailer'
@@ -450,13 +462,22 @@ const GamePreview = ({
                   playing={true}
                   onReady={() => setLoading(false)}
                 />
-              )}
+              )} */}
             </div>
           </div>
         )}
 
-        {/* BACK SIDE OF CASE */}
+        {/* MIDDLE CREASE */}
+        <div
+          className={`game_preview__middle ${viewingPreview && 'middle_open'}`}
+          style={{
+            background: determineCoverColor() + 'b5',
+            borderTop: `${determineCoverColor()} solid 4px`,
+            borderBottom: `${determineCoverColor()} solid 4px`,
+          }}
+        />
 
+        {/* BACK SIDE OF CASE */}
         <div
           className={`game_preview__back ${
             gamePlatform.abbreviation == 'Switch' && 'switch_case_back'
@@ -469,87 +490,103 @@ const GamePreview = ({
           }
         `}
           style={{
-            background: determineCoverColor(),
-            borderTop: `${determineCoverColor()} solid 7px`,
+            background: `url(${gameCover})`,
+            // background: determineCoverColor(),
+            borderTop: `${determineCoverColor()} solid 24px`,
             borderBottom: `${determineCoverColor()} solid 7px`,
             borderLeft: `${determineCoverColor()} solid 7px`,
           }}
         >
-          <div
-            className='game_preview__back_open_details'
-            onClick={() => console.log('WORKS')}
-          >
-            <img
-              src={
-                game?.artworks?.length > 1
-                  ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.artworks[1]?.image_id}.jpg`
-                  : gameCover
-              }
-            />
-
-            <div className='game_preview__actions'>
-              <button>Add</button>
-              <button>See More Details</button>
-            </div>
-
-            {/* DISC ART */}
+          {viewingPreview && (
             <div
-              className='game_preview__disc'
-              style={{
-                '--color-theme': determineCoverColor(),
-                backgroundImage: `url(${gameCover})`,
-                // backgroundImage: `url(https://www.kindpng.com/picc/m/470-4706184_transparent-kingdom-hearts-birth-by-sleep-logo-hd.png)`,
-              }}
+              className='game_preview__back_open_details'
+              onClick={() => console.log('WORKS')}
             >
-              <div className='game_preview__disc_center' />
+              <img
+                src={
+                  game?.artworks?.length > 1
+                    ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.artworks[1]?.image_id}.jpg`
+                    : gameCover
+                }
+              />
+
+              <div className='game_preview__actions'>
+                <button>Add to Collection</button>
+                <button>See More Details</button>
+              </div>
+
+              {/* DISC ART */}
               <div
-                className='game_preview__disc_console_banner'
+                className={`game_preview__disc ${
+                  playingDisc && 'playing_disc'
+                }`}
                 style={{
-                  background: determineCoverColor(),
+                  '--color-theme': determineCoverColor(),
+                  backgroundImage: `url(${
+                    game?.artworks?.length > 0
+                      ? `//images.igdb.com/igdb/image/upload/t_1080p/${game.artworks[0]?.image_id}.jpg`
+                      : gameCover
+                  })`,
+                  backgroundSize: 'cover',
                 }}
+                onClick={() => setPlayingDisc(!playingDisc)}
               >
-                <p
-                  className={
-                    gamePlatform.abbreviation == 'N64'
-                      ? 'nintendo_font'
-                      : gamePlatform.abbreviation == 'X360'
-                      ? 'xbox_font'
-                      : gamePlatform.abbreviation == 'PS4'
-                      ? 'modern_playstation_font'
-                      : gamePlatform.abbreviation == 'PS5'
-                      ? 'modern_playstation_font'
-                      : gamePlatform.abbreviation == 'PS3'
-                      ? 'modern_playstation_font'
-                      : gamePlatform.abbreviation == 'PS2'
-                      ? 'old_playstation_font'
-                      : gamePlatform.abbreviation == 'PS1'
-                      ? 'old_playstation_font'
-                      : ''
-                  }
+                <div className='game_preview__disc_center' />
+                <div
+                  className='game_theme'
+                  style={{
+                    '--color-theme': determineCoverColor(),
+                  }}
+                />
+                <div
+                  className='game_preview__disc_console_banner'
+                  style={{
+                    background: determineCoverColor(),
+                  }}
                 >
-                  {gamePlatform.abbreviation}
-                </p>
-                {displayConsoleIcons(gamePlatform.abbreviation)}
+                  <p
+                    className={
+                      gamePlatform.abbreviation == 'N64'
+                        ? 'nintendo_font'
+                        : gamePlatform.abbreviation == 'X360'
+                        ? 'xbox_font'
+                        : gamePlatform.abbreviation == 'PS4'
+                        ? 'modern_playstation_font'
+                        : gamePlatform.abbreviation == 'PS5'
+                        ? 'modern_playstation_font'
+                        : gamePlatform.abbreviation == 'PS3'
+                        ? 'modern_playstation_font'
+                        : gamePlatform.abbreviation == 'PS2'
+                        ? 'old_playstation_font'
+                        : gamePlatform.abbreviation == 'PS1'
+                        ? 'old_playstation_font'
+                        : ''
+                    }
+                  >
+                    {gamePlatform.abbreviation}
+                  </p>
+                  {displayConsoleIcons(gamePlatform.abbreviation)}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* LEFT SIDE OF CASE */}
-
         <div
           className={`game_preview__left ${viewingPreview && 'left_open'}`}
           style={{
-            background: determineCoverColor(),
-            borderTop: `${determineCoverColor()} solid 7px`,
-            borderBottom: `${determineCoverColor()} solid 7px`,
+            '--color-theme': determineCoverColor(),
           }}
         />
 
         {/* RIGHT SIDE OF CASE */}
-
         <div
-          className={`game_preview__right ${viewingPreview && 'right_open'}`}
+          className={`game_preview__right ${
+            viewingPreview &&
+            gamePlatform.abbreviation == 'Switch' &&
+            'switch_case_right'
+          } ${viewingPreview && 'right_open'}`}
           style={{
             '--color-theme': determineCoverColor(),
             background: determineCoverColor(),
@@ -557,7 +594,6 @@ const GamePreview = ({
         />
 
         {/* TOP OF CASE */}
-
         <div
           className={`game_preview__top ${viewingPreview && 'top_open_right'}`}
         />
@@ -567,7 +603,6 @@ const GamePreview = ({
         />
 
         {/* BOTTOM OF CASE */}
-
         <div
           className={`game_preview__bottom ${viewingPreview && 'bottom_open'}`}
         />
@@ -575,146 +610,5 @@ const GamePreview = ({
     </div>
   );
 };
-// const GamePreview = ({
-//   game,
-//   hideDetails,
-//   displayDetails,
-//   fetchGameDetails,
-//   addGame,
-//   viewGameSoundtrack,
-// }) => {
-
-//   // Go to the game website
-//   const goToGameWebsite = (url) => {
-//     window.open(url, '_blank');
-//   };
-
-//   // Wait for animation to finish before closing details
-//   const closeDetails = () => {
-//     setUnmounting(true);
-//     setTimeout(function () {
-//       hideDetails();
-//     }, 150);
-//   };
-
-//   // Convert the YYYY-MM-DD to Month, Day, Year
-//   const convertDate = (date) => {
-//     let months = [
-//       'January',
-//       'February',
-//       'March',
-//       'April',
-//       'May',
-//       'June',
-//       'July',
-//       'August',
-//       'September',
-//       'October',
-//       'November',
-//       'December',
-//     ];
-//     let now = new Date(date?.replace(/-/g, '/'));
-//     let currentDay = now.getDate();
-//     let formattedDay;
-
-//     // Give the numbered day the appropriate abbriviation
-//     switch (currentDay) {
-//       case 1:
-//       case 21:
-//       case 31:
-//         formattedDay = currentDay + 'st';
-//         break;
-//       case 2:
-//       case 22:
-//         formattedDay = currentDay + 'nd';
-//         break;
-//       case 3:
-//       case 23:
-//         formattedDay = currentDay + 'rd';
-//         break;
-//       // Most days have the th ending (28th) so set as default
-//       default:
-//         formattedDay = currentDay + 'th';
-//         break;
-//     }
-//     return (
-//       months[now.getMonth()] + ' ' + formattedDay + ', ' + now.getFullYear()
-//     );
-//   };
-
-//   if (!game) {
-//     return null;
-//   }
-
-//   return (
-//     <div
-//       className={`game-details ${unmounting && 'hide'}`}
-//       onMouseLeave={closeDetails}
-//     >
-//       {/* Container for Game Trailer */}
-//       <div className='game-details__trailer'>
-//         {game.videos ? (
-//           <ReactPlayer
-//             url={`https://www.youtube.com/watch?v=${game?.videos[0]?.video_id}`}
-//             className='trailer'
-//             width='100%'
-//             height='192px'
-//             playing={true}
-//             onReady={() => setLoading(false)}
-//           />
-//         ) : (
-//           <img
-//             className='trailer_placeholder'
-//             src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
-//           />
-//         )}
-//       </div>
-
-//       {/* Game Details Container */}
-//       <div className='game-details__container'>
-//         <SiApplemusic
-//           onClick={(e) => viewGameSoundtrack(e, game)}
-//           className='row__poster_music_icon'
-//           // style={{ color: activeProfile.color }}
-//         />
-//         <SiAddthis
-//           onClick={(e) => addGame(e, game)}
-//           className='row__poster_add_icon'
-//           // style={{ color: activeProfile.color }}
-//         />
-//         <div className='game-details__details'>
-//           <h3
-//             className='game-details__name'
-//             // onClick={goToGameWebsite(game?.website)}
-//           >
-//             {game?.name}
-//           </h3>
-//           <p className='game-details__released'>
-//             Release Date: {convertDate(game?.release_dates[0].human)}
-//           </p>
-//           <p
-//             className='game-details__more'
-//             onClick={() => fetchGameDetails(game)}
-//           >
-//             See More Details
-//           </p>
-//         </div>
-//         <div className='game-details__tags'>
-//           <ul className='game-details__tags_list'>
-//             {game.themes.slice(0, 3).map((tag, i) => (
-//               <li className='game-details__tag' key={tag.name}>
-//                 {i == 0 ? (
-//                   <span className={'tag_no_border'}>{tag.name}</span>
-//                 ) : (
-//                   <span className={'tag_border'}>{tag.name}</span>
-//                 )}
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
 
 export default GamePreview;

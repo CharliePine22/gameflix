@@ -333,7 +333,7 @@ const GamePreview = ({
       case 'X360':
         return '#5dc21e';
       default:
-        return 'rgb(23 45 62)';
+        return '#172d3e';
       // return 'linear-gradient(120deg, #00adee, #000000);';
     }
   };
@@ -435,7 +435,8 @@ const GamePreview = ({
             {/* Game Manual */}
             <img src={gameCover} className='game_preview__manual' />
             {/* The crease to give 3D Effect */}
-            <div className='game_preview__manual_crease' />
+            <div className='game_preview__manual_middle_crease' />
+            <div className='game_preview__manual_bottom_crease' />
             {/* ESRB IMAGE */}
             {ratingImage}
 

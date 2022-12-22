@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.41b6a525.css",
-    "main.js": "/static/js/main.595e6a55.js",
+    "main.css": "/static/css/main.69d8bf47.css",
+    "main.js": "/static/js/main.7e490841.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -58,6 +58,7 @@
     "static/media/nes-logo.png": "/static/media/nes-logo.8f7eaa4e443c4ec2bf8b.png",
     "static/media/playstation-logo.png": "/static/media/playstation-logo.630dfedda6273efed3a8.png",
     "static/media/PsBold.ttf": "/static/media/PsBold.2c139a4a156f192ca221.ttf",
+    "static/media/mario_pixel_standing.png": "/static/media/mario_pixel_standing.858f45ffa8a2ffe10474.png",
     "static/media/PsOld.ttf": "/static/media/PsOld.de770a9fa6a488e38cdb.ttf",
     "static/media/switch_logo.png": "/static/media/switch_logo.4da6d068a57d6f343553.png",
     "static/media/ferrum.otf": "/static/media/ferrum.0db9aba7b1cb9fa47318.otf",
@@ -65,9 +66,10 @@
     "static/media/Xbox.ttf": "/static/media/Xbox.b7dd5edd22b537546fe7.ttf",
     "static/media/Gasalt-Black.ttf": "/static/media/Gasalt-Black.8284ab3fce3818248705.ttf",
     "static/media/gba-logo.png": "/static/media/gba-logo.d897fee67c639798373a.png",
+    "static/media/mario_pixel_jumping.png": "/static/media/mario_pixel_jumping.2d3e818e95ef4a0db512.png",
     "index.html": "/index.html",
-    "main.41b6a525.css.map": "/static/css/main.41b6a525.css.map",
-    "main.595e6a55.js.map": "/static/js/main.595e6a55.js.map",
+    "main.69d8bf47.css.map": "/static/css/main.69d8bf47.css.map",
+    "main.7e490841.js.map": "/static/js/main.7e490841.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -84,7 +86,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.41b6a525.css",
-    "static/js/main.595e6a55.js"
+    "static/css/main.69d8bf47.css",
+    "static/js/main.7e490841.js"
   ]
 }

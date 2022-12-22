@@ -13,15 +13,18 @@
   padding-top: 12px;
   position: relative;
   align-items: center;
+  z-index: 3;
 }
 
 .game_preview__actions button {
+  font-family: 'Press Start 2P', cursive;
   display: flex;
-  font-size: 0.6rem;
+  font-size: 0.5rem;
+  outline: 0;
   text-align: center;
   cursor: pointer;
-  width: 52px;
-  height: 75px;
+  width: 65px;
+  height: 70px;
   position: absolute;
   top: 30px;
   left: 50%;
@@ -41,16 +44,17 @@
   align-content: center;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 }
 
 .game_preview__actions button:nth-of-type(1) {
   left: 68px;
-  box-shadow: 4px 3px 3px rgb(0 0 0 / 50%), 2px 0px 1px #9dd591;
+  box-shadow: 6px 5px 2px rgb(0 0 0 / 50%), 4px 0px 1px #9dd591;
 }
 
 .game_preview__actions button:nth-of-type(2) {
   left: 72%;
-  box-shadow: 4px 3px 3px rgb(0 0 0 / 50%), 1px 0px 1px #9dd591;
+  box-shadow: 4px 3px 3px rgb(0 0 0 / 50%), 3px 0px 1px #9dd591;
 }
 
 .game_preview__actions button::before {
@@ -60,7 +64,7 @@
   left: -10px;
   top: -16px;
   height: 8px;
-  width: 63px;
+  width: 84px;
   border-radius: 6px 6px 0 0;
   background: linear-gradient(
     to bottom,
@@ -73,10 +77,10 @@
 .game_preview__actions button::after {
   content: '';
   position: absolute;
-  left: -9px;
+  left: -10px;
   top: -16px;
-  height: 9.5px;
-  width: 65px;
+  height: 10.5px;
+  width: 83px;
   border-radius: 6px;
   border-bottom: solid 7px rgba(0, 0, 0, 0.4);
   box-shadow: 0 4px 5px rgb(0 0 0 / 50%);
@@ -104,7 +108,7 @@
   left: 0;
   bottom: 0;
   right: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .game_preview__back_open {
@@ -126,7 +130,7 @@
   /* backface-visibility: hidden; */
 }
 
-.game_preview__back_open_details img {
+.game_preview__back_open_details > img {
   height: 100%;
   width: 100%;
   opacity: 0.6;
@@ -302,22 +306,22 @@
 
 .game_preview__disc_console_banner {
   position: absolute;
-  background: blue;
-  height: 40px;
+  display: flex;
+  /* background: blue; */
+  height: 35px;
+  padding-bottom: 5px;
   width: 100%;
   bottom: 0px;
   right: 0;
   text-align: center;
   pointer-events: none;
+  align-items: center;
+  justify-content: center;
 }
 
 .xbox360_banner {
   height: 40px;
   top: 0;
-}
-
-.game_preview__disc_console_banner p {
-  margin-top: 6px;
 }
 
 .game_preview__front {
@@ -347,6 +351,7 @@
   background-size: cover;
   cursor: default;
   outline: 1px solid black;
+  border-bottom-left-radius: 4px;
 }
 
 .game_preview__front_inside img:nth-of-type(2) {
@@ -507,7 +512,7 @@
 .game_preview__middle.middle_open {
   width: 11px;
   top: 47px;
-  left: 116px;
+  left: 118px;
   border: inset rgba(0, 0, 0, 0.75);
   border-width: 2px;
   border-radius: 3px;
@@ -578,7 +583,7 @@
 
 .top_open_right {
   width: 246px;
-  transform: rotateX(90deg) rotateZ(34deg) translateZ(13px) translateY(-186px);
+  transform: rotateX(90deg) rotateZ(34deg) translateZ(14px) translateY(-191px);
   border-radius: 10px;
 }
 
@@ -592,6 +597,20 @@
   /* background: blue; */
   background-color: rgba(0, 0, 0, 0.75);
   border-radius: 4px;
+}
+
+.mario_pixel {
+  position: absolute;
+  height: 70px;
+  left: 45px;
+  bottom: 74px;
+  width: 50px;
+  opacity: 1;
+  transform: perspective(510px) translateZ(-125px) rotateY(-15deg)
+    translateY(0px); /* 72px */
+  z-index: 1;
+  filter: drop-shadow(2px 2px 2px black);
+  animation: lowerMario 1s linear forwards;
 }
 
 .gamecube {
@@ -636,11 +655,11 @@
   margin-left: 7px;
 }
 
-.n64 {
+/* .n64 {
   height: 23px;
   width: 42px;
   filter: drop-shadow(2px 2px 1px #000);
-}
+} */
 
 .steam {
   height: 21px;
@@ -807,6 +826,40 @@
   }
 }
 
+@keyframes lowerMario {
+  0% {
+    transform: perspective(510px) translateZ(-125px) rotateY(-15deg)
+      translateY(0px);
+  }
+
+  100% {
+    transform: perspective(510px) translateZ(-125px) rotateY(-15deg)
+      translateY(85px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .box_open:hover {
+    transform: rotateY(-5deg) rotateX(1deg) scale(0.9) !important;
+    cursor: default;
+  }
+
+  .game_preview__box {
+    right: 4px;
+    transform: rotateY(-5deg) rotateX(1deg) scale(0.9);
+  }
+
+  .game_preview__box:hover {
+    transform: rotateY(-24deg) rotateX(8deg) scale(0.9);
+  }
+
+  .right_open {
+    height: 284px;
+    transform: rotateY(69deg) translateZ(332px);
+    top: 64px;
+  }
+}
+
 @media screen and (max-width: 650px) {
   .game-details__trailer {
     height: 11rem;
@@ -879,12 +932,13 @@
   }
 
   .left_open {
-    height: 361px;
+    height: 362px;
+    transform: rotateY(-52deg) rotate(180deg) translateZ(90px);
   }
 
   .top_open_right {
     width: 250px;
-    transform: rotateX(90deg) rotateZ(34deg) translateZ(14px) translateY(-185px);
+    transform: rotateX(90deg) rotateZ(34deg) translateZ(15px) translateY(-191px);
     border-radius: 4px;
   }
 }

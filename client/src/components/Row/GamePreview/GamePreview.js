@@ -24,6 +24,9 @@ import segaLogo from '../../../assets/images/sega-logo.png';
 import snesLogo from '../../../assets/images/snes-logo.png';
 import gamecubeLogo from '../../../assets/images/gamecube-logo.png';
 
+import marioStanding from '../../../assets/images/mario_pixel_standing.png';
+import marioJumping from '../../../assets/images/mario_pixel_jumping.png';
+
 const GamePreview = ({
   game,
   hideDetails,
@@ -40,6 +43,9 @@ const GamePreview = ({
   const [loading, setLoading] = useState(false);
   const [unmounting, setUnmounting] = useState(false);
   const [playingDisc, setPlayingDisc] = useState(false);
+
+  const [hoveringAdd, setHoveringAdd] = useState(false);
+  const [hoveringDetails, setHoveringDetails] = useState(false);
 
   useEffect(() => {
     closeGame();
@@ -499,10 +505,7 @@ const GamePreview = ({
           }}
         >
           {viewingPreview && (
-            <div
-              className='game_preview__back_open_details'
-              onClick={() => console.log('WORKS')}
-            >
+            <div className='game_preview__back_open_details'>
               <img
                 src={
                   game?.artworks?.length > 1
@@ -511,9 +514,35 @@ const GamePreview = ({
                 }
               />
 
+              {/* MARIO PIPE BUTTONS */}
               <div className='game_preview__actions'>
-                <button>Add to Collection</button>
-                <button>See More Details</button>
+                {hoveringAdd && (
+                  <img
+                    src={marioStanding}
+                    className='mario_pixel'
+                    style={{ left: '45px', bottom: '74px' }}
+                  />
+                )}
+
+                <button
+                  onMouseOver={() => setHoveringAdd(true)}
+                  onMouseOut={() => setHoveringAdd(false)}
+                >
+                  Add
+                </button>
+                {hoveringDetails && (
+                  <img
+                    src={marioStanding}
+                    className='mario_pixel'
+                    style={{ left: '152px', bottom: '74px' }}
+                  />
+                )}
+                <button
+                  onMouseOver={() => setHoveringDetails(true)}
+                  onMouseOut={() => setHoveringDetails(false)}
+                >
+                  Details
+                </button>
               </div>
 
               {/* DISC ART */}

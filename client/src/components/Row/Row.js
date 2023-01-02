@@ -176,7 +176,7 @@ function Row({
                             src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                             alt={game.name}
                           />
-                          {determineESRB(game)}
+                          {/* {determineESRB(game)} */}
                         </div>
                         {/* BACK OF POSTER */}
                         <div

@@ -167,7 +167,7 @@
 }
 
 .game_preview__box:hover {
-  transform: rotateY(-24deg) rotateX(8deg);
+  transform: rotateY(-24deg) rotateX(8deg) scale(1.1);
 }
 
 .game_preview__box:hover .game_preview__gradient {
@@ -176,7 +176,7 @@
 }
 
 .box_open:hover {
-  transform: rotateY(-5deg) rotateX(1deg) !important;
+  transform: rotateY(-5deg) rotateX(1deg) scale(1.1) !important;
   cursor: default;
 }
 
@@ -610,6 +610,9 @@
     translateY(0px); /* 72px */
   z-index: 1;
   filter: drop-shadow(2px 2px 2px black);
+}
+
+.down_pipe {
   animation: lowerMario 1s linear forwards;
 }
 
@@ -747,7 +750,6 @@
   perspective: 690px;
   perspective-origin: 50% 50%;
   filter: drop-shadow(1px 3px 1px rgba(0, 0, 0, 0.7));
-  /* filter: drop-shadow(0px 10px 4px rgba(0, 0, 0, 0.5)); */
 }
 
 .trailer {

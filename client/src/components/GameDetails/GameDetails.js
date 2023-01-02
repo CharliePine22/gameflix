@@ -326,6 +326,8 @@ const GameDetails = ({
     );
   };
 
+  console.log(gameDetails);
+
   if (Object.keys(gameDetails).length == 0 || loading) {
     return (
       <div className='game_details__wrapper' data-title='.dot-falling'>
@@ -431,34 +433,36 @@ const GameDetails = ({
                 </div>
 
                 {/* PLATFORMS */}
-                <div className='game_details__platforms'>
-                  <h4 className='game_details__title'>Platforms</h4>
-                  <ul className='platforms_list'>
-                    {gameDetails.platforms?.map((platform, i) => {
-                      if (platform.category == 1 || platform.category == 5) {
-                        if (
-                          platform.name !== 'Super Famicom' &&
-                          platform.name !== 'Family Computer' &&
-                          platform.name !== 'Nintendo DSi' &&
-                          platform.name !== 'Family Computer Disk System'
-                        ) {
-                          return (
-                            <li
-                              key={platform.id}
-                              className='platform'
-                              alt='platform'
-                            >
-                              {displayConsoleIcons(
-                                platform.abbreviation || platform.name
-                              )}
-                              <p>{platform.abbreviation || platform.name}</p>
-                            </li>
-                          );
+                {gameDetails.platforms.length > 0 && (
+                  <div className='game_details__platforms'>
+                    <h4 className='game_details__title'>Platforms</h4>
+                    <ul className='platforms_list'>
+                      {gameDetails.platforms?.map((platform, i) => {
+                        if (platform.category == 1 || platform.category == 5) {
+                          if (
+                            platform.name !== 'Super Famicom' &&
+                            platform.name !== 'Family Computer' &&
+                            platform.name !== 'Nintendo DSi' &&
+                            platform.name !== 'Family Computer Disk System'
+                          ) {
+                            return (
+                              <li
+                                key={platform.id}
+                                className='platform'
+                                alt='platform'
+                              >
+                                {displayConsoleIcons(
+                                  platform.abbreviation || platform.name
+                                )}
+                                <p>{platform.abbreviation || platform.name}</p>
+                              </li>
+                            );
+                          }
                         }
-                      }
-                    })}
-                  </ul>
-                </div>
+                      })}
+                    </ul>
+                  </div>
+                )}
                 {gameDetails.rating && (
                   <div className='game_details__rating'>
                     <h4 className='game_details__title'>Rating</h4>

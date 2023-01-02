@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SiApplemusic, SiAddthis } from 'react-icons/si';
+import { AiOutlineExpandAlt } from 'react-icons/ai';
 import ReactPlayer from 'react-player/lazy';
 import './GamePreview.css';
 
@@ -24,6 +25,7 @@ import segaLogo from '../../../assets/images/sega-logo.png';
 import snesLogo from '../../../assets/images/snes-logo.png';
 import gamecubeLogo from '../../../assets/images/gamecube-logo.png';
 
+import pipeAudio from '../../../assets/sounds/pipe-sound.mp3';
 import marioStanding from '../../../assets/images/mario_pixel_standing.png';
 import marioJumping from '../../../assets/images/mario_pixel_jumping.png';
 
@@ -43,9 +45,11 @@ const GamePreview = ({
   const [loading, setLoading] = useState(false);
   const [unmounting, setUnmounting] = useState(false);
   const [playingDisc, setPlayingDisc] = useState(false);
-
+  const [marioTransition, setMarioTransition] = useState(false);
   const [hoveringAdd, setHoveringAdd] = useState(false);
   const [hoveringDetails, setHoveringDetails] = useState(false);
+
+  let audio = new Audio(pipeAudio);
 
   useEffect(() => {
     closeGame();
@@ -300,10 +304,6 @@ const GamePreview = ({
     );
   };
 
-  if (!game) {
-    return null;
-  }
-
   // Based on the game platform, adjust the colors to reflect the platform/console color scheme
   const determineCoverColor = () => {
     if (!gamePlatform) return;
@@ -343,6 +343,18 @@ const GamePreview = ({
       // return 'linear-gradient(120deg, #00adee, #000000);';
     }
   };
+
+  const delayDetails = async () => {
+    audio.play();
+    setMarioTransition(true);
+    await new Promise((res) => setTimeout(res, 1600));
+    fetchGameDetails(game);
+    setMarioTransition(false);
+  };
+
+  if (!game) {
+    return null;
+  }
 
   return (
     <div className='game_preview__wrapper' onClick={() => console.log(game)}>
@@ -519,7 +531,7 @@ const GamePreview = ({
                 {hoveringAdd && (
                   <img
                     src={marioStanding}
-                    className='mario_pixel'
+                    className={`mario_pixel ${marioTransition && 'down_pipe'}`}
                     style={{ left: '45px', bottom: '74px' }}
                   />
                 )}
@@ -527,17 +539,19 @@ const GamePreview = ({
                 <button
                   onMouseOver={() => setHoveringAdd(true)}
                   onMouseOut={() => setHoveringAdd(false)}
+                  onClick={(e) => addGame(e, game)}
                 >
                   Add
                 </button>
                 {hoveringDetails && (
                   <img
                     src={marioStanding}
-                    className='mario_pixel'
+                    className={`mario_pixel ${marioTransition && 'down_pipe'}`}
                     style={{ left: '152px', bottom: '74px' }}
                   />
                 )}
                 <button
+                  onClick={() => delayDetails()}
                   onMouseOver={() => setHoveringDetails(true)}
                   onMouseOut={() => setHoveringDetails(false)}
                 >

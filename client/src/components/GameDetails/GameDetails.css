@@ -1,7 +1,8 @@
 .details_img {
   height: 100%;
   border: 2px solid white;
-  border-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
   /* object-fit: cover; */
   /* width: 100%; */
   width: 550px;
@@ -63,8 +64,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
-  /* margin: 0; */
+  margin-top: 15px;
+  margin-bottom: 20px;
 }
 
 .snes_button {
@@ -113,9 +114,9 @@
   display: flex;
   flex-direction: column;
   animation: displayDetails 300ms ease-in;
-  margin: 0 8px;
-  /* height: 100%; */
-  padding-bottom: 12px;
+  margin: 0 12px;
+  height: 100%;
+  /* padding-bottom: 12px; */
 }
 
 .game_details__container h2 {
@@ -132,13 +133,15 @@
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   user-select: none;
 }
 
 .game_details__data p {
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
 }
 
 .game_details__description {
@@ -154,7 +157,6 @@
   flex-direction: column;
   align-items: center;
   color: white;
-  margin: 30px 0 5px;
 }
 
 .game_details__details {
@@ -162,7 +164,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  /* height: 100%; */
+  height: 100%;
+  margin-bottom: 20px;
 }
 
 .game_details__error {
@@ -226,7 +229,9 @@
   width: 100%;
   display: flex;
   position: relative;
-  height: 620px;
+  height: 100%;
+  align-items: center;
+  /* height: 620px; */
   justify-content: space-evenly;
 }
 
@@ -242,10 +247,10 @@
 }
 
 .game_platform_logo {
-  height: 28px;
-  width: 40px;
+  height: 25px;
+  width: 32px;
   filter: drop-shadow(3px 4px 1px #000);
-  margin-right: 10px;
+  margin-right: 5px;
   object-fit: contain;
 }
 
@@ -253,15 +258,17 @@
   overflow-y: scroll;
   height: 100%;
   width: 100%;
-  min-width: 101px;
+  min-width: 75px;
   max-width: 60px;
   position: relative;
-  right: 1px;
+  right: 0px;
   display: flex;
   flex-direction: column;
   border-top: 2px solid white;
   border-right: 2px solid white;
   border-bottom: 2px solid white;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .game_details__screenshots::-webkit-scrollbar {
@@ -281,8 +288,10 @@
 }
 
 .game_details__title {
-  font-size: 2.2rem;
-  text-shadow: 5px 4px 3px black;
+  font-size: 2rem;
+  /* text-shadow: 5px 4px 3px black; */
+  text-shadow: 0px 0 white, 0 0px white, 0px 0 white, 0 0px white, 0px 0px white,
+    0px 0px white, 0px 1px white, 1px 0px white;
   text-transform: uppercase;
   text-align: center;
 }
@@ -311,7 +320,7 @@
 .media_placeholder {
   position: relative;
   display: flex;
-  height: 100%;
+  height: 600px;
 }
 
 .media_soundtrack__background {
@@ -363,13 +372,15 @@
   list-style: none;
   cursor: pointer;
   width: 100%;
+  margin-right: 7px;
 }
 
 .platform {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  width: auto;
 }
 
 .platform_logos {
@@ -389,16 +400,17 @@
 .platforms_list {
   display: flex;
   width: 100%;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   max-width: 100%;
+  flex-wrap: wrap;
 }
 
 .screenshot_thumbnail {
   height: -webkit-fill-available;
   min-height: 110px;
   width: 100%;
-  object-fit: cover;
+  /* object-fit: cover; */
   cursor: pointer;
 }
 
@@ -508,18 +520,19 @@
     max-width: 330px;
   }
 
-  .screenshot_thumbnail {
-    height: -webkit-fill-available;
+  .game_details__media {
+    /* height: 585px; */
   }
 
-  .game_details__media {
-    height: 585px;
+  .game_details__container h2 {
+    font-size: 2.5rem;
+    margin: 15px 0px 25px;
   }
 }
 
 @media screen and (max-width: 925px) {
   .details_img {
-    width: 400px;
+    width: 430px;
   }
 
   .game_details__info_container_top {
@@ -530,7 +543,7 @@
 /* TABLETS */
 @media screen and (max-width: 750px) {
   .details_img {
-    width: 325px;
+    width: 335px;
   }
 
   .game_details__description {
@@ -541,9 +554,13 @@
     width: auto;
   }
 
-  .game_details__media {
-    height: 520px;
+  .platforms_list {
+    justify-content: space-evenly;
   }
+
+  /* .game_details__media {
+    height: 590px;
+  } */
 
   .game_details__title {
     font-size: 1.6rem;
@@ -562,18 +579,14 @@
   .game_details__data {
     flex-direction: row;
     margin-top: 20px;
+    align-items: flex-start;
+    width: 96%;
   }
 
-  .game_details__description_container {
-    margin-top: 230px;
-    /* margin-top: 190px; */
-    height: auto;
-  }
-
-  .game_details__details {
+  /* .game_details__details {
     height: 500px;
     justify-content: space-between;
-  }
+  } */
 
   .game_details__esrb {
     /* margin-top: 50px; */
@@ -591,6 +604,7 @@
   .game_details__media {
     flex-direction: column;
     justify-content: flex-start;
+    height: 100% !important;
   }
 
   .game_details__screenshots {
@@ -605,13 +619,14 @@
   .media_placeholder {
     justify-content: center;
     width: 100%;
+    margin-bottom: 6px;
   }
 
   .game_details__publishers,
   .game_details__platforms,
   .game_details__rating,
   .game_details__released {
-    height: 60px;
+    /* height: 60px; */
     justify-content: flex-start;
   }
 
@@ -619,10 +634,14 @@
     display: none;
   }
 
-  /* .platforms_list {
-    display: block;
-    column-count: 2;
-  } */
+  .game_details__platforms {
+    width: 150px;
+  }
+
+  .platforms_list {
+    justify-content: center;
+    /* height: 80px; */
+  }
 }
 
 /* MOBILE DEVICES */
@@ -646,8 +665,10 @@
 
   .game_details__data {
     margin: 0;
-    width: 300px;
+    width: 380px;
     flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
   }
 
   .game_details__description {
@@ -655,9 +676,9 @@
     font-size: 1rem;
   }
 
-  .game_details__description_container {
+  /* .game_details__description_container {
     margin-top: 210px;
-  }
+  } */
 
   .game_details__details {
     margin: 0;
@@ -665,7 +686,7 @@
   }
 
   .game_details__media {
-    height: 450px;
+    /* height: 450px; */
   }
 
   .game_details__screenshots {
@@ -710,12 +731,13 @@
   }
 
   .game_details__title {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
 
   .media_placeholder {
     width: 100%;
     margin-bottom: 20px;
+    height: 550px;
   }
 
   .media_soundtrack__container {
@@ -731,6 +753,7 @@
   .publisher,
   .platform {
     font-size: 0.8rem;
+    width: auto;
   }
 
   .platform p {

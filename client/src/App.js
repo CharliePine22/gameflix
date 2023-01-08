@@ -47,7 +47,7 @@ function App() {
 
   // Refetch user data if any changes are made
   useEffect(() => {
-    if (!userEmail) return;
+    // if (!userEmail) return;
     const updateUser = async () => {
       try {
         const request = await axios.get(`${baseURL}/app/get_user`, {
@@ -133,7 +133,7 @@ function App() {
   };
 
   // Display login page if app detects sign out or sign in
-  if (!userEmail || !loggedUser) {
+  if (!userEmail) {
     return (
       <Authentication
         loading={isLoading}
@@ -155,6 +155,7 @@ function App() {
       />
     );
   }
+
   if (loggedUser) {
     return (
       <Dashboard

@@ -66,6 +66,7 @@
   align-items: center;
   margin-top: 15px;
   margin-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .snes_button {
@@ -599,6 +600,7 @@
 
   .game_details__info_container_top {
     width: 100%;
+    margin-bottom: 25px;
   }
 
   .game_details__media {

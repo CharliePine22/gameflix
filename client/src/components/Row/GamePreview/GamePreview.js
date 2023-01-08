@@ -13,11 +13,12 @@ import nesLogo from '../../../assets/images/nes-logo.png';
 import nintendo64Logo from '../../../assets/images/nintendo-logo.png';
 import nintendoSwitchLogo from '../../../assets/images/switch_logo.png';
 import nintendoDs from '../../../assets/images/ds-logo.png';
-import nintendo3ds from '../../../assets/images/nintendo3ds-logo.png';
+import nintendo3ds from '../../../assets/images/nintendo3ds-logo2.png';
 import gbaLogo from '../../../assets/images/gba-logo.png';
 import wiiLogo from '../../../assets/images/wii_logo.png';
 import wiiULogo from '../../../assets/images/wiiu-logo.png';
 import xboxLogo from '../../../assets/images/xbox-logo.png';
+import xbox360Banner from '../../../assets/images/xbox360-banner.webp';
 import steamLogo from '../../../assets/images/steam-logo-transparent.png';
 import iosLogo from '../../../assets/images/apple-logo.png';
 import androidLogo from '../../../assets/images/android-logo.png';
@@ -64,10 +65,17 @@ const GamePreview = ({
   // Convert name of platforms into a PNG icon
   const displayConsoleIcons = (platform) => {
     switch (platform) {
-      case 'PlayStation':
-      case 'PS1':
       case 'PlayStation 2':
       case 'PS2':
+        return (
+          <img
+            src={playstationLogo}
+            alt={platform}
+            className='game_preview__platform_logo playstation_old'
+          />
+        );
+      case 'PlayStation':
+      case 'PS1':
       case 'PlayStation 3':
       case 'PS3':
       case 'PlayStation 5':
@@ -77,7 +85,7 @@ const GamePreview = ({
           <img
             src={playstationLogo}
             alt={platform}
-            className='game_preview__platform_logo playstation'
+            className='game_preview__platform_logo playstation_new'
           />
         );
       case 'PlayStation 4':
@@ -86,7 +94,7 @@ const GamePreview = ({
           <img
             src={playstationLogoWhite}
             alt={platform}
-            className='game_preview__platform_logo playstation'
+            className='game_preview__platform_logo playstation_new'
           />
         );
       case 'PlayStation Portable':
@@ -327,7 +335,8 @@ const GamePreview = ({
       case 'NDS':
       case '3DS':
       case 'Wii':
-        return '#FFF5EE';
+        return '#FFFFFF';
+      // return '#FFF5EE';
       case 'WiiU':
         return '#009ac7';
       case 'NGC':
@@ -335,6 +344,7 @@ const GamePreview = ({
       // return '#645097';
       case 'XONE':
       case 'XBOX':
+      case 'Series X':
         return '#107C10';
       case 'X360':
         return '#5dc21e';
@@ -378,17 +388,24 @@ const GamePreview = ({
           <div
             className={`game_preview__front_banner ${
               gamePlatform.abbreviation == 'Switch' && 'switch_banner'
-            }`}
+            }
+            ${gamePlatform.abbreviation == 'X360' && 'xbox360_banner'}
+            ${gamePlatform.abbreviation == 'PS2' && 'ps2_banner'}
+            ${gamePlatform.abbreviation == 'PS4' && 'ps4_banner'}
+            ${gamePlatform.abbreviation == 'Wii' && 'wii_banner'}
+            ${gamePlatform.abbreviation == 'Series X' && 'seriesX_banner'}
+            `}
             style={{ background: determineCoverColor() }}
           >
             {displayConsoleIcons(gamePlatform.abbreviation)}
-
+            {gamePlatform.abbreviation == 'X360' && <img src={xbox360Banner} />}
             {/* PLATFORM NAME */}
             <p
               className={
                 gamePlatform.abbreviation == 'N64'
                   ? 'nintendo_font'
-                  : gamePlatform.abbreviation == 'X360'
+                  : gamePlatform.abbreviation == 'X360' ||
+                    gamePlatform.abbreviation == 'Series X'
                   ? 'xbox_font'
                   : gamePlatform.abbreviation == 'PS4'
                   ? 'modern_playstation_font'
@@ -423,6 +440,8 @@ const GamePreview = ({
                 ? 'Steam'
                 : gamePlatform.abbreviation == 'X360'
                 ? gamePlatform.name.toUpperCase()
+                : gamePlatform.abbreviation == 'Series X'
+                ? `Xbox ${gamePlatform.abbreviation}`
                 : gamePlatform.abbreviation == 'PS1'
                 ? gamePlatform.name
                 : gamePlatform.abbreviation == 'PS2'

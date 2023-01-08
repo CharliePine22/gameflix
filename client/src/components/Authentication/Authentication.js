@@ -10,7 +10,7 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
   const [toLandingPage, setToLandingPage] = useState(false);
   const [authError, setAuthError] = useState('');
   const userLoggedIn = localStorage.getItem('user');
-  console.log(userLoggedIn);
+  // console.log(userLoggedIn);
 
   const baseURL = process.env.REACT_APP_BASE_URL;
   const counter = useRef(0);

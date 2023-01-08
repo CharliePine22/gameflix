@@ -162,12 +162,14 @@
   height: 100%;
   transform-style: preserve-3d;
   transition: all 600ms ease-in-out;
-  transform: rotateY(-5deg) rotateX(1deg);
+  transform: rotateY(-90deg) rotateX(0deg);
+  /* transform: rotateY(-5deg) rotateX(1deg); */
   /* transform: rotateY(-8deg) rotateX(5deg); */
 }
 
 .game_preview__box:hover {
-  transform: rotateY(-24deg) rotateX(8deg) scale(1.1);
+  transform: rotateY(-20deg) rotateX(2deg) scale(1);
+  /* transform: rotateY(-24deg) rotateX(4deg) scale(1.1); */
 }
 
 .game_preview__box:hover .game_preview__gradient {
@@ -175,8 +177,12 @@
   opacity: 0.95;
 }
 
+.box_open {
+  transform: rotateY(-4deg) rotateX(1deg) scale(1.1) !important;
+}
+
 .box_open:hover {
-  transform: rotateY(-5deg) rotateX(1deg) scale(1.1) !important;
+  transform: rotateY(-4deg) rotateX(1deg) scale(1.1) !important;
   cursor: default;
 }
 
@@ -187,7 +193,7 @@
   height: 85px;
   width: 85px;
   padding: 75px;
-  background-position: center;
+  /* background-position: center; */
   filter: drop-shadow(0px 0px 4px black);
   cursor: pointer;
   overflow: hidden;
@@ -319,11 +325,6 @@
   justify-content: center;
 }
 
-.xbox360_banner {
-  height: 40px;
-  top: 0;
-}
-
 .game_preview__front {
   width: 243px;
   height: 345px;
@@ -335,11 +336,11 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  outline: 2px solid black;
+  /* outline: 2px solid black; */
 }
 
 .game_preview__front_open {
-  animation: openCaseFront 500ms ease-in-out forwards;
+  animation: openCaseFront 800ms ease-in-out forwards;
 }
 
 .game_preview__front_inside {
@@ -406,8 +407,9 @@
   display: flex;
   align-items: center;
   position: absolute;
-  top: -27px;
+  top: -26px;
   width: 100.1%; /* Give extra .1 so border extends across completely */
+  /* width: 103%; Give extra 3% so banner extends across the case completely */
   height: 28px;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
@@ -415,9 +417,68 @@
   overflow: hidden;
 }
 
+.ps2_banner {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  width: 102%;
+}
+
+.ps2_banner p {
+  margin-left: 8px;
+  font-size: 0.65rem;
+  margin-bottom: 2px;
+}
+
+.ps4_banner {
+  height: 32px;
+}
+
+.ps4_banner p {
+  font-size: 1.25rem;
+  text-shadow: 2px 2px 1px black !important;
+  margin-bottom: 4px;
+}
+
+.seriesX_banner {
+  justify-content: center;
+}
+
+.seriesX_banner p {
+  text-transform: none !important;
+  font-family: verdana;
+}
+
+.wii_banner {
+  border-bottom: 2px solid grey;
+  overflow: visible;
+}
+
+.xbox360_banner {
+  position: absolute;
+  top: -27px;
+  height: 31px;
+}
+
+.xbox360_banner > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  z-index: 10;
+  position: absolute;
+}
+
 .game_preview__front_banner p {
   text-shadow: 2px 2px 1px black;
-  font-weight: 600;
+  text-transform: uppercase;
+  /* font-family: verdana; */
+  font-weight: 700;
+  color: #f5f5f5;
+  text-shadow: 1px 0px 1px #919191, 1px 0px 1px #919191, 1px 1px 1px #919191,
+    1px 1px 1px #919191, 1px 1px 1px #919191, 1px 1px 1px #919191,
+    1px 1px 1px #919191, 1px 1px 1px #919191, 1px 1px 1px #919191,
+    1px 1px 1px #919191, 1px 1px 6px rgb(16 16 16 / 40%),
+    1px 2px 6px rgb(16 16 16 / 20%), 1px 3px 3px rgb(16 16 16 / 20%),
+    1px 3px 1px rgb(16 16 16 / 40%);
 }
 
 .game_preview__gradient {
@@ -453,10 +514,10 @@
 }
 
 .left_open {
-  height: 328px;
-  transform: rotateY(-52deg) rotate(180deg) translateZ(89px);
-  top: 36px;
-  left: 10px;
+  height: 332px;
+  transform: rotateY(-56deg) rotate(180deg) translateZ(89px);
+  top: 35px;
+  left: 12px;
   border: 1px solid transparent;
   border-right: 3px solid black;
   border-radius: 3px;
@@ -512,11 +573,11 @@
 .game_preview__middle.middle_open {
   width: 11px;
   top: 47px;
-  left: 118px;
+  left: 116px;
   border: inset rgba(0, 0, 0, 0.75);
   border-width: 2px;
   border-radius: 3px;
-  transform: translateZ(-51px) rotateY(4deg);
+  transform: translateZ(-53px) rotateY(4deg);
 }
 
 .game_preview__modal {
@@ -536,7 +597,7 @@
 }
 
 .game_preview__right {
-  width: 26px;
+  width: 24px;
   height: 375px;
   /* height: 345px; */
   transform: rotateY(90deg) translateZ(228px);
@@ -551,9 +612,9 @@
 .right_open {
   background: black !important;
   width: 26px;
-  height: 280px;
-  transform: rotateY(67deg) translateZ(332px);
-  top: 66px;
+  height: 282px;
+  transform: rotateY(67deg) translateZ(327px);
+  top: 65px;
   left: -29px;
   border-left: 2.5px solid black;
   border-radius: 4px;
@@ -610,6 +671,7 @@
     translateY(0px); /* 72px */
   z-index: 1;
   filter: drop-shadow(2px 2px 2px black);
+  /* margin-bottom: 25px; */
 }
 
 .down_pipe {
@@ -634,10 +696,21 @@
   border-radius: 50%;
 }
 
-.playstation {
+.playstation_old {
   height: 60%;
-  width: 34px;
-  margin-right: 5px;
+  width: 30px;
+  /* filter: drop-shadow(1px 1px 1px #000); */
+  object-fit: contain;
+  margin-bottom: 3px;
+  margin-right: 4px;
+}
+
+.playstation_new {
+  height: 70%;
+  width: 32px;
+  margin-left: 8px;
+  margin-right: 10px;
+  margin-bottom: 3px;
 }
 
 .nes {
@@ -653,9 +726,9 @@
 }
 
 .nintendo-3ds {
-  height: 40px;
-  width: 130px;
-  margin-left: 7px;
+  height: 20px;
+  width: 150px;
+  margin: 0 auto;
 }
 
 /* .n64 {
@@ -724,10 +797,17 @@
 }
 
 .wii {
-  height: 52px;
-  width: 62px;
+  height: 50px;
+  width: 64px;
   position: absolute;
-  left: -8px;
+  right: -7px;
+  top: -2px;
+  border-radius: 0%;
+  background: white;
+  filter: none;
+  border-bottom-left-radius: 40%;
+  border-left: 0;
+  border-bottom: 2px solid grey;
 }
 
 .wiiU {
@@ -841,23 +921,27 @@
 }
 
 @media screen and (max-width: 500px) {
+  .box_open {
+    transform: rotateY(-5deg) rotateX(1deg) scale(1) !important;
+  }
+
   .box_open:hover {
-    transform: rotateY(-5deg) rotateX(1deg) scale(0.9) !important;
+    transform: rotateY(-5deg) rotateX(1deg) scale(1) !important;
     cursor: default;
   }
 
   .game_preview__box {
-    right: 4px;
+    /* right: 4px; */
     transform: rotateY(-5deg) rotateX(1deg) scale(0.9);
   }
 
   .game_preview__box:hover {
-    transform: rotateY(-24deg) rotateX(8deg) scale(0.9);
+    transform: rotateY(-28deg) rotateX(4deg) scale(0.9);
   }
 
   .right_open {
     height: 284px;
-    transform: rotateY(69deg) translateZ(332px);
+    transform: rotateY(67deg) translateZ(332px);
     top: 64px;
   }
 }

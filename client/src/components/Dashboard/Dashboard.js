@@ -200,6 +200,7 @@ const Dashboard = ({
   };
 
   const openGameWindow = (game) => {
+    console.log(game);
     setCurrentGameOpen(game.name);
     document.body.style.overflow = 'hidden';
   };

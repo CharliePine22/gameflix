@@ -323,7 +323,11 @@ const Dashboard = ({
                 twitchToken={twitchToken}
                 setGameDetails={(game) => setGameDetails(game)}
               />
-              <TrendingRow twitchToken={twitchToken} />
+
+              <TrendingRow
+                twitchToken={twitchToken}
+                setGameDetails={(game) => setGameDetails(game)}
+              />
               <UserLibrary
                 activeProfile={currentProfile}
                 playTrack={playTrack}

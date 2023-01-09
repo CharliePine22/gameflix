@@ -162,7 +162,15 @@
   height: 100%;
   transform-style: preserve-3d;
   transition: all 600ms ease-in-out;
-  transform: rotateY(-90deg) rotateX(0deg);
+  /* transform: rotateY(-90deg) rotateX(0deg);    width: 27px;
+    height: 380px;
+    background-position: 265px 0px;
+    background: var(--color-theme);
+    transform: rotateY(-90deg) translateZ(13px);
+    position: absolute;
+    top: 0;
+    left: 0px;
+    border-radius: 4px; */
   /* transform: rotateY(-5deg) rotateX(1deg); */
   /* transform: rotateY(-8deg) rotateX(5deg); */
 }
@@ -187,6 +195,9 @@
 }
 
 .game_preview__disc {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
   position: absolute;
   top: 120px;
   right: 4px;
@@ -325,6 +336,13 @@
   justify-content: center;
 }
 
+.game_preview__disc_console_banner > .gamecube {
+  margin-left: 0;
+  margin-bottom: 3px;
+  height: 23px;
+  width: 96px;
+}
+
 .game_preview__front {
   width: 243px;
   height: 345px;
@@ -417,15 +435,58 @@
   overflow: hidden;
 }
 
+.gamecube_banner {
+  padding-bottom: 3px;
+}
+
+.ps1_banner {
+  top: 164px;
+  right: 45px;
+  width: 150%;
+  height: 32px;
+  border: 0;
+  border-radius: 0;
+  z-index: 10;
+  transform: rotate(-90deg);
+}
+
 .ps2_banner {
   flex-direction: row-reverse;
   justify-content: space-between;
-  width: 102%;
+  width: 100%;
+}
+
+.ps2_banner img {
+  margin-right: 0px;
 }
 
 .ps2_banner p {
   margin-left: 8px;
   font-size: 0.65rem;
+  margin-bottom: 2px;
+  text-shadow: 2px 2px 1px black !important;
+}
+
+.ps3_banner {
+  border-bottom: 2px solid maroon;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.75) 70%,
+    rgba(105, 105, 105, 0.7) 100%
+  ) !important;
+  top: -28px;
+}
+
+.ps3_banner img {
+  height: 62%;
+  margin-left: 4px;
+  margin-right: 4px;
+  margin-bottom: 0px;
+}
+
+.ps3_banner p {
+  text-shadow: 2px 2px 1px black !important;
   margin-bottom: 2px;
 }
 
@@ -504,13 +565,14 @@
 
 .game_preview__left {
   width: 27px;
-  height: 365px;
+  height: 380px;
   background-position: 265px 0px;
-  transform: rotateY(-90deg) translateZ(14px);
+  background: var(--color-theme);
+  transform: rotateY(-90deg) translateZ(13px);
   position: absolute;
   top: 0;
   left: 0px;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 .left_open {
@@ -573,7 +635,7 @@
 .game_preview__middle.middle_open {
   width: 11px;
   top: 47px;
-  left: 116px;
+  left: 113px;
   border: inset rgba(0, 0, 0, 0.75);
   border-width: 2px;
   border-radius: 3px;
@@ -697,7 +759,7 @@
 }
 
 .playstation_old {
-  height: 60%;
+  height: 70%;
   width: 30px;
   /* filter: drop-shadow(1px 1px 1px #000); */
   object-fit: contain;

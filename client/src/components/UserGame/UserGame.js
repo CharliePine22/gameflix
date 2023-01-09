@@ -67,6 +67,8 @@ const UserGame = ({
       100
   );
 
+  console.log(game);
+
   const gamefaqsURL = `https://gamefaqs.gamespot.com/search?game=${game.name.replaceAll(
     ' ',
     '+'

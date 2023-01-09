@@ -6,7 +6,7 @@ import Placeholder from '../Placeholder/Placeholder';
 import GamePreview from '../Row/GamePreview/GamePreview';
 import axios from 'axios';
 
-const TrendingRow = ({ twitchToken }) => {
+const TrendingRow = ({ twitchToken, setGameDetails }) => {
   const [games, setGames] = useState([]);
   const [currentGame, setCurrentGame] = useState('');
   const [displayDetails, setDisplayDetails] = useState(false);
@@ -70,7 +70,7 @@ const TrendingRow = ({ twitchToken }) => {
 
   // Grab trailer video from selected game
   const fetchGameDetails = (game) => {
-    console.log(game);
+    setGameDetails(game);
     setCurrentlyOpen(game.name);
     setCurrentGame(game);
   };

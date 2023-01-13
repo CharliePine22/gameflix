@@ -11,6 +11,7 @@ import pspLogo from '../../../assets/images/psp-logo.png';
 import psVitaLogo from '../../../assets/images/psvita-logo.png';
 import nesLogo from '../../../assets/images/nes-logo.png';
 import nintendo64Logo from '../../../assets/images/nintendo-logo.png';
+import nintendo64Case from '../../../assets/images/n64-case-template-e.png';
 import nintendoSwitchLogo from '../../../assets/images/switch_logo.png';
 import nintendoDs from '../../../assets/images/ds-logo.png';
 import nintendo3ds from '../../../assets/images/nintendo3ds-logo2.png';
@@ -25,6 +26,7 @@ import androidLogo from '../../../assets/images/android-logo.png';
 import segaLogo from '../../../assets/images/sega-logo.png';
 import snesLogo from '../../../assets/images/snes-logo.png';
 import gamecubeLogo from '../../../assets/images/gamecube-logo.png';
+import gamecubeBanner from '../../../assets/images/gamecube-disc-banner.png';
 
 // Gmae Platform Startup Sounds
 import ps1Sound from '../../../assets/sounds/platform_sounds/ps1-startup.mp3';
@@ -70,6 +72,7 @@ const GamePreview = ({
 
   const playConsoleStartup = (platform) => {
     console.log(platform.toLowerCase());
+    console.log(playingDisc);
     if (!playingDisc) {
       setPlayingDisc(true);
       consoleAudio.play();
@@ -343,7 +346,8 @@ const GamePreview = ({
       case 'PS3':
         return '#9e9e9e';
       case 'N64':
-        return '#CC0000';
+        return '#EB1718';
+      // return '#CC0000';
       case 'Switch':
         return '#e4000f';
       case 'PS4':
@@ -370,6 +374,7 @@ const GamePreview = ({
     }
   };
 
+  // Allow mario animation to finish before redirecting user to details page
   const delayDetails = async () => {
     audio.play();
     setMarioTransition(true);
@@ -394,18 +399,28 @@ const GamePreview = ({
             gamePlatform.abbreviation == 'Switch' && 'switch_case'
           } ${viewingPreview && 'game_preview__front_open'}`}
           style={{
-            backgroundImage: `url(${gameCover})`,
-            height: gamePlatform.abbreviation == 'PS1' && '362px',
+            backgroundImage: `url(${
+              gamePlatform.abbreviation == 'N64' ? nintendo64Case : gameCover
+            })`,
+            height: `${gamePlatform.abbreviation == 'PS1' && '362px'} ${
+              gamePlatform.abbreviation == 'N64' && '365px'
+            }`,
             backgroundPosition:
               gamePlatform.abbreviation == 'PS1' && '-90% 50%',
             borderTop: `${determineCoverColor()} solid ${
-              gamePlatform.abbreviation == 'PS1' ? '7px' : '29px'
+              gamePlatform.abbreviation == 'PS1' ||
+              gamePlatform.abbreviation == 'N64'
+                ? '8px'
+                : '29px'
             }`,
             borderBottom: `${determineCoverColor()} solid 7px`,
             borderRight: `${determineCoverColor()} solid 7px`,
           }}
         >
-          {/* <div className='game_preview__gradient' /> */}
+          {gamePlatform.abbreviation == 'N64' && <img src={gameCover} />}
+          <div className='game_preview__shine' />
+
+          {/* FRONT CASE COVER BANNER */}
           <div
             className={`game_preview__front_banner ${
               gamePlatform.abbreviation == 'Switch' && 'switch_banner'
@@ -417,11 +432,13 @@ const GamePreview = ({
             ${gamePlatform.abbreviation == 'PS4' && 'ps4_banner'}
             ${gamePlatform.abbreviation == 'Wii' && 'wii_banner'}
             ${gamePlatform.abbreviation == 'Series X' && 'seriesX_banner'}
+            ${gamePlatform.abbreviation == 'N64' && 'n64_banner'}
             `}
             style={{ background: determineCoverColor() }}
           >
             {displayConsoleIcons(gamePlatform.abbreviation)}
             {gamePlatform.abbreviation == 'X360' && <img src={xbox360Banner} />}
+
             {/* PLATFORM NAME */}
             <p
               className={
@@ -551,10 +568,13 @@ const GamePreview = ({
           }
         `}
           style={{
-            background: `url(${gameCover})`,
-            // background: determineCoverColor(),
+            // background: `url(${gameCover})`,
+            background: determineCoverColor(),
             borderTop: `${determineCoverColor()} solid ${
-              gamePlatform.abbreviation == 'PS1' ? '7px' : '24px'
+              gamePlatform.abbreviation == 'PS1' ||
+              gamePlatform.abbreviation == 'N64'
+                ? '8px'
+                : '24px'
             }`,
             borderBottom: `${determineCoverColor()} solid 7px`,
             borderLeft: `${determineCoverColor()} solid 7px`,
@@ -605,9 +625,9 @@ const GamePreview = ({
 
               {/* DISC ART */}
               <div
-                className={`game_preview__disc ${
-                  playingDisc && 'playing_disc'
-                }`}
+                className={`game_preview__disc 
+                ${gamePlatform.abbreviation == 'NGC' && 'gamecube_disc'}
+                ${playingDisc && 'playing_disc'}`}
                 style={{
                   '--color-theme': determineCoverColor(),
                   backgroundImage: `url(${
@@ -615,23 +635,42 @@ const GamePreview = ({
                       ? `//images.igdb.com/igdb/image/upload/t_1080p/${game.artworks[0]?.image_id}.jpg`
                       : gameCover
                   })`,
-                  // backgroundSize: 'cover',
                 }}
                 onClick={() => playConsoleStartup(gamePlatform.abbreviation)}
               >
-                <div className='game_preview__disc_center' />
                 <div
-                  className='game_theme'
+                  className={`game_preview__disc_center ${
+                    gamePlatform.abbreviation == 'NGC' && 'gamecube_disc_center'
+                  }`}
+                />
+                <div
+                  className={`game_theme ${
+                    gamePlatform.abbreviation == 'NGC' && 'gamecube_game_theme'
+                  }`}
                   style={{
                     '--color-theme': determineCoverColor(),
                   }}
                 />
+                {/* DISC BANNER */}
                 <div
-                  className='game_preview__disc_console_banner'
+                  className={`game_preview__disc_console_banner ${
+                    gamePlatform.abbreviation == 'X360' && 'xbox360_disc_banner'
+                  } ${
+                    gamePlatform.abbreviation == 'NGC' && 'gamecube_disc_banner'
+                  }`}
                   style={{
                     background: determineCoverColor(),
                   }}
                 >
+                  {/* XBOX 360 DISC BANNER */}
+                  {gamePlatform.abbreviation == 'X360' && (
+                    <img src={xbox360Banner} />
+                  )}
+                  {/* GAMECUBE DISC BANNER */}
+                  {gamePlatform.abbreviation == 'NGC' && (
+                    <img src={gamecubeBanner} />
+                  )}
+
                   {/* <p
                     className={
                       gamePlatform.abbreviation == 'N64'
@@ -653,7 +692,7 @@ const GamePreview = ({
                   >
                     {gamePlatform.abbreviation}
                   </p> */}
-                  {displayConsoleIcons(gamePlatform.abbreviation)}
+                  {/* {displayConsoleIcons(gamePlatform.abbreviation)} */}
                 </div>
               </div>
             </div>

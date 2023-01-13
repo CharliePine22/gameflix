@@ -68,6 +68,8 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
     }
   };
 
+  console.log(loadedImages);
+
   if (loadedImages.length > 0) {
     if (!toLandingPage)
       return (

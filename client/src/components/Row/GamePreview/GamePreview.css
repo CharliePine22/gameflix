@@ -204,46 +204,12 @@
   height: 85px;
   width: 85px;
   padding: 75px;
-  /* background-position: center; */
   filter: drop-shadow(0px 0px 4px black);
   cursor: pointer;
   overflow: hidden;
   border-radius: 50%;
   border-style: inset;
-  border-width: 3px;
-  /* border-image-source: conic-gradient(
-    white,
-    white,
-    white,
-    grey,
-    grey,
-    violet,
-    deepskyblue,
-    aqua,
-    palegreen,
-    yellow,
-    orange,
-    red,
-    grey,
-    grey,
-    white,
-    white,
-    white,
-    white,
-    grey,
-    grey,
-    violet,
-    deepskyblue,
-    aqua,
-    palegreen,
-    yellow,
-    orange,
-    red,
-    grey,
-    grey,
-    white
-  );
-  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); */
+  border-width: 2px;
   border-image-slice: 60 30;
 }
 
@@ -273,6 +239,30 @@
   background-clip: padding-box;
   border: 10px solid rgba(0, 0, 0, 0.75);
   filter: drop-shadow(0 0 2px grey);
+}
+
+.gamecube_disc {
+  top: 150px;
+  right: 40px;
+  height: 35px;
+  width: 35px;
+  margin-top: 15px;
+  background-size: 100% 63%;
+  background-repeat: repeat;
+  background-position: top;
+  padding: 70px;
+}
+
+.gamecube_disc::before {
+  width: 30%;
+  height: 30%;
+  margin: -15% 0 0 -15%;
+  background-clip: padding-box;
+  border: 0;
+}
+
+.gamecube_disc::after {
+  border: 0px solid rgba(0, 0, 0, 0.75);
 }
 
 .game_preview__disc.playing_disc {
@@ -321,6 +311,14 @@
   border-radius: 50%;
 }
 
+.gamecube_disc_center {
+  top: 64px;
+  left: 64px;
+  height: 56px;
+  width: 56px;
+  background: transparent;
+}
+
 .game_preview__disc_console_banner {
   position: absolute;
   display: flex;
@@ -334,6 +332,31 @@
   pointer-events: none;
   align-items: center;
   justify-content: center;
+}
+
+.gamecube_disc_banner {
+  height: 39px;
+}
+
+.gamecube_disc_banner > img {
+  height: 495%;
+  width: 110%;
+  object-fit: contain;
+  transform: translateY(-65px);
+}
+
+.xbox360_disc_banner {
+  top: 0px;
+  height: 66px;
+  padding-bottom: 0;
+  width: 100%;
+}
+
+.xbox360_disc_banner > img {
+  height: 100%;
+  width: 100%;
+  object-fit: fill;
+  border-radius: 50% 50% 0 0;
 }
 
 .game_preview__disc_console_banner > .gamecube {
@@ -437,6 +460,10 @@
 
 .gamecube_banner {
   padding-bottom: 3px;
+}
+
+.n64_banner {
+  display: none;
 }
 
 .ps1_banner {
@@ -639,7 +666,7 @@
   border: inset rgba(0, 0, 0, 0.75);
   border-width: 2px;
   border-radius: 3px;
-  transform: translateZ(-53px) rotateY(4deg);
+  transform: translateZ(-53px) rotateY(0deg);
 }
 
 .game_preview__modal {
@@ -649,6 +676,7 @@
   background: rgba(0, 0, 0, 0.7);
   left: 0;
   top: 0;
+  z-index: 2;
 }
 
 .game_preview__platform_logo {
@@ -692,6 +720,19 @@
   height: 173px;
   border-radius: 40%;
   box-shadow: 0 0 0 250px var(--color-theme);
+}
+
+.game_preview__shine {
+  background-image: linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 100%
+  );
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  transition: all 250ms ease-in-out;
 }
 
 .game_preview__top {
@@ -756,6 +797,13 @@
   height: 25px;
   width: 25px;
   border-radius: 50%;
+}
+
+.gamecube_game_theme {
+  top: 77px;
+  left: 77px;
+  height: 20px;
+  width: 20px;
 }
 
 .playstation_old {

@@ -12,6 +12,7 @@ import psVitaLogo from '../../../assets/images/psvita-logo.png';
 import nesLogo from '../../../assets/images/nes-logo.png';
 import nintendo64Logo from '../../../assets/images/nintendo-logo.png';
 import nintendo64Case from '../../../assets/images/n64-case-template-e.png';
+import nintendo64Cart from '../../../assets/images/n64-game-template.png';
 import nintendoSwitchLogo from '../../../assets/images/switch_logo.png';
 import nintendoDs from '../../../assets/images/ds-logo.png';
 import nintendo3ds from '../../../assets/images/nintendo3ds-logo2.png';
@@ -399,12 +400,12 @@ const GamePreview = ({
             gamePlatform.abbreviation == 'Switch' && 'switch_case'
           } ${viewingPreview && 'game_preview__front_open'}`}
           style={{
-            backgroundImage: `url(${
-              gamePlatform.abbreviation == 'N64' ? nintendo64Case : gameCover
-            })`,
-            height: `${gamePlatform.abbreviation == 'PS1' && '362px'} ${
-              gamePlatform.abbreviation == 'N64' && '365px'
+            backgroundImage: `url(${gameCover})`,
+            height: `${
+              gamePlatform.abbreviation == 'PS1' ||
+              (gamePlatform.abbreviation == 'N64' && '365px')
             }`,
+
             backgroundPosition:
               gamePlatform.abbreviation == 'PS1' && '-90% 50%',
             borderTop: `${determineCoverColor()} solid ${
@@ -417,8 +418,10 @@ const GamePreview = ({
             borderRight: `${determineCoverColor()} solid 7px`,
           }}
         >
-          {gamePlatform.abbreviation == 'N64' && <img src={gameCover} />}
-          <div className='game_preview__shine' />
+          {gamePlatform.abbreviation == 'N64' && (
+            <img src={nintendo64Case} className='n64_game_img' />
+          )}
+          {/* <div className='game_preview__shine' /> */}
 
           {/* FRONT CASE COVER BANNER */}
           <div
@@ -630,6 +633,7 @@ const GamePreview = ({
                 ${playingDisc && 'playing_disc'}`}
                 style={{
                   '--color-theme': determineCoverColor(),
+                  display: gamePlatform.abbreviation == 'N64' && 'none',
                   backgroundImage: `url(${
                     game?.artworks?.length > 0
                       ? `//images.igdb.com/igdb/image/upload/t_1080p/${game.artworks[0]?.image_id}.jpg`
@@ -695,6 +699,24 @@ const GamePreview = ({
                   {/* {displayConsoleIcons(gamePlatform.abbreviation)} */}
                 </div>
               </div>
+              {gamePlatform.abbreviation == 'N64' && (
+                <>
+                  <div
+                    style={{
+                      backgroundImage: `url(${nintendo64Cart})`,
+                    }}
+                    className='n64_cartridge'
+                  >
+                    <img
+                      src={
+                        game?.artworks?.length > 0
+                          ? `//images.igdb.com/igdb/image/upload/t_1080p/${game.artworks[0]?.image_id}.jpg`
+                          : gameCover
+                      }
+                    />
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>

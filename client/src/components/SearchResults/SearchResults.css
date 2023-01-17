@@ -79,6 +79,7 @@
   cursor: pointer;
   min-width: 75px;
   transition: all 200ms ease-in-out;
+  overflow: hidden;
 }
 
 .recent_searches__item p {
@@ -121,8 +122,29 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background-color: rgb(55, 55, 55);
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 1px 5px black;
+  padding: 2px;
+  transition: all 250ms ease-in-out;
+}
+
+.result_publisher:hover {
   border-radius: 50%;
+}
+
+.result_publisher h3 {
+  filter: drop-shadow(2px 2px 1px black);
+  margin-bottom: 3px;
+}
+
+.result_publisher:hover h3 {
+  transition: 170ms ease-in-out;
+  /* transform: perspective(170px) translate(-1px, -2px) scale(1.05); */
+  filter: drop-shadow(2px 4px 2px black);
 }
 
 .remainder_results {

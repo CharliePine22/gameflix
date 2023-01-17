@@ -223,9 +223,11 @@ const Dashboard = ({
   const fetchSubmittedGame = async (game) => {
     if (searchedGame.name !== null) setSearchedGame({ name: '', data: [] });
     setSearchSubmitted(true);
+    game.replace('Poke', 'Poké');
+    let newGame = game.replace('Poke', 'Poké');
     const request = await axios.post('/app/search_game', {
       token: twitchToken,
-      gameName: game,
+      gameName: newGame,
     });
 
     if (request.data.length == 0) {
@@ -399,6 +401,9 @@ const Dashboard = ({
             setGameDetails={(id) => setGameDetails(id)}
             closeSearchResults={closeSearchResults}
             searchGame={fetchSubmittedGame}
+            currentGameOpen={currentGameOpen}
+            openGame={(game) => openGameWindow(game)}
+            closeGameWindow={closeGameWindow}
           />
         )}
         <Notification

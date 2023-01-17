@@ -4,18 +4,23 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import SkeletonCard from '../SkeletonCard/SkeletonCard';
 import { FaSearch } from 'react-icons/fa';
+import GamePreview from '../Row/GamePreview/GamePreview';
 
 const SearchResultsIGDB = ({
   searchedGame,
   setGameDetails,
   closeSearchResults,
   searchGame,
+  currentGameOpen,
+  openGame,
+  closeGameWindow,
 }) => {
   const recentSearches = JSON.parse(localStorage.getItem('searches'));
   const [topGames, setTopGames] = useState([]);
   const [remainderGames, setRemainderGames] = useState([]);
   const [recentSearchList, setRecentSearchList] = useState(recentSearches);
   const [searchValue, setSearchValue] = useState(searchedGame.name);
+  const [currentGame, setCurrentGame] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -55,10 +60,64 @@ const SearchResultsIGDB = ({
     return result.reverse();
   };
 
+  const displayGameCase = (e, game) => {
+    e.stopPropagation();
+    setCurrentGame(game);
+    openGame(game);
+  };
+
+  const determineESRB = (game) => {
+    if (!game || !game.age_ratings)
+      return <img className='row__poster__esrb_img' src={rpRating} />;
+    const hasRating = game?.age_ratings.filter(
+      (rating) => rating.category == 1 || rating.category == 2
+    );
+
+    if (hasRating.length == 0 || !game.age_ratings)
+      return <img className='row__poster__esrb_img' src={rpRating} />;
+    const esrb = hasRating[0].rating;
+
+    switch (esrb) {
+      case 1:
+      case 2:
+      case 8:
+      case 9:
+        return <img className='row__poster__esrb_img' src={eRating} />;
+      case 3:
+      case 4:
+      case 10:
+        return <img className='row__poster__esrb_img' src={tRating} />;
+      case 5:
+      case 11:
+        return <img className='row__poster__esrb_img' src={mRating} />;
+      default:
+        return <img className='row__poster__esrb_img' src={rpRating} />;
+    }
+  };
+
   // Skeleton Loader
   if (searchedGame.data.length == 0 || !topGames || !remainderGames) {
     return (
       <div className='search_results'>
+        {currentGameOpen === game.name && (
+          <GamePreview
+            game={currentGame}
+            gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
+            ratingImage={determineESRB(currentGame)}
+            addGame={addGameHandler}
+            displayDetails={displayDetails}
+            hideDetails={closeGameWindow}
+            fetchGameDetails={(game) => {
+              fetchGameDetails(game);
+            }}
+            viewGameSoundtrack={(e, game) => {
+              viewGameSoundtrack(e, game);
+            }}
+            viewingPreview={viewingPreview}
+            openGame={() => setViewingPreview(true)}
+            closeGame={() => setViewingPreview(false)}
+          />
+        )}
         <div className='search_results__nav'>
           <span onClick={closeSearchResults}>X</span>
           <div className='search_results__nav_search'>
@@ -113,6 +172,7 @@ const SearchResultsIGDB = ({
 
   return (
     <div className='search_results'>
+      {/* SEARCH NAV */}
       <div className='search_results__nav'>
         <span onClick={closeSearchResults}>X</span>
         <div className='search_results__nav_search'>
@@ -127,6 +187,7 @@ const SearchResultsIGDB = ({
       </div>
 
       <div className='search_results__container'>
+        {/* RECENT SEARCHES */}
         <div className='search_results__recents'>
           <h2>Recent Searches</h2>
           <ul className='recent_searches'>
@@ -154,12 +215,10 @@ const SearchResultsIGDB = ({
               <div className='top_result_upper'>
                 <div
                   className='result_publisher'
-                  style={{
-                    backgroundSize: 'cover',
-                    backgroundImage: `url(${game.screenshots[0]?.url})`,
-                    backgroundPosition: 'center',
-                  }}
-                />
+                  onClick={(e) => displayGameCase(e, game)}
+                >
+                  <h3>3D</h3>
+                </div>
                 <img
                   src={`//images.igdb.com/igdb/image/upload/t_screenshot_big/${
                     game.artworks
@@ -193,39 +252,41 @@ const SearchResultsIGDB = ({
           ))}
         </div>
         {/* Remaining Games */}
-        <div className='remainder_results'>
-          <h2>Results</h2>
-          {remainderGames?.map(
-            (game) =>
-              game.cover !== undefined && (
-                <div
-                  className='results_container'
-                  key={game.id}
-                  onClick={() => setGameDetails(game)}
-                >
+        {remainderGames.length > 0 && (
+          <div className='remainder_results'>
+            <h2>Results</h2>
+            {remainderGames?.map(
+              (game) =>
+                game.cover !== undefined && (
                   <div
-                    className='results_container_img'
-                    style={{
-                      backgroundSize: 'cover',
-                      backgroundImage: `url(//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg)`,
-                      backgroundPosition: 'center',
-                    }}
-                  />
-                  <div className='results_container_content'>
-                    <h3 className='game_name_remainder'>{game.name}</h3>
-                    {/* <p>{game.publisher}</p> */}
-                    <ul className='game_theme_list_lower'>
-                      {game.themes?.map(
-                        (theme, i) =>
-                          theme.name !== 'Sandbox' &&
-                          i < 3 && <li key={theme.id}>{theme.name}</li>
-                      )}
-                    </ul>
+                    className='results_container'
+                    key={game.id}
+                    onClick={() => setGameDetails(game)}
+                  >
+                    <div
+                      className='results_container_img'
+                      style={{
+                        backgroundSize: 'cover',
+                        backgroundImage: `url(//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg)`,
+                        backgroundPosition: 'center',
+                      }}
+                    />
+                    <div className='results_container_content'>
+                      <h3 className='game_name_remainder'>{game.name}</h3>
+                      {/* <p>{game.publisher}</p> */}
+                      <ul className='game_theme_list_lower'>
+                        {game.themes?.map(
+                          (theme, i) =>
+                            theme.name !== 'Sandbox' &&
+                            i < 3 && <li key={theme.id}>{theme.name}</li>
+                        )}
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              )
-          )}
-        </div>
+                )
+            )}
+          </div>
+        )}
       </div>
       <div className='search_bottom_fade' />
     </div>

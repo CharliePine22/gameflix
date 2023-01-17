@@ -466,6 +466,13 @@
   display: none;
 }
 
+.n64_game_img {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+
 .ps1_banner {
   top: 164px;
   right: 45px;
@@ -662,7 +669,7 @@
 .game_preview__middle.middle_open {
   width: 11px;
   top: 47px;
-  left: 113px;
+  left: 116px;
   border: inset rgba(0, 0, 0, 0.75);
   border-width: 2px;
   border-radius: 3px;
@@ -846,6 +853,52 @@
   width: 42px;
   filter: drop-shadow(2px 2px 1px #000);
 } */
+.n64_cartridge {
+  height: 160px;
+  width: 231px;
+  position: relative;
+  top: 65px;
+  left: 10px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  /* overflow: hidden; */
+}
+
+.n64_cartridge::after {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-top-right-radius: 42px;
+  background: transparent;
+  box-shadow: -1px 15px 12px rgb(0 0 0 / 60%);
+}
+
+.n64_cartridge::before {
+  content: '';
+  position: absolute;
+  height: 130px;
+  width: 8px;
+  right: -4px;
+  top: 26px;
+  background: rgba(0, 0, 0, 0.6);
+  transform: perspective(270px) rotateY(53deg);
+  border-top-right-radius: 72%;
+  border-bottom-right-radius: 22px;
+  border-bottom-left-radius: 50%;
+  box-shadow: -3px 3px 9px black;
+}
+
+.n64_cartridge img {
+  height: 90%;
+  width: 56%;
+  position: absolute;
+  z-index: -1;
+  left: 53px;
+  top: 12px;
+  border-top-right-radius: 35px;
+  border-top-left-radius: 35px;
+}
 
 .steam {
   height: 21px;
@@ -1041,7 +1094,7 @@
   }
 
   .game_preview__box {
-    /* right: 4px; */
+    right: 4px;
     transform: rotateY(-5deg) rotateX(1deg) scale(0.9);
   }
 

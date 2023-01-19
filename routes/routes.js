@@ -213,6 +213,29 @@ router.post('/search_game_details', async (req, res) => {
   }
 });
 
+//* IGDB GAME DETAILS
+router.post('/search_trending_game', async (req, res) => {
+  const token = req.body.token;
+  const gameName = req.body.gameName;
+
+  const headers = {
+    'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
+    Authorization: `Bearer ${token}`,
+  };
+  const url = `https://api.igdb.com/v4/search`;
+  try {
+    const request = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: `fields *, game.*, game.cover.*; search "${gameName}"; where game.category = 0; limit 1;`,
+    });
+    const result = await request.json();
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 //* IGDB POPULAR GAMES
 router.post('/popular_titles', async (req, res) => {
   const token = req.body.token;

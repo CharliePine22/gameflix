@@ -6,7 +6,7 @@ import Placeholder from '../Placeholder/Placeholder';
 import GamePreview from '../Row/GamePreview/GamePreview';
 import axios from 'axios';
 
-const TrendingRow = ({ twitchToken, setGameDetails }) => {
+const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
   const [games, setGames] = useState([]);
   const [currentGame, setCurrentGame] = useState('');
   const [displayDetails, setDisplayDetails] = useState(false);
@@ -38,7 +38,7 @@ const TrendingRow = ({ twitchToken, setGameDetails }) => {
           (game) => typeof game == 'object' && trendingTitles.push(game)
         );
 
-        setGames(trendingTitles.slice(0, 10));
+        setGames(trendingList);
         setLoading(false);
         return request;
       } catch (error) {
@@ -46,7 +46,9 @@ const TrendingRow = ({ twitchToken, setGameDetails }) => {
       }
     }
     fetchData();
-  }, [twitchToken]);
+  }, [twitchToken, trendingList]);
+
+  console.log(games);
 
   // useEffect(() => {
   //   const loadImage = image => {
@@ -102,7 +104,7 @@ const TrendingRow = ({ twitchToken, setGameDetails }) => {
                 style={{
                   marginLeft: (i == 9 && '160px') || (i == 0 && '65px'),
                 }}
-                onClick={() => fetchGameDetails(game)}
+                onClick={() => fetchGameDetails(game.game)}
               >
                 {' '}
                 {!loading && (
@@ -110,7 +112,7 @@ const TrendingRow = ({ twitchToken, setGameDetails }) => {
                     <img
                       loading='lazy'
                       className='trending_row__poster'
-                      src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
+                      src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.game.cover?.image_id}.jpg`}
                       alt={game.name}
                     />
                   </>

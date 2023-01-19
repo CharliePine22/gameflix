@@ -346,10 +346,12 @@
 }
 
 .xbox360_disc_banner {
-  top: 0px;
-  height: 66px;
+  top: -5px;
+  height: 245px;
   padding-bottom: 0;
-  width: 100%;
+  width: 104%;
+  right: -5px;
+  background: transparent !important;
 }
 
 .xbox360_disc_banner > img {
@@ -669,7 +671,7 @@
 .game_preview__middle.middle_open {
   width: 11px;
   top: 47px;
-  left: 116px;
+  left: 113px;
   border: inset rgba(0, 0, 0, 0.75);
   border-width: 2px;
   border-radius: 3px;
@@ -709,7 +711,7 @@
 .right_open {
   background: black !important;
   width: 26px;
-  height: 282px;
+  height: 283px;
   transform: rotateY(67deg) translateZ(327px);
   top: 65px;
   left: -29px;
@@ -743,11 +745,12 @@
 }
 
 .game_preview__top {
-  width: 243px;
+  width: 248px;
   height: 28px;
-  transform: rotateX(90deg) translateZ(14px);
+  transform: rotateX(90deg) translateZ(16px);
   background-image: none;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 2px 17px black;
   position: absolute;
   top: 0;
 }
@@ -1106,6 +1109,10 @@
     height: 284px;
     transform: rotateY(67deg) translateZ(332px);
     top: 64px;
+  }
+
+  .game_preview__middle.middle_open {
+    left: 116px;
   }
 }
 

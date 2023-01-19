@@ -5,7 +5,7 @@
   border-bottom-left-radius: 4px;
   /* object-fit: cover; */
   /* width: 100%; */
-  width: 550px;
+  width: 85%;
 }
 
 .stage {
@@ -322,6 +322,7 @@
   position: relative;
   display: flex;
   height: 600px;
+  justify-content: center;
 }
 
 .media_soundtrack__background {
@@ -571,7 +572,7 @@
 
 @media screen and (max-width: 590px) {
   .details_img {
-    width: 75%;
+    width: 80%;
   }
 
   .game_details__actions {

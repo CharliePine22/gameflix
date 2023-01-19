@@ -21,6 +21,7 @@ import wiiLogo from '../../../assets/images/wii_logo.png';
 import wiiULogo from '../../../assets/images/wiiu-logo.png';
 import xboxLogo from '../../../assets/images/xbox-logo.png';
 import xbox360Banner from '../../../assets/images/xbox360-banner.webp';
+import xbox360Disc from '../../../assets/images/xbox360-disc-template.png';
 import steamLogo from '../../../assets/images/steam-logo-transparent.png';
 import iosLogo from '../../../assets/images/apple-logo.png';
 import androidLogo from '../../../assets/images/android-logo.png';
@@ -668,7 +669,7 @@ const GamePreview = ({
                 >
                   {/* XBOX 360 DISC BANNER */}
                   {gamePlatform.abbreviation == 'X360' && (
-                    <img src={xbox360Banner} />
+                    <img src={xbox360Disc} />
                   )}
                   {/* GAMECUBE DISC BANNER */}
                   {gamePlatform.abbreviation == 'NGC' && (

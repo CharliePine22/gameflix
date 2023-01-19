@@ -75,7 +75,7 @@ router.put('/update_notes', async (req, res) => {
 router.get('/get_notes', async (req, res) => {
   const notesId = req.query.id;
   const userNotes = await noteModel.findOne({ notesID: notesId });
-  console.log(userNotes);
+  console.log('NOTES SENT');
   res.send(userNotes);
 });
 

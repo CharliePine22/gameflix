@@ -1,10 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SearchResults.css';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import SkeletonCard from '../SkeletonCard/SkeletonCard';
+
 import { FaSearch } from 'react-icons/fa';
 import GamePreview from '../Row/GamePreview/GamePreview';
+import eRating from '../../assets/images/ESRB_E.png';
+import tRating from '../../assets/images/ESRB_T.png';
+import mRating from '../../assets/images/ESRB_M.png';
+import rpRating from '../../assets/images/ESRB_RP.png';
 
 const SearchResultsIGDB = ({
   searchedGame,
@@ -14,6 +19,7 @@ const SearchResultsIGDB = ({
   currentGameOpen,
   openGame,
   closeGameWindow,
+  addGameHandler,
 }) => {
   const recentSearches = JSON.parse(localStorage.getItem('searches'));
   const [topGames, setTopGames] = useState([]);
@@ -21,6 +27,7 @@ const SearchResultsIGDB = ({
   const [recentSearchList, setRecentSearchList] = useState(recentSearches);
   const [searchValue, setSearchValue] = useState(searchedGame.name);
   const [currentGame, setCurrentGame] = useState('');
+  const [viewingPreview, setViewingPreview] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,7 +45,6 @@ const SearchResultsIGDB = ({
 
   const removeRecentSearchItem = (name) => {
     const newList = recentSearches.filter((item) => item !== name);
-    console.log(newList);
     setRecentSearchList([]);
     localStorage.setItem('searches', JSON.stringify(newList));
   };
@@ -99,20 +105,20 @@ const SearchResultsIGDB = ({
   if (searchedGame.data.length == 0 || !topGames || !remainderGames) {
     return (
       <div className='search_results'>
-        {currentGameOpen === game.name && (
+        {currentGameOpen === currentGame.name && (
           <GamePreview
             game={currentGame}
-            gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
+            gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${currentGame.cover?.image_id}.jpg`}
             ratingImage={determineESRB(currentGame)}
             addGame={addGameHandler}
-            displayDetails={displayDetails}
+            displayDetails={setGameDetails}
             hideDetails={closeGameWindow}
             fetchGameDetails={(game) => {
-              fetchGameDetails(game);
+              setGameDetails(game);
             }}
-            viewGameSoundtrack={(e, game) => {
-              viewGameSoundtrack(e, game);
-            }}
+            // viewGameSoundtrack={(e, game) => {
+            //   viewGameSoundtrack(e, game);
+            // }}
             viewingPreview={viewingPreview}
             openGame={() => setViewingPreview(true)}
             closeGame={() => setViewingPreview(false)}

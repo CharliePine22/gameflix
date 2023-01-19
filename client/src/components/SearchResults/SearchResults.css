@@ -75,7 +75,8 @@
   height: 40px;
   border: 1px solid #9147ff;
   border-radius: 2px;
-  margin: 0 5px;
+  margin: 3px;
+  /* margin: 3px 5px; */
   cursor: pointer;
   min-width: 75px;
   transition: all 200ms ease-in-out;
@@ -391,9 +392,7 @@
     position: absolute;
     top: 80px;
     left: 10px;
-    box-shadow: rgb(0 0 0 / 7%) 0px 1px 2px, rgb(0 0 0 / 7%) 0px 2px 4px,
-      rgb(0 0 0 / 7%) 0px 4px 8px, rgb(0 0 0 / 7%) 0px 8px 16px,
-      rgb(0 0 0 / 7%) 0px 16px 32px, rgb(0 0 0 / 7%) 0px 32px 64px;
+    filter: drop-shadow(2px 2px 4px black);
   }
 
   .game_name {
@@ -424,7 +423,7 @@
   }
 
   .recent_searches__item p {
-    padding: 0 6px 2px;
+    padding: 0 8px 2px;
     font-size: 1rem;
   }
 
@@ -435,7 +434,7 @@
   .results_container {
     display: inline-flex;
     height: 5rem;
-    margin: 5px;
+    margin: 5px 2px;
     width: 12rem;
     background-color: rgb(35, 35, 35);
     position: relative;

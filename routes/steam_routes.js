@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const SteamAPI = require('steamapi');
+const axios = require('axios');
+const cheerio = require('cheerio');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -17,6 +19,32 @@ router.get('/get_owned_games', async (req, res) => {
   try {
     const request = await steam.getUserOwnedGames(steamId);
     res.send(request);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+router.get('/steam_trending', async (req, res) => {
+  // Fetch and scrape currently trending games
+  try {
+    const request = await axios.get(
+      'https://www.npd.com/news/entertainment-top-10/2023/top-10-video-games/'
+    );
+    const result = request.data;
+    const $ = cheerio.load(result);
+
+    // Only grab name of game from each row
+    const games = $('table > tbody > tr > td:nth-child(3)');
+    const tags = [];
+
+    // Grab every
+    games.each((_idx, el) => {
+      tags.push($(el).text());
+    });
+
+    res.send(tags.slice(0, 10));
+    // res.json(result);
+    return;
   } catch (error) {
     res.send(error);
   }

@@ -43,6 +43,7 @@ const Dashboard = ({
   const [currentTrack, setCurrentTrack] = useState(null);
   const [playAudio, setPlayAudio] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
+  const [trendingList, setTrendingList] = useState([]);
 
   // User states
   const [changingUser, setChangingUser] = useState(false);
@@ -73,6 +74,48 @@ const Dashboard = ({
     if (!currentGameOpen) document.body.style.overflow = 'auto';
   }, []);
 
+  useEffect(() => {
+    if (trendingList.length > 0) return;
+
+    const fetchSteamTrending = async () => {
+      const request = await axios.get(`${baseURL}/steam/steam_trending`);
+      return request.data;
+    };
+
+    const fetchTrendingGames = async () => {
+      const trendingGameNames = await fetchSteamTrending();
+
+      const mapObj = {
+        Poke: 'Poké',
+        '*': '',
+        '(2022)': ' ',
+        '/Violet*': ' ',
+      };
+      const trendingGamesList = await Promise.all(
+        trendingGameNames.map((game) => {
+          game = game.replace(
+            /Poke|'*'|(2022)|\/Violet*/gi,
+            function (matched) {
+              return mapObj[matched];
+            }
+          );
+          // Get rid of symbols regex cant handle w/o slowing down (FIND FIX)
+          game = game.replace('undefined', '');
+          game = game.replace('*', '');
+          game = game.replace('()', '');
+
+          return axios.post(`${baseURL}/app/search_trending_game`, {
+            token: twitchToken,
+            gameName: game,
+          });
+        })
+      );
+      setTrendingList(trendingGamesList.map((game) => game.data[0]));
+      return trendingGamesList;
+    };
+    fetchTrendingGames();
+  }, [trendingList]);
+
   //   setViewingSoundtrack(false);
   //   if (!spotifyToken) {
   //     console.log('Please connect to Spotify!');
@@ -102,6 +145,7 @@ const Dashboard = ({
   const addGameHandler = async (game) => {
     console.log('ADDING GAME');
     const exists = currentCollection.some((item) => item.id === game.id);
+    // If user already has game in collection, give notification.
     if (exists) {
       setNotification({
         message: `${game.name} is already in your collection!`,
@@ -329,6 +373,7 @@ const Dashboard = ({
               <TrendingRow
                 twitchToken={twitchToken}
                 setGameDetails={(game) => setGameDetails(game)}
+                trendingList={trendingList}
               />
               <UserLibrary
                 activeProfile={currentProfile}
@@ -404,6 +449,8 @@ const Dashboard = ({
             currentGameOpen={currentGameOpen}
             openGame={(game) => openGameWindow(game)}
             closeGameWindow={closeGameWindow}
+            addGame={(game) => addGameHandler(game)}
+            // setGameDetails={(game) => setGameDetails(game)}
           />
         )}
         <Notification

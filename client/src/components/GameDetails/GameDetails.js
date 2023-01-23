@@ -29,6 +29,7 @@ import gamecubeLogo from '../../assets/images/gamecube-logo.png';
 // Modules
 import Carousel, { CarouselItem } from './Carousel';
 import { VscLibrary } from 'react-icons/vsc';
+import { Tooltip } from 'react-tooltip';
 
 // ('https://www.youtube.com/watch?v=${GAMEVIDEOID}');
 
@@ -424,11 +425,13 @@ const GameDetails = ({
                 <div className='game_details__publishers'>
                   <h4 className='game_details__title'>Publishers</h4>
                   <ul className='publishers_list'>
-                    {gameDetails.involved_companies?.map((company) => (
-                      <li key={company.id} className='publisher'>
-                        {company.company.name}
-                      </li>
-                    ))}
+                    {gameDetails.involved_companies
+                      ?.slice(0, 3)
+                      .map((company) => (
+                        <li key={company.id} className='publisher'>
+                          {company.company.name}
+                        </li>
+                      ))}
                   </ul>
                 </div>
 

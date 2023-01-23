@@ -3,6 +3,7 @@ import { SiApplemusic, SiAddthis } from 'react-icons/si';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import ReactPlayer from 'react-player/lazy';
 import './GamePreview.css';
+import Tilt from 'react-parallax-tilt';
 
 // Game Platform Logo Images
 import playstationLogo from '../../../assets/images/playstation-logo.png';
@@ -65,9 +66,11 @@ const GamePreview = ({
   useEffect(() => {
     closeGame();
   }, [game]);
+
   const gamePlatformId = game.release_dates.sort(function (a, b) {
     return a.date - b.date;
   })[0].platform;
+
   const gamePlatform = game.platforms.filter(
     (platform) => platform.id == gamePlatformId
   )[0];
@@ -391,44 +394,55 @@ const GamePreview = ({
 
   return (
     <div className='game_preview__wrapper' onClick={() => console.log(game)}>
-      <div
-        className={`game_preview__box ${viewingPreview && 'box_open'}`}
-        onClick={() => openGame()}
+      <Tilt
+        glareEnable={true}
+        tiltMaxAngleX={30}
+        tiltMaxAngleY={30}
+        perspective={1000}
+        // glareColor={'rgb(255,0,0)'}
+        // className='game_preview__box'
+        style={{ height: 386, width: 250, transformStyle: 'preserve-3d' }}
       >
-        {/* FRONT SIDE OF CASE */}
         <div
-          className={`game_preview__front ${
-            gamePlatform.abbreviation == 'Switch' && 'switch_case'
-          } ${viewingPreview && 'game_preview__front_open'}`}
-          style={{
-            backgroundImage: `url(${gameCover})`,
-            height: `${
-              gamePlatform.abbreviation == 'PS1' ||
-              (gamePlatform.abbreviation == 'N64' && '365px')
-            }`,
-
-            backgroundPosition:
-              gamePlatform.abbreviation == 'PS1' && '-90% 50%',
-            borderTop: `${determineCoverColor()} solid ${
-              gamePlatform.abbreviation == 'PS1' ||
-              gamePlatform.abbreviation == 'N64'
-                ? '8px'
-                : '29px'
-            }`,
-            borderBottom: `${determineCoverColor()} solid 7px`,
-            borderRight: `${determineCoverColor()} solid 7px`,
-          }}
+          className={`game_preview__box ${viewingPreview && 'box_open'}`}
+          onClick={() => openGame()}
         >
-          {gamePlatform.abbreviation == 'N64' && (
-            <img src={nintendo64Case} className='n64_game_img' />
-          )}
-          {/* <div className='game_preview__shine' /> */}
-
-          {/* FRONT CASE COVER BANNER */}
+          {/* FRONT SIDE OF CASE */}
           <div
-            className={`game_preview__front_banner ${
-              gamePlatform.abbreviation == 'Switch' && 'switch_banner'
-            }
+            className={`game_preview__front ${
+              gamePlatform.abbreviation == 'Switch' && 'switch_case'
+            } ${viewingPreview && 'game_preview__front_open'}`}
+            style={{
+              backgroundImage: `url(${gameCover})`,
+              height: `${
+                gamePlatform.abbreviation == 'PS1' ||
+                (gamePlatform.abbreviation == 'N64' && '365px')
+              }`,
+
+              backgroundPosition:
+                gamePlatform.abbreviation == 'PS1' && '-90% 50%',
+              borderTop: `${determineCoverColor()} solid ${
+                gamePlatform.abbreviation == 'PS1' ||
+                gamePlatform.abbreviation == 'N64'
+                  ? '8px'
+                  : '29px'
+              }`,
+              borderBottom: `${determineCoverColor()} solid 7px`,
+              borderRight: `${determineCoverColor()} solid 7px`,
+            }}
+          >
+            {gamePlatform.abbreviation == 'N64' && (
+              <img src={nintendo64Case} className='n64_game_img' />
+            )}
+            {/* <div className='game_preview__shine_container'>
+            <div className='game_preview__gradient' />
+          </div> */}
+
+            {/* FRONT CASE COVER BANNER */}
+            <div
+              className={`game_preview__front_banner ${
+                gamePlatform.abbreviation == 'Switch' && 'switch_banner'
+              }
             ${gamePlatform.abbreviation == 'X360' && 'xbox360_banner'}
             ${gamePlatform.abbreviation == 'PS1' && 'ps1_banner'}
             ${gamePlatform.abbreviation == 'PS2' && 'ps2_banner'}
@@ -438,104 +452,106 @@ const GamePreview = ({
             ${gamePlatform.abbreviation == 'Series X' && 'seriesX_banner'}
             ${gamePlatform.abbreviation == 'N64' && 'n64_banner'}
             `}
-            style={{ background: determineCoverColor() }}
-          >
-            {displayConsoleIcons(gamePlatform.abbreviation)}
-            {gamePlatform.abbreviation == 'X360' && <img src={xbox360Banner} />}
+              style={{ background: determineCoverColor() }}
+            >
+              {displayConsoleIcons(gamePlatform.abbreviation)}
+              {gamePlatform.abbreviation == 'X360' && (
+                <img src={xbox360Banner} />
+              )}
 
-            {/* PLATFORM NAME */}
-            <p
-              className={
-                gamePlatform.abbreviation == 'N64'
-                  ? 'nintendo_font'
-                  : gamePlatform.abbreviation == 'X360' ||
-                    gamePlatform.abbreviation == 'Series X'
-                  ? 'xbox_font'
-                  : gamePlatform.abbreviation == 'PS4'
-                  ? 'modern_playstation_font'
-                  : gamePlatform.abbreviation == 'PS5'
-                  ? 'modern_playstation_font'
-                  : gamePlatform.abbreviation == 'PS3'
-                  ? 'modern_playstation_font'
-                  : gamePlatform.abbreviation == 'PS2'
-                  ? 'old_playstation_font'
+              {/* PLATFORM NAME */}
+              <p
+                className={
+                  gamePlatform.abbreviation == 'N64'
+                    ? 'nintendo_font'
+                    : gamePlatform.abbreviation == 'X360' ||
+                      gamePlatform.abbreviation == 'Series X'
+                    ? 'xbox_font'
+                    : gamePlatform.abbreviation == 'PS4'
+                    ? 'modern_playstation_font'
+                    : gamePlatform.abbreviation == 'PS5'
+                    ? 'modern_playstation_font'
+                    : gamePlatform.abbreviation == 'PS3'
+                    ? 'modern_playstation_font'
+                    : gamePlatform.abbreviation == 'PS2'
+                    ? 'old_playstation_font'
+                    : gamePlatform.abbreviation == 'PS1'
+                    ? 'old_playstation_font'
+                    : ''
+                }
+                style={{
+                  display:
+                    gamePlatform.abbreviation == 'Switch'
+                      ? 'none'
+                      : gamePlatform.abbreviation == 'fds'
+                      ? 'none'
+                      : gamePlatform.abbreviation == 'Wii'
+                      ? 'none'
+                      : gamePlatform.abbreviation == '3DS'
+                      ? 'none'
+                      : gamePlatform.abbreviation == 'NDS'
+                      ? 'none'
+                      : gamePlatform.abbreviation == 'NGC'
+                      ? 'none'
+                      : '',
+                }}
+              >
+                {gamePlatform.abbreviation == 'PC'
+                  ? 'Steam'
+                  : gamePlatform.abbreviation == 'X360'
+                  ? gamePlatform.name.toUpperCase()
+                  : gamePlatform.abbreviation == 'Series X'
+                  ? `Xbox ${gamePlatform.abbreviation}`
                   : gamePlatform.abbreviation == 'PS1'
-                  ? 'old_playstation_font'
-                  : ''
-              }
+                  ? gamePlatform.name
+                  : gamePlatform.abbreviation == 'PS2'
+                  ? gamePlatform.name
+                  : gamePlatform.abbreviation == 'N64'
+                  ? gamePlatform.name
+                  : gamePlatform.abbreviation == 'WiiU'
+                  ? ''
+                  : gamePlatform.abbreviation}
+              </p>
+            </div>
+            {ratingImage}
+          </div>
+
+          {/* INSIDE OF FRONT  */}
+          {viewingPreview && (
+            <div
+              className={`game_preview__front_inside ${
+                gamePlatform.abbreviation == 'Switch' && 'switch_case_back'
+              }`}
               style={{
-                display:
-                  gamePlatform.abbreviation == 'Switch'
-                    ? 'none'
-                    : gamePlatform.abbreviation == 'fds'
-                    ? 'none'
-                    : gamePlatform.abbreviation == 'Wii'
-                    ? 'none'
-                    : gamePlatform.abbreviation == '3DS'
-                    ? 'none'
-                    : gamePlatform.abbreviation == 'NDS'
-                    ? 'none'
-                    : gamePlatform.abbreviation == 'NGC'
-                    ? 'none'
-                    : '',
+                background: `${determineCoverColor()}`,
+                borderTop: `${determineCoverColor()} solid 7px`,
+                borderBottom: `${determineCoverColor()} solid 7px`,
+                borderLeft: `${determineCoverColor()} solid 7px`,
               }}
             >
-              {gamePlatform.abbreviation == 'PC'
-                ? 'Steam'
-                : gamePlatform.abbreviation == 'X360'
-                ? gamePlatform.name.toUpperCase()
-                : gamePlatform.abbreviation == 'Series X'
-                ? `Xbox ${gamePlatform.abbreviation}`
-                : gamePlatform.abbreviation == 'PS1'
-                ? gamePlatform.name
-                : gamePlatform.abbreviation == 'PS2'
-                ? gamePlatform.name
-                : gamePlatform.abbreviation == 'N64'
-                ? gamePlatform.name
-                : gamePlatform.abbreviation == 'WiiU'
-                ? ''
-                : gamePlatform.abbreviation}
-            </p>
-          </div>
-          {ratingImage}
-        </div>
+              {/* Game Manual */}
+              <img src={gameCover} className='game_preview__manual' />
+              {/* The crease to give 3D Effect */}
+              <div className='game_preview__manual_middle_crease' />
+              <div className='game_preview__manual_bottom_crease' />
+              {/* ESRB IMAGE */}
+              {ratingImage}
 
-        {/* INSIDE OF FRONT  */}
-        {viewingPreview && (
-          <div
-            className={`game_preview__front_inside ${
-              gamePlatform.abbreviation == 'Switch' && 'switch_case_back'
-            }`}
-            style={{
-              background: `${determineCoverColor()}`,
-              borderTop: `${determineCoverColor()} solid 7px`,
-              borderBottom: `${determineCoverColor()} solid 7px`,
-              borderLeft: `${determineCoverColor()} solid 7px`,
-            }}
-          >
-            {/* Game Manual */}
-            <img src={gameCover} className='game_preview__manual' />
-            {/* The crease to give 3D Effect */}
-            <div className='game_preview__manual_middle_crease' />
-            <div className='game_preview__manual_bottom_crease' />
-            {/* ESRB IMAGE */}
-            {ratingImage}
-
-            <div className='game_preview__front_inside_details'>
-              {/* TABS */}
-              <div
-                className='game_preview__manual_tab_top'
-                style={{
-                  '--color-theme': determineCoverColor(),
-                }}
-              />
-              <div
-                className='game_preview__manual_tab_bottom'
-                style={{
-                  '--color-theme': determineCoverColor(),
-                }}
-              />
-              {/* {game.videos && (
+              <div className='game_preview__front_inside_details'>
+                {/* TABS */}
+                <div
+                  className='game_preview__manual_tab_top'
+                  style={{
+                    '--color-theme': determineCoverColor(),
+                  }}
+                />
+                <div
+                  className='game_preview__manual_tab_bottom'
+                  style={{
+                    '--color-theme': determineCoverColor(),
+                  }}
+                />
+                {/* {game.videos && (
                 <ReactPlayer
                   url={`https://www.youtube.com/watch?v=${game?.videos[0]?.video_id}`}
                   className='trailer'
@@ -545,25 +561,27 @@ const GamePreview = ({
                   onReady={() => setLoading(false)}
                 />
               )} */}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* MIDDLE CREASE */}
-        <div
-          className={`game_preview__middle ${viewingPreview && 'middle_open'}`}
-          style={{
-            background: determineCoverColor() + 'b5',
-            borderTop: `${determineCoverColor()} solid 4px`,
-            borderBottom: `${determineCoverColor()} solid 4px`,
-          }}
-        />
+          {/* MIDDLE CREASE */}
+          <div
+            className={`game_preview__middle ${
+              viewingPreview && 'middle_open'
+            }`}
+            style={{
+              background: determineCoverColor() + 'b5',
+              borderTop: `${determineCoverColor()} solid 4px`,
+              borderBottom: `${determineCoverColor()} solid 4px`,
+            }}
+          />
 
-        {/* BACK SIDE OF CASE */}
-        <div
-          className={`game_preview__back ${
-            gamePlatform.abbreviation == 'Switch' && 'switch_case_back'
-          }
+          {/* BACK SIDE OF CASE */}
+          <div
+            className={`game_preview__back ${
+              gamePlatform.abbreviation == 'Switch' && 'switch_case_back'
+            }
           ${
             viewingPreview &&
             `game_preview__back_open ${
@@ -571,112 +589,120 @@ const GamePreview = ({
             }`
           }
         `}
-          style={{
-            // background: `url(${gameCover})`,
-            background: determineCoverColor(),
-            borderTop: `${determineCoverColor()} solid ${
-              gamePlatform.abbreviation == 'PS1' ||
-              gamePlatform.abbreviation == 'N64'
-                ? '8px'
-                : '24px'
-            }`,
-            borderBottom: `${determineCoverColor()} solid 7px`,
-            borderLeft: `${determineCoverColor()} solid 7px`,
-          }}
-        >
-          {viewingPreview && (
-            <div className='game_preview__back_open_details'>
-              <img
-                src={
-                  game?.artworks?.length > 1
-                    ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.artworks[1]?.image_id}.jpg`
-                    : gameCover
-                }
-              />
+            style={{
+              // background: `url(${gameCover})`,
+              background: determineCoverColor(),
+              borderTop: `${determineCoverColor()} solid ${
+                gamePlatform.abbreviation == 'PS1' ||
+                gamePlatform.abbreviation == 'N64'
+                  ? '8px'
+                  : '24px'
+              }`,
+              borderBottom: `${determineCoverColor()} solid 7px`,
+              borderLeft: `${determineCoverColor()} solid 7px`,
+            }}
+          >
+            {viewingPreview && (
+              <div className='game_preview__back_open_details'>
+                <img
+                  src={
+                    game?.artworks?.length > 1
+                      ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.artworks[1]?.image_id}.jpg`
+                      : gameCover
+                  }
+                />
 
-              {/* MARIO PIPE BUTTONS */}
-              <div className='game_preview__actions'>
-                {hoveringAdd && (
-                  <img
-                    src={marioStanding}
-                    className={`mario_pixel ${marioTransition && 'down_pipe'}`}
-                    style={{ left: '45px', bottom: '74px' }}
-                  />
-                )}
+                {/* MARIO PIPE BUTTONS */}
+                <div className='game_preview__actions'>
+                  {hoveringAdd && (
+                    <img
+                      src={marioStanding}
+                      className={`mario_pixel ${
+                        marioTransition && 'down_pipe'
+                      }`}
+                      style={{ left: '45px', bottom: '74px' }}
+                    />
+                  )}
 
-                <button
-                  onMouseOver={() => setHoveringAdd(true)}
-                  onMouseOut={() => setHoveringAdd(false)}
-                  onClick={(e) => addGame(e, game)}
-                >
-                  Add
-                </button>
-                {hoveringDetails && (
-                  <img
-                    src={marioStanding}
-                    className={`mario_pixel ${marioTransition && 'down_pipe'}`}
-                    style={{ left: '152px', bottom: '74px' }}
-                  />
-                )}
-                <button
-                  onClick={() => delayDetails()}
-                  onMouseOver={() => setHoveringDetails(true)}
-                  onMouseOut={() => setHoveringDetails(false)}
-                >
-                  Details
-                </button>
-              </div>
+                  <button
+                    onMouseOver={() => setHoveringAdd(true)}
+                    onMouseOut={() => setHoveringAdd(false)}
+                    onClick={(e) => addGame(e, game)}
+                  >
+                    Add
+                  </button>
+                  {hoveringDetails && (
+                    <img
+                      src={marioStanding}
+                      className={`mario_pixel ${
+                        marioTransition && 'down_pipe'
+                      }`}
+                      style={{ left: '152px', bottom: '74px' }}
+                    />
+                  )}
+                  <button
+                    onClick={() => delayDetails()}
+                    onMouseOver={() => setHoveringDetails(true)}
+                    onMouseOut={() => setHoveringDetails(false)}
+                  >
+                    Details
+                  </button>
+                </div>
 
-              {/* DISC ART */}
-              <div
-                className={`game_preview__disc 
+                {/* DISC ART */}
+                <div
+                  className={`game_preview__disc 
                 ${gamePlatform.abbreviation == 'NGC' && 'gamecube_disc'}
                 ${playingDisc && 'playing_disc'}`}
-                style={{
-                  '--color-theme': determineCoverColor(),
-                  display: gamePlatform.abbreviation == 'N64' && 'none',
-                  backgroundImage: `url(${
-                    game?.artworks?.length > 0
-                      ? `//images.igdb.com/igdb/image/upload/t_1080p/${game.artworks[0]?.image_id}.jpg`
-                      : gameCover
-                  })`,
-                }}
-                onClick={() => playConsoleStartup(gamePlatform.abbreviation)}
-              >
-                <div
-                  className={`game_preview__disc_center ${
-                    gamePlatform.abbreviation == 'NGC' && 'gamecube_disc_center'
-                  }`}
-                />
-                <div
-                  className={`game_theme ${
-                    gamePlatform.abbreviation == 'NGC' && 'gamecube_game_theme'
-                  }`}
                   style={{
                     '--color-theme': determineCoverColor(),
+                    display: gamePlatform.abbreviation == 'N64' && 'none',
+                    backgroundImage: `url(${
+                      game?.artworks?.length > 0
+                        ? `//images.igdb.com/igdb/image/upload/t_1080p/${game.artworks[0]?.image_id}.jpg`
+                        : gameCover
+                    })`,
                   }}
-                />
-                {/* DISC BANNER */}
-                <div
-                  className={`game_preview__disc_console_banner ${
-                    gamePlatform.abbreviation == 'X360' && 'xbox360_disc_banner'
-                  } ${
-                    gamePlatform.abbreviation == 'NGC' && 'gamecube_disc_banner'
-                  }`}
-                  style={{
-                    background: determineCoverColor(),
-                  }}
+                  onClick={() => playConsoleStartup(gamePlatform.abbreviation)}
                 >
-                  {/* XBOX 360 DISC BANNER */}
-                  {gamePlatform.abbreviation == 'X360' && (
-                    <img src={xbox360Disc} />
-                  )}
-                  {/* GAMECUBE DISC BANNER */}
-                  {gamePlatform.abbreviation == 'NGC' && (
-                    <img src={gamecubeBanner} />
-                  )}
+                  <div
+                    className={`game_preview__disc_center ${
+                      gamePlatform.abbreviation == 'NGC' &&
+                      'gamecube_disc_center'
+                    }`}
+                  />
+                  <div
+                    className={`game_theme ${
+                      gamePlatform.abbreviation == 'NGC' &&
+                      'gamecube_game_theme'
+                    }`}
+                    style={{
+                      '--color-theme': determineCoverColor(),
+                    }}
+                  />
+                  {/* DISC BANNER */}
+                  <div
+                    className={`game_preview__disc_console_banner ${
+                      gamePlatform.abbreviation == 'X360' &&
+                      'xbox360_disc_banner'
+                    } ${
+                      gamePlatform.abbreviation == 'NGC' &&
+                      'gamecube_disc_banner'
+                    }`}
+                    style={{
+                      background: determineCoverColor(),
+                    }}
+                  >
+                    {/* XBOX 360 DISC BANNER */}
+                    {gamePlatform.abbreviation == 'X360' && (
+                      <img src={xbox360Disc} />
+                    )}
+                    {/* GAMECUBE DISC BANNER */}
+                    {gamePlatform.abbreviation == 'NGC' && (
+                      <img src={gamecubeBanner} />
+                    )}
 
-                  {/* <p
+                    {/* <p
                     className={
                       gamePlatform.abbreviation == 'N64'
                         ? 'nintendo_font'
@@ -697,66 +723,71 @@ const GamePreview = ({
                   >
                     {gamePlatform.abbreviation}
                   </p> */}
-                  {/* {displayConsoleIcons(gamePlatform.abbreviation)} */}
-                </div>
-              </div>
-              {gamePlatform.abbreviation == 'N64' && (
-                <>
-                  <div
-                    style={{
-                      backgroundImage: `url(${nintendo64Cart})`,
-                    }}
-                    className='n64_cartridge'
-                  >
-                    <img
-                      src={
-                        game?.artworks?.length > 0
-                          ? `//images.igdb.com/igdb/image/upload/t_1080p/${game.artworks[0]?.image_id}.jpg`
-                          : gameCover
-                      }
-                    />
+                    {/* {displayConsoleIcons(gamePlatform.abbreviation)} */}
                   </div>
-                </>
-              )}
-            </div>
-          )}
+                </div>
+                {gamePlatform.abbreviation == 'N64' && (
+                  <>
+                    <div
+                      style={{
+                        backgroundImage: `url(${nintendo64Cart})`,
+                      }}
+                      className='n64_cartridge'
+                    >
+                      <img
+                        src={
+                          game?.artworks?.length > 0
+                            ? `//images.igdb.com/igdb/image/upload/t_1080p/${game.artworks[0]?.image_id}.jpg`
+                            : gameCover
+                        }
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* LEFT SIDE OF CASE */}
+          <div
+            className={`game_preview__left ${viewingPreview && 'left_open'}`}
+            style={{
+              '--color-theme': determineCoverColor(),
+            }}
+          />
+
+          {/* RIGHT SIDE OF CASE */}
+          <div
+            className={`game_preview__right ${
+              viewingPreview &&
+              gamePlatform.abbreviation == 'Switch' &&
+              'switch_case_right'
+            } ${viewingPreview && 'right_open'}`}
+            style={{
+              '--color-theme': determineCoverColor(),
+              background: determineCoverColor(),
+            }}
+          />
+
+          {/* TOP OF CASE */}
+          <div
+            className={`game_preview__top ${
+              viewingPreview && 'top_open_right'
+            }`}
+          />
+          <div
+            className='top_open_left'
+            style={{ display: !viewingPreview && 'none' }}
+          />
+
+          {/* BOTTOM OF CASE */}
+          <div
+            className={`game_preview__bottom ${
+              viewingPreview && 'bottom_open'
+            }`}
+          />
         </div>
-
-        {/* LEFT SIDE OF CASE */}
-        <div
-          className={`game_preview__left ${viewingPreview && 'left_open'}`}
-          style={{
-            '--color-theme': determineCoverColor(),
-          }}
-        />
-
-        {/* RIGHT SIDE OF CASE */}
-        <div
-          className={`game_preview__right ${
-            viewingPreview &&
-            gamePlatform.abbreviation == 'Switch' &&
-            'switch_case_right'
-          } ${viewingPreview && 'right_open'}`}
-          style={{
-            '--color-theme': determineCoverColor(),
-            background: determineCoverColor(),
-          }}
-        />
-
-        {/* TOP OF CASE */}
-        <div
-          className={`game_preview__top ${viewingPreview && 'top_open_right'}`}
-        />
-        <div
-          className='top_open_left'
-          style={{ display: !viewingPreview && 'none' }}
-        />
-
-        {/* BOTTOM OF CASE */}
-        <div
-          className={`game_preview__bottom ${viewingPreview && 'bottom_open'}`}
-        />
-      </div>
+      </Tilt>
     </div>
   );
 };

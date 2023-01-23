@@ -418,6 +418,10 @@
     display: none;
   }
 
+  .nav__search_icon {
+    margin-right: 0px;
+  }
+
   .recent_searches__item {
     height: 30px;
   }
@@ -435,7 +439,7 @@
     display: inline-flex;
     height: 5rem;
     margin: 5px 2px;
-    width: 12rem;
+    width: 11rem;
     background-color: rgb(35, 35, 35);
     position: relative;
   }

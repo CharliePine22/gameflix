@@ -139,8 +139,8 @@
 }
 
 .game_preview__bottom {
-  width: 243px;
-  height: 28px;
+  width: 250px;
+  height: 38px;
   transform: rotateX(-90deg) translateZ(331px);
   background-image: none;
   background-color: rgba(0, 0, 0, 0.7);
@@ -159,20 +159,23 @@
 .game_preview__box {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 385px;
+  /* height: 100%; */
   transform-style: preserve-3d;
   transition: all 600ms ease-in-out;
-  /* transform: rotateY(-90deg) rotateX(0deg);    width: 27px;
-    height: 380px;
-    background-position: 265px 0px;
-    background: var(--color-theme);
-    transform: rotateY(-90deg) translateZ(13px);
-    position: absolute;
-    top: 0;
-    left: 0px;
-    border-radius: 4px; */
-  /* transform: rotateY(-5deg) rotateX(1deg); */
-  /* transform: rotateY(-8deg) rotateX(5deg); */
+  transform-origin: center center;
+}
+
+.game_preview__box_glare {
+  transform: translateZ(1.4px);
+  background: radial-gradient(
+    farthest-corner circle at var(--mx) var(--my),
+    rgba(255, 255, 255, 0.8) 10%,
+    rgba(255, 255, 255, 0.65) 20%,
+    rgba(0, 0, 0, 0.5) 90%
+  );
+  mix-blend-mode: overlay;
+  opacity: var(--o);
 }
 
 .game_preview__box:hover {
@@ -183,6 +186,11 @@
 .game_preview__box:hover .game_preview__gradient {
   height: 90%;
   opacity: 0.95;
+}
+
+.game_preview__box:hover .game_preview__shine {
+  /* transition: all 300ms ease-in-out; */
+  transform: rotate(45deg);
 }
 
 .box_open {
@@ -699,7 +707,7 @@
   width: 24px;
   height: 375px;
   /* height: 345px; */
-  transform: rotateY(90deg) translateZ(228px);
+  transform: rotateY(92deg) translateZ(228px);
   background-image: none;
   background-color: rgba(0, 0, 0, 0.7);
   position: absolute;
@@ -729,6 +737,15 @@
   height: 173px;
   border-radius: 40%;
   box-shadow: 0 0 0 250px var(--color-theme);
+}
+
+.game_preview__shine_container {
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  transition: all 600ms ease-in-out;
+  overflow: hidden;
+  position: relative;
 }
 
 .game_preview__shine {
@@ -986,16 +1003,20 @@
   background-size: 500px 345px;
   backface-visibility: visible;
   position: relative;
-  height: 100%;
-  width: 100%;
   top: 0;
-  width: 243px;
-  height: 445px; /* The width is 345px but we have to enlarge the area because of the drop shadow. */
+  width: 243px; /* The width is 345px but we have to enlarge the area because of the drop shadow. */
+  height: 375px;
+  /* height: 445px;  */
   margin: 0 auto;
   overflow: visible;
   perspective: 690px;
   perspective-origin: 50% 50%;
   filter: drop-shadow(1px 3px 1px rgba(0, 0, 0, 0.7));
+}
+
+.glare-wrapper {
+  transform: translateZ(14px);
+  height: 374px;
 }
 
 .trailer {
@@ -1096,13 +1117,8 @@
     cursor: default;
   }
 
-  .game_preview__box {
-    right: 4px;
-    transform: rotateY(-5deg) rotateX(1deg) scale(0.9);
-  }
-
   .game_preview__box:hover {
-    transform: rotateY(-28deg) rotateX(4deg) scale(0.9);
+    transform: scale(1);
   }
 
   .right_open {

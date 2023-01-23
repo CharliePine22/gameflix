@@ -128,15 +128,16 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
             </div>
           </React.Fragment>
         ))}
-        {loading && (
-          <div className='row__loading_container'>
-            {[...Array(10)].map((item, i) => (
-              <div key={i} className='trending_row__placeholder__wrapper'>
-                <Placeholder key={i} delay={i} />
-              </div>
-            ))}
-          </div>
-        )}
+        {loading ||
+          (games.length == 0 && (
+            <div className='row__loading_container'>
+              {[...Array(10)].map((item, i) => (
+                <div key={i} className='trending_row__placeholder__wrapper'>
+                  <Placeholder key={i} delay={i} />
+                </div>
+              ))}
+            </div>
+          ))}
       </div>
     </div>
   );

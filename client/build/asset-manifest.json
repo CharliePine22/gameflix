@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.b97cfe8f.css",
-    "main.js": "/static/js/main.39f43dab.js",
+    "main.css": "/static/css/main.6aaba73d.css",
+    "main.js": "/static/js/main.bf5e7b45.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -58,6 +58,7 @@
     "static/media/steam-logo-transparent.png": "/static/media/steam-logo-transparent.442a9cc185e4d30c4f4d.png",
     "static/media/notify.mp3": "/static/media/notify.e2e956cec8e665fdac87.mp3",
     "static/media/nintendo-logo.png": "/static/media/nintendo-logo.14c4d5793bf79874cb08.png",
+    "static/media/360-side.png": "/static/media/360-side.af027d5e803e46638046.png",
     "static/media/rexlia_rg.otf": "/static/media/rexlia_rg.d297770693345b764564.otf",
     "static/media/psvita-logo.png": "/static/media/psvita-logo.fb4c047637585a7d3320.png",
     "static/media/Persona5MenuFontPrototype-Regular.ttf": "/static/media/Persona5MenuFontPrototype-Regular.eaf9adfa13ad3376ffd6.ttf",
@@ -77,8 +78,8 @@
     "static/media/mario_pixel_jumping.png": "/static/media/mario_pixel_jumping.2d3e818e95ef4a0db512.png",
     "static/media/nintendo3ds-logo2.png": "/static/media/nintendo3ds-logo2.c7e37eaf52ef8c373e44.png",
     "index.html": "/index.html",
-    "main.b97cfe8f.css.map": "/static/css/main.b97cfe8f.css.map",
-    "main.39f43dab.js.map": "/static/js/main.39f43dab.js.map",
+    "main.6aaba73d.css.map": "/static/css/main.6aaba73d.css.map",
+    "main.bf5e7b45.js.map": "/static/js/main.bf5e7b45.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -95,7 +96,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b97cfe8f.css",
-    "static/js/main.39f43dab.js"
+    "static/css/main.6aaba73d.css",
+    "static/js/main.bf5e7b45.js"
   ]
 }

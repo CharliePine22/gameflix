@@ -23,6 +23,7 @@ import wiiULogo from '../../../assets/images/wiiu-logo.png';
 import xboxLogo from '../../../assets/images/xbox-logo.png';
 import xbox360Banner from '../../../assets/images/xbox360-banner.webp';
 import xbox360Disc from '../../../assets/images/xbox360-disc-template.png';
+import xbox360Side from '../../../assets/images/360-side.png';
 import steamLogo from '../../../assets/images/steam-logo-transparent.png';
 import iosLogo from '../../../assets/images/apple-logo.png';
 import androidLogo from '../../../assets/images/android-logo.png';
@@ -65,7 +66,7 @@ const GamePreview = ({
 
   useEffect(() => {
     closeGame();
-  }, [game]);
+  }, [game.id]);
 
   const gamePlatformId = game.release_dates.sort(function (a, b) {
     return a.date - b.date;
@@ -279,11 +280,6 @@ const GamePreview = ({
     }
   };
 
-  // Go to the game website
-  const goToGameWebsite = (url) => {
-    window.open(url, '_blank');
-  };
-
   // Wait for animation to finish before closing details
   const closeDetails = () => {
     setUnmounting(true);
@@ -379,6 +375,8 @@ const GamePreview = ({
     }
   };
 
+  console.log('help');
+
   // Allow mario animation to finish before redirecting user to details page
   const delayDetails = async () => {
     audio.play();
@@ -395,11 +393,17 @@ const GamePreview = ({
   return (
     <div className='game_preview__wrapper' onClick={() => console.log(game)}>
       <Tilt
-        glareEnable={true}
+        tiltEnable={!viewingPreview}
+        glareEnable={!viewingPreview}
+        reset={true}
         tiltMaxAngleX={30}
-        tiltMaxAngleY={30}
+        tiltMaxAngleY={35}
         perspective={1000}
-        // glareColor={'rgb(255,0,0)'}
+        glarePosition={'all'}
+        glareBorderRadius={0}
+        // glareBorderRadius={'4px 4px 0 0'}
+        glareMaxOpacity={'.5'}
+        glareColor={'rgba(255,255,255, 1)'}
         // className='game_preview__box'
         style={{ height: 386, width: 250, transformStyle: 'preserve-3d' }}
       >
@@ -434,9 +438,6 @@ const GamePreview = ({
             {gamePlatform.abbreviation == 'N64' && (
               <img src={nintendo64Case} className='n64_game_img' />
             )}
-            {/* <div className='game_preview__shine_container'>
-            <div className='game_preview__gradient' />
-          </div> */}
 
             {/* FRONT CASE COVER BANNER */}
             <div
@@ -753,6 +754,7 @@ const GamePreview = ({
             className={`game_preview__left ${viewingPreview && 'left_open'}`}
             style={{
               '--color-theme': determineCoverColor(),
+              // background: `url(${xbox360Side})`,
             }}
           />
 

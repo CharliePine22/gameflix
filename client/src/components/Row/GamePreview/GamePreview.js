@@ -346,9 +346,9 @@ const GamePreview = ({
         return '#100e0e';
       case 'PS3':
         return '#9e9e9e';
+      // return '#9e9e9eB9';
       case 'N64':
         return '#EB1718';
-      // return '#CC0000';
       case 'Switch':
         return '#e4000f';
       case 'PS4':
@@ -394,17 +394,17 @@ const GamePreview = ({
     <div className='game_preview__wrapper' onClick={() => console.log(game)}>
       <Tilt
         tiltEnable={!viewingPreview}
-        glareEnable={!viewingPreview}
-        reset={true}
+        glareEnable={true}
         tiltMaxAngleX={30}
         tiltMaxAngleY={35}
         perspective={1000}
         glarePosition={'all'}
-        glareBorderRadius={0}
-        // glareBorderRadius={'4px 4px 0 0'}
-        glareMaxOpacity={'.5'}
+        glareBorderRadius={'0 4px 4px 0'}
+        transitionEasing={'cubic-bezier(.03,.98,.52,.99)'}
+        glareMaxOpacity={'.35'}
         glareColor={'rgba(255,255,255, 1)'}
         // className='game_preview__box'
+        onLeave={() => console.log('LEAVING CARD')}
         style={{ height: 386, width: 250, transformStyle: 'preserve-3d' }}
       >
         <div
@@ -429,9 +429,9 @@ const GamePreview = ({
                 gamePlatform.abbreviation == 'PS1' ||
                 gamePlatform.abbreviation == 'N64'
                   ? '8px'
-                  : '29px'
+                  : '31px'
               }`,
-              borderBottom: `${determineCoverColor()} solid 7px`,
+              borderBottom: `${determineCoverColor()} solid 4px`,
               borderRight: `${determineCoverColor()} solid 7px`,
             }}
           >
@@ -599,7 +599,7 @@ const GamePreview = ({
                   ? '8px'
                   : '24px'
               }`,
-              borderBottom: `${determineCoverColor()} solid 7px`,
+              borderBottom: `${determineCoverColor()} solid 4px`,
               borderLeft: `${determineCoverColor()} solid 7px`,
             }}
           >
@@ -776,6 +776,10 @@ const GamePreview = ({
             className={`game_preview__top ${
               viewingPreview && 'top_open_right'
             }`}
+            style={{
+              '--color-theme': determineCoverColor(),
+              background: determineCoverColor(),
+            }}
           />
           <div
             className='top_open_left'

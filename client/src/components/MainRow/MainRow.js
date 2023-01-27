@@ -6,7 +6,7 @@ import Placeholder from '../Placeholder/Placeholder';
 
 const MainRow = ({ twitchToken, setGameDetails }) => {
   const [games, setGames] = useState([]);
-  const [currentFilter, setCurrentFilter] = useState('Year');
+  const [currentFilter, setCurrentFilter] = useState('Week');
   const [changingFilter, setChangingFilter] = useState(false);
   const [currentlyViewing, setCurrentlyViewing] = useState(false);
   const [loading, setLoading] = useState(true);

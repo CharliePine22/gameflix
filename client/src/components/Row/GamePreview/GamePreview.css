@@ -146,6 +146,7 @@
   background-color: rgba(0, 0, 0, 0.7);
   position: absolute;
   top: 30px;
+  border-radius: 6px;
 }
 
 .bottom_open {
@@ -377,12 +378,15 @@
   top: 0;
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: cover;
+  background-size: 100% 100%;
   transform-style: preserve-3d;
 }
 
 .game_preview__front .row__poster__esrb_img {
   transform: translateZ(8px) scale(1);
+  bottom: 9px;
+  left: 7px;
+  backface-visibility: hidden;
 }
 
 .game_preview__front_open {
@@ -457,7 +461,6 @@
   width: 100.1%; /* Give extra .1 so border extends across completely */
   /* width: 103%; Give extra 3% so banner extends across the case completely */
   height: 28px;
-  border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   border-bottom: 2px solid white;
   overflow: hidden;
@@ -556,7 +559,7 @@
 .xbox360_banner {
   position: absolute;
   top: -27px;
-  height: 31px;
+  height: 28px;
 }
 
 .xbox360_banner > img {
@@ -603,14 +606,16 @@
 }
 
 .game_preview__left {
-  width: 31px;
+  width: 30px;
   height: 378px;
   background-position: 265px 0px;
   background: var(--color-theme);
-  transform: rotateY(-90deg) translateZ(15px);
+  transform: rotateY(-91deg) translateZ(15px);
   position: absolute;
   top: 1px;
-  left: 0px;
+  left: 1px;
+  border-top-left-radius: 4px;
+  box-shadow: -5px 3px 18px black;
 }
 
 .left_open {
@@ -698,14 +703,14 @@
 }
 
 .game_preview__right {
-  width: 24px;
+  width: 26px;
   height: 375px;
   /* height: 345px; */
-  transform: rotateY(90deg) translateZ(233px);
+  transform: rotateY(91deg) translateZ(233px) translateX(-4px);
   background-image: none;
   background-color: rgba(0, 0, 0, 0.7);
   position: absolute;
-  top: 0;
+  top: 2px;
   border-radius: 4px;
   border: 1px solid black;
 }
@@ -756,13 +761,12 @@
 }
 
 .game_preview__top {
-  width: 248px;
-  height: 28px;
+  width: 245px;
+  height: 29px;
   transform: rotateX(90deg) translateZ(16px);
-  background-color: rgba(0, 0, 0, 0.5);
-  box-shadow: 2px 2px 17px black;
+  box-shadow: 2px -18px 17px rgba(0, 0, 0, 0.6);
   position: absolute;
-  top: 0;
+  top: 2px;
   left: 1px;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
@@ -1012,9 +1016,12 @@
 
 .glare-wrapper {
   transform: translateZ(14px);
-  height: 341.3px !important;
-  width: 97% !important;
-  top: 33px !important;
+  height: 372.9px !important;
+  width: 97.4% !important;
+  top: 4px !important;
+  border-top-right-radius: 4px !important;
+  mask-image: radial-gradient(center, white, black);
+  -webkit-mask-image: none !important;
 }
 
 .trailer {
@@ -1105,6 +1112,12 @@
   }
 }
 
+@media screen and (min-width: 1400px) {
+  .game_preview__wrapper {
+    transform: scale(1.15);
+  }
+}
+
 @media screen and (max-width: 500px) {
   .box_open {
     transform: rotateY(-5deg) rotateX(1deg) scale(1) !important;
@@ -1114,10 +1127,6 @@
     transform: rotateY(-5deg) rotateX(1deg) scale(1) !important;
     cursor: default;
   }
-
-  /* .game_preview__box:hover {
-    transform: scale(1);
-  } */
 
   .right_open {
     height: 284px;

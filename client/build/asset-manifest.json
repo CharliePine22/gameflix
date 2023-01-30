@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.79fdb4d8.css",
-    "main.js": "/static/js/main.f11f1b0e.js",
+    "main.css": "/static/css/main.21d54907.css",
+    "main.js": "/static/js/main.75ca4cd8.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -26,7 +26,9 @@
     "static/media/success.wav": "/static/media/success.691f932eabcba96fbd39.wav",
     "static/media/ps2-startup.mp3": "/static/media/ps2-startup.8efa64e9a87d45c26f7c.mp3",
     "static/media/loz-link.png": "/static/media/loz-link.4c290163c8a52fcdb236.png",
+    "static/media/ps2-disc-banner.png": "/static/media/ps2-disc-banner.872083df58607b1a3341.png",
     "static/media/nintendo-ds.png": "/static/media/nintendo-ds.2f5f510a038d17437421.png",
+    "static/media/wiiu-disc-banner.png": "/static/media/wiiu-disc-banner.c32a1b90e4b21d3aed96.png",
     "static/media/n64-game-template.png": "/static/media/n64-game-template.630a804a3affdd0595e8.png",
     "static/media/wii-logo.png": "/static/media/wii-logo.e13a4c73e15a82d6b22b.png",
     "static/media/ps-trophy-platinum.png": "/static/media/ps-trophy-platinum.3e1d87fe6e2a0976fe1b.png",
@@ -78,8 +80,8 @@
     "static/media/mario_pixel_jumping.png": "/static/media/mario_pixel_jumping.2d3e818e95ef4a0db512.png",
     "static/media/nintendo3ds-logo2.png": "/static/media/nintendo3ds-logo2.c7e37eaf52ef8c373e44.png",
     "index.html": "/index.html",
-    "main.79fdb4d8.css.map": "/static/css/main.79fdb4d8.css.map",
-    "main.f11f1b0e.js.map": "/static/js/main.f11f1b0e.js.map",
+    "main.21d54907.css.map": "/static/css/main.21d54907.css.map",
+    "main.75ca4cd8.js.map": "/static/js/main.75ca4cd8.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -96,7 +98,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.79fdb4d8.css",
-    "static/js/main.f11f1b0e.js"
+    "static/css/main.21d54907.css",
+    "static/js/main.75ca4cd8.js"
   ]
 }

@@ -10,6 +10,7 @@ import playstationLogo from '../../../assets/images/playstation-logo.png';
 import playstationLogoWhite from '../../../assets/images/ps4-logo.png';
 import pspLogo from '../../../assets/images/psp-logo.png';
 import psVitaLogo from '../../../assets/images/psvita-logo.png';
+import ps2DiscBanner from '../../../assets/images/ps2-disc-banner.png';
 import nesLogo from '../../../assets/images/nes-logo.png';
 import nintendo64Logo from '../../../assets/images/nintendo-logo.png';
 import nintendo64Case from '../../../assets/images/n64-case-template-e.png';
@@ -20,6 +21,7 @@ import nintendo3ds from '../../../assets/images/nintendo3ds-logo2.png';
 import gbaLogo from '../../../assets/images/gba-logo.png';
 import wiiLogo from '../../../assets/images/wii_logo.png';
 import wiiULogo from '../../../assets/images/wiiu-logo.png';
+import wiiUDiscBanner from '../../../assets/images/wiiu-disc-banner.png';
 import xboxLogo from '../../../assets/images/xbox-logo.png';
 import xbox360Banner from '../../../assets/images/xbox360-banner.webp';
 import xbox360Disc from '../../../assets/images/xbox360-disc-template.png';
@@ -390,6 +392,8 @@ const GamePreview = ({
     return null;
   }
 
+  console.log(viewingPreview);
+
   return (
     <div className='game_preview__wrapper' onClick={() => console.log(game)}>
       <Tilt
@@ -691,7 +695,10 @@ const GamePreview = ({
                       'gamecube_disc_banner'
                     }`}
                     style={{
-                      background: determineCoverColor(),
+                      background:
+                        gamePlatform.abbreviation == 'WiiU'
+                          ? 'transparent'
+                          : determineCoverColor(),
                     }}
                   >
                     {/* XBOX 360 DISC BANNER */}
@@ -701,6 +708,14 @@ const GamePreview = ({
                     {/* GAMECUBE DISC BANNER */}
                     {gamePlatform.abbreviation == 'NGC' && (
                       <img src={gamecubeBanner} />
+                    )}
+                    {/* PLAYSTATION 2 DISC BANNER */}
+                    {gamePlatform.abbreviation == 'PS2' && (
+                      <img className='ps2_disc_banner' src={ps2DiscBanner} />
+                    )}
+                    {/* WII U DISC BANNER */}
+                    {gamePlatform.abbreviation == 'WiiU' && (
+                      <img className='wiiu_disc_banner' src={wiiUDiscBanner} />
                     )}
 
                     {/* <p

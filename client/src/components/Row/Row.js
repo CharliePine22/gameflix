@@ -132,6 +132,8 @@ function Row({
     }
   };
 
+  console.log(genreList);
+
   return (
     <div className='row'>
       <h2 className='row__title'>{genreTitle}</h2>

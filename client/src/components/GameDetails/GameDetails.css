@@ -412,7 +412,7 @@
 .screenshot_thumbnail {
   height: -webkit-fill-available;
   min-height: 110px;
-  width: 100%;
+  width: 98%; /* Set width to 98 to fit active border */
   /* object-fit: cover; */
   cursor: pointer;
 }
@@ -572,7 +572,7 @@
 
 @media screen and (max-width: 590px) {
   .details_img {
-    width: 75%;
+    width: 78%;
   }
 
   .game_details__actions {

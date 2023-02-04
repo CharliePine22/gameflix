@@ -29,7 +29,7 @@ import gamecubeLogo from '../../assets/images/gamecube-logo.png';
 // Modules
 import Carousel, { CarouselItem } from './Carousel';
 import { VscLibrary } from 'react-icons/vsc';
-import { Tooltip } from 'react-tooltip';
+import { AiOutlineExpandAlt, AiFillYoutube } from 'react-icons/ai';
 
 // ('https://www.youtube.com/watch?v=${GAMEVIDEOID}');
 
@@ -52,6 +52,7 @@ const GameDetails = ({
   const exists =
     currentCollection &&
     currentCollection.some((game) => game.id === gameDetails.id);
+  let coverImageURL = 'images.igdb.com/igdb/image/upload/t_cover_big_2x/';
 
   const searchGameDetails = async () => {
     try {
@@ -350,7 +351,7 @@ const GameDetails = ({
         <div className='game_details__details'>
           <div className='game_details__media'>
             <div className='media_placeholder'>
-              <VscLibrary className='game_details__swap_icon' />
+              <AiOutlineExpandAlt className='game_details__swap_icon' />
               <img
                 className='details_img'
                 src={
@@ -371,8 +372,9 @@ const GameDetails = ({
                   style={{
                     border:
                       gameDetails.cover.image_id == activeScreenshot
-                        ? '1px solid lightblue'
+                        ? '2px solid lightblue'
                         : '1px solid transparent',
+                    width: '95%',
                   }}
                 />
                 {/* SCREENSHOTS */}

@@ -139,11 +139,11 @@
 }
 
 .game_preview__bottom {
-  width: 250px;
+  width: 246px;
   height: 38px;
   transform: rotateX(-90deg) translateZ(331px);
   background-image: none;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.4);
   position: absolute;
   top: 30px;
   border-radius: 6px;
@@ -622,7 +622,7 @@ div:has(> .box_open) {
 }
 
 .game_preview__left {
-  width: 30px;
+  width: 28px;
   height: 378px;
   background-position: 265px 0px;
   background: var(--color-theme);
@@ -631,15 +631,16 @@ div:has(> .box_open) {
   top: 1px;
   left: 1px;
   border-top-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .game_preview__left::before {
   content: '';
   position: absolute;
   top: 0;
-  height: 100%;
+  height: 376px;
   width: 100%;
-  box-shadow: -5px 3px 18px black;
+  box-shadow: 0 0 5px black;
 }
 
 .left_open {
@@ -788,7 +789,7 @@ div:has(> .box_open) {
   width: 245px;
   height: 29px;
   transform: rotateX(90deg) translateZ(16px);
-  box-shadow: 2px -18px 17px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 10px 9px rgb(0 0 0 / 60%);
   position: absolute;
   top: 2px;
   left: 1px;
@@ -1144,22 +1145,23 @@ div:has(> .box_open) {
 
 @media screen and (max-width: 500px) {
   .box_open {
-    transform: rotateY(-5deg) rotateX(1deg) scale(1) !important;
+    transform: rotateY(-1deg) rotateX(1deg) scale(1) !important;
   }
 
   .box_open:hover {
-    transform: rotateY(-5deg) rotateX(1deg) scale(1) !important;
+    transform: rotateY(-1deg) rotateX(1deg) scale(1) !important;
     cursor: default;
   }
 
   .right_open {
-    height: 284px;
-    transform: rotateY(67deg) translateZ(332px);
-    top: 64px;
+    height: 226px;
+    transform: rotateY(58deg) translateZ(225px);
+    top: 83px;
+    left: 46px;
   }
 
   .game_preview__middle.middle_open {
-    left: 116px;
+    left: 110px;
   }
 }
 

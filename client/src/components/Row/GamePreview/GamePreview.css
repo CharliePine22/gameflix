@@ -208,7 +208,7 @@ div:has(> .box_open) {
   height: 85px;
   width: 85px;
   padding: 75px;
-  filter: drop-shadow(0px 0px 4px black);
+  filter: drop-shadow(3px 1px 4px black);
   cursor: pointer;
   overflow: hidden;
   border-radius: 50%;
@@ -247,9 +247,9 @@ div:has(> .box_open) {
 
 .gamecube_disc {
   top: 150px;
-  right: 40px;
-  height: 35px;
-  width: 35px;
+  right: 32px;
+  height: 50px;
+  width: 50px;
   margin-top: 15px;
   background-size: 100% 63%;
   background-repeat: repeat;
@@ -343,10 +343,10 @@ div:has(> .box_open) {
 }
 
 .gamecube_disc_banner > img {
-  height: 495%;
+  height: 520%;
   width: 110%;
   object-fit: contain;
-  transform: translateY(-65px);
+  transform: translateY(-74px);
 }
 
 .ps2_disc_banner {
@@ -631,7 +631,6 @@ div:has(> .box_open) {
   top: 1px;
   left: 1px;
   border-top-left-radius: 4px;
-  border-bottom-right-radius: 4px;
 }
 
 .game_preview__left::before {
@@ -731,7 +730,7 @@ div:has(> .box_open) {
   width: 26px;
   height: 375px;
   /* height: 345px; */
-  transform: rotateY(91deg) translateZ(233px) translateX(-4px);
+  transform: rotateY(91deg) translateZ(232px) translateX(-4px);
   background-image: none;
   background-color: rgba(0, 0, 0, 0.7);
   position: absolute;
@@ -799,8 +798,9 @@ div:has(> .box_open) {
 
 .top_open_right {
   width: 246px;
-  transform: rotateX(90deg) rotateZ(34deg) translateZ(14px) translateY(-191px);
+  transform: rotateX(90deg) rotateZ(34deg) translateZ(17px) translateY(-192px);
   border-radius: 10px;
+  box-shadow: 1px -10px 19px rgb(0 0 0 / 80%);
 }
 
 .top_open_left {
@@ -852,8 +852,8 @@ div:has(> .box_open) {
 }
 
 .gamecube_game_theme {
-  top: 77px;
-  left: 77px;
+  top: 84px;
+  left: 84px;
   height: 20px;
   width: 20px;
 }

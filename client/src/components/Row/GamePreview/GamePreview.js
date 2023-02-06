@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { SiApplemusic, SiAddthis } from 'react-icons/si';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 import ReactPlayer from 'react-player/lazy';
@@ -8,36 +8,56 @@ import Tilt from 'react-parallax-tilt';
 // Game Platform Logo Images
 import playstationLogo from '../../../assets/images/playstation-logo.png';
 import playstationLogoWhite from '../../../assets/images/ps4-logo.png';
+// PSP
 import pspLogo from '../../../assets/images/psp-logo.png';
+// PS Vita
 import psVitaLogo from '../../../assets/images/psvita-logo.png';
+// PlayStation 1
+import ps1Sound from '../../../assets/sounds/platform_sounds/ps1-startup.mp3';
+// PlayStation 2
 import ps2DiscBanner from '../../../assets/images/ps2-disc-banner.png';
 import nesLogo from '../../../assets/images/nes-logo.png';
+import ps2Sound from '../../../assets/sounds/platform_sounds/ps2-startup.mp3';
+// Nintendo 64
 import nintendo64Logo from '../../../assets/images/nintendo-logo.png';
 import nintendo64Case from '../../../assets/images/n64-case-template-e.png';
 import nintendo64Cart from '../../../assets/images/n64-game-template.png';
+// Nintendo Switch
 import nintendoSwitchLogo from '../../../assets/images/switch_logo.png';
+// GameCube
+import gamecubeLogo from '../../../assets/images/gamecube-logo.png';
+import gamecubeBanner from '../../../assets/images/gamecube-disc-banner.png';
+import gamecubeBackCover from '../../../assets/images/gamecube-cover-back.png';
+// Nintendo DS/3DS
 import nintendoDs from '../../../assets/images/ds-logo.png';
 import nintendo3ds from '../../../assets/images/nintendo3ds-logo2.png';
+// Gameboy Advanced
 import gbaLogo from '../../../assets/images/gba-logo.png';
+// Wii
 import wiiLogo from '../../../assets/images/wii_logo.png';
+// Wii U
 import wiiULogo from '../../../assets/images/wiiu-logo.png';
 import wiiUDiscBanner from '../../../assets/images/wiiu-disc-banner.png';
+// Xbox 360
 import xboxLogo from '../../../assets/images/xbox-logo.png';
 import xbox360Banner from '../../../assets/images/xbox360-banner.webp';
 import xbox360Disc from '../../../assets/images/xbox360-disc-template.png';
 import xbox360Side from '../../../assets/images/360-side.png';
+import xbox360Sound from '../../../assets/sounds/platform_sounds/360-startup.mp3';
+// Steam Logo
 import steamLogo from '../../../assets/images/steam-logo-transparent.png';
+// Apple Logo
 import iosLogo from '../../../assets/images/apple-logo.png';
+// Android Logo
 import androidLogo from '../../../assets/images/android-logo.png';
+// Sega Logo
 import segaLogo from '../../../assets/images/sega-logo.png';
+// SNES Logo
 import snesLogo from '../../../assets/images/snes-logo.png';
-import gamecubeLogo from '../../../assets/images/gamecube-logo.png';
-import gamecubeBanner from '../../../assets/images/gamecube-disc-banner.png';
 
 // Gmae Platform Startup Sounds
-import ps1Sound from '../../../assets/sounds/platform_sounds/ps1-startup.mp3';
-import ps2Sound from '../../../assets/sounds/platform_sounds/ps2-startup.mp3';
 import gamecubeSound from '../../../assets/sounds/platform_sounds/gamecube-startup.mp3';
+import n64Sound from '../../../assets/sounds/platform_sounds/n64-startup.mp3';
 
 import pipeAudio from '../../../assets/sounds/pipe-sound.mp3';
 import marioStanding from '../../../assets/images/mario_pixel_standing.png';
@@ -63,13 +83,6 @@ const GamePreview = ({
   const [hoveringAdd, setHoveringAdd] = useState(false);
   const [hoveringDetails, setHoveringDetails] = useState(false);
 
-  let audio = new Audio(pipeAudio);
-  let consoleAudio = new Audio(gamecubeSound);
-
-  useEffect(() => {
-    closeGame();
-  }, [game.id]);
-
   const gamePlatformId = game.release_dates.sort(function (a, b) {
     return a.date - b.date;
   })[0].platform;
@@ -78,15 +91,39 @@ const GamePreview = ({
     (platform) => platform.id == gamePlatformId
   )[0];
 
-  const playConsoleStartup = (platform) => {
-    console.log(platform.toLowerCase());
-    console.log(playingDisc);
+  let audio = new Audio(pipeAudio);
+  const determineConsoleAudio = () => {
+    if (!gamePlatform) return;
+    switch (gamePlatform.abbreviation) {
+      case 'DC':
+      case 'PS1':
+        return ps1Sound;
+      case 'PS2':
+        return ps2Sound;
+      case 'NGC':
+        return gamecubeSound;
+      case 'X360':
+        return xbox360Sound;
+
+      default:
+        return null;
+    }
+  };
+
+  useEffect(() => {
+    closeGame();
+  }, [game.id]);
+
+  const consoleAudio = useRef(new Audio(determineConsoleAudio()));
+
+  const playConsoleStartup = () => {
     if (!playingDisc) {
       setPlayingDisc(true);
-      consoleAudio.play();
+      consoleAudio.current.play();
     } else {
       setPlayingDisc(false);
-      consoleAudio.pause();
+      consoleAudio.current.pause();
+      consoleAudio.current.currentTime = 0;
     }
   };
 
@@ -282,6 +319,24 @@ const GamePreview = ({
     }
   };
 
+  const determineSideBanner = () => {
+    switch (gamePlatform.abbreviation) {
+      case 'X360':
+        return xbox360Side;
+      default:
+        return '';
+    }
+  };
+
+  const determineBackCover = () => {
+    switch (gamePlatform.abbreviation) {
+      case 'NGC':
+        return gamecubeBackCover;
+      default:
+        return '';
+    }
+  };
+
   // Wait for animation to finish before closing details
   const closeDetails = () => {
     setUnmounting(true);
@@ -376,8 +431,6 @@ const GamePreview = ({
       // return 'linear-gradient(120deg, #00adee, #000000);';
     }
   };
-
-  console.log('help');
 
   // Allow mario animation to finish before redirecting user to details page
   const delayDetails = async () => {
@@ -595,8 +648,11 @@ const GamePreview = ({
           }
         `}
             style={{
-              // background: `url(${gameCover})`,
-              background: determineCoverColor(),
+              background: `url(${
+                game?.artworks?.length > 1
+                  ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.artworks[1]?.image_id}.jpg`
+                  : gameCover
+              })`,
               borderTop: `${determineCoverColor()} solid ${
                 gamePlatform.abbreviation == 'PS1' ||
                 gamePlatform.abbreviation == 'N64'
@@ -607,6 +663,7 @@ const GamePreview = ({
               borderLeft: `${determineCoverColor()} solid 7px`,
             }}
           >
+            <img src={determineBackCover()} />
             {viewingPreview && (
               <div className='game_preview__back_open_details'>
                 <img
@@ -619,7 +676,7 @@ const GamePreview = ({
 
                 {/* MARIO PIPE BUTTONS */}
                 <div className='game_preview__actions'>
-                  {hoveringAdd && (
+                  {hoveringAdd && !marioTransition && (
                     <img
                       src={marioStanding}
                       className={`mario_pixel ${
@@ -636,7 +693,7 @@ const GamePreview = ({
                   >
                     Add
                   </button>
-                  {hoveringDetails && (
+                  {(hoveringDetails || marioTransition) && (
                     <img
                       src={marioStanding}
                       className={`mario_pixel ${
@@ -668,7 +725,7 @@ const GamePreview = ({
                         : gameCover
                     })`,
                   }}
-                  onClick={() => playConsoleStartup(gamePlatform.abbreviation)}
+                  onClick={() => playConsoleStartup()}
                 >
                   <div
                     className={`game_preview__disc_center ${
@@ -717,29 +774,6 @@ const GamePreview = ({
                     {gamePlatform.abbreviation == 'WiiU' && (
                       <img className='wiiu_disc_banner' src={wiiUDiscBanner} />
                     )}
-
-                    {/* <p
-                    className={
-                      gamePlatform.abbreviation == 'N64'
-                        ? 'nintendo_font'
-                        : gamePlatform.abbreviation == 'X360'
-                        ? 'xbox_font'
-                        : gamePlatform.abbreviation == 'PS4'
-                        ? 'modern_playstation_font'
-                        : gamePlatform.abbreviation == 'PS5'
-                        ? 'modern_playstation_font'
-                        : gamePlatform.abbreviation == 'PS3'
-                        ? 'modern_playstation_font'
-                        : gamePlatform.abbreviation == 'PS2'
-                        ? 'old_playstation_font'
-                        : gamePlatform.abbreviation == 'PS1'
-                        ? 'old_playstation_font'
-                        : ''
-                    }
-                  >
-                    {gamePlatform.abbreviation}
-                  </p> */}
-                    {/* {displayConsoleIcons(gamePlatform.abbreviation)} */}
                   </div>
                 </div>
                 {gamePlatform.abbreviation == 'N64' && (
@@ -769,7 +803,9 @@ const GamePreview = ({
             className={`game_preview__left ${viewingPreview && 'left_open'}`}
             style={{
               '--color-theme': determineCoverColor(),
-              // background: `url(${xbox360Side})`,
+              background: `url(${determineSideBanner()})`,
+              backgroundSize: 'cover',
+              backgroundPosition: '50% 100%',
             }}
           />
 

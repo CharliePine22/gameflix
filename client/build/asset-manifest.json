@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.3dc4621b.css",
-    "main.js": "/static/js/main.c458b132.js",
+    "main.css": "/static/css/main.68dadf97.css",
+    "main.js": "/static/js/main.3a9f40ca.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -31,6 +31,8 @@
     "static/media/wiiu-disc-banner.png": "/static/media/wiiu-disc-banner.c32a1b90e4b21d3aed96.png",
     "static/media/n64-game-template.png": "/static/media/n64-game-template.630a804a3affdd0595e8.png",
     "static/media/wii-logo.png": "/static/media/wii-logo.e13a4c73e15a82d6b22b.png",
+    "static/media/360-startup.mp3": "/static/media/360-startup.1bd34d2e48d7a2a1789a.mp3",
+    "static/media/gamecube-cover-back.png": "/static/media/gamecube-cover-back.65a8befbc690114f2f2f.png",
     "static/media/ps-trophy-platinum.png": "/static/media/ps-trophy-platinum.3e1d87fe6e2a0976fe1b.png",
     "static/media/sonic.png": "/static/media/sonic.a55cb24fd51aa26fe25a.png",
     "static/media/ff7-cloud.png": "/static/media/ff7-cloud.556d4e5da527546092e2.png",
@@ -46,6 +48,7 @@
     "static/media/ps4-logo.png": "/static/media/ps4-logo.4c0482691583863bec62.png",
     "static/media/ESRB_M.png": "/static/media/ESRB_M.4a41f5f352b1c2ff77a9.png",
     "static/media/android-logo.png": "/static/media/android-logo.c738080d9145c162601f.png",
+    "static/media/n64-startup.mp3": "/static/media/n64-startup.ef83dcf820746e639019.mp3",
     "static/media/apple-logo.png": "/static/media/apple-logo.984030b66746dc4582fb.png",
     "static/media/wii_logo.png": "/static/media/wii_logo.1d66e3a7ef38eb9e15cd.png",
     "static/media/spyro.png": "/static/media/spyro.6e54039ba1f7884ca898.png",
@@ -80,8 +83,8 @@
     "static/media/mario_pixel_jumping.png": "/static/media/mario_pixel_jumping.2d3e818e95ef4a0db512.png",
     "static/media/nintendo3ds-logo2.png": "/static/media/nintendo3ds-logo2.c7e37eaf52ef8c373e44.png",
     "index.html": "/index.html",
-    "main.3dc4621b.css.map": "/static/css/main.3dc4621b.css.map",
-    "main.c458b132.js.map": "/static/js/main.c458b132.js.map",
+    "main.68dadf97.css.map": "/static/css/main.68dadf97.css.map",
+    "main.3a9f40ca.js.map": "/static/js/main.3a9f40ca.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -98,7 +101,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3dc4621b.css",
-    "static/js/main.c458b132.js"
+    "static/css/main.68dadf97.css",
+    "static/js/main.3a9f40ca.js"
   ]
 }

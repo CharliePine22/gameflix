@@ -15,9 +15,14 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
   const [loading, setLoading] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
   let currentDate = Math.floor(new Date().getTime() / 1000);
+  let trendingTitlesFetched = JSON.parse(sessionStorage.getItem('trending'));
 
   useEffect(() => {
     if (!twitchToken) return;
+    if (trendingTitlesFetched && trendingTitlesFetched.length > 0) {
+      setGames(trendingTitlesFetched);
+      return;
+    }
     // Grab games from each genre
     setLoading(true);
     async function fetchData() {
@@ -39,6 +44,7 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
         );
 
         setGames(trendingList);
+        sessionStorage.setItem('trending', JSON.stringify(trendingList));
         setLoading(false);
         return request;
       } catch (error) {
@@ -47,8 +53,6 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
     }
     fetchData();
   }, [twitchToken, trendingList]);
-
-  console.log(games);
 
   // useEffect(() => {
   //   const loadImage = image => {

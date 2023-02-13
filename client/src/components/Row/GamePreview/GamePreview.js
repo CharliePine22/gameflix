@@ -16,8 +16,10 @@ import psVitaLogo from '../../../assets/images/psvita-logo.png';
 import ps1Sound from '../../../assets/sounds/platform_sounds/ps1-startup.mp3';
 // PlayStation 2
 import ps2DiscBanner from '../../../assets/images/ps2-disc-banner.png';
-import nesLogo from '../../../assets/images/nes-logo.png';
+import ps2SideBanner from '../../../assets/images/ps2-side-banner.png';
 import ps2Sound from '../../../assets/sounds/platform_sounds/ps2-startup.mp3';
+// PlayStation 3
+import ps3SideBanner from '../../../assets/images/ps3-side.png';
 // Nintendo 64
 import nintendo64Logo from '../../../assets/images/nintendo-logo.png';
 import nintendo64Case from '../../../assets/images/n64-case-template-e.png';
@@ -42,7 +44,7 @@ import wiiUDiscBanner from '../../../assets/images/wiiu-disc-banner.png';
 import xboxLogo from '../../../assets/images/xbox-logo.png';
 import xbox360Banner from '../../../assets/images/xbox360-banner.webp';
 import xbox360Disc from '../../../assets/images/xbox360-disc-template.png';
-import xbox360Side from '../../../assets/images/360-side.png';
+import xbox360Side from '../../../assets/images/360-side1.png';
 import xbox360Sound from '../../../assets/sounds/platform_sounds/360-startup.mp3';
 // Steam Logo
 import steamLogo from '../../../assets/images/steam-logo-transparent.png';
@@ -54,6 +56,7 @@ import androidLogo from '../../../assets/images/android-logo.png';
 import segaLogo from '../../../assets/images/sega-logo.png';
 // SNES Logo
 import snesLogo from '../../../assets/images/snes-logo.png';
+import nesLogo from '../../../assets/images/nes-logo.png';
 
 // Gmae Platform Startup Sounds
 import gamecubeSound from '../../../assets/sounds/platform_sounds/gamecube-startup.mp3';
@@ -92,6 +95,8 @@ const GamePreview = ({
   )[0];
 
   let audio = new Audio(pipeAudio);
+
+  //
   const determineConsoleAudio = () => {
     if (!gamePlatform) return;
     switch (gamePlatform.abbreviation) {
@@ -106,7 +111,7 @@ const GamePreview = ({
         return xbox360Sound;
 
       default:
-        return null;
+        return '';
     }
   };
 
@@ -323,6 +328,10 @@ const GamePreview = ({
     switch (gamePlatform.abbreviation) {
       case 'X360':
         return xbox360Side;
+      case 'PS2':
+        return ps2SideBanner;
+      case 'PS3':
+        return ps3SideBanner;
       default:
         return '';
     }
@@ -402,8 +411,7 @@ const GamePreview = ({
       case 'fds':
         return '#100e0e';
       case 'PS3':
-        return '#9e9e9e';
-      // return '#9e9e9eB9';
+        return '#585858';
       case 'N64':
         return '#EB1718';
       case 'Switch':
@@ -445,8 +453,6 @@ const GamePreview = ({
     return null;
   }
 
-  console.log(viewingPreview);
-
   return (
     <div className='game_preview__wrapper' onClick={() => console.log(game)}>
       <Tilt
@@ -456,12 +462,10 @@ const GamePreview = ({
         tiltMaxAngleY={35}
         perspective={1000}
         glarePosition={'all'}
-        glareBorderRadius={'0 4px 4px 0'}
+        glareBorderRadius={'2px 6px 6px 0'}
         transitionEasing={'cubic-bezier(.03,.98,.52,.99)'}
         glareMaxOpacity={'.35'}
         glareColor={'rgba(255,255,255, 1)'}
-        // className='game_preview__box'
-        onLeave={() => console.log('LEAVING CARD')}
         style={{ height: 386, width: 250, transformStyle: 'preserve-3d' }}
       >
         <div
@@ -477,7 +481,7 @@ const GamePreview = ({
               backgroundImage: `url(${gameCover})`,
               height: `${
                 gamePlatform.abbreviation == 'PS1' ||
-                (gamePlatform.abbreviation == 'N64' && '365px')
+                (gamePlatform.abbreviation == 'N64' && '368px')
               }`,
 
               backgroundPosition:
@@ -657,7 +661,7 @@ const GamePreview = ({
                 gamePlatform.abbreviation == 'PS1' ||
                 gamePlatform.abbreviation == 'N64'
                   ? '8px'
-                  : '24px'
+                  : '7px'
               }`,
               borderBottom: `${determineCoverColor()} solid 4px`,
               borderLeft: `${determineCoverColor()} solid 7px`,
@@ -803,9 +807,22 @@ const GamePreview = ({
             className={`game_preview__left ${viewingPreview && 'left_open'}`}
             style={{
               '--color-theme': determineCoverColor(),
-              background: `url(${determineSideBanner()})`,
+              background:
+                determineSideBanner() !== '' && `url(${determineSideBanner()})`,
               backgroundSize: 'cover',
               backgroundPosition: '50% 100%',
+              borderTop:
+                gamePlatform.abbreviation == 'X360' && '4px solid #5dc21e',
+              height:
+                gamePlatform.abbreviation == 'X360' &&
+                !viewingPreview &&
+                '376px',
+              backgroundColor:
+                gamePlatform.abbreviation == 'PS2'
+                  ? 'black'
+                  : gamePlatform.abbreviation == 'X360'
+                  ? 'white'
+                  : '',
             }}
           />
 
@@ -842,6 +859,10 @@ const GamePreview = ({
             className={`game_preview__bottom ${
               viewingPreview && 'bottom_open'
             }`}
+            style={{
+              '--color-theme': determineCoverColor(),
+              background: determineCoverColor(),
+            }}
           />
         </div>
       </Tilt>

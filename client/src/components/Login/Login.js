@@ -39,6 +39,7 @@ const Login = ({ toLanding, authenticateUser, images }) => {
     const isValidPassword =
       e.target.value.length > 0 && e.target.value.length <= 8;
   };
+
   // Password input error blur error handler
   const passwordBlurHandler = (e) => {
     const value = e.target.value.trim().toLowerCase();
@@ -52,7 +53,7 @@ const Login = ({ toLanding, authenticateUser, images }) => {
   };
 
   // Submit user information to match authentication
-  const formSubmitHandler = (e) => {
+  const formSubmitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
     // Data values
@@ -61,7 +62,10 @@ const Login = ({ toLanding, authenticateUser, images }) => {
     emailRef.current.blur();
     passwordRef.current.blur();
     setCurrentFocus('');
-    authenticateUser(email, password);
+    const response = await authenticateUser(email, password);
+    console.log(response.data);
+    if (!response.data) setAuthError(response);
+    setLoading(false);
   };
 
   return (

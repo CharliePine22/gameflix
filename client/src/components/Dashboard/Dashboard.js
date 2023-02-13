@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, useSearchParams } from 'react-router-dom';
 
 // Component Imports
 import Row from '../Row/Row';
@@ -34,6 +35,8 @@ const Dashboard = ({
   updateCollection,
   selectProfile,
 }) => {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [displayNotification, setDisplayNotification] = useState(false);
@@ -70,7 +73,7 @@ const Dashboard = ({
   const steamCollection = useSteamAuth(id);
 
   useEffect(() => {
-    if (!currentProfile) console.log('No Current Profile');
+    // if (!currentUser) navigate('/login', { replace: true });
     if (!currentGameOpen) document.body.style.overflow = 'auto';
   }, []);
 
@@ -228,7 +231,6 @@ const Dashboard = ({
     setSelectedProfile(null);
     localStorage.clear();
     localStorage.setItem('twitch_auth', twitchToken);
-    window.location.reload();
   };
 
   const changeProfile = (user) => {
@@ -277,7 +279,12 @@ const Dashboard = ({
     if (request.data.length == 0) {
       setSearchedGame({ name: game, data: null });
     }
+    setSearchParams({ name: game });
     setSearchedGame({ name: game, data: request.data });
+    navigate(`/search/${game}`, {
+      search: 'lol',
+      state: { name: game, data: request.data },
+    });
   };
 
   // Loading screen for profile change
@@ -338,121 +345,119 @@ const Dashboard = ({
 
     return (
       <div className='App'>
-        {!searchSubmitted ? (
-          <>
-            <Nav
-              currentUser={currentUser}
-              activeProfile={currentProfile}
-              changeUser={changeProfile}
-              onLogout={logoutHandler}
-              fetchSubmittedGame={fetchSubmittedGame}
-              closeSearchResults={closeSearchResults}
-              toProfilePage={() => localStorage.removeItem('profile')}
-              selectProfile={(profile) => setSelectedProfile(profile)}
-              spotifyToken={spotifyAccessToken}
-              twitchToken={twitchToken}
-              searchedGame={searchedGame}
-              saveEdit={() => setEditingUser(true)}
-              setLoggedUser={(user) => setLoggedUser(user)}
-              updateCollection={updateCollection}
-              currentCollection={currentCollection}
-              viewCollection={() => setViewingCollection(true)}
-            />
-            <>
-              <Banner
-                setGameDetails={(id) => setGameDetails(id)}
-                twitchToken={twitchToken}
-                addGame={(game) => addGameHandler(game)}
-                activeProfile={currentProfile}
-              />
-              <MainRow
-                twitchToken={twitchToken}
-                setGameDetails={(game) => setGameDetails(game)}
-              />
+        <Nav
+          currentUser={currentUser}
+          activeProfile={currentProfile}
+          changeUser={changeProfile}
+          onLogout={logoutHandler}
+          fetchSubmittedGame={fetchSubmittedGame}
+          closeSearchResults={closeSearchResults}
+          toProfilePage={() => localStorage.removeItem('profile')}
+          selectProfile={(profile) => setSelectedProfile(profile)}
+          spotifyToken={spotifyAccessToken}
+          twitchToken={twitchToken}
+          searchedGame={searchedGame}
+          saveEdit={() => setEditingUser(true)}
+          setLoggedUser={(user) => setLoggedUser(user)}
+          updateCollection={updateCollection}
+          currentCollection={currentCollection}
+          viewCollection={() => setViewingCollection(true)}
+        />
 
-              <TrendingRow
-                twitchToken={twitchToken}
-                setGameDetails={(game) => setGameDetails(game)}
-                trendingList={trendingList}
-              />
-              <UserLibrary
-                activeProfile={currentProfile}
-                playTrack={playTrack}
-                currentTrack={currentTrack}
-                isPlaying={playAudio}
-                pausePlayback={() => setPlayAudio(false)}
-                resumePlayback={() => setPlayAudio(true)}
-                spotifyToken={spotifyAccessToken}
-                collection={currentCollection}
-                setSelectedProfile={(profile) => setSelectedProfile(profile)}
-                setGameDetails={(game) => setGameDetails(game)}
-                steamCollection={steamCollection}
-                removeGame={removeGameHandler}
-                viewCollection={() => setViewingCollection(true)}
-                setNotification={(status, message) => {
-                  setNotification({ status, message });
-                  setDisplayNotification(true);
-                }}
-                setCompleteCollection={(collection) =>
-                  setUserCollection(collection)
-                }
-              />
-              {currentGameOpen && (
-                <h1 className='row__preview_close' onClick={closeGameWindow}>
-                  X
-                </h1>
-              )}
-              <div
-                className={`${
-                  currentGameOpen !== null && 'game_preview__modal'
-                }`}
-              />
+        <Banner
+          setGameDetails={(id) => setGameDetails(id)}
+          twitchToken={twitchToken}
+          addGame={(game) => addGameHandler(game)}
+          activeProfile={currentProfile}
+        />
+        <MainRow
+          twitchToken={twitchToken}
+          setGameDetails={(game) => setGameDetails(game)}
+        />
 
-              {allGenres.map((request) => (
-                <Row
-                  key={Object.keys(request)}
-                  activeProfile={currentProfile}
-                  spotifyToken={spotifyAccessToken}
-                  genreDetails={Object.entries(request)}
-                  playTrack={playTrack}
-                  currentTrack={currentTrack}
-                  setGameDetails={(game) => setGameDetails(game)}
-                  resumePlayback={(e) => setPlayAudio(true)}
-                  pausePlayback={(e) => setPlayAudio(false)}
-                  isPlaying={playAudio}
-                  currentGameOpen={currentGameOpen}
-                  openGame={(game) => openGameWindow(game)}
-                  closeGameWindow={closeGameWindow}
-                  addGame={(game) => addGameHandler(game)}
-                  setNotification={(status, message) =>
-                    setNotification({ status, message })
-                  }
-                />
-              ))}
-              {spotifyAccessToken && (
-                <SpotifyPlayback
-                  spotifyToken={spotifyAccessToken}
-                  playAudio={playAudio}
-                  beginPlayback={(e) => setPlayAudio(true)}
-                  pausePlayback={(e) => setPlayAudio(false)}
-                  trackUri={currentTrack?.uri}
-                />
-              )}
-            </>
-          </>
-        ) : (
-          <SearchResultsIGDB
-            searchedGame={searchedGame}
-            setGameDetails={(id) => setGameDetails(id)}
-            closeSearchResults={closeSearchResults}
-            searchGame={fetchSubmittedGame}
+        <TrendingRow
+          twitchToken={twitchToken}
+          setGameDetails={(game) => setGameDetails(game)}
+          trendingList={trendingList}
+        />
+        <UserLibrary
+          activeProfile={currentProfile}
+          playTrack={playTrack}
+          currentTrack={currentTrack}
+          isPlaying={playAudio}
+          pausePlayback={() => setPlayAudio(false)}
+          resumePlayback={() => setPlayAudio(true)}
+          spotifyToken={spotifyAccessToken}
+          collection={currentCollection}
+          setSelectedProfile={(profile) => setSelectedProfile(profile)}
+          setGameDetails={(game) => setGameDetails(game)}
+          steamCollection={steamCollection}
+          removeGame={removeGameHandler}
+          viewCollection={() => setViewingCollection(true)}
+          setNotification={(status, message) => {
+            setNotification({ status, message });
+            setDisplayNotification(true);
+          }}
+          setCompleteCollection={(collection) => setUserCollection(collection)}
+        />
+        {currentGameOpen && (
+          <h1 className='row__preview_close' onClick={closeGameWindow}>
+            X
+          </h1>
+        )}
+        <div
+          className={`${currentGameOpen !== null && 'game_preview__modal'}`}
+        />
+
+        {allGenres.map((request) => (
+          <Row
+            key={Object.keys(request)}
+            activeProfile={currentProfile}
+            spotifyToken={spotifyAccessToken}
+            genreDetails={Object.entries(request)}
+            playTrack={playTrack}
+            currentTrack={currentTrack}
+            setGameDetails={(game) => setGameDetails(game)}
+            resumePlayback={(e) => setPlayAudio(true)}
+            pausePlayback={(e) => setPlayAudio(false)}
+            isPlaying={playAudio}
             currentGameOpen={currentGameOpen}
             openGame={(game) => openGameWindow(game)}
             closeGameWindow={closeGameWindow}
             addGame={(game) => addGameHandler(game)}
-            // setGameDetails={(game) => setGameDetails(game)}
+            setNotification={(status, message) =>
+              setNotification({ status, message })
+            }
+          />
+        ))}
+        {spotifyAccessToken && (
+          <SpotifyPlayback
+            spotifyToken={spotifyAccessToken}
+            playAudio={playAudio}
+            beginPlayback={(e) => setPlayAudio(true)}
+            pausePlayback={(e) => setPlayAudio(false)}
+            trackUri={currentTrack?.uri}
           />
         )}
+        <Routes>
+          <Route
+            path='search/:name'
+            element={
+              <SearchResultsIGDB
+                searchedGame={searchedGame}
+                setGameDetails={(id) => setGameDetails(id)}
+                closeSearchResults={closeSearchResults}
+                searchGame={fetchSubmittedGame}
+                currentGameOpen={currentGameOpen}
+                openGame={(game) => openGameWindow(game)}
+                closeGameWindow={closeGameWindow}
+                addGame={(game) => addGameHandler(game)}
+                // setGameDetails={(game) => setGameDetails(game)}
+              />
+            }
+          />
+        </Routes>
+
         <Notification
           notification={notification}
           displayNotification={displayNotification}
@@ -462,6 +467,177 @@ const Dashboard = ({
         />
       </div>
     );
+    // if (currentProfile) {
+    //   if (gameDetails !== null) {
+    //     return (
+    //       <>
+    //         <GameDetails
+    //           setNotification={(status, message) =>
+    //             setNotification({ status, message })
+    //           }
+    //           game={gameDetails}
+    //           closeDetails={() => setGameDetails(null)}
+    //           twitchToken={twitchToken}
+    //           addGame={(game) => addGameHandler(game)}
+    //           removeGame={(game) => removeGameHandler(game)}
+    //           activeProfile={currentProfile}
+    //         />
+    //         <Notification
+    //           notification={notification}
+    //           displayNotification={displayNotification}
+    //           hideNotification={() => {
+    //             setNotification({ message: '', status: '' });
+    //           }}
+    //         />
+    //       </>
+    //     );
+    //   }
+
+    //   if (viewingCollection)
+    //     return (
+    //       <UserCollection
+    //         collection={currentCollection}
+    //         activeProfile={currentProfile}
+    //         backToHome={() => setViewingCollection(false)}
+    //         currentTrack={currentTrack}
+    //         playTrack={playTrack}
+    //         isPlaying={playAudio}
+    //         pausePlayback={() => setPlayAudio(false)}
+    //         resumePlayback={() => setPlayAudio(true)}
+    //         setSelectedProfile={(profile) => setSelectedProfile(profile)}
+    //         spotifyToken={spotifyAccessToken}
+    //         removeGame={(game) => removeGameHandler(game)}
+    //         updateCollection={updateCollection}
+    //         userNotes={userNotes}
+    //       />
+    //     );
+
+    // return (
+    //   <div className='App'>
+    //     {!searchSubmitted ? (
+    //       <>
+    //         <Nav
+    //           currentUser={currentUser}
+    //           activeProfile={currentProfile}
+    //           changeUser={changeProfile}
+    //           onLogout={logoutHandler}
+    //           fetchSubmittedGame={fetchSubmittedGame}
+    //           closeSearchResults={closeSearchResults}
+    //           toProfilePage={() => localStorage.removeItem('profile')}
+    //           selectProfile={(profile) => setSelectedProfile(profile)}
+    //           spotifyToken={spotifyAccessToken}
+    //           twitchToken={twitchToken}
+    //           searchedGame={searchedGame}
+    //           saveEdit={() => setEditingUser(true)}
+    //           setLoggedUser={(user) => setLoggedUser(user)}
+    //           updateCollection={updateCollection}
+    //           currentCollection={currentCollection}
+    //           viewCollection={() => setViewingCollection(true)}
+    //         />
+    //         <>
+    //           <Banner
+    //             setGameDetails={(id) => setGameDetails(id)}
+    //             twitchToken={twitchToken}
+    //             addGame={(game) => addGameHandler(game)}
+    //             activeProfile={currentProfile}
+    //           />
+    //           <MainRow
+    //             twitchToken={twitchToken}
+    //             setGameDetails={(game) => setGameDetails(game)}
+    //           />
+
+    //           <TrendingRow
+    //             twitchToken={twitchToken}
+    //             setGameDetails={(game) => setGameDetails(game)}
+    //             trendingList={trendingList}
+    //           />
+    //           <UserLibrary
+    //             activeProfile={currentProfile}
+    //             playTrack={playTrack}
+    //             currentTrack={currentTrack}
+    //             isPlaying={playAudio}
+    //             pausePlayback={() => setPlayAudio(false)}
+    //             resumePlayback={() => setPlayAudio(true)}
+    //             spotifyToken={spotifyAccessToken}
+    //             collection={currentCollection}
+    //             setSelectedProfile={(profile) => setSelectedProfile(profile)}
+    //             setGameDetails={(game) => setGameDetails(game)}
+    //             steamCollection={steamCollection}
+    //             removeGame={removeGameHandler}
+    //             viewCollection={() => setViewingCollection(true)}
+    //             setNotification={(status, message) => {
+    //               setNotification({ status, message });
+    //               setDisplayNotification(true);
+    //             }}
+    //             setCompleteCollection={(collection) =>
+    //               setUserCollection(collection)
+    //             }
+    //           />
+    //           {currentGameOpen && (
+    //             <h1 className='row__preview_close' onClick={closeGameWindow}>
+    //               X
+    //             </h1>
+    //           )}
+    //           <div
+    //             className={`${
+    //               currentGameOpen !== null && 'game_preview__modal'
+    //             }`}
+    //           />
+
+    //           {allGenres.map((request) => (
+    //             <Row
+    //               key={Object.keys(request)}
+    //               activeProfile={currentProfile}
+    //               spotifyToken={spotifyAccessToken}
+    //               genreDetails={Object.entries(request)}
+    //               playTrack={playTrack}
+    //               currentTrack={currentTrack}
+    //               setGameDetails={(game) => setGameDetails(game)}
+    //               resumePlayback={(e) => setPlayAudio(true)}
+    //               pausePlayback={(e) => setPlayAudio(false)}
+    //               isPlaying={playAudio}
+    //               currentGameOpen={currentGameOpen}
+    //               openGame={(game) => openGameWindow(game)}
+    //               closeGameWindow={closeGameWindow}
+    //               addGame={(game) => addGameHandler(game)}
+    //               setNotification={(status, message) =>
+    //                 setNotification({ status, message })
+    //               }
+    //             />
+    //           ))}
+    //           {spotifyAccessToken && (
+    //             <SpotifyPlayback
+    //               spotifyToken={spotifyAccessToken}
+    //               playAudio={playAudio}
+    //               beginPlayback={(e) => setPlayAudio(true)}
+    //               pausePlayback={(e) => setPlayAudio(false)}
+    //               trackUri={currentTrack?.uri}
+    //             />
+    //           )}
+    //         </>
+    //       </>
+    //     ) : (
+    //       <SearchResultsIGDB
+    //         searchedGame={searchedGame}
+    //         setGameDetails={(id) => setGameDetails(id)}
+    //         closeSearchResults={closeSearchResults}
+    //         searchGame={fetchSubmittedGame}
+    //         currentGameOpen={currentGameOpen}
+    //         openGame={(game) => openGameWindow(game)}
+    //         closeGameWindow={closeGameWindow}
+    //         addGame={(game) => addGameHandler(game)}
+    //         // setGameDetails={(game) => setGameDetails(game)}
+    //       />
+    //     )}
+    //     <Notification
+    //       notification={notification}
+    //       displayNotification={displayNotification}
+    //       hideNotification={() => {
+    //         setNotification({ message: '', status: '' });
+    //       }}
+    //     />
+    //   </div>
+    // );
   }
 };
 

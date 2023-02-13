@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.68dadf97.css",
-    "main.js": "/static/js/main.3a9f40ca.js",
+    "main.css": "/static/css/main.da63c688.css",
+    "main.js": "/static/js/main.108c79b6.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -63,14 +63,15 @@
     "static/media/steam-logo-transparent.png": "/static/media/steam-logo-transparent.442a9cc185e4d30c4f4d.png",
     "static/media/notify.mp3": "/static/media/notify.e2e956cec8e665fdac87.mp3",
     "static/media/nintendo-logo.png": "/static/media/nintendo-logo.14c4d5793bf79874cb08.png",
-    "static/media/360-side.png": "/static/media/360-side.af027d5e803e46638046.png",
     "static/media/rexlia_rg.otf": "/static/media/rexlia_rg.d297770693345b764564.otf",
     "static/media/psvita-logo.png": "/static/media/psvita-logo.fb4c047637585a7d3320.png",
     "static/media/Persona5MenuFontPrototype-Regular.ttf": "/static/media/Persona5MenuFontPrototype-Regular.eaf9adfa13ad3376ffd6.ttf",
+    "static/media/ps2-side-banner.png": "/static/media/ps2-side-banner.a6a001a340254e3979bd.png",
     "static/media/nes-logo.png": "/static/media/nes-logo.8f7eaa4e443c4ec2bf8b.png",
     "static/media/playstation-logo.png": "/static/media/playstation-logo.630dfedda6273efed3a8.png",
     "static/media/PsBold.ttf": "/static/media/PsBold.2c139a4a156f192ca221.ttf",
     "static/media/mario_pixel_standing.png": "/static/media/mario_pixel_standing.858f45ffa8a2ffe10474.png",
+    "static/media/360-side1.png": "/static/media/360-side1.768813009be0b64911e6.png",
     "static/media/pipe-sound.mp3": "/static/media/pipe-sound.9151d97e6557ab1852d4.mp3",
     "static/media/PsOld.ttf": "/static/media/PsOld.de770a9fa6a488e38cdb.ttf",
     "static/media/switch_logo.png": "/static/media/switch_logo.4da6d068a57d6f343553.png",
@@ -79,12 +80,13 @@
     "static/media/Xbox.ttf": "/static/media/Xbox.b7dd5edd22b537546fe7.ttf",
     "static/media/Gasalt-Black.ttf": "/static/media/Gasalt-Black.8284ab3fce3818248705.ttf",
     "static/media/xbox360-banner.webp": "/static/media/xbox360-banner.59775821a252fc9b049c.webp",
+    "static/media/ps3-side.png": "/static/media/ps3-side.d0f72fc74bb831c81271.png",
     "static/media/gba-logo.png": "/static/media/gba-logo.d897fee67c639798373a.png",
     "static/media/mario_pixel_jumping.png": "/static/media/mario_pixel_jumping.2d3e818e95ef4a0db512.png",
     "static/media/nintendo3ds-logo2.png": "/static/media/nintendo3ds-logo2.c7e37eaf52ef8c373e44.png",
     "index.html": "/index.html",
-    "main.68dadf97.css.map": "/static/css/main.68dadf97.css.map",
-    "main.3a9f40ca.js.map": "/static/js/main.3a9f40ca.js.map",
+    "main.da63c688.css.map": "/static/css/main.da63c688.css.map",
+    "main.108c79b6.js.map": "/static/js/main.108c79b6.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -101,7 +103,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.68dadf97.css",
-    "static/js/main.3a9f40ca.js"
+    "static/css/main.da63c688.css",
+    "static/js/main.108c79b6.js"
   ]
 }

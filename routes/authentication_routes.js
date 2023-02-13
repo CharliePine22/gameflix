@@ -55,13 +55,13 @@ router.post('/email_verification', (req, res) => {
 router.post('/signin', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  console.log(email);
   findUser(email).then(function (user) {
+    if (user == null || password !== user.password)
+      res
+        .status(400)
+        .send({ message: 'Incorrect email or password!', undefined });
     if (user && password == user.password) {
       res.status(200).send({ message: 'User logged in successfully!', user });
-      return;
-    } else {
-      res.status(400).send({ message: 'Incorrect email or password!' });
       return;
     }
   });

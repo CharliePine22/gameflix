@@ -299,7 +299,7 @@
   cursor: pointer;
   height: auto;
   width: auto;
-  /* transform-style: preserve-3d; */
+  transform-style: preserve-3d;
   animation: displayGame 350ms ease-in-out forwards;
   box-shadow: none;
 }
@@ -318,7 +318,6 @@
 
 .viewing_game .row__poster_container {
   display: none;
-  /* animation: displayGame 350ms ease-in-out forwards; */
 }
 
 .viewing_game:hover {
@@ -330,6 +329,7 @@
     position: relative;
     transform: translate(0, 0) scale(1);
   }
+
   1% {
     position: fixed;
     bottom: 0;

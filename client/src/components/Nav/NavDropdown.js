@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import './NavDropdown.css';
+import { Link } from 'react-router-dom';
 // React Icons
 import {
   FaSortUp,
@@ -180,9 +181,13 @@ const NavDropdown = (props) => {
         </div>
       </div>
       <div className='dropdown__settings_links'>
-        <p className='dropdown__settings_link' onClick={props.logoutHandler}>
+        <Link
+          to='/login'
+          className='dropdown__settings_link'
+          onClick={props.logoutHandler}
+        >
           Sign out of GameFlix
-        </p>
+        </Link>
       </div>
     </div>
   );

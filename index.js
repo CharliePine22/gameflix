@@ -93,6 +93,16 @@ if (process.env.PORT) {
   });
 }
 
+app.use(function (req, res, next) {
+  if (req.secure) {
+    res.setHeader(
+      'Strict-Transport-Security',
+      'max-age=31536000; includeSubDomains; preload'
+    );
+  }
+  next();
+});
+
 app.listen(process.env.PORT || 3001, () =>
   console.log('Server is up and running!')
 );

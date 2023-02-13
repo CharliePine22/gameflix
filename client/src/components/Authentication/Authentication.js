@@ -64,11 +64,9 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
       return response;
     } catch (e) {
       setAuthError(e.response.data.message);
-      return e;
+      return e.response.data.message;
     }
   };
-
-  console.log(loadedImages);
 
   if (loadedImages.length > 0) {
     if (!toLandingPage)

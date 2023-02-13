@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 
 // Component Imports
@@ -16,6 +17,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   // User states
   const [changingUser, setChangingUser] = useState(false);
@@ -26,6 +28,8 @@ function App() {
   const [profileCollection, setProfileCollection] = useState([]);
   const [genreList, setGenreList] = useState([]);
   const [profileNotesData, setProfileNotesData] = useState(null);
+
+  // console.log(loggedUser);
 
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
@@ -45,7 +49,7 @@ function App() {
     return request.data;
   };
 
-  // Refetch user data if any changes are made
+  // Check to see which user is currently logged in and which profile is active
   useEffect(() => {
     // if (!userEmail) return;
     const updateUser = async () => {
@@ -57,10 +61,13 @@ function App() {
         });
         const result = await request.data;
         setLoggedUser(result);
+        return result;
       } catch (error) {
         console.log(error);
       }
     };
+
+    console.log('GETTING USER UPDATE');
 
     const getGenreGames = async () => {
       try {
@@ -72,10 +79,11 @@ function App() {
     updateUser();
   }, [userEmail, userProfile]);
 
-  // Check to see which profile is active
   useEffect(() => {
     if (!userProfile || !loggedUser) return;
+
     const getProfileData = (profile) => {
+      console.log('GETTING USER UPDATE 2');
       const currentProfile = loggedUser.profiles.filter((obj) => {
         return obj.name === profile;
       });
@@ -121,6 +129,7 @@ function App() {
     localStorage.setItem('user', user.email);
     setLoggedUser(user);
     audio.play();
+    navigate('/', { replace: true });
   };
 
   const changeProfile = (user) => {
@@ -133,15 +142,20 @@ function App() {
   };
 
   // Display login page if app detects sign out or sign in
-  if (!userEmail) {
-    return (
-      <Authentication
-        loading={isLoading}
-        onLogin={loginAuthentication}
-        twitchToken={twitchAccessToken}
-      />
-    );
-  }
+  // if (!userEmail) {
+  //   return (
+  //     <Route
+  //       path='/login'
+  //       element={
+  //         <Authentication
+  //           loading={isLoading}
+  //           onLogin={loginAuthentication}
+  //           twitchToken={twitchAccessToken}
+  //         />
+  //       }
+  //     />
+  //   );
+  // }
 
   if (!userProfile && loggedUser) {
     return (
@@ -156,29 +170,48 @@ function App() {
     );
   }
 
-  if (loggedUser) {
-    return (
-      <Dashboard
-        currentUser={loggedUser}
-        twitchToken={twitchAccessToken}
-        currentProfile={selectedProfile}
-        currentCollection={profileCollection}
-        updateCollection={(collection) =>
-          setProfileCollection(collection.filter((game) => game.id !== null))
+  // if (loggedUser) {
+  return (
+    <Routes>
+      <Route
+        path='/login'
+        element={
+          <Authentication
+            loading={isLoading}
+            onLogin={loginAuthentication}
+            twitchToken={twitchAccessToken}
+          />
         }
-        selectProfile={(user) => setSelectedProfile(user)}
-        manageProfiles={() => setSelectedProfile(null)}
-        allGenres={genreList}
-        userNotes={profileNotesData}
       />
-    );
-  } else {
-    return (
-      <div className='auth_login__loading'>
-        <div className='auth_loading_spinner' />
-      </div>
-    );
-  }
+      <Route
+        path=''
+        element={
+          <Dashboard
+            currentUser={loggedUser}
+            twitchToken={twitchAccessToken}
+            currentProfile={selectedProfile}
+            currentCollection={profileCollection}
+            updateCollection={(collection) =>
+              setProfileCollection(
+                collection.filter((game) => game.id !== null)
+              )
+            }
+            selectProfile={(user) => setSelectedProfile(user)}
+            manageProfiles={() => setSelectedProfile(null)}
+            allGenres={genreList}
+            userNotes={profileNotesData}
+          />
+        }
+      />
+    </Routes>
+  );
+  // } else {
+  //   return (
+  //     <div className='auth_login__loading'>
+  //       <div className='auth_loading_spinner' />
+  //     </div>
+  //   );
+  // }
 }
 
 export default App;

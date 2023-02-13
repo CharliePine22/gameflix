@@ -148,9 +148,9 @@
 
 .login__auth_error {
   position: absolute;
-  top: 43px;
+  top: 50px;
   left: 3px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: red;
   font-weight: 700;
 }

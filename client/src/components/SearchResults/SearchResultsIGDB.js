@@ -3,6 +3,7 @@ import './SearchResults.css';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import SkeletonCard from '../SkeletonCard/SkeletonCard';
+import { useParams } from 'react-router-dom';
 
 import { FaSearch } from 'react-icons/fa';
 import GamePreview from '../Row/GamePreview/GamePreview';
@@ -28,6 +29,9 @@ const SearchResultsIGDB = ({
   const [searchValue, setSearchValue] = useState(searchedGame.name);
   const [currentGame, setCurrentGame] = useState('');
   const [viewingPreview, setViewingPreview] = useState(false);
+  console.log('searchedGame');
+  const params = useParams();
+  console.log(params);
 
   useEffect(() => {
     window.scrollTo(0, 0);

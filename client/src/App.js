@@ -13,6 +13,7 @@ import useSpotifyAuth from './hooks/useSpotifyAuth';
 import useTwitchAuth from './hooks/useTwitchAuth';
 import Authentication from './components/Authentication/Authentication';
 import Dashboard from './components/Dashboard/Dashboard';
+import SearchResultsIGDB from './components/SearchResults/SearchResultsIGDB';
 
 const code = new URLSearchParams(window.location.search).get('code');
 
@@ -203,6 +204,22 @@ function App() {
           />
         }
       />
+      {/* <Route
+        path='/search'
+        element={
+          <SearchResultsIGDB
+          // searchedGame={searchedGame}
+          // setGameDetails={(id) => setGameDetails(id)}
+          // closeSearchResults={closeSearchResults}
+          // searchGame={fetchSubmittedGame}
+          // currentGameOpen={currentGameOpen}
+          // openGame={(game) => openGameWindow(game)}
+          // closeGameWindow={closeGameWindow}
+          // addGame={(game) => addGameHandler(game)}
+          // setGameDetails={(game) => setGameDetails(game)}
+          />
+        }
+      /> */}
     </Routes>
   );
   // } else {

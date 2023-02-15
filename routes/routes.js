@@ -217,7 +217,6 @@ router.post('/search_game_details', async (req, res) => {
 router.post('/search_trending_game', async (req, res) => {
   const token = req.body.token;
   const gameName = req.body.gameName;
-
   const headers = {
     'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
     Authorization: `Bearer ${token}`,

@@ -37,6 +37,7 @@ const Dashboard = ({
 }) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  console.log(searchParams);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [displayNotification, setDisplayNotification] = useState(false);
@@ -78,7 +79,7 @@ const Dashboard = ({
   }, []);
 
   useEffect(() => {
-    if (trendingList.length > 0) return;
+    if (trendingList.length > 0 || !twitchToken) return;
 
     const fetchSteamTrending = async () => {
       const request = await axios.get(`${baseURL}/steam/steam_trending`);
@@ -87,17 +88,17 @@ const Dashboard = ({
 
     const fetchTrendingGames = async () => {
       const trendingGameNames = await fetchSteamTrending();
-
       const mapObj = {
         Poke: 'Poké',
         '*': '',
-        '(2022)': ' ',
-        '/Violet*': ' ',
+        '(2022)': '',
+        '(2023)': '',
+        '/Violet*': '',
       };
       const trendingGamesList = await Promise.all(
         trendingGameNames.map((game) => {
           game = game.replace(
-            /Poke|'*'|(2022)|\/Violet*/gi,
+            /Poke|'*'|(2022)|(2023)|\/Violet*/g,
             function (matched) {
               return mapObj[matched];
             }
@@ -106,18 +107,19 @@ const Dashboard = ({
           game = game.replace('undefined', '');
           game = game.replace('*', '');
           game = game.replace('()', '');
-
           return axios.post(`${baseURL}/app/search_trending_game`, {
             token: twitchToken,
             gameName: game,
           });
         })
       );
+
       setTrendingList(trendingGamesList.map((game) => game.data[0]));
       return trendingGamesList;
     };
+
     fetchTrendingGames();
-  }, [trendingList]);
+  }, [trendingList, twitchToken]);
 
   //   setViewingSoundtrack(false);
   //   if (!spotifyToken) {
@@ -281,8 +283,8 @@ const Dashboard = ({
     }
     setSearchParams({ name: game });
     setSearchedGame({ name: game, data: request.data });
-    navigate(`/search/${game}`, {
-      search: 'lol',
+    navigate(`/search`, {
+      replace: false,
       state: { name: game, data: request.data },
     });
   };
@@ -441,7 +443,7 @@ const Dashboard = ({
         )}
         <Routes>
           <Route
-            path='search/:name'
+            path='/search'
             element={
               <SearchResultsIGDB
                 searchedGame={searchedGame}

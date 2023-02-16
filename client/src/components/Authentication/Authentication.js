@@ -23,6 +23,7 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
         const request = await axios.post(`${baseURL}/app/popular_titles`, {
           token: twitchToken,
         });
+        console.log(request);
         setGameList(request.data);
         return request;
       } catch (err) {
@@ -31,7 +32,7 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
       }
     }
     fetchData();
-  }, [twitchToken, counter]);
+  }, [twitchToken, counter, userLoggedIn]);
 
   const imageLoaded = () => {
     counter.current += 1;

@@ -36,6 +36,10 @@ router.get('/get_user', async (req, res) => {
   const email = req.query.email;
   try {
     const result = await findUser(email);
+    console.log(result);
+    if (result == null) {
+      res.sendStatus(401);
+    }
     res.send(result);
   } catch (e) {
     res.status(400, { message: 'An error occured.' });

@@ -8,13 +8,10 @@ import ProfilesPage from './components/Login/Profiles/ProfilesPage';
 import requestsIGDB from './requestsIGDB';
 import loginAudio from './assets/sounds/success.wav';
 import axios from 'axios';
-import SpotifyPlayback from './components/SpotifyPlayback/SpotifyPlayback';
-import useSpotifyAuth from './hooks/useSpotifyAuth';
 import useTwitchAuth from './hooks/useTwitchAuth';
 import Authentication from './components/Authentication/Authentication';
 import Dashboard from './components/Dashboard/Dashboard';
 import SearchResultsIGDB from './components/SearchResults/SearchResultsIGDB';
-
 const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
@@ -29,6 +26,12 @@ function App() {
   const [profileCollection, setProfileCollection] = useState([]);
   const [genreList, setGenreList] = useState([]);
   const [profileNotesData, setProfileNotesData] = useState(null);
+  const [displayNotification, setDisplayNotification] = useState(false);
+  const [notification, setNotification] = useState({ status: '', message: '' });
+  const [searchSubmitted, setSearchSubmitted] = useState(false);
+  const [searchedGame, setSearchedGame] = useState({ name: '', data: [] });
+  const [gameDetails, setGameDetails] = useState(null);
+  const [currentGameOpen, setCurrentGameOpen] = useState(null);
 
   // console.log(loggedUser);
 
@@ -52,7 +55,6 @@ function App() {
 
   // Check to see which user is currently logged in and which profile is active
   useEffect(() => {
-    // if (!userEmail) return;
     const updateUser = async () => {
       try {
         const request = await axios.get(`${baseURL}/app/get_user`, {
@@ -65,10 +67,9 @@ function App() {
         return result;
       } catch (error) {
         console.log(error);
+        navigate('/login');
       }
     };
-
-    console.log('GETTING USER UPDATE');
 
     const getGenreGames = async () => {
       try {
@@ -125,6 +126,115 @@ function App() {
     fetchGenreGames();
   }, [twitchAccessToken]);
 
+  // Search for the game, publisher, or developer that the user types in from nav
+  const fetchSubmittedGame = async (game) => {
+    if (searchedGame.name !== null) setSearchedGame({ name: '', data: [] });
+    setSearchSubmitted(true);
+    game.replace('Poke', 'Poké');
+    let newGame = game.replace('Poke', 'Poké');
+    const request = await axios.post('/app/search_game', {
+      token: twitchAccessToken,
+      gameName: newGame,
+    });
+
+    if (request.data.length == 0) {
+      setSearchedGame({ name: game, data: null });
+    }
+    // setSearchParams({ name: game });
+    setSearchedGame({ name: game, data: request.data });
+    console.log('HEY');
+    navigate(`/search`, {
+      state: { name: game, data: request.data },
+    });
+  };
+
+  // Add game name and id to DB
+  const addGameHandler = async (game) => {
+    console.log('ADDING GAME');
+    const exists = profileCollection.some((item) => item.id === game.id);
+    // If user already has game in collection, give notification.
+    if (exists) {
+      setNotification({
+        message: `${game.name} is already in your collection!`,
+        status: 'ERROR',
+      });
+      setDisplayNotification(true);
+      return;
+    }
+    try {
+      const request = await axios.post(`${baseURL}/app/update_collection`, {
+        email: loggedUser.email,
+        currentProfile: selectedProfile.name,
+        name: game.name,
+        id: game.id,
+        imageURL: `//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover.image_id}.jpg`,
+        playtime: 0,
+        origin: 'gameflix',
+        status: 'BACKLOG',
+      });
+      localStorage.setItem('user', request.data.response.email);
+      const filteredProfile = request.data.response.profiles.filter((obj) => {
+        return obj.name === selectedProfile.name;
+      });
+
+      localStorage.setItem('profile', filteredProfile[0].name);
+      setSelectedProfile(filteredProfile[0]);
+      setProfileCollection(
+        filteredProfile[0].collection.filter((game) => game.id !== null)
+      );
+      // updateCollection(filteredProfile[0].collection);
+      setNotification({
+        message: `${game.name} sucessfully added to your collection!`,
+        status: 'SUCCESS',
+      });
+      setDisplayNotification(true);
+      return;
+    } catch (error) {
+      console.log(error);
+      setNotification({
+        message: `Unable to add ${game.name} to your collection!`,
+        status: 'ERROR',
+      });
+      setDisplayNotification(true);
+      return error;
+    }
+  };
+
+  const removeGameHandler = async (game) => {
+    try {
+      const request = await axios.put(`${baseURL}/app/remove_game`, {
+        email: loggedUser.email,
+        currentProfile: selectedProfile.name,
+        game: game.id,
+      });
+
+      localStorage.setItem('user', request.data.response.email);
+      const filteredProfile = request.data.response.profiles.filter((obj) => {
+        return obj.name === selectedProfile.name;
+      });
+      localStorage.setItem('profile', filteredProfile[0].name);
+      setSelectedProfile(filteredProfile[0]);
+      setProfileCollection(
+        filteredProfile[0].collection.filter((game) => game.id !== null)
+      );
+      // updateCollection(filteredProfile[0].collection);
+      setNotification({
+        message: `${game.name} sucessfully removed from your collection!`,
+        status: 'SUCCESS',
+      });
+      setDisplayNotification(true);
+      return;
+    } catch (error) {
+      console.log(error);
+      setNotification({
+        message: `Unable to remove ${game.name} from your collection!`,
+        status: 'ERROR',
+      });
+      setDisplayNotification(true);
+      return error;
+    }
+  };
+
   // Login user if verification succeeds.
   const loginAuthentication = (user) => {
     localStorage.setItem('user', user.email);
@@ -142,21 +252,30 @@ function App() {
     }, 2000);
   };
 
-  // Display login page if app detects sign out or sign in
-  // if (!userEmail) {
-  //   return (
-  //     <Route
-  //       path='/login'
-  //       element={
-  //         <Authentication
-  //           loading={isLoading}
-  //           onLogin={loginAuthentication}
-  //           twitchToken={twitchAccessToken}
-  //         />
-  //       }
-  //     />
-  //   );
-  // }
+  const openGameWindow = (game) => {
+    console.log(game);
+    setCurrentGameOpen(game.name);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeGameWindow = () => {
+    document.body.style.overflow = 'auto';
+    setCurrentGameOpen(null);
+  };
+
+  const closeSearchResults = () => {
+    setSearchSubmitted(false);
+    setSearchedGame({ name: '', data: [] });
+    navigate('/');
+  };
+
+  // Logout the user
+  const logoutHandler = () => {
+    setLoggedUser(null);
+    setSelectedProfile(null);
+    localStorage.clear();
+    localStorage.setItem('twitch_auth', twitchAccessToken);
+  };
 
   if (!userProfile && loggedUser) {
     return (
@@ -166,28 +285,18 @@ function App() {
         updateUser={updatingUser}
         currentUser={loggedUser}
         selectProfile={(user) => setSelectedProfile(user)}
-        twitchToken={twitchAccessToken}
+        twitchAccessToken={twitchAccessToken}
       />
     );
   }
 
-  // if (loggedUser) {
   return (
     <Routes>
       <Route
-        path='/login'
-        element={
-          <Authentication
-            loading={isLoading}
-            onLogin={loginAuthentication}
-            twitchToken={twitchAccessToken}
-          />
-        }
-      />
-      <Route
-        path=''
+        path='/'
         element={
           <Dashboard
+            fetchGame={(game) => fetchSubmittedGame(game)}
             currentUser={loggedUser}
             twitchToken={twitchAccessToken}
             currentProfile={selectedProfile}
@@ -201,25 +310,38 @@ function App() {
             manageProfiles={() => setSelectedProfile(null)}
             allGenres={genreList}
             userNotes={profileNotesData}
+            addGame={(game) => addGameHandler(game)}
+            removeGame={(game) => removeGameHandler(game)}
+            logoutUser={logoutHandler}
           />
         }
       />
-      {/* <Route
-        path='/search'
+
+      <Route
+        path='search'
         element={
           <SearchResultsIGDB
-          // searchedGame={searchedGame}
-          // setGameDetails={(id) => setGameDetails(id)}
-          // closeSearchResults={closeSearchResults}
-          // searchGame={fetchSubmittedGame}
-          // currentGameOpen={currentGameOpen}
-          // openGame={(game) => openGameWindow(game)}
-          // closeGameWindow={closeGameWindow}
-          // addGame={(game) => addGameHandler(game)}
-          // setGameDetails={(game) => setGameDetails(game)}
+            searchedGame={searchedGame}
+            setGameDetails={(id) => setGameDetails(id)}
+            closeSearchResults={closeSearchResults}
+            searchGame={fetchSubmittedGame}
+            currentGameOpen={currentGameOpen}
+            openGame={(game) => openGameWindow(game)}
+            closeGameWindow={closeGameWindow}
+            addGame={(game) => addGameHandler(game)}
           />
         }
-      /> */}
+      />
+      <Route
+        path='login'
+        element={
+          <Authentication
+            loading={isLoading}
+            onLogin={loginAuthentication}
+            twitchToken={twitchAccessToken}
+          />
+        }
+      />
     </Routes>
   );
   // } else {

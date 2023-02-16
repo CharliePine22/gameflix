@@ -69,7 +69,7 @@ function Banner({ setGameDetails, twitchToken, addGame, activeProfile }) {
       className='banner'
       key={game?.name}
       style={{
-        backgroundSize: 'cover',
+        backgroundSize: '100% 100%',
         backgroundImage: `url(//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg)`,
         backgroundPosition: 'center center',
       }}

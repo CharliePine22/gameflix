@@ -409,7 +409,7 @@ const GamePreview = ({
       case 'PS2':
       case 'PSP':
       case 'fds':
-        return '#100e0e';
+        return '#000';
       case 'PS3':
         return '#585858';
       case 'N64':

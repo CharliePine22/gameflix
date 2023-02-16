@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.4a7524c5.css",
-    "main.js": "/static/js/main.9fbde1a2.js",
+    "main.js": "/static/js/main.7a25d96e.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -86,7 +86,7 @@
     "static/media/nintendo3ds-logo2.png": "/static/media/nintendo3ds-logo2.c7e37eaf52ef8c373e44.png",
     "index.html": "/index.html",
     "main.4a7524c5.css.map": "/static/css/main.4a7524c5.css.map",
-    "main.9fbde1a2.js.map": "/static/js/main.9fbde1a2.js.map",
+    "main.7a25d96e.js.map": "/static/js/main.7a25d96e.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -104,6 +104,6 @@
   },
   "entrypoints": [
     "static/css/main.4a7524c5.css",
-    "static/js/main.9fbde1a2.js"
+    "static/js/main.7a25d96e.js"
   ]
 }

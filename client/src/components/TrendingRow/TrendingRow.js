@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TrendingRow.css';
 import rawgClient from '../../axios';
 import requests from '../../requests';
@@ -147,4 +147,4 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
   );
 };
 
-export default memo(TrendingRow);
+export default TrendingRow;

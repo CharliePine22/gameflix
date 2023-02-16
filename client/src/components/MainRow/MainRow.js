@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MainRow.css';
 import axios from 'axios';
 import { FaAngleUp } from 'react-icons/fa';
@@ -237,4 +237,4 @@ const MainRow = ({ twitchToken, setGameDetails }) => {
   );
 };
 
-export default memo(MainRow);
+export default MainRow;

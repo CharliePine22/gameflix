@@ -22,18 +22,18 @@ function Nav(props) {
     setDisplayDropdown(false);
   };
 
-  // const closeSearch = () => {
-  //   if (searchRef.current.value.length > 0) {
-  //     return;
-  //   }
-  //   setDisplaySearch(false);
-  // };
+  const closeSearch = () => {
+    if (searchRef.current.value.length > 0) {
+      return;
+    }
+    setDisplaySearch(false);
+  };
 
-  // const determineSearch = () => {
-  //   if (searchRef.current.value == 0) {
-  //     props.closeSearchResults();
-  //   }
-  // };
+  const determineSearch = () => {
+    if (searchRef.current.value == 0) {
+      props.closeSearchResults();
+    }
+  };
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
@@ -136,8 +136,8 @@ function Nav(props) {
                 defaultValue={
                   props.searchedGame ? `${props.searchedGame.name}` : ''
                 }
-                // onBlur={closeSearch}
-                // onChange={determineSearch}
+                onBlur={closeSearch}
+                onChange={determineSearch}
               />
             </form>
           )}

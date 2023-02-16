@@ -91,9 +91,9 @@ function App() {
       });
       setSelectedProfile(currentProfile[0]);
 
-      if (selectedProfile[0].collection) {
+      if (currentProfile[0].collection) {
         setProfileCollection(
-          selectedProfile[0].collection.filter((game) => game.id !== null)
+          currentProfile[0].collection.filter((game) => game.id !== null)
         );
       }
     };

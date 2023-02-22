@@ -3,7 +3,7 @@ import './SearchResults.css';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import SkeletonCard from '../SkeletonCard/SkeletonCard';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 import { FaSearch } from 'react-icons/fa';
 import GamePreview from '../Row/GamePreview/GamePreview';
@@ -29,9 +29,9 @@ const SearchResultsIGDB = ({
   const [searchValue, setSearchValue] = useState(searchedGame.name);
   const [currentGame, setCurrentGame] = useState('');
   const [viewingPreview, setViewingPreview] = useState(false);
-  console.log('searchedGame');
   const params = useParams();
-  console.log(params);
+  const location = useLocation();
+  console.log(location);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -109,25 +109,6 @@ const SearchResultsIGDB = ({
   if (searchedGame.data.length == 0 || !topGames || !remainderGames) {
     return (
       <div className='search_results'>
-        {currentGameOpen === currentGame.name && (
-          <GamePreview
-            game={currentGame}
-            gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${currentGame.cover?.image_id}.jpg`}
-            ratingImage={determineESRB(currentGame)}
-            addGame={addGameHandler}
-            displayDetails={setGameDetails}
-            hideDetails={closeGameWindow}
-            fetchGameDetails={(game) => {
-              setGameDetails(game);
-            }}
-            // viewGameSoundtrack={(e, game) => {
-            //   viewGameSoundtrack(e, game);
-            // }}
-            viewingPreview={viewingPreview}
-            openGame={() => setViewingPreview(true)}
-            closeGame={() => setViewingPreview(false)}
-          />
-        )}
         <div className='search_results__nav'>
           <span onClick={closeSearchResults}>X</span>
           <div className='search_results__nav_search'>
@@ -197,6 +178,25 @@ const SearchResultsIGDB = ({
       </div>
 
       <div className='search_results__container'>
+        {/* {currentGameOpen === currentGame.name && (
+          <GamePreview
+            game={currentGame}
+            gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${currentGame.cover?.image_id}.jpg`}
+            ratingImage={determineESRB(currentGame)}
+            addGame={addGameHandler}
+            displayDetails={setGameDetails}
+            hideDetails={closeGameWindow}
+            fetchGameDetails={(game) => {
+              setGameDetails(game);
+            }}
+            // viewGameSoundtrack={(e, game) => {
+            //   viewGameSoundtrack(e, game);
+            // }}
+            viewingPreview={viewingPreview}
+            openGame={() => setViewingPreview(true)}
+            closeGame={() => setViewingPreview(false)}
+          />
+        )} */}
         {/* RECENT SEARCHES */}
         <div className='search_results__recents'>
           <h2>Recent Searches</h2>

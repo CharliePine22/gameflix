@@ -14,6 +14,7 @@ import pspLogo from '../../../assets/images/psp-logo.png';
 import psVitaLogo from '../../../assets/images/psvita-logo.png';
 // PlayStation 1
 import ps1Sound from '../../../assets/sounds/platform_sounds/ps1-startup.mp3';
+import ps1Case from '../../../assets/images/ps1-case-template.png';
 // PlayStation 2
 import ps2DiscBanner from '../../../assets/images/ps2-disc-banner.png';
 import ps2SideBanner from '../../../assets/images/ps2-side-banner.png';
@@ -26,6 +27,8 @@ import nintendo64Case from '../../../assets/images/n64-case-template-e.png';
 import nintendo64Cart from '../../../assets/images/n64-game-template.png';
 // Nintendo Switch
 import nintendoSwitchLogo from '../../../assets/images/switch_logo.png';
+import nintendoSwitchSide from '../../../assets/images/switch-side.png';
+import nintendoSwitchBack from '../../../assets/images/switch-back.png';
 // GameCube
 import gamecubeLogo from '../../../assets/images/gamecube-logo.png';
 import gamecubeBanner from '../../../assets/images/gamecube-disc-banner.png';
@@ -332,6 +335,8 @@ const GamePreview = ({
         return ps2SideBanner;
       case 'PS3':
         return ps3SideBanner;
+      case 'Switch':
+        return nintendoSwitchSide;
       default:
         return '';
     }
@@ -341,6 +346,8 @@ const GamePreview = ({
     switch (gamePlatform.abbreviation) {
       case 'NGC':
         return gamecubeBackCover;
+      case 'Switch':
+        return nintendoSwitchBack;
       default:
         return '';
     }
@@ -409,7 +416,7 @@ const GamePreview = ({
       case 'PS2':
       case 'PSP':
       case 'fds':
-        return '#100e0e';
+        return '#000';
       case 'PS3':
         return '#585858';
       case 'N64':
@@ -480,8 +487,11 @@ const GamePreview = ({
             style={{
               backgroundImage: `url(${gameCover})`,
               height: `${
-                gamePlatform.abbreviation == 'PS1' ||
-                (gamePlatform.abbreviation == 'N64' && '368px')
+                gamePlatform.abbreviation == 'PS1'
+                  ? '368px'
+                  : gamePlatform.abbreviation == 'N64'
+                  ? '368px'
+                  : ''
               }`,
 
               backgroundPosition:
@@ -498,6 +508,9 @@ const GamePreview = ({
           >
             {gamePlatform.abbreviation == 'N64' && (
               <img src={nintendo64Case} className='n64_game_img' />
+            )}
+            {gamePlatform.abbreviation == 'PS1' && (
+              <img src={ps1Case} className='n64_game_img' />
             )}
 
             {/* FRONT CASE COVER BANNER */}
@@ -575,7 +588,7 @@ const GamePreview = ({
                   : gamePlatform.abbreviation}
               </p>
             </div>
-            {ratingImage}
+            {gamePlatform.abbreviation !== 'PS1' && ratingImage}
           </div>
 
           {/* INSIDE OF FRONT  */}
@@ -667,7 +680,10 @@ const GamePreview = ({
               borderLeft: `${determineCoverColor()} solid 7px`,
             }}
           >
-            <img src={determineBackCover()} />
+            <img
+              src={determineBackCover()}
+              className='game_preview__back_cover'
+            />
             {viewingPreview && (
               <div className='game_preview__back_open_details'>
                 <img

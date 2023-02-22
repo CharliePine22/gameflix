@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import GamePreview from './GamePreview/GamePreview';
 import './Row.css';
 import axios from 'axios';
@@ -143,20 +143,18 @@ function Row({
                 {!loading && (
                   <div
                     className={`row__poster_wrapper ${
-                      currentGameOpen == game.name && 'viewing_game'
+                      currentGameOpen == game.id && 'viewing_game'
                     }`}
                     style={{
                       zIndex:
-                        currentGameOpen !== game.name &&
+                        currentGameOpen !== game.id &&
                         currentGameOpen !== null &&
                         '-1',
-                      // pointerEvents:
-                      //   currentGameOpen && viewingPreview ? 'none' : 'revert',
                     }}
                   >
                     <div
                       className={`row__poster_container ${
-                        viewingSoundtrack && currentGameOpen == game.name
+                        viewingSoundtrack && currentGameOpen == game.id
                           ? 'flip'
                           : ''
                       }`}
@@ -176,7 +174,6 @@ function Row({
                             src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                             alt={game.name}
                           />
-                          {/* {determineESRB(game)} */}
                         </div>
                         {/* BACK OF POSTER */}
                         <div
@@ -232,7 +229,7 @@ function Row({
                         </div>
                       </>
                     </div>
-                    {currentGameOpen === game.name && (
+                    {currentGameOpen === game.id && (
                       <GamePreview
                         game={game}
                         gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}

@@ -19,7 +19,10 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
 
   useEffect(() => {
     if (!twitchToken) return;
-    if (trendingTitlesFetched && trendingTitlesFetched.length > 0) {
+    if (
+      (trendingTitlesFetched && trendingTitlesFetched.length > 0) ||
+      trendingList.length > 0
+    ) {
       setGames(trendingTitlesFetched);
       return;
     }
@@ -32,6 +35,7 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
           token: twitchToken,
           currentDate: currentDate,
         });
+
         const uniqueTitles = new Set();
         request.data.filter(
           (item) =>
@@ -53,26 +57,6 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
     }
     fetchData();
   }, [twitchToken, trendingList]);
-
-  // useEffect(() => {
-  //   const loadImage = image => {
-  //     return new Promise((resolve, reject) => {
-  //       const loadImg = new Image()
-  //       loadImg.src = image.url
-  //       // wait 2 seconds to simulate loading time
-  //       loadImg.onload = () =>
-  //         setTimeout(() => {
-  //           resolve(image.url)
-  //         }, 2000)
-
-  //       loadImg.onerror = err => reject(err)
-  //     })
-  //   }
-
-  //   Promise.all(IMAGES.map(image => loadImage(image)))
-  //     .then(() => setImgsLoaded(true))
-  //     .catch(err => console.log("Failed to load images", err))
-  // }, [])
 
   // Grab trailer video from selected game
   const fetchGameDetails = (game) => {
@@ -108,7 +92,7 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
                 style={{
                   marginLeft: (i == 9 && '160px') || (i == 0 && '65px'),
                 }}
-                onClick={() => fetchGameDetails(game.game)}
+                onClick={() => setGameDetails(game.game)}
               >
                 {' '}
                 {!loading && (

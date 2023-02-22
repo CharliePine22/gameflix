@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userModel = require('../models/NewUserModels');
+const popularGameModel = require('../models/PopularGameModel');
 const multer = require('multer');
 
 // Determine whether or not email exists in database
@@ -39,6 +40,29 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+router.get('/login_banner', async (req, res) => {
+  const request = await popularGameModel.findOne();
+  res.send(request);
+});
+
+// Update popular games collection
+router.post('/update_login_banner', async (req, res) => {
+  const gameList = req.body.gameList;
+  const last_updated = req.body.date;
+
+  const request = await popularGameModel.findOneAndUpdate(
+    {},
+    {
+      $set: {
+        popular_games_list: gameList,
+        last_updated: last_updated,
+      },
+    },
+    { new: true, setDefaultsOnInsert: false, upsert: true }
+  );
+  res.send(request);
+});
 
 //! EMAIL VERIFICATION
 router.post('/email_verification', (req, res) => {

@@ -33,8 +33,6 @@ function App() {
   const [gameDetails, setGameDetails] = useState(null);
   const [currentGameOpen, setCurrentGameOpen] = useState(null);
 
-  // console.log(loggedUser);
-
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
   const userEmail = localStorage.getItem('user');
@@ -253,8 +251,7 @@ function App() {
   };
 
   const openGameWindow = (game) => {
-    console.log(game);
-    setCurrentGameOpen(game.name);
+    setCurrentGameOpen(game.id);
     document.body.style.overflow = 'hidden';
   };
 
@@ -293,6 +290,32 @@ function App() {
   return (
     <Routes>
       <Route
+        path='/login'
+        element={
+          <Authentication
+            loading={isLoading}
+            onLogin={loginAuthentication}
+            twitchToken={twitchAccessToken}
+          />
+        }
+      />
+      <Route
+        path='/search'
+        element={
+          <SearchResultsIGDB
+            searchedGame={searchedGame}
+            setGameDetails={(id) => setGameDetails(id)}
+            closeSearchResults={closeSearchResults}
+            searchGame={fetchSubmittedGame}
+            currentGameOpen={currentGameOpen}
+            openGame={(game) => openGameWindow(game)}
+            closeGameWindow={closeGameWindow}
+            addGame={(game) => addGameHandler(game)}
+          />
+        }
+      />
+
+      <Route
         path='/'
         element={
           <Dashboard
@@ -313,32 +336,6 @@ function App() {
             addGame={(game) => addGameHandler(game)}
             removeGame={(game) => removeGameHandler(game)}
             logoutUser={logoutHandler}
-          />
-        }
-      />
-
-      <Route
-        path='search'
-        element={
-          <SearchResultsIGDB
-            searchedGame={searchedGame}
-            setGameDetails={(id) => setGameDetails(id)}
-            closeSearchResults={closeSearchResults}
-            searchGame={fetchSubmittedGame}
-            currentGameOpen={currentGameOpen}
-            openGame={(game) => openGameWindow(game)}
-            closeGameWindow={closeGameWindow}
-            addGame={(game) => addGameHandler(game)}
-          />
-        }
-      />
-      <Route
-        path='login'
-        element={
-          <Authentication
-            loading={isLoading}
-            onLogin={loginAuthentication}
-            twitchToken={twitchAccessToken}
           />
         }
       />

@@ -50,10 +50,8 @@ const GameDetails = ({
   const [error, setError] = useState('');
   const currentCollection = activeProfile.collection;
   const exists =
-    currentCollection &&
-    currentCollection.some((game) => game.id === gameDetails.id);
+    currentCollection && currentCollection.some((game) => game.id === game.id);
   let coverImageURL = 'images.igdb.com/igdb/image/upload/t_cover_big_2x/';
-
   const searchGameDetails = async () => {
     try {
       const request = await axios.post(`${baseURL}/app/search_game_details`, {
@@ -85,7 +83,7 @@ const GameDetails = ({
 
   useEffect(() => {
     if (!game) return;
-    searchGameDetails(game);
+    // searchGameDetails(game);
     setActiveScreenshot('');
   }, [game]);
 
@@ -141,7 +139,7 @@ const GameDetails = ({
   };
 
   const addGameHandler = async () => {
-    await addGame(gameDetails);
+    await addGame(game);
   };
 
   const removeGameHandler = async () => {
@@ -328,9 +326,9 @@ const GameDetails = ({
     );
   };
 
-  console.log(gameDetails);
+  console.log(game);
 
-  if (Object.keys(gameDetails).length == 0 || loading) {
+  if (Object.keys(game).length == 0 || loading) {
     return (
       <div className='game_details__wrapper' data-title='.dot-falling'>
         <div className='stage'>
@@ -344,10 +342,10 @@ const GameDetails = ({
     <div className='game_details__wrapper'>
       <img
         className='game_details__background'
-        src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${gameDetails.cover?.image_id}.jpg`}
+        src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
       />
       <div className='game_details__container'>
-        <h2>{gameDetails.name}</h2>
+        <h2>{game.name}</h2>
         <div className='game_details__details'>
           <div className='game_details__media'>
             <div className='media_placeholder'>
@@ -356,29 +354,29 @@ const GameDetails = ({
                 className='details_img'
                 src={
                   activeScreenshot == ''
-                    ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails?.cover?.image_id}.jpg`
+                    ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game?.cover?.image_id}.jpg`
                     : activeScreenshot
                 }
               />
               <div className='game_details__screenshots'>
                 <img
-                  src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover?.image_id}.jpg`}
+                  src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                   className='screenshot_thumbnail'
                   onClick={() =>
                     setActiveScreenshot(
-                      `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover?.image_id}.jpg`
+                      `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`
                     )
                   }
                   style={{
                     border:
-                      gameDetails.cover.image_id == activeScreenshot
+                      game.cover.image_id == activeScreenshot
                         ? '2px solid lightblue'
                         : '1px solid transparent',
                     width: '95%',
                   }}
                 />
                 {/* SCREENSHOTS */}
-                {gameDetails.screenshots?.map((screenshot) => (
+                {game.screenshots?.map((screenshot) => (
                   <img
                     key={screenshot.id}
                     style={{
@@ -398,7 +396,7 @@ const GameDetails = ({
                 ))}
 
                 {/* ARTWORKS */}
-                {gameDetails.artworks?.map((screenshot) => (
+                {game.artworks?.map((screenshot) => (
                   <img
                     key={screenshot.id}
                     style={{
@@ -427,22 +425,20 @@ const GameDetails = ({
                 <div className='game_details__publishers'>
                   <h4 className='game_details__title'>Publishers</h4>
                   <ul className='publishers_list'>
-                    {gameDetails.involved_companies
-                      ?.slice(0, 3)
-                      .map((company) => (
-                        <li key={company.id} className='publisher'>
-                          {company.company.name}
-                        </li>
-                      ))}
+                    {game.involved_companies?.slice(0, 3).map((company) => (
+                      <li key={company.id} className='publisher'>
+                        {company.company.name}
+                      </li>
+                    ))}
                   </ul>
                 </div>
 
                 {/* PLATFORMS */}
-                {gameDetails.platforms.length > 0 && (
+                {game.platforms.length > 0 && (
                   <div className='game_details__platforms'>
                     <h4 className='game_details__title'>Platforms</h4>
                     <ul className='platforms_list'>
-                      {gameDetails.platforms?.map((platform, i) => {
+                      {game.platforms?.map((platform, i) => {
                         if (platform.category == 1 || platform.category == 5) {
                           if (
                             platform.name !== 'Super Famicom' &&
@@ -468,22 +464,22 @@ const GameDetails = ({
                     </ul>
                   </div>
                 )}
-                {gameDetails.rating && (
+                {game.rating && (
                   <div className='game_details__rating'>
                     <h4 className='game_details__title'>Rating</h4>
-                    <p>{Math.round(gameDetails.rating) + '%'}</p>
+                    <p>{Math.round(game.rating) + '%'}</p>
                   </div>
                 )}
                 <div className='game_details__released'>
                   <h4 className='game_details__title'>Release Date</h4>
-                  <p>{convertDate(gameDetails?.release_dates[0]?.human)}</p>
+                  <p>{convertDate(game?.release_dates[0]?.human)}</p>
                 </div>
               </div>
             </div>
             {/* SIMILAR GAMES  */}
             {/* <div className='media_soundtrack__container'>
               <Carousel>
-                {gameDetails.similar_games?.map((game) => (
+                {game.similar_games?.map((game) => (
                   <CarouselItem
                     imageUrl={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
                     key={game.id}
@@ -499,7 +495,7 @@ const GameDetails = ({
                           <i>{game.involved_companies?.at(-1).company.name}</i>
                         </p>
                         <ul className='similar_game__genres'>
-                          {gameDetails.genres?.map((genre) => (
+                          {game.genres?.map((genre) => (
                             <li
                               key={genre.name}
                               style={{ fontSize: '1.15rem' }}
@@ -522,15 +518,15 @@ const GameDetails = ({
           <p
             className='game_details__description'
             style={{
-              maxWidth: gameDetails.summary == '' && '100%',
+              maxWidth: game.summary == '' && '100%',
             }}
           >
-            {shortenDescription(gameDetails)}{' '}
+            {shortenDescription(game)}{' '}
             <button
               className='game_details__info_toggler'
               onClick={toggleFullDescription}
             >
-              {gameDetails.summary !== ''
+              {game.summary !== ''
                 ? showFullDescription
                   ? 'Hide Full Description'
                   : 'Show Full Description'

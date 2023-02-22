@@ -169,7 +169,7 @@
 
 .row__posters {
   display: flex;
-  padding: 15px 15px 40px;
+  padding: 15px 15px 10px;
   position: relative;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -220,9 +220,9 @@
 
 .row__poster_wrapper:hover {
   box-shadow: -6px 3px 3px 1px rgb(0 0 0 / 50%);
-  transform: perspective(530px) translateZ(10px) rotateY(4deg);
+  /* transform: perspective(530px) translateZ(10px) rotateY(4deg); */
 
-  /* transform: translate3d(1px, -3px, 0px); */
+  transform: translate3d(1px, -3px, 0px);
 }
 
 .row__poster_wrapper:hover > .row__poster_name {
@@ -262,8 +262,8 @@
 }
 
 .row__title {
-  font-size: 2.2rem;
-  font-style: italic;
+  font-size: 1.25rem;
+  /* font-style: italic; */
   text-shadow: 4px 4px 2px black;
 }
 

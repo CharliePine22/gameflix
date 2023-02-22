@@ -1,12 +1,7 @@
 {
   "files": {
-<<<<<<< HEAD
-    "main.css": "/static/css/main.4a7524c5.css",
-    "main.js": "/static/js/main.7a25d96e.js",
-=======
-    "main.css": "/static/css/main.875ade8f.css",
-    "main.js": "/static/js/main.2cb2f463.js",
->>>>>>> parent of 5a89412 (Routes for dash, login, and search created)
+    "main.css": "/static/css/main.1a1eee7f.css",
+    "main.js": "/static/js/main.977535bc.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -68,7 +63,9 @@
     "static/media/steam-logo-transparent.png": "/static/media/steam-logo-transparent.442a9cc185e4d30c4f4d.png",
     "static/media/notify.mp3": "/static/media/notify.e2e956cec8e665fdac87.mp3",
     "static/media/nintendo-logo.png": "/static/media/nintendo-logo.14c4d5793bf79874cb08.png",
+    "static/media/ps1-case-template.png": "/static/media/ps1-case-template.67ced794c45845eef02c.png",
     "static/media/rexlia_rg.otf": "/static/media/rexlia_rg.d297770693345b764564.otf",
+    "static/media/switch-back.png": "/static/media/switch-back.98c4af0ddaefcf594b4e.png",
     "static/media/psvita-logo.png": "/static/media/psvita-logo.fb4c047637585a7d3320.png",
     "static/media/Persona5MenuFontPrototype-Regular.ttf": "/static/media/Persona5MenuFontPrototype-Regular.eaf9adfa13ad3376ffd6.ttf",
     "static/media/ps2-side-banner.png": "/static/media/ps2-side-banner.a6a001a340254e3979bd.png",
@@ -90,13 +87,8 @@
     "static/media/mario_pixel_jumping.png": "/static/media/mario_pixel_jumping.2d3e818e95ef4a0db512.png",
     "static/media/nintendo3ds-logo2.png": "/static/media/nintendo3ds-logo2.c7e37eaf52ef8c373e44.png",
     "index.html": "/index.html",
-<<<<<<< HEAD
-    "main.4a7524c5.css.map": "/static/css/main.4a7524c5.css.map",
-    "main.7a25d96e.js.map": "/static/js/main.7a25d96e.js.map",
-=======
-    "main.875ade8f.css.map": "/static/css/main.875ade8f.css.map",
-    "main.2cb2f463.js.map": "/static/js/main.2cb2f463.js.map",
->>>>>>> parent of 5a89412 (Routes for dash, login, and search created)
+    "main.1a1eee7f.css.map": "/static/css/main.1a1eee7f.css.map",
+    "main.977535bc.js.map": "/static/js/main.977535bc.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -113,12 +105,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-<<<<<<< HEAD
-    "static/css/main.4a7524c5.css",
-    "static/js/main.7a25d96e.js"
-=======
-    "static/css/main.875ade8f.css",
-    "static/js/main.2cb2f463.js"
->>>>>>> parent of 5a89412 (Routes for dash, login, and search created)
+    "static/css/main.1a1eee7f.css",
+    "static/js/main.977535bc.js"
   ]
 }

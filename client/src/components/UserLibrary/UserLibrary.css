@@ -85,7 +85,7 @@
   margin-left: 20px;
   color: #fff;
   z-index: 0;
-  padding-bottom: 40px;
+  padding-bottom: 10px;
   height: auto;
   position: relative;
 }
@@ -178,7 +178,6 @@
   top: 4px;
   left: 8px;
   transform-origin: center center;
-  /* box-shadow: 0 1px 4px 1px rgba(255, 255, 255, 0.5); */
 }
 
 .user_library_title {
@@ -188,10 +187,9 @@
 
 .user_library_title h2 {
   opacity: 0.95;
-  font-size: 2.2rem;
-  font-style: italic;
+  font-size: 1.25rem;
+  /* font-style: italic; */
   text-shadow: 4px 4px 2px black;
-  /* text-shadow: 6px 7px 2px black; */
 }
 
 .user_library_title:hover .user_library_title h2 {

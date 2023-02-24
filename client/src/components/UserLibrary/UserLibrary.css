@@ -274,7 +274,7 @@
 @media screen and (max-width: 500px) {
   .user_library__row {
     height: 280px;
-    padding-bottom: 40px;
+    padding-bottom: 50px;
   }
 
   .user_library_title h2 {

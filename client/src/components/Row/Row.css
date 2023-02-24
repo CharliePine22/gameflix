@@ -183,7 +183,7 @@
   border-radius: 4px;
   margin-right: 25px;
   height: 100%;
-  width: 100%;
+  /* width: 100%; */
   box-shadow: -1px 3px 5px 1px #000;
   /* transform: perspective(530px) translateZ(10px) rotateY(4deg); */
 }
@@ -262,7 +262,7 @@
 }
 
 .row__title {
-  font-size: 1.25rem;
+  font-size: 1.6rem;
   /* font-style: italic; */
   text-shadow: 4px 4px 2px black;
 }

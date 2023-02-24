@@ -5,13 +5,13 @@ import './App.css';
 // Component Imports
 import ProfilesPage from './components/Login/Profiles/ProfilesPage';
 // File Imports
-import requestsIGDB from './requestsIGDB';
 import loginAudio from './assets/sounds/success.wav';
 import axios from 'axios';
 import useTwitchAuth from './hooks/useTwitchAuth';
 import Authentication from './components/Authentication/Authentication';
 import Dashboard from './components/Dashboard/Dashboard';
 import SearchResultsIGDB from './components/SearchResults/SearchResultsIGDB';
+import useFetchGenres from './hooks/useFetchGenres';
 const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
@@ -40,6 +40,7 @@ function App() {
 
   let audio = new Audio(loginAudio);
   const twitchAccessToken = useTwitchAuth(code);
+  const genres = useFetchGenres();
 
   const getUserNotes = async (id) => {
     const request = await axios.get(`${baseURL}/notes/get_notes`, {
@@ -66,14 +67,6 @@ function App() {
       } catch (error) {
         console.log(error);
         navigate('/login');
-      }
-    };
-
-    const getGenreGames = async () => {
-      try {
-        const request = await axios.get(`${baseURL}/game_genres`);
-      } catch (error) {
-        console.log(error);
       }
     };
     updateUser();
@@ -104,25 +97,25 @@ function App() {
     }
   }, [selectedProfile]);
 
-  useEffect(() => {
-    if (!twitchAccessToken) return;
-    const fetchGenreGames = async () => {
-      const genreTitles = await Promise.all(
-        requestsIGDB.map((genre) => {
-          return axios.post(`${baseURL}/app/game_genre`, {
-            token: twitchAccessToken,
-            genreId: genre.genreId,
-            genreTitle: genre.title,
-          });
-        })
-      );
-      const completeGenreList = genreTitles.map((genre) => genre.data);
+  // useEffect(() => {
+  //   if (!twitchAccessToken) return;
+  //   const fetchGenreGames = async () => {
+  //     const genreTitles = await Promise.all(
+  //       requestsIGDB.map((genre) => {
+  //         return axios.post(`${baseURL}/app/game_genre`, {
+  //           token: twitchAccessToken,
+  //           genreId: genre.genreId,
+  //           genreTitle: genre.title,
+  //         });
+  //       })
+  //     );
+  //     const completeGenreList = genreTitles.map((genre) => genre.data);
 
-      setGenreList(completeGenreList);
-      return;
-    };
-    fetchGenreGames();
-  }, [twitchAccessToken]);
+  //     setGenreList(completeGenreList);
+  //     return;
+  //   };
+  //   fetchGenreGames();
+  // }, [twitchAccessToken]);
 
   // Search for the game, publisher, or developer that the user types in from nav
   const fetchSubmittedGame = async (game) => {
@@ -331,7 +324,7 @@ function App() {
             }
             selectProfile={(user) => setSelectedProfile(user)}
             manageProfiles={() => setSelectedProfile(null)}
-            allGenres={genreList}
+            allGenres={genres}
             userNotes={profileNotesData}
             addGame={(game) => addGameHandler(game)}
             removeGame={(game) => removeGameHandler(game)}

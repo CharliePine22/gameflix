@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const userModel = require('../models/NewUserModels');
+const genreModel = require('../models/GameGenreModel');
 const multer = require('multer');
 const spotifyWebApi = require('spotify-web-api-node');
 const fetch = require('cross-fetch');
-const { findOneAndUpdate } = require('../models/NewUserModels');
 
 // Transform upload file into DB Object String
 const storage = multer.diskStorage({
@@ -283,7 +283,29 @@ router.post('/game_genre', async (req, res) => {
   }
 });
 
-router.post('/');
+router.get('/get_genres', async (req, res) => {
+  const allGenres = await genreModel.find({});
+  res.send(allGenres);
+  return;
+});
+
+router.post('/update_genres', async (req, res) => {
+  const genreList = req.body.genreList;
+  const date = req.body.date;
+
+  const updateGenres = await genreModel.findOneAndUpdate(
+    {},
+    {
+      $set: {
+        genres_list: genreList,
+        last_updated: date,
+      },
+    },
+    { new: true, setDefaultsOnInsert: false, upsert: true }
+  );
+
+  res.send(updateGenres);
+});
 
 //* IGDB UPCOMING GAME RELEASES
 router.post('/upcoming', async (req, res) => {

@@ -3,11 +3,7 @@ import './GameDetails.css';
 import youtube from '../../youtubeAPI';
 import ReactPlayer from 'react-player/lazy';
 import axios from 'axios';
-// ESRB Logos
-import eRating from '../../assets/images/ESRB_E.png';
-import tRating from '../../assets/images/ESRB_T.png';
-import mRating from '../../assets/images/ESRB_M.png';
-import rpRating from '../../assets/images/ESRB_RP.png';
+
 // Game Platform Logo Images
 import playstationLogo from '../../assets/images/playstation-logo.png';
 import pspLogo from '../../assets/images/psp-logo.png';
@@ -28,7 +24,6 @@ import snesLogo from '../../assets/images/snes-logo.png';
 import gamecubeLogo from '../../assets/images/gamecube-logo.png';
 // Modules
 import Carousel, { CarouselItem } from './Carousel';
-import { VscLibrary } from 'react-icons/vsc';
 import { AiOutlineExpandAlt, AiFillYoutube } from 'react-icons/ai';
 
 // ('https://www.youtube.com/watch?v=${GAMEVIDEOID}');
@@ -83,7 +78,7 @@ const GameDetails = ({
 
   useEffect(() => {
     if (!game) return;
-    // searchGameDetails(game);
+    searchGameDetails(game);
     setActiveScreenshot('');
   }, [game]);
 
@@ -328,7 +323,7 @@ const GameDetails = ({
 
   console.log(game);
 
-  if (Object.keys(game).length == 0 || loading) {
+  if (Object.keys(gameDetails).length == 0 || loading) {
     return (
       <div className='game_details__wrapper' data-title='.dot-falling'>
         <div className='stage'>
@@ -342,10 +337,10 @@ const GameDetails = ({
     <div className='game_details__wrapper'>
       <img
         className='game_details__background'
-        src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
+        src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${gameDetails.cover?.image_id}.jpg`}
       />
       <div className='game_details__container'>
-        <h2>{game.name}</h2>
+        <h2>{gameDetails.name}</h2>
         <div className='game_details__details'>
           <div className='game_details__media'>
             <div className='media_placeholder'>
@@ -354,29 +349,29 @@ const GameDetails = ({
                 className='details_img'
                 src={
                   activeScreenshot == ''
-                    ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game?.cover?.image_id}.jpg`
+                    ? `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails?.cover?.image_id}.jpg`
                     : activeScreenshot
                 }
               />
               <div className='game_details__screenshots'>
                 <img
-                  src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
+                  src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover?.image_id}.jpg`}
                   className='screenshot_thumbnail'
                   onClick={() =>
                     setActiveScreenshot(
-                      `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`
+                      `//images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover?.image_id}.jpg`
                     )
                   }
                   style={{
                     border:
-                      game.cover.image_id == activeScreenshot
+                      gameDetails.cover.image_id == activeScreenshot
                         ? '2px solid lightblue'
                         : '1px solid transparent',
                     width: '95%',
                   }}
                 />
                 {/* SCREENSHOTS */}
-                {game.screenshots?.map((screenshot) => (
+                {gameDetails.screenshots?.map((screenshot) => (
                   <img
                     key={screenshot.id}
                     style={{
@@ -396,7 +391,7 @@ const GameDetails = ({
                 ))}
 
                 {/* ARTWORKS */}
-                {game.artworks?.map((screenshot) => (
+                {gameDetails.artworks?.map((screenshot) => (
                   <img
                     key={screenshot.id}
                     style={{
@@ -425,20 +420,22 @@ const GameDetails = ({
                 <div className='game_details__publishers'>
                   <h4 className='game_details__title'>Publishers</h4>
                   <ul className='publishers_list'>
-                    {game.involved_companies?.slice(0, 3).map((company) => (
-                      <li key={company.id} className='publisher'>
-                        {company.company.name}
-                      </li>
-                    ))}
+                    {gameDetails.involved_companies
+                      ?.slice(0, 3)
+                      .map((company) => (
+                        <li key={company.id} className='publisher'>
+                          {company.company.name}
+                        </li>
+                      ))}
                   </ul>
                 </div>
 
                 {/* PLATFORMS */}
-                {game.platforms.length > 0 && (
+                {gameDetails.platforms.length > 0 && (
                   <div className='game_details__platforms'>
                     <h4 className='game_details__title'>Platforms</h4>
                     <ul className='platforms_list'>
-                      {game.platforms?.map((platform, i) => {
+                      {gameDetails.platforms?.map((platform, i) => {
                         if (platform.category == 1 || platform.category == 5) {
                           if (
                             platform.name !== 'Super Famicom' &&
@@ -464,15 +461,15 @@ const GameDetails = ({
                     </ul>
                   </div>
                 )}
-                {game.rating && (
+                {gameDetails.rating && (
                   <div className='game_details__rating'>
                     <h4 className='game_details__title'>Rating</h4>
-                    <p>{Math.round(game.rating) + '%'}</p>
+                    <p>{Math.round(gameDetails.rating) + '%'}</p>
                   </div>
                 )}
                 <div className='game_details__released'>
                   <h4 className='game_details__title'>Release Date</h4>
-                  <p>{convertDate(game?.release_dates[0]?.human)}</p>
+                  <p>{convertDate(gameDetails?.release_dates[0]?.human)}</p>
                 </div>
               </div>
             </div>
@@ -518,15 +515,15 @@ const GameDetails = ({
           <p
             className='game_details__description'
             style={{
-              maxWidth: game.summary == '' && '100%',
+              maxWidth: gameDetails.summary == '' && '100%',
             }}
           >
-            {shortenDescription(game)}{' '}
+            {shortenDescription(gameDetails)}{' '}
             <button
               className='game_details__info_toggler'
               onClick={toggleFullDescription}
             >
-              {game.summary !== ''
+              {gameDetails.summary !== ''
                 ? showFullDescription
                   ? 'Hide Full Description'
                   : 'Show Full Description'

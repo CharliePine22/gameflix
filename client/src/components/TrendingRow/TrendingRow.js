@@ -20,8 +20,9 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
   useEffect(() => {
     if (!twitchToken) return;
     if (
-      (trendingTitlesFetched && trendingTitlesFetched.length > 0) ||
-      trendingList.length > 0
+      trendingTitlesFetched &&
+      trendingTitlesFetched.length > 0
+      // || trendingList.length > 0
     ) {
       setGames(trendingTitlesFetched);
       return;

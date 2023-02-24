@@ -418,6 +418,10 @@
     display: none;
   }
 
+  .recent_searches {
+    justify-content: flex-start;
+  }
+
   .recent_searches__item {
     height: 30px;
   }

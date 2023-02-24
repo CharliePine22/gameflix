@@ -329,9 +329,8 @@
   color: white;
   margin: 0 auto 8px;
   padding: 6px 0 4px;
-  /* padding: 6px 0 0px; */
-  position: sticky;
-  top: 0;
+  position: fixed;
+  /* top: 166px; */
   z-index: 5;
   background: #0c0c0c;
 }
@@ -754,6 +753,18 @@
     width: 70%;
     height: 45%;
   }
+
+  .user_collection__list {
+    margin-top: 70px;
+  }
+
+  .user_collection__poster_container {
+    max-height: 275px;
+    max-width: 11rem;
+    min-height: 275px;
+    min-width: 11rem;
+  }
+
   .user_collection__search_icon {
     left: 32px;
   }
@@ -774,6 +785,7 @@
 @media screen and (max-width: 375px) {
   .user_collection__list {
     justify-content: space-around;
+    margin-top: 70px;
   }
 
   .user_collection__search_icon {

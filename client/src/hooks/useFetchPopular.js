@@ -14,16 +14,14 @@ export default function useFetchPopular() {
 
       // If a week has passed since the last update, run a new update
       if (currentDate > last_updated.setDate(last_updated.getDate() + 7)) {
-        console.log('UPDATE');
-        return updatePopularGamesCollection();
+        return updatePopularGamesAPI();
       } else {
-        console.log('NO UPDATE');
         return setBannerGamesList(request.data.popular_games_list);
       }
     };
     fetchPopularGames();
 
-    const updatePopularGamesCollection = async () => {
+    const updatePopularGamesAPI = async () => {
       if (!existingToken) return;
       try {
         const request = await axios.post(`${baseURL}/app/popular_titles`, {

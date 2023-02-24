@@ -65,7 +65,6 @@ const Dashboard = ({
 
   const spotifyAccessToken = useSpotifyAuth(code);
   const steamCollection = useSteamAuth(id);
-  console.log(currentGameOpen);
 
   useEffect(() => {
     if (!currentGameOpen) document.body.style.overflow = 'auto';

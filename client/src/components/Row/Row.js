@@ -66,6 +66,10 @@ function Row({
     }
   };
 
+  const imgLoaded = () => {
+    const isReady = false;
+  };
+
   // Grab trailer video from selected game
   const fetchGameDetails = (game) => {
     closeGameWindow();

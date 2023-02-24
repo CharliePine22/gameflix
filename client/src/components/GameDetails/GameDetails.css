@@ -249,7 +249,7 @@
 
 .game_platform_logo {
   height: 25px;
-  width: 32px;
+  /* width: 32px; */
   filter: drop-shadow(3px 4px 1px #000);
   margin-right: 5px;
   object-fit: contain;

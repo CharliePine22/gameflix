@@ -21,6 +21,7 @@ import ps2SideBanner from '../../../assets/images/ps2-side-banner.png';
 import ps2Sound from '../../../assets/sounds/platform_sounds/ps2-startup.mp3';
 // PlayStation 3
 import ps3SideBanner from '../../../assets/images/ps3-side.png';
+import ps3BackCover from '../../../assets/images/ps3-back.png';
 // Nintendo 64
 import nintendo64Logo from '../../../assets/images/nintendo-logo.png';
 import nintendo64Case from '../../../assets/images/n64-case-template-e.png';
@@ -48,6 +49,7 @@ import xboxLogo from '../../../assets/images/xbox-logo.png';
 import xbox360Banner from '../../../assets/images/xbox360-banner.webp';
 import xbox360Disc from '../../../assets/images/xbox360-disc-template.png';
 import xbox360Side from '../../../assets/images/360-side1.png';
+import xbox360Back from '../../../assets/images/360-back.png';
 import xbox360Sound from '../../../assets/sounds/platform_sounds/360-startup.mp3';
 // Steam Logo
 import steamLogo from '../../../assets/images/steam-logo-transparent.png';
@@ -61,13 +63,14 @@ import segaLogo from '../../../assets/images/sega-logo.png';
 import snesLogo from '../../../assets/images/snes-logo.png';
 import nesLogo from '../../../assets/images/nes-logo.png';
 
-// Gmae Platform Startup Sounds
+// Game Platform Startup Sounds
 import gamecubeSound from '../../../assets/sounds/platform_sounds/gamecube-startup.mp3';
 import n64Sound from '../../../assets/sounds/platform_sounds/n64-startup.mp3';
 
 import pipeAudio from '../../../assets/sounds/pipe-sound.mp3';
 import marioStanding from '../../../assets/images/mario_pixel_standing.png';
 import marioJumping from '../../../assets/images/mario_pixel_jumping.png';
+import useProgressiveImage from '../../../hooks/useProgressiveImage';
 
 const GamePreview = ({
   game,
@@ -82,7 +85,7 @@ const GamePreview = ({
   openGame,
   closeGame,
 }) => {
-  const [loading, setLoading] = useState(false);
+  const bgLoaded = useProgressiveImage(gameCover);
   const [unmounting, setUnmounting] = useState(false);
   const [playingDisc, setPlayingDisc] = useState(false);
   const [marioTransition, setMarioTransition] = useState(false);
@@ -98,6 +101,10 @@ const GamePreview = ({
   )[0];
 
   let audio = new Audio(pipeAudio);
+
+  useEffect(() => {
+    closeGame();
+  }, [game.id]);
 
   //
   const determineConsoleAudio = () => {
@@ -117,10 +124,6 @@ const GamePreview = ({
         return '';
     }
   };
-
-  useEffect(() => {
-    closeGame();
-  }, [game.id]);
 
   const consoleAudio = useRef(new Audio(determineConsoleAudio()));
 
@@ -346,8 +349,12 @@ const GamePreview = ({
     switch (gamePlatform.abbreviation) {
       case 'NGC':
         return gamecubeBackCover;
+      case 'PS3':
+        return ps3BackCover;
       case 'Switch':
         return nintendoSwitchBack;
+      case 'X360':
+        return xbox360Back;
       default:
         return '';
     }
@@ -418,7 +425,7 @@ const GamePreview = ({
       case 'fds':
         return '#000';
       case 'PS3':
-        return '#585858';
+        return '#383838';
       case 'N64':
         return '#EB1718';
       case 'Switch':
@@ -460,6 +467,8 @@ const GamePreview = ({
     return null;
   }
 
+  if (!bgLoaded) return;
+
   return (
     <div className='game_preview__wrapper' onClick={() => console.log(game)}>
       <Tilt
@@ -485,7 +494,7 @@ const GamePreview = ({
               gamePlatform.abbreviation == 'Switch' && 'switch_case'
             } ${viewingPreview && 'game_preview__front_open'}`}
             style={{
-              backgroundImage: `url(${gameCover})`,
+              backgroundImage: `url(${bgLoaded})`,
               height: `${
                 gamePlatform.abbreviation == 'PS1'
                   ? '368px'
@@ -510,7 +519,7 @@ const GamePreview = ({
               <img src={nintendo64Case} className='n64_game_img' />
             )}
             {gamePlatform.abbreviation == 'PS1' && (
-              <img src={ps1Case} className='n64_game_img' />
+              <img src={ps1Case} className='ps1_game_img' />
             )}
 
             {/* FRONT CASE COVER BANNER */}

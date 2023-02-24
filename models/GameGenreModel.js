@@ -1,16 +1,11 @@
 const mongoose = require('mongoose');
 const gameGenreModel = new mongoose.Schema({
-  genreId: {
-    type: Number,
-    required: true,
-  },
-  genreName: {
-    type: String,
-    required: true,
-  },
-  genreList: {
+  genres_list: {
     type: Array,
     required: true,
+  },
+  last_updated: {
+    type: Date,
   },
 });
 

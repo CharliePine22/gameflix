@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.1a1eee7f.css",
-    "main.js": "/static/js/main.977535bc.js",
+    "main.css": "/static/css/main.39ffe148.css",
+    "main.js": "/static/js/main.d1ac3ede.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -41,6 +41,8 @@
     "static/media/retro-tv.png": "/static/media/retro-tv.f53bcec5f8dd7413f844.png",
     "static/media/computer_screen.png": "/static/media/computer_screen.4272856e6a7a6e935764.png",
     "static/media/n64-case-template-e.png": "/static/media/n64-case-template-e.39daa824aafa71ea4409.png",
+    "static/media/360-back.png": "/static/media/360-back.ad0b270db56d7f2ea7ac.png",
+    "static/media/ps3-back.png": "/static/media/ps3-back.80b9de821cfaa2b011f4.png",
     "static/media/psp-logo.png": "/static/media/psp-logo.90012714acf7142e3bda.png",
     "static/media/gamecube-logo.png": "/static/media/gamecube-logo.ca477c9c9b0cac019f83.png",
     "static/media/gamecube-startup.mp3": "/static/media/gamecube-startup.6846c9b274744dc44e8c.mp3",
@@ -87,8 +89,8 @@
     "static/media/mario_pixel_jumping.png": "/static/media/mario_pixel_jumping.2d3e818e95ef4a0db512.png",
     "static/media/nintendo3ds-logo2.png": "/static/media/nintendo3ds-logo2.c7e37eaf52ef8c373e44.png",
     "index.html": "/index.html",
-    "main.1a1eee7f.css.map": "/static/css/main.1a1eee7f.css.map",
-    "main.977535bc.js.map": "/static/js/main.977535bc.js.map",
+    "main.39ffe148.css.map": "/static/css/main.39ffe148.css.map",
+    "main.d1ac3ede.js.map": "/static/js/main.d1ac3ede.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -105,7 +107,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1a1eee7f.css",
-    "static/js/main.977535bc.js"
+    "static/css/main.39ffe148.css",
+    "static/js/main.d1ac3ede.js"
   ]
 }

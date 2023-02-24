@@ -8,7 +8,6 @@ import useFetchPopular from '../../hooks/useFetchPopular';
 
 const Authentication = ({ loading, twitchToken, onLogin }) => {
   const allGames = useFetchPopular();
-  const [gameList, setGameList] = useState([]);
   const [imgsLoading, setImgsLoading] = useState(true);
   const [toLandingPage, setToLandingPage] = useState(false);
   const [authError, setAuthError] = useState('');
@@ -44,7 +43,6 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
         email,
         password,
       });
-      console.log(response);
       setAuthError('');
       onLogin(response.data.user);
       return response;

@@ -11,7 +11,6 @@ export default function useFetchGenres() {
   useEffect(() => {
     const fetchGenres = async () => {
       const request = await axios.get(`${baseURL}/app/get_genres`);
-      console.log(request);
 
       const last_updated = new Date(request.data.last_updated);
 

@@ -76,7 +76,6 @@ function App() {
     if (!userProfile || !loggedUser) return;
 
     const getProfileData = (profile) => {
-      console.log('GETTING USER UPDATE 2');
       const currentProfile = loggedUser.profiles.filter((obj) => {
         return obj.name === profile;
       });
@@ -307,6 +306,10 @@ function App() {
           />
         }
       />
+
+      {/* <Route path='/details' 
+      
+      /> */}
 
       <Route
         path='/'

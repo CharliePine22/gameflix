@@ -18,6 +18,7 @@ import ps1Case from '../../../assets/images/ps1-case-template.png';
 // PlayStation 2
 import ps2DiscBanner from '../../../assets/images/ps2-disc-banner.png';
 import ps2SideBanner from '../../../assets/images/ps2-side-banner.png';
+import ps2BackCover from '../../../assets/images/ps2-back-cover.png';
 import ps2Sound from '../../../assets/sounds/platform_sounds/ps2-startup.mp3';
 // PlayStation 3
 import ps3SideBanner from '../../../assets/images/ps3-side.png';
@@ -349,6 +350,8 @@ const GamePreview = ({
     switch (gamePlatform.abbreviation) {
       case 'NGC':
         return gamecubeBackCover;
+      case 'PS2':
+        return ps2BackCover;
       case 'PS3':
         return ps3BackCover;
       case 'Switch':
@@ -482,7 +485,12 @@ const GamePreview = ({
         transitionEasing={'cubic-bezier(.03,.98,.52,.99)'}
         glareMaxOpacity={'.35'}
         glareColor={'rgba(255,255,255, 1)'}
-        style={{ height: 386, width: 250, transformStyle: 'preserve-3d' }}
+        style={{
+          height: 386,
+          width: 250,
+          transformStyle: 'preserve-3d',
+          cursor: 'pointer',
+        }}
       >
         <div
           className={`game_preview__box ${viewingPreview && 'box_open'}`}
@@ -652,8 +660,8 @@ const GamePreview = ({
           {/* MIDDLE CREASE */}
           <div
             className={`game_preview__middle ${
-              viewingPreview && 'middle_open'
-            }`}
+              gamePlatform.abbreviation == 'Switch' && 'switch_middle'
+            } ${viewingPreview && 'middle_open'}`}
             style={{
               background: determineCoverColor() + 'b5',
               borderTop: `${determineCoverColor()} solid 4px`,

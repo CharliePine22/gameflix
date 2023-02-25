@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.39ffe148.css",
-    "main.js": "/static/js/main.d1ac3ede.js",
+    "main.css": "/static/css/main.6ad55428.css",
+    "main.js": "/static/js/main.29c5e0c2.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -58,6 +58,7 @@
     "static/media/ESRB_T.png": "/static/media/ESRB_T.6ed5a3e7b4606d5c0824.png",
     "static/media/snes-logo.png": "/static/media/snes-logo.7c5f712cf6dc5c4b0aa0.png",
     "static/media/ESRB_RP.png": "/static/media/ESRB_RP.57aa50a6ca1272626835.png",
+    "static/media/ps2-back-cover.png": "/static/media/ps2-back-cover.8fa65b5e42e102aed1a1.png",
     "static/media/steam-logo.png": "/static/media/steam-logo.ae35c358ce32663bcab0.png",
     "static/media/basic_avatar.png": "/static/media/basic_avatar.28e44cb7f5d2425541e5.png",
     "static/media/sega-logo.png": "/static/media/sega-logo.ebdd6709ff0639c959c7.png",
@@ -89,8 +90,8 @@
     "static/media/mario_pixel_jumping.png": "/static/media/mario_pixel_jumping.2d3e818e95ef4a0db512.png",
     "static/media/nintendo3ds-logo2.png": "/static/media/nintendo3ds-logo2.c7e37eaf52ef8c373e44.png",
     "index.html": "/index.html",
-    "main.39ffe148.css.map": "/static/css/main.39ffe148.css.map",
-    "main.d1ac3ede.js.map": "/static/js/main.d1ac3ede.js.map",
+    "main.6ad55428.css.map": "/static/css/main.6ad55428.css.map",
+    "main.29c5e0c2.js.map": "/static/js/main.29c5e0c2.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -107,7 +108,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.39ffe148.css",
-    "static/js/main.d1ac3ede.js"
+    "static/css/main.6ad55428.css",
+    "static/js/main.29c5e0c2.js"
   ]
 }

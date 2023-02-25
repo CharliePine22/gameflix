@@ -235,6 +235,16 @@
   text-align: center;
 }
 
+.search_results__game_preview {
+  position: absolute;
+  z-index: 10;
+  /* left: 110px; */
+  top: -210px;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
 .search_results__nav {
   display: flex;
   height: 180px;

@@ -139,8 +139,8 @@
 
 .game_preview__back_open_details > img {
   height: 100%;
-  width: 100%;
-  opacity: 0.6;
+  width: 101%;
+  opacity: 1;
   position: absolute;
   /* top: -21px; */
   z-index: -1;
@@ -983,7 +983,7 @@ div:has(> .box_open) {
   border-top: 4px solid rgb(228, 0, 15) !important;
   border-bottom: 4px solid rgb(228, 0, 15) !important;
   border-left: 4px solid rgb(228, 0, 15) !important;
-  height: 386px;
+  height: 385px;
 }
 
 .switch_case_right {
@@ -998,6 +998,10 @@ div:has(> .box_open) {
   overflow: hidden;
   cursor: default;
 }
+/* 
+.switch_middle {
+  height: 350px;
+} */
 
 /* .switch_case_open {
   animation: openCaseBackSwitch 500ms ease-in-out forwards;

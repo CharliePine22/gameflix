@@ -31,7 +31,7 @@ const SearchResultsIGDB = ({
   const [viewingPreview, setViewingPreview] = useState(false);
   const params = useParams();
   const location = useLocation();
-  console.log(location);
+  console.log(params);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -70,12 +70,6 @@ const SearchResultsIGDB = ({
     return result.reverse();
   };
 
-  const displayGameCase = (e, game) => {
-    e.stopPropagation();
-    setCurrentGame(game);
-    openGame(game);
-  };
-
   const determineESRB = (game) => {
     if (!game || !game.age_ratings)
       return <img className='row__poster__esrb_img' src={rpRating} />;
@@ -103,6 +97,12 @@ const SearchResultsIGDB = ({
       default:
         return <img className='row__poster__esrb_img' src={rpRating} />;
     }
+  };
+
+  const displayGameCase = (e, game) => {
+    e.stopPropagation();
+    setCurrentGame(game);
+    openGame(game);
   };
 
   // Skeleton Loader
@@ -178,25 +178,29 @@ const SearchResultsIGDB = ({
       </div>
 
       <div className='search_results__container'>
-        {/* {currentGameOpen === currentGame.name && (
-          <GamePreview
-            game={currentGame}
-            gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${currentGame.cover?.image_id}.jpg`}
-            ratingImage={determineESRB(currentGame)}
-            addGame={addGameHandler}
-            displayDetails={setGameDetails}
-            hideDetails={closeGameWindow}
-            fetchGameDetails={(game) => {
-              setGameDetails(game);
-            }}
-            // viewGameSoundtrack={(e, game) => {
-            //   viewGameSoundtrack(e, game);
-            // }}
-            viewingPreview={viewingPreview}
-            openGame={() => setViewingPreview(true)}
-            closeGame={() => setViewingPreview(false)}
-          />
-        )} */}
+        <div className='search_results__game_preview'>
+          {currentGameOpen === currentGame.id && (
+            <GamePreview
+              style={{ top: '230px' }}
+              game={currentGame}
+              gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${currentGame.cover?.image_id}.jpg`}
+              ratingImage={determineESRB(currentGame)}
+              addGame={addGameHandler}
+              displayDetails={setGameDetails}
+              hideDetails={closeGameWindow}
+              fetchGameDetails={(game) => {
+                setGameDetails(game);
+              }}
+              // viewGameSoundtrack={(e, game) => {
+              //   viewGameSoundtrack(e, game);
+              // }}
+              viewingPreview={viewingPreview}
+              openGame={() => setViewingPreview(true)}
+              closeGame={() => setViewingPreview(false)}
+            />
+          )}
+        </div>
+
         {/* RECENT SEARCHES */}
         <div className='search_results__recents'>
           <h2>Recent Searches</h2>

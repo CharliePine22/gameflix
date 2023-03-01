@@ -60,11 +60,11 @@ const UserCollection = ({
 
   // Listen for screen size to determine if user is on mobile
   useEffect(() => {
-    if (window.innerWidth <= 650) {
+    if (window.innerWidth <= 600) {
       setIsMobile(true);
     }
     function handleResize() {
-      if (window.innerWidth <= 650) {
+      if (window.innerWidth <= 600) {
         setIsMobile(true);
       } else {
         setIsMobile(false);
@@ -226,7 +226,7 @@ const UserCollection = ({
                 }}
                 src={activeProfile.avatar}
               />
-              {activeProfile.name}'s Collection
+              {activeProfile.name.trim()}'s Collection
               <FaHome
                 className='user_collection__home_icon'
                 onClick={backToHome}
@@ -427,19 +427,21 @@ const UserCollection = ({
                           className='spotlight_image'
                           src={top.banner_url || top.imageURL}
                         />
-                        <img
-                          className='spotlight_trophy_image'
-                          src={trophies[i]}
-                        />
-                        <figcaption className='spotlight_details'>
-                          <p>
-                            {spotlightFilter == 'playtime'
-                              ? `${Math.floor(top.playtime / 60)} hours`
-                              : spotlightFilter == 'user_rating'
-                              ? top.user_rating + '%'
-                              : 'ACHIEVE'}{' '}
-                          </p>
-                        </figcaption>
+                        <div className='spotlight_container__row'>
+                          <img
+                            className='spotlight_trophy_image'
+                            src={trophies[i]}
+                          />
+                          <figcaption className='spotlight_details'>
+                            <p>
+                              {spotlightFilter == 'playtime'
+                                ? `${Math.floor(top.playtime / 60)} hours`
+                                : spotlightFilter == 'user_rating'
+                                ? top.user_rating + '%'
+                                : 'ACHIEVE'}{' '}
+                            </p>
+                          </figcaption>
+                        </div>
                       </figure>
                     ))}
                   </div>

@@ -183,12 +183,12 @@
 .login__background {
   position: absolute;
   z-index: -1;
-  top: -810px;
-  left: -400px;
-  opacity: 0.7;
-  transform: perspective(1500px) rotateX(6deg) rotateY(-11deg) rotateZ(4deg);
+  top: -180px;
+  left: -180px;
+  opacity: 0.55;
+  /* transform: perspective(1500px) rotateX(6deg) rotateY(-11deg) rotateZ(4deg); */
   width: 170%;
-  mix-blend-mode: exclusion;
+  overflow: hidden;
 }
 
 .login__img {
@@ -196,7 +196,7 @@
   min-height: 22rem;
   max-height: 22rem;
   width: 15rem;
-  margin: 2.5px 6px;
+  margin: 2.5px 4px;
   /* border: 3px solid transparent; */
 }
 
@@ -245,9 +245,7 @@
   }
 
   .login__background {
-    /* top: -200px; */
-    left: -240px;
-    width: 170%;
+    left: 0px;
   }
 }
 
@@ -302,10 +300,8 @@
 }
 
 @media screen and (max-width: 430px) {
-  .login__background {
-    top: -480px;
-    left: -160px;
-    width: 270%;
+  .login {
+    max-width: 330px;
   }
 
   .login__form_container {
@@ -321,8 +317,6 @@
     min-height: 11rem;
     max-height: 11rem;
     width: 10rem;
-    /* margin: 0;
-    border: 3px solid transparent; */
   }
 }
 
@@ -347,10 +341,4 @@
     top: -440px;
     left: -600px;
   }
-
-  /* .login__img {
-    min-height: 15rem;
-    max-height: 15rem;
-    width: 18rem;
-  } */
 }

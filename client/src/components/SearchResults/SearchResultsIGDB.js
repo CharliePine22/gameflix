@@ -22,30 +22,32 @@ const SearchResultsIGDB = ({
   closeGameWindow,
   addGameHandler,
 }) => {
+  const location = useLocation();
+  const searchString = location.state.name;
+  const games = location.state.data;
   const recentSearches = JSON.parse(localStorage.getItem('searches'));
+  // Divide top 3 and remainder gmaes
   const [topGames, setTopGames] = useState([]);
   const [remainderGames, setRemainderGames] = useState([]);
   const [recentSearchList, setRecentSearchList] = useState(recentSearches);
-  const [searchValue, setSearchValue] = useState(searchedGame.name);
+  const [searchValue, setSearchValue] = useState(searchString);
   const [currentGame, setCurrentGame] = useState('');
   const [viewingPreview, setViewingPreview] = useState(false);
-  const params = useParams();
-  const location = useLocation();
-  console.log(params);
 
   useEffect(() => {
+    if (games.length == 0) return;
     window.scrollTo(0, 0);
-    setTopGames(searchedGame.data?.slice(0, 3));
-    setRemainderGames(searchedGame.data?.slice(3));
-    if (searchedGame.name !== '') {
+    setTopGames(games?.slice(0, 3));
+    setRemainderGames(games?.slice(3));
+    if (searchString !== '') {
       if (!recentSearches) {
-        localStorage.setItem('searches', JSON.stringify([searchedGame.name]));
+        localStorage.setItem('searches', JSON.stringify([searchString]));
       } else {
-        recentSearches.push(searchedGame.name);
+        recentSearches.push(searchString);
         localStorage.setItem('searches', JSON.stringify(recentSearches));
       }
     }
-  }, [searchedGame]);
+  }, [searchString]);
 
   const removeRecentSearchItem = (name) => {
     const newList = recentSearches.filter((item) => item !== name);
@@ -106,14 +108,16 @@ const SearchResultsIGDB = ({
   };
 
   // Skeleton Loader
-  if (searchedGame.data.length == 0 || !topGames || !remainderGames) {
+  if (games.length == 0 || !topGames || !remainderGames) {
     return (
       <div className='search_results'>
         <div className='search_results__nav'>
           <span onClick={closeSearchResults}>X</span>
           <div className='search_results__nav_search'>
             <input
-              placeholder='Search..'
+              placeholder={`${
+                searchString !== '' ? searchString : 'Search...'
+              }`}
               value={searchValue}
               onKeyDown={submitSearchHandler}
               onChange={(e) => setSearchValue(e.target.value)}
@@ -150,7 +154,7 @@ const SearchResultsIGDB = ({
     );
   }
 
-  if (searchedGame.data == null) {
+  if (games == null) {
     return (
       <div className='search_results__error'>
         <p>
@@ -178,8 +182,9 @@ const SearchResultsIGDB = ({
       </div>
 
       <div className='search_results__container'>
-        <div className='search_results__game_preview'>
-          {currentGameOpen === currentGame.id && (
+        {currentGameOpen === currentGame.id && (
+          <div className='search_results__game_preview'>
+            <h1 onClick={closeGameWindow}>X</h1>
             <GamePreview
               style={{ top: '230px' }}
               game={currentGame}
@@ -198,8 +203,8 @@ const SearchResultsIGDB = ({
               openGame={() => setViewingPreview(true)}
               closeGame={() => setViewingPreview(false)}
             />
-          )}
-        </div>
+          </div>
+        )}
 
         {/* RECENT SEARCHES */}
         <div className='search_results__recents'>

@@ -225,7 +225,6 @@ const Dashboard = ({
           changeUser={changeProfile}
           onLogout={logoutUser}
           fetchSubmittedGame={fetchGame}
-          // closeSearchResults={closeSearchResults}
           toProfilePage={() => localStorage.removeItem('profile')}
           selectProfile={(profile) => setSelectedProfile(profile)}
           spotifyToken={spotifyAccessToken}

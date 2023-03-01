@@ -16,7 +16,6 @@ import { MdEdit } from 'react-icons/md';
 import steamAuthBtn from '../../assets/images/steam-auth-btn.png';
 
 const SPOTIFY_AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_BASE_URL}&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state`;
-const STEAM_AUTH_URL = 'https://steamcommunity.com/openid';
 
 const NavDropdown = (props) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
@@ -41,46 +40,47 @@ const NavDropdown = (props) => {
     props.changeProfile(user);
   };
 
-  const steamAuthHandler = async () => {
-    const request = await axios.get(`${baseURL}/steam/steam_auth`);
-  };
-
   const generatePlaystationTitles = async () => {
-    const request = await axios.get(`${baseURL}/playstation/user_titles`);
-    for (let game of request.data) {
-      for (let i = 0; i < game.earnedTrophies.length; i++) {
-        if (game.earnedTrophies[i].earned) {
-          game.allTrophies[i].earned = true;
-        } else game.allTrophies[i].earned = false;
-      }
-    }
-
-    props.currentCollection.filter((ownedGame) => {
-      const inCollection = request.data.some((game) => {
-        if (ownedGame.name.toLowerCase() === game.name.toLowerCase()) {
-          ownedGame.trophies = game.allTrophies;
-          axios.put(`${baseURL}/app/update_game_trophies`, {
-            email: localStorage.getItem('user'),
-            name: props.activeProfile.name,
-            gameId: ownedGame.id,
-            trophies: game.allTrophies,
-          });
+    try {
+      const request = await axios.get(`${baseURL}/playstation/user_titles`);
+      console.log(request.data);
+      for (let game of request.data) {
+        for (let i = 0; i < game.earnedTrophies.length; i++) {
+          if (game.earnedTrophies[i].earned) {
+            game.allTrophies[i].earned = true;
+          } else game.allTrophies[i].earned = false;
         }
-        // else {
-        //   console.log('New game bruh');
-        // axios.post(`${baseURL}/app/update_collection`, {
-        //   email: localStorage.getItem('user'),
-        //   currentProfile: localStorage.getItem('profile'),
-        //   name: game.name,
-        //   id: game.id,
-        //   imageURL: `//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover.image_id}.jpg`,
-        //   playtime: 0,
-        //   origin: 'gameflix',
-        // });
-        // }
+      }
+
+      props.currentCollection.filter((ownedGame) => {
+        const inCollection = request.data.some((game) => {
+          if (ownedGame.name.toLowerCase() === game.name.toLowerCase()) {
+            ownedGame.trophies = game.allTrophies;
+            axios.put(`${baseURL}/app/update_game_trophies`, {
+              email: localStorage.getItem('user'),
+              name: props.activeProfile.name,
+              gameId: ownedGame.id,
+              trophies: game.allTrophies,
+            });
+          } else {
+            console.log('New game bruh');
+            axios.post(`${baseURL}/app/update_collection`, {
+              email: localStorage.getItem('user'),
+              currentProfile: localStorage.getItem('profile'),
+              name: game.name,
+              id: game.id,
+              imageURL: `//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover.image_id}.jpg`,
+              playtime: 0,
+              origin: 'gameflix',
+            });
+          }
+        });
+        return inCollection;
       });
-      return inCollection;
-    });
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
   };
 
   allProfiles.sort((a, b) => (a.name - b.name ? 1 : -1));
@@ -171,13 +171,9 @@ const NavDropdown = (props) => {
             paddingLeft: '0',
           }}
         >
-          <a href={`http://localhost:3001/api/auth/steam`}>
-            <img
-              className='steam_btn'
-              // onClick={steamAuthHandler}
-              src={steamAuthBtn}
-            />
-          </a>
+          <Link to={`http://localhost:3001/api/auth/steam`}>
+            <img className='steam_btn' src={steamAuthBtn} />
+          </Link>
         </div>
       </div>
       <div className='dropdown__settings_links'>

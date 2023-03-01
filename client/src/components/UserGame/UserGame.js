@@ -823,7 +823,9 @@ const UserGame = ({
             windowViewHandler={windowViewHandler}
             viewStatus={viewStatus}
             gameNotes={
-              userNotes.notes_collection.filter((item) => item.id == game.id)[0]
+              userNotes?.notes_collection?.filter(
+                (item) => item.id == game.id
+              )[0]
             }
           />
         </div>

@@ -15,6 +15,7 @@ export default function useSteamAuth(id) {
           },
         });
         localStorage.setItem('steamID', request.config.params.id);
+        console.log(request.data);
         setSteamCollection(request.data);
         window.history.pushState({}, null, '/');
       } catch (error) {

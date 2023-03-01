@@ -24,7 +24,6 @@ function App() {
   const [loggedUser, setLoggedUser] = useState(null);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [profileCollection, setProfileCollection] = useState([]);
-  const [genreList, setGenreList] = useState([]);
   const [profileNotesData, setProfileNotesData] = useState(null);
   const [displayNotification, setDisplayNotification] = useState(false);
   const [notification, setNotification] = useState({ status: '', message: '' });
@@ -54,6 +53,7 @@ function App() {
 
   // Check to see which user is currently logged in and which profile is active
   useEffect(() => {
+    console.log('STEAM RE ');
     const updateUser = async () => {
       try {
         const request = await axios.get(`${baseURL}/app/get_user`, {
@@ -73,6 +73,7 @@ function App() {
   }, [userEmail, userProfile]);
 
   useEffect(() => {
+    console.log('STEAM RE 2');
     if (!userProfile || !loggedUser) return;
 
     const getProfileData = (profile) => {
@@ -95,26 +96,6 @@ function App() {
       getUserNotes(selectedProfile.notesId);
     }
   }, [selectedProfile]);
-
-  // useEffect(() => {
-  //   if (!twitchAccessToken) return;
-  //   const fetchGenreGames = async () => {
-  //     const genreTitles = await Promise.all(
-  //       requestsIGDB.map((genre) => {
-  //         return axios.post(`${baseURL}/app/game_genre`, {
-  //           token: twitchAccessToken,
-  //           genreId: genre.genreId,
-  //           genreTitle: genre.title,
-  //         });
-  //       })
-  //     );
-  //     const completeGenreList = genreTitles.map((genre) => genre.data);
-
-  //     setGenreList(completeGenreList);
-  //     return;
-  //   };
-  //   fetchGenreGames();
-  // }, [twitchAccessToken]);
 
   // Search for the game, publisher, or developer that the user types in from nav
   const fetchSubmittedGame = async (game) => {

@@ -65,7 +65,7 @@
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .recent_searches__item {
@@ -238,11 +238,33 @@
 .search_results__game_preview {
   position: absolute;
   z-index: 10;
-  /* left: 110px; */
   top: -210px;
   height: 100%;
   width: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.search_results__game_preview > div {
+  transform: translateY(70%) scale(1.1);
+}
+
+.search_results__game_preview > h1 {
+  color: black;
+  position: fixed;
+  z-index: 10;
+  font-size: 1.2rem;
+  top: 76px;
+  right: 45px;
+  cursor: pointer;
+  padding: 7px 9px;
+  line-height: 1;
+  border-radius: 3px;
+  background: #fff;
+  opacity: 0.7;
+}
+
+.search_results__game_preview > h1:hover {
+  opacity: 1;
 }
 
 .search_results__nav {
@@ -303,7 +325,7 @@
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
-  margin: 0 0 50px;
+  margin: 0 0 30px;
 }
 
 .search_results__recents h2 {
@@ -549,7 +571,7 @@
   }
 
   .recent_searches__item {
-    height: 30px;
+    height: 35px;
     min-width: 75px;
   }
 

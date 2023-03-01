@@ -45,8 +45,17 @@ const UserGameNotes = ({
       email: userEmail,
       profile: profile.name,
     });
-    console.log(request);
+    return request;
   };
+
+  useEffect(() => {
+    if (!profile.notesId) {
+      createNotes();
+    } else {
+      if (currentNote !== null) return;
+      notesRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [gameNotes, currentTab]);
 
   useEffect(() => {
     const handleEnter = (event) => {
@@ -68,15 +77,6 @@ const UserGameNotes = ({
     setCurrentTab(gameNotes?.gameNotes[0]?.tabName);
     console.log('new game');
   }, [gameNotes]);
-
-  useEffect(() => {
-    if (!profile.notesId) {
-      createNotes();
-    } else {
-      if (currentNote !== null) return;
-      notesRef?.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [gameNotes, currentTab]);
 
   useEffect(() => {
     if (currentNote !== null) return;

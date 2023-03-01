@@ -77,11 +77,11 @@ const UserLibrary = ({
       const response = lastItem[lastItem.length - 1].data.response;
       console.log(response);
       setCompleteCollection(updatedCollection);
-      localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem('user', JSON.stringify(response.email));
       const currentProfile = response.profiles.filter((obj) => {
         return obj.name === userProfile;
       });
-      localStorage.setItem('profile', JSON.stringify(currentProfile[0]));
+      localStorage.setItem('profile', JSON.stringify(currentProfile[0].name));
       localStorage.setItem('steamConn', true);
       setSelectedProfile(currentProfile[0]);
       console.log('UH OH');

@@ -39,12 +39,12 @@ const Dashboard = ({
   const allGenres = useFetchGenres();
   const [displayNotification, setDisplayNotification] = useState(false);
   const [notification, setNotification] = useState({ status: '', message: '' });
-
   // Spotify States
   const [currentTrack, setCurrentTrack] = useState(null);
   const [playAudio, setPlayAudio] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [trendingList, setTrendingList] = useState([]);
+  const [rowsLoading, setRowsLoading] = useState();
 
   // User states
   const [changingUser, setChangingUser] = useState(false);
@@ -240,7 +240,6 @@ const Dashboard = ({
 
         <Banner
           setGameDetails={(id) => setGameDetails(id)}
-          twitchToken={twitchToken}
           addGame={(game) => addGame(game)}
           activeProfile={currentProfile}
         />
@@ -283,7 +282,7 @@ const Dashboard = ({
           className={`${currentGameOpen !== null && 'game_preview__modal'}`}
         />
 
-        {allGenres.map((request) => (
+        {allGenres.genreGamesList.map((request) => (
           <Row
             key={Object.keys(request)}
             activeProfile={currentProfile}
@@ -302,6 +301,7 @@ const Dashboard = ({
             setNotification={(status, message) =>
               setNotification({ status, message })
             }
+            loading={rowsLoading}
           />
         ))}
 

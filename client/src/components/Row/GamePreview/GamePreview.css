@@ -641,16 +641,16 @@ div:has(> .box_open) {
 
 .game_preview__left {
   width: 28px;
-  height: 380px;
-  /* background-position: 265px 0px; */
+  height: 377px;
   background-position: center !important;
-  background: var(--color-theme);
+  background-size: 100% 100% !important;
+  background-color: var(--color-theme);
   transform: rotateY(-89deg) translateZ(14px);
   position: absolute;
   top: 0px;
   left: 0px;
-  /* border-top-left-radius: 4px;
-  border-top-right-radius: 5px; */
+  border-top-right-radius: 3px;
+  border-bottom: 4px solid var(--color-theme);
 }
 
 .left_open {

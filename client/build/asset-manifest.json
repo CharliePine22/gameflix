@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.00432845.css",
-    "main.js": "/static/js/main.932b8468.js",
+    "main.css": "/static/css/main.89554eda.css",
+    "main.js": "/static/js/main.ae2d3d24.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -31,7 +31,6 @@
     "static/media/wiiu-disc-banner.png": "/static/media/wiiu-disc-banner.c32a1b90e4b21d3aed96.png",
     "static/media/n64-game-template.png": "/static/media/n64-game-template.630a804a3affdd0595e8.png",
     "static/media/3ds-case-front.png": "/static/media/3ds-case-front.41dbd01681907e2d50ad.png",
-    "static/media/wii-logo.png": "/static/media/wii-logo.e13a4c73e15a82d6b22b.png",
     "static/media/360-startup.mp3": "/static/media/360-startup.1bd34d2e48d7a2a1789a.mp3",
     "static/media/gamecube-cover-back.png": "/static/media/gamecube-cover-back.65a8befbc690114f2f2f.png",
     "static/media/ps-trophy-platinum.png": "/static/media/ps-trophy-platinum.3e1d87fe6e2a0976fe1b.png",
@@ -59,6 +58,7 @@
     "static/media/ESRB_T.png": "/static/media/ESRB_T.6ed5a3e7b4606d5c0824.png",
     "static/media/snes-logo.png": "/static/media/snes-logo.7c5f712cf6dc5c4b0aa0.png",
     "static/media/ESRB_RP.png": "/static/media/ESRB_RP.57aa50a6ca1272626835.png",
+    "static/media/n64-side-case.png": "/static/media/n64-side-case.4366a6dc9876841f77ee.png",
     "static/media/ps2-back-cover.png": "/static/media/ps2-back-cover.8fa65b5e42e102aed1a1.png",
     "static/media/steam-logo.png": "/static/media/steam-logo.ae35c358ce32663bcab0.png",
     "static/media/basic_avatar.png": "/static/media/basic_avatar.28e44cb7f5d2425541e5.png",
@@ -71,6 +71,7 @@
     "static/media/rexlia_rg.otf": "/static/media/rexlia_rg.d297770693345b764564.otf",
     "static/media/switch-back.png": "/static/media/switch-back.98c4af0ddaefcf594b4e.png",
     "static/media/psvita-logo.png": "/static/media/psvita-logo.fb4c047637585a7d3320.png",
+    "static/media/nes-side-case.png": "/static/media/nes-side-case.54cb984dfb6beee5000d.png",
     "static/media/Persona5MenuFontPrototype-Regular.ttf": "/static/media/Persona5MenuFontPrototype-Regular.eaf9adfa13ad3376ffd6.ttf",
     "static/media/ps2-side-banner.png": "/static/media/ps2-side-banner.a6a001a340254e3979bd.png",
     "static/media/nes-logo.png": "/static/media/nes-logo.8f7eaa4e443c4ec2bf8b.png",
@@ -91,8 +92,8 @@
     "static/media/mario_pixel_jumping.png": "/static/media/mario_pixel_jumping.2d3e818e95ef4a0db512.png",
     "static/media/nintendo3ds-logo2.png": "/static/media/nintendo3ds-logo2.c7e37eaf52ef8c373e44.png",
     "index.html": "/index.html",
-    "main.00432845.css.map": "/static/css/main.00432845.css.map",
-    "main.932b8468.js.map": "/static/js/main.932b8468.js.map",
+    "main.89554eda.css.map": "/static/css/main.89554eda.css.map",
+    "main.ae2d3d24.js.map": "/static/js/main.ae2d3d24.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -109,7 +110,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.00432845.css",
-    "static/js/main.932b8468.js"
+    "static/css/main.89554eda.css",
+    "static/js/main.ae2d3d24.js"
   ]
 }

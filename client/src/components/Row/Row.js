@@ -25,12 +25,12 @@ function Row({
   openGame,
   addGame,
   setNotification,
+  loading,
 }) {
   const [currentGame, setCurrentGame] = useState('');
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [displayDetails, setDisplayDetails] = useState(false);
-  const [loading, setLoading] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
   const [viewingPreview, setViewingPreview] = useState(false);
 

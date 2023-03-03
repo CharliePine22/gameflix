@@ -23,9 +23,12 @@ import ps2Sound from '../../../assets/sounds/platform_sounds/ps2-startup.mp3';
 // PlayStation 3
 import ps3SideBanner from '../../../assets/images/ps3-side.png';
 import ps3BackCover from '../../../assets/images/ps3-back.png';
+// PlayStation 4
+import ps4CaseSide from '../../../assets/images/ps4-side-case.png';
 // Nintendo 64
 import nintendo64Logo from '../../../assets/images/nintendo-logo.png';
 import nintendo64Case from '../../../assets/images/n64-case-template-e.png';
+import nintendo64CaseSide from '../../../assets/images/n64-side-case.png';
 import nintendo64Cart from '../../../assets/images/n64-game-template.png';
 // Nintendo Switch
 import nintendoSwitchLogo from '../../../assets/images/switch_logo.png';
@@ -63,7 +66,9 @@ import androidLogo from '../../../assets/images/android-logo.png';
 import segaLogo from '../../../assets/images/sega-logo.png';
 // SNES Logo
 import snesLogo from '../../../assets/images/snes-logo.png';
+// NES
 import nesLogo from '../../../assets/images/nes-logo.png';
+import nesCaseSide from '../../../assets/images/nes-side-case.png';
 
 // Game Platform Startup Sounds
 import gamecubeSound from '../../../assets/sounds/platform_sounds/gamecube-startup.mp3';
@@ -332,6 +337,7 @@ const GamePreview = ({
     }
   };
 
+  // Return the image of the side of a typical game case based on game platform
   const determineSideBanner = () => {
     switch (gamePlatform.abbreviation) {
       case 'X360':
@@ -340,8 +346,15 @@ const GamePreview = ({
         return ps2SideBanner;
       case 'PS3':
         return ps3SideBanner;
+      case 'PS4':
+        return ps4CaseSide;
       case 'Switch':
         return nintendoSwitchSide;
+      case 'N64':
+        return nintendo64CaseSide;
+      case 'NES':
+      case 'fds':
+        return nesCaseSide;
       default:
         return '';
     }
@@ -466,11 +479,7 @@ const GamePreview = ({
     setMarioTransition(false);
   };
 
-  if (!game) {
-    return null;
-  }
-
-  if (!bgLoaded) return;
+  if (!bgLoaded || !game) return;
 
   return (
     <div className='game_preview__wrapper' onClick={() => console.log(game)}>
@@ -845,7 +854,7 @@ const GamePreview = ({
               '--color-theme': determineCoverColor(),
               background:
                 determineSideBanner() !== '' && `url(${determineSideBanner()})`,
-              backgroundSize: 'cover',
+              // backgroundSize: 'cover',
               backgroundPosition: '50% 100%',
               borderTop:
                 gamePlatform.abbreviation == 'X360' && '4px solid #5dc21e',

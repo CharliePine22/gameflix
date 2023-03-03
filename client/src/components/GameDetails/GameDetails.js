@@ -13,7 +13,7 @@ import nintendoLogo from '../../assets/images/nintendo-logo.png';
 import nintendoDs from '../../assets/images/nintendo-ds.png';
 import nintendo3ds from '../../assets/images/nintendo-3ds.png';
 import gbaLogo from '../../assets/images/gba-logo.png';
-import wiiLogo from '../../assets/images/wii-logo.png';
+import wiiLogo from '../../assets/images/wii_logo.png';
 import wiiULogo from '../../assets/images/wiiu-logo.png';
 import xboxLogo from '../../assets/images/xbox-logo.png';
 import steamLogo from '../../assets/images/steam-logo.png';
@@ -45,8 +45,9 @@ const GameDetails = ({
   const [error, setError] = useState('');
   const currentCollection = activeProfile.collection;
   const exists =
-    currentCollection && currentCollection.some((game) => game.id === game.id);
+    currentCollection && currentCollection.some((item) => item.id === game.id);
   let coverImageURL = 'images.igdb.com/igdb/image/upload/t_cover_big_2x/';
+
   const searchGameDetails = async () => {
     try {
       const request = await axios.post(`${baseURL}/app/search_game_details`, {
@@ -78,6 +79,7 @@ const GameDetails = ({
 
   useEffect(() => {
     if (!game) return;
+    window.scrollTo(0, 0);
     searchGameDetails(game);
     setActiveScreenshot('');
   }, [game]);

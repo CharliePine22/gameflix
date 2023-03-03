@@ -5,7 +5,6 @@
   align-items: center;
   color: #fff;
   margin: 0 auto;
-  min-height: 100%;
   background-color: transparent;
   max-width: 390px;
   overflow: hidden;
@@ -38,9 +37,10 @@
 }
 
 .login__wrapper {
-  position: relative;
-  overflow: hidden;
   height: 100vh;
+  overflow: hidden;
+  position: relative;
+  display: flex;
 }
 
 .form__create_account {
@@ -300,7 +300,7 @@
 
 @media screen and (max-width: 430px) {
   .login {
-    max-width: 330px;
+    width: 350px;
   }
 
   .login__form_container {

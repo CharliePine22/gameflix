@@ -51,7 +51,6 @@ function App() {
 
   // Check to see which user is currently logged in and which profile is active
   useEffect(() => {
-    console.log('STEAM RE ');
     const updateUser = async () => {
       try {
         const request = await axios.get(`${baseURL}/app/get_user`, {
@@ -71,7 +70,6 @@ function App() {
   }, [userEmail, userProfile]);
 
   useEffect(() => {
-    console.log('STEAM RE 2');
     if (!userProfile || !loggedUser) return;
 
     const getProfileData = (profile) => {

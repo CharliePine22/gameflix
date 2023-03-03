@@ -502,6 +502,7 @@
 
   .search_results__container {
     margin: 0 5px;
+    top: 8.5rem;
   }
 
   .search_results__container h2 {
@@ -509,14 +510,23 @@
     width: 100%;
     text-align: center;
     font-size: 2rem;
+    margin-bottom: 4px !important;
   }
 
   .search_results__error {
     font-size: 2rem;
   }
 
+  .search_results__nav {
+    height: 120px;
+  }
+
   .search_results__nav_search input {
     min-width: 330px;
+  }
+
+  .search_results__recents {
+    margin: 0 0 20px;
   }
 
   .top_result_container {

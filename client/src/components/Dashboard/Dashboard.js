@@ -16,6 +16,7 @@ import UserLibrary from '../UserLibrary/UserLibrary';
 import GameDetails from '../GameDetails/GameDetails';
 import UserCollection from '../UserCollectionPage/UserCollection';
 import Notification from '../Notification/Notification';
+import useFetchGenres from '../../hooks/useFetchGenres';
 
 const code = new URLSearchParams(window.location.search).get('code');
 const windowUrl = window.location.search;
@@ -26,7 +27,6 @@ const Dashboard = ({
   twitchToken,
   currentProfile,
   currentCollection,
-  allGenres,
   userNotes,
   manageProfiles,
   updateCollection,
@@ -36,6 +36,7 @@ const Dashboard = ({
   removeGame,
   logoutUser,
 }) => {
+  const allGenres = useFetchGenres();
   const [displayNotification, setDisplayNotification] = useState(false);
   const [notification, setNotification] = useState({ status: '', message: '' });
 

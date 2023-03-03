@@ -38,6 +38,7 @@ import gamecubeBackCover from '../../../assets/images/gamecube-cover-back.png';
 // Nintendo DS/3DS
 import nintendoDs from '../../../assets/images/ds-logo.png';
 import nintendo3ds from '../../../assets/images/nintendo3ds-logo2.png';
+import nintendo3dsFront from '../../../assets/images/3ds-case-front.png';
 // Gameboy Advanced
 import gbaLogo from '../../../assets/images/gba-logo.png';
 // Wii
@@ -444,7 +445,6 @@ const GamePreview = ({
         return '#009ac7';
       case 'NGC':
         return '#100e0e';
-      // return '#645097';
       case 'XONE':
       case 'XBOX':
       case 'Series X':
@@ -528,6 +528,9 @@ const GamePreview = ({
             )}
             {gamePlatform.abbreviation == 'PS1' && (
               <img src={ps1Case} className='ps1_game_img' />
+            )}
+            {gamePlatform.abbreviation == '3DS' && (
+              <img src={nintendo3dsFront} className='nintendo-3ds_game_img' />
             )}
 
             {/* FRONT CASE COVER BANNER */}

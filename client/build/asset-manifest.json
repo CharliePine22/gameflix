@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.18c945d3.css",
-    "main.js": "/static/js/main.2f3f6ce3.js",
+    "main.css": "/static/css/main.00432845.css",
+    "main.js": "/static/js/main.932b8468.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -30,6 +30,7 @@
     "static/media/nintendo-ds.png": "/static/media/nintendo-ds.2f5f510a038d17437421.png",
     "static/media/wiiu-disc-banner.png": "/static/media/wiiu-disc-banner.c32a1b90e4b21d3aed96.png",
     "static/media/n64-game-template.png": "/static/media/n64-game-template.630a804a3affdd0595e8.png",
+    "static/media/3ds-case-front.png": "/static/media/3ds-case-front.41dbd01681907e2d50ad.png",
     "static/media/wii-logo.png": "/static/media/wii-logo.e13a4c73e15a82d6b22b.png",
     "static/media/360-startup.mp3": "/static/media/360-startup.1bd34d2e48d7a2a1789a.mp3",
     "static/media/gamecube-cover-back.png": "/static/media/gamecube-cover-back.65a8befbc690114f2f2f.png",
@@ -90,8 +91,8 @@
     "static/media/mario_pixel_jumping.png": "/static/media/mario_pixel_jumping.2d3e818e95ef4a0db512.png",
     "static/media/nintendo3ds-logo2.png": "/static/media/nintendo3ds-logo2.c7e37eaf52ef8c373e44.png",
     "index.html": "/index.html",
-    "main.18c945d3.css.map": "/static/css/main.18c945d3.css.map",
-    "main.2f3f6ce3.js.map": "/static/js/main.2f3f6ce3.js.map",
+    "main.00432845.css.map": "/static/css/main.00432845.css.map",
+    "main.932b8468.js.map": "/static/js/main.932b8468.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -108,7 +109,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.18c945d3.css",
-    "static/js/main.2f3f6ce3.js"
+    "static/css/main.00432845.css",
+    "static/js/main.932b8468.js"
   ]
 }

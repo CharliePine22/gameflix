@@ -905,11 +905,11 @@ div:has(> .box_open) {
   margin: 0 auto;
 }
 
-/* .n64 {
-  height: 23px;
-  width: 42px;
-  filter: drop-shadow(2px 2px 1px #000);
-} */
+.nintendo-3ds_game_img {
+  height: 100%;
+  width: 100%;
+}
+
 .n64_cartridge {
   height: 160px;
   width: 231px;

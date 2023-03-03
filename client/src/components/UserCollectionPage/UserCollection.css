@@ -235,7 +235,6 @@
   font-size: 2rem;
   background: transparent;
   color: white;
-  /* text-shadow: 2px 3px 2px black; */
   text-shadow: 2px 2px 4px black, 0px 0px 4px black, 0px 0px 4px black;
   border: 0;
   position: relative;
@@ -333,10 +332,10 @@
   align-items: center;
   color: white;
   margin: 0 auto 8px;
-  padding: 6px 0 4px;
+  padding: 5px 0 5px;
   position: sticky;
-  top: 0px;
-  z-index: 5;
+  top: -2px;
+  z-index: 5000;
   background: #0c0c0c;
 }
 
@@ -374,7 +373,6 @@
   justify-content: center;
   color: white;
   padding: 0;
-  /* padding: 3px 0; */
   list-style: none;
   transform: translateY(-3px);
 }
@@ -461,7 +459,6 @@
 .user_collection__search_icon {
   height: 100%;
   position: absolute;
-  /* left: 9px; */
   left: 15px;
   color: white;
 }
@@ -553,12 +550,11 @@
 @media screen and (max-width: 1024px) {
   .user_collection__left {
     min-width: 260px;
-    /* padding: 0 12px 34px 12px; */
   }
 
   .user_collection__left_header {
     padding: 0;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     width: 100%;
   }
 
@@ -574,7 +570,6 @@
   }
 
   .user_collection__search_icon {
-    /* left: 9px; */
     left: 13px;
     color: white;
   }
@@ -652,7 +647,7 @@
 /* MOBILE DEVICES */
 @media screen and (max-width: 600px) {
   .list_item {
-    margin: 5px 4px 20px;
+    margin: 5px 4px;
   }
 
   .user_collection__actions {
@@ -672,7 +667,6 @@
   }
 
   .user_collection__left {
-    height: 16%;
     max-width: 100%;
   }
 
@@ -686,12 +680,11 @@
   }
 
   .user_collection__search_icon {
-    left: 9%;
-    /* left: 40px; */
+    left: 13.6%;
   }
 
   .user_collection__search_input {
-    width: 80%;
+    width: 70%;
     border: 1px solid darkgray;
     background: grey;
     border-radius: 4px;
@@ -738,19 +731,15 @@
     height: 45%;
   }
 
-  .user_collection__list {
-    margin-top: 70px;
-  }
-
   .user_collection__poster_container {
-    max-height: 275px;
-    max-width: 11rem;
-    min-height: 275px;
-    min-width: 11rem;
+    max-height: 210px;
+    max-width: 8rem;
+    min-height: 210px;
+    min-width: 8rem;
   }
 
   .user_collection__search_icon {
-    left: 32px;
+    left: 56px;
   }
 
   .user_collection__spotlight {

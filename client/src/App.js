@@ -11,7 +11,6 @@ import useTwitchAuth from './hooks/useTwitchAuth';
 import Authentication from './components/Authentication/Authentication';
 import Dashboard from './components/Dashboard/Dashboard';
 import SearchResultsIGDB from './components/SearchResults/SearchResultsIGDB';
-import useFetchGenres from './hooks/useFetchGenres';
 const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
@@ -39,7 +38,6 @@ function App() {
 
   let audio = new Audio(loginAudio);
   const twitchAccessToken = useTwitchAuth(code);
-  const genres = useFetchGenres();
 
   const getUserNotes = async (id) => {
     const request = await axios.get(`${baseURL}/notes/get_notes`, {
@@ -308,7 +306,6 @@ function App() {
             }
             selectProfile={(user) => setSelectedProfile(user)}
             manageProfiles={() => setSelectedProfile(null)}
-            allGenres={genres}
             userNotes={profileNotesData}
             addGame={(game) => addGameHandler(game)}
             removeGame={(game) => removeGameHandler(game)}

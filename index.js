@@ -34,7 +34,7 @@ passport.deserializeUser((user, done) => {
 
 // Coors
 const corsOptions = {
-  origin: ['http://localhost:3000'],
+  origin: ['http://localhost:3000', 'https://cybrary2022.onrender.com'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
@@ -104,7 +104,11 @@ app.use(function (req, res, next) {
 });
 
 app.listen(process.env.PORT || 3001, () =>
-  console.log('Server is up and running!')
+  console.log(
+    `Server is up and running on ${
+      process.env.PORT ? process.env.PORT : '3001'
+    }`
+  )
 );
 
 app.get('/', (req, res) => {

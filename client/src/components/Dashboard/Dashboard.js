@@ -253,7 +253,7 @@ const Dashboard = ({
           setGameDetails={(game) => setGameDetails(game)}
           trendingList={trendingList}
         />
-        <UserLibrary
+        {/* <UserLibrary
           activeProfile={currentProfile}
           playTrack={playTrack}
           currentTrack={currentTrack}
@@ -272,7 +272,7 @@ const Dashboard = ({
             setDisplayNotification(true);
           }}
           setCompleteCollection={(collection) => setUserCollection(collection)}
-        />
+        /> */}
         {currentGameOpen && (
           <h1 className='row__preview_close' onClick={closeGameWindow}>
             X

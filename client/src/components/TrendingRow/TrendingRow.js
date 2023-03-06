@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './TrendingRow.css';
-import rawgClient from '../../axios';
-import requests from '../../requests';
 import Placeholder from '../Placeholder/Placeholder';
 import GamePreview from '../Row/GamePreview/GamePreview';
 import axios from 'axios';
@@ -11,19 +9,36 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
   const [currentGame, setCurrentGame] = useState('');
   const [displayDetails, setDisplayDetails] = useState(false);
   const [currentlyOpen, setCurrentlyOpen] = useState(null);
-  const [imgsLoaded, setImgsLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
   let currentDate = Math.floor(new Date().getTime() / 1000);
   let trendingTitlesFetched = JSON.parse(sessionStorage.getItem('trending'));
+  const newReleases = [];
+
+  useEffect(() => {
+    async function fetchTestData() {
+      try {
+        const request = await axios.get(`${baseURL}/steam/new_releases`);
+        for (let title of request.data) {
+          const splitTitle = title.trim().split(' ');
+          newReleases.push(
+            splitTitle.slice(0, splitTitle.length - 3).join(' ')
+          );
+        }
+        console.log(newReleases.map((game) => console.log(game.trim())));
+
+        setLoading(false);
+        return request;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchTestData();
+  }, []);
 
   useEffect(() => {
     if (!twitchToken) return;
-    if (
-      trendingTitlesFetched &&
-      trendingTitlesFetched.length > 0
-      // || trendingList.length > 0
-    ) {
+    if (trendingTitlesFetched && trendingTitlesFetched.length > 0) {
       setGames(trendingTitlesFetched);
       return;
     }
@@ -79,6 +94,17 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
       : 0
   );
 
+  if (loading)
+    return (
+      <div className='row__loading_container'>
+        {[...Array(10)].map((item, i) => (
+          <div key={i} className='trending_row__placeholder__wrapper'>
+            <Placeholder key={i} delay={i} />
+          </div>
+        ))}
+      </div>
+    );
+
   return (
     <div className='trending_row'>
       <h2>TRENDING TITLES</h2>
@@ -117,16 +143,6 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
             </div>
           </React.Fragment>
         ))}
-        {loading ||
-          (games.length == 0 && (
-            <div className='row__loading_container'>
-              {[...Array(10)].map((item, i) => (
-                <div key={i} className='trending_row__placeholder__wrapper'>
-                  <Placeholder key={i} delay={i} />
-                </div>
-              ))}
-            </div>
-          ))}
       </div>
     </div>
   );

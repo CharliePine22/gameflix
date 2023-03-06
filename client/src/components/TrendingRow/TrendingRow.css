@@ -51,13 +51,6 @@
   max-height: 250px;
 }
 
-.trending_row__poster_container:hover {
-  max-width: 14rem;
-  min-width: 14rem;
-  min-height: 300px;
-  max-height: 300px;
-}
-
 .trending_row__placeholder__wrapper {
   max-width: 22rem;
   min-width: 22rem;
@@ -68,11 +61,6 @@
 
 .trending_row__poster_container:hover .trending_row__poster {
   box-shadow: -5px 7px 10px #000;
-  object-fit: fill;
-  /* transform: translate3d(1px, -3px, 0px); */
-}
-
-.trending_row__poster_container:hover > .trending_row__poster_name {
   transform: translate3d(1px, -3px, 0px);
 }
 

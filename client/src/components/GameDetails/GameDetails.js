@@ -56,6 +56,7 @@ const GameDetails = ({
       });
 
       const result = await request.data;
+      console.log(result);
       if (game.name !== result[0].name)
         setError(
           `Sorry ${activeProfile.name} but our princess is in another castle! Please try again!`

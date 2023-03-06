@@ -3,7 +3,7 @@ import './SearchResults.css';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import SkeletonCard from '../SkeletonCard/SkeletonCard';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { FaSearch } from 'react-icons/fa';
 import GamePreview from '../Row/GamePreview/GamePreview';
@@ -13,7 +13,6 @@ import mRating from '../../assets/images/ESRB_M.png';
 import rpRating from '../../assets/images/ESRB_RP.png';
 
 const SearchResultsIGDB = ({
-  searchedGame,
   setGameDetails,
   closeSearchResults,
   searchGame,
@@ -21,6 +20,8 @@ const SearchResultsIGDB = ({
   openGame,
   closeGameWindow,
   addGameHandler,
+  searchSubmitted,
+  searchFinished,
 }) => {
   const location = useLocation();
   const searchString = location.state.name;
@@ -36,6 +37,7 @@ const SearchResultsIGDB = ({
 
   useEffect(() => {
     if (games.length == 0) return;
+    console.log(searchSubmitted);
     window.scrollTo(0, 0);
     setTopGames(games?.slice(0, 3));
     setRemainderGames(games?.slice(3));
@@ -177,7 +179,10 @@ const SearchResultsIGDB = ({
             placeholder='Search..'
             onKeyDown={submitSearchHandler}
           />
-          <FaSearch className='search_results__nav_search_icon' />
+          <FaSearch
+            className='search_results__nav_search_icon'
+            onClick={submitSearchHandler}
+          />
         </div>
       </div>
 
@@ -292,6 +297,12 @@ const SearchResultsIGDB = ({
                     />
                     <div className='results_container_content'>
                       <h3 className='game_name_remainder'>{game.name}</h3>
+                      <div
+                        className='remainder_3d'
+                        onClick={(e) => displayGameCase(e, game)}
+                      >
+                        <h3>3D</h3>
+                      </div>
                       {/* <p>{game.publisher}</p> */}
                       <ul className='game_theme_list_lower'>
                         {game.themes?.map(

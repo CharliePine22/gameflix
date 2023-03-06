@@ -29,12 +29,6 @@ function Nav(props) {
     setDisplaySearch(false);
   };
 
-  const determineSearch = () => {
-    if (searchRef.current.value == 0) {
-      props.closeSearchResults();
-    }
-  };
-
   const formSubmitHandler = (e) => {
     e.preventDefault();
     const searchValue = searchRef.current.value.trim();
@@ -137,7 +131,6 @@ function Nav(props) {
                   props.searchedGame ? `${props.searchedGame.name}` : ''
                 }
                 onBlur={closeSearch}
-                onChange={determineSearch}
               />
             </form>
           )}

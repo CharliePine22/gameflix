@@ -26,10 +26,12 @@ function App() {
   const [profileNotesData, setProfileNotesData] = useState(null);
   const [displayNotification, setDisplayNotification] = useState(false);
   const [notification, setNotification] = useState({ status: '', message: '' });
-  const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const [searchedGame, setSearchedGame] = useState({ name: '', data: [] });
   const [gameDetails, setGameDetails] = useState(null);
   const [currentGameOpen, setCurrentGameOpen] = useState(null);
+
+  // Search States
+  const [searchFinished, setSearchFinished] = useState(false);
+  const [searchSubmitted, setSearchSubmitted] = useState(false);
 
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
@@ -95,7 +97,6 @@ function App() {
 
   // Search for the game, publisher, or developer that the user types in from nav
   const fetchSubmittedGame = async (game) => {
-    if (searchedGame.name !== null) setSearchedGame({ name: '', data: [] });
     setSearchSubmitted(true);
     game.replace('Poke', 'Poké');
     let newGame = game.replace('Poke', 'Poké');
@@ -104,11 +105,12 @@ function App() {
       gameName: newGame,
     });
 
+    console.log(request);
+
     if (request.data.length == 0) {
-      setSearchedGame({ name: game, data: null });
+      setSearchFinished(true);
+      setSearchSubmitted(false);
     }
-    // setSearchParams({ name: game });
-    setSearchedGame({ name: game, data: request.data });
     console.log('HEY');
     navigate(`/search`, {
       state: { name: game, data: request.data },
@@ -231,7 +233,6 @@ function App() {
 
   const closeSearchResults = () => {
     setSearchSubmitted(false);
-    setSearchedGame({ name: '', data: [] });
     navigate('/');
   };
 
@@ -272,7 +273,6 @@ function App() {
         path='/search'
         element={
           <SearchResultsIGDB
-            searchedGame={searchedGame}
             setGameDetails={(id) => setGameDetails(id)}
             closeSearchResults={closeSearchResults}
             searchGame={fetchSubmittedGame}
@@ -280,6 +280,8 @@ function App() {
             openGame={(game) => openGameWindow(game)}
             closeGameWindow={closeGameWindow}
             addGame={(game) => addGameHandler(game)}
+            searchSubmitted={searchSubmitted}
+            searchFinished={searchFinished}
           />
         }
       />

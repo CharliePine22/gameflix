@@ -20,6 +20,7 @@ const noteRoutes = require('./routes/notes_routes');
 const cors = require('cors');
 dotenv.config();
 
+mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGODB_URI, () => {
   console.log('Database Connected!');
 });

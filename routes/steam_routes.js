@@ -50,6 +50,31 @@ router.get('/steam_trending', async (req, res) => {
   }
 });
 
+router.get('/new_releases', async (req, res) => {
+  // Fetch and scrape all games from meta list
+  try {
+    const request = await axios.get(
+      'https://www.metacritic.com/feature/major-upcoming-video-game-release-dates-xbox-ps4-pc-switch'
+    );
+    const result = request.data;
+    const $ = cheerio.load(result);
+    // Only grab name of game from each row
+    const games = $(
+      '#articlebody > div > table > tbody > tr:nth-child(2) > td > table > caption'
+    );
+    const tags = [];
+
+    // Grab every
+    games.each((_idx, el) => {
+      tags.push($(el).text());
+    });
+    res.send(tags.slice(0, 10));
+    return;
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 router.get('/get_steam_achievements', async (req, res) => {
   const steamId = req.query.steamId;
   const gameId = req.query.gameId;

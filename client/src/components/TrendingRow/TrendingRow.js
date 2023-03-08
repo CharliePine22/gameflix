@@ -13,28 +13,6 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   let currentDate = Math.floor(new Date().getTime() / 1000);
   let trendingTitlesFetched = JSON.parse(sessionStorage.getItem('trending'));
-  const newReleases = [];
-
-  useEffect(() => {
-    async function fetchTestData() {
-      try {
-        const request = await axios.get(`${baseURL}/steam/new_releases`);
-        for (let title of request.data) {
-          const splitTitle = title.trim().split(' ');
-          newReleases.push(
-            splitTitle.slice(0, splitTitle.length - 3).join(' ')
-          );
-        }
-        console.log(newReleases.map((game) => console.log(game.trim())));
-
-        setLoading(false);
-        return request;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchTestData();
-  }, []);
 
   useEffect(() => {
     if (!twitchToken) return;

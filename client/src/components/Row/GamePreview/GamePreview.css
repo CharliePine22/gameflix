@@ -975,7 +975,7 @@ div:has(> .box_open) {
   border-top: 4px solid rgb(228, 0, 15) !important;
   border-bottom: 4px solid rgb(228, 0, 15) !important;
   border-right: 4px solid rgb(228, 0, 15) !important;
-  height: 372px;
+  height: 374px;
   width: 246px;
 }
 
@@ -983,13 +983,13 @@ div:has(> .box_open) {
   border-top: 4px solid rgb(228, 0, 15) !important;
   border-bottom: 4px solid rgb(228, 0, 15) !important;
   border-left: 4px solid rgb(228, 0, 15) !important;
-  height: 385px;
+  height: 372px;
 }
 
 .switch_case_right {
   background: black !important;
   width: 26px;
-  height: 280.5px;
+  height: 219px !important;
   transform: rotateY(72deg) translateZ(328px);
   top: 59px;
   left: -29px;
@@ -997,6 +997,10 @@ div:has(> .box_open) {
   border-radius: 4px;
   overflow: hidden;
   cursor: default;
+}
+
+.switch_case_left {
+  height: 293px;
 }
 /* 
 .switch_middle {

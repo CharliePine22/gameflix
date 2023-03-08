@@ -17,6 +17,7 @@ import GameDetails from '../GameDetails/GameDetails';
 import UserCollection from '../UserCollectionPage/UserCollection';
 import Notification from '../Notification/Notification';
 import useFetchGenres from '../../hooks/useFetchGenres';
+import NewReleases from '../NewReleases/NewReleases';
 
 const code = new URLSearchParams(window.location.search).get('code');
 const windowUrl = window.location.search;
@@ -248,31 +249,17 @@ const Dashboard = ({
           setGameDetails={(game) => setGameDetails(game)}
         />
 
+        <NewReleases
+          twitchToken={twitchToken}
+          setGameDetails={(game) => setGameDetails(game)}
+        />
+
         <TrendingRow
           twitchToken={twitchToken}
           setGameDetails={(game) => setGameDetails(game)}
           trendingList={trendingList}
         />
-        {/* <UserLibrary
-          activeProfile={currentProfile}
-          playTrack={playTrack}
-          currentTrack={currentTrack}
-          isPlaying={playAudio}
-          pausePlayback={() => setPlayAudio(false)}
-          resumePlayback={() => setPlayAudio(true)}
-          spotifyToken={spotifyAccessToken}
-          collection={currentCollection}
-          setSelectedProfile={(profile) => setSelectedProfile(profile)}
-          setGameDetails={(game) => setGameDetails(game)}
-          steamCollection={steamCollection}
-          removeGame={removeGame}
-          viewCollection={() => setViewingCollection(true)}
-          setNotification={(status, message) => {
-            setNotification({ status, message });
-            setDisplayNotification(true);
-          }}
-          setCompleteCollection={(collection) => setUserCollection(collection)}
-        /> */}
+
         {currentGameOpen && (
           <h1 className='row__preview_close' onClick={closeGameWindow}>
             X

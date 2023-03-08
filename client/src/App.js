@@ -105,8 +105,6 @@ function App() {
       gameName: newGame,
     });
 
-    console.log(request);
-
     if (request.data.length == 0) {
       setSearchFinished(true);
       setSearchSubmitted(false);

@@ -53,22 +53,25 @@ router.get('/steam_trending', async (req, res) => {
 router.get('/new_releases', async (req, res) => {
   // Fetch and scrape all games from meta list
   try {
-    const request = await axios.get(
-      'https://www.metacritic.com/feature/major-upcoming-video-game-release-dates-xbox-ps4-pc-switch'
+    const gamestop_request = await axios.get(
+      'https://www.gamestop.com/collection/new-releases'
     );
-    const result = request.data;
-    const $ = cheerio.load(result);
+    const gamestop_res = await gamestop_request.data;
+    const $ = cheerio.load(gamestop_res);
+
     // Only grab name of game from each row
     const games = $(
-      '#articlebody > div > table > tbody > tr:nth-child(2) > td > table > caption'
+      '#catlanding-new-releases > div:nth-child(1) > div:nth-child(3) > div > div > div > div > div > div > div.carousel-4up.has-grid.card-carousel > div'
     );
+
     const tags = [];
 
     // Grab every
     games.each((_idx, el) => {
-      tags.push($(el).text());
+      tags.push($(el));
     });
     res.send(tags.slice(0, 10));
+    console.log(tags.slice(0, 10));
     return;
   } catch (error) {
     res.send(error);

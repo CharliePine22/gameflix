@@ -849,7 +849,11 @@ const GamePreview = ({
 
           {/* LEFT SIDE OF CASE */}
           <div
-            className={`game_preview__left ${viewingPreview && 'left_open'}`}
+            className={`game_preview__left ${viewingPreview && 'left_open'}  ${
+              viewingPreview &&
+              gamePlatform.abbreviation == 'Switch' &&
+              'switch_case_left'
+            }`}
             style={{
               '--color-theme': determineCoverColor(),
               background:

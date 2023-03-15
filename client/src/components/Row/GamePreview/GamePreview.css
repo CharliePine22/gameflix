@@ -108,14 +108,12 @@
   left: 0;
   bottom: 0;
   right: 0;
-  /* overflow: hidden; */
 }
 
 .game_preview__back_cover {
   height: 100%;
   width: 100.3%;
   position: absolute;
-  left: -1px;
 }
 
 .game_preview__back_open {
@@ -134,15 +132,13 @@
   width: 100%;
   cursor: default;
   transform: rotateY(180deg);
-  /* backface-visibility: hidden; */
 }
 
 .game_preview__back_open_details > img {
   height: 100%;
-  width: 101%;
+  width: 100%;
   opacity: 1;
   position: absolute;
-  /* top: -21px; */
   z-index: -1;
 }
 
@@ -199,11 +195,6 @@ div:has(> .box_open) {
   transform: rotateY(-1deg) rotateX(1deg) scale(1.1) !important;
   cursor: default;
 }
-
-/* .box_open:hover {
-  transform: rotateY(-4deg) rotateX(1deg) scale(1.1) !important;
-  cursor: default;
-} */
 
 .game_preview__disc {
   background-size: 100% 100%;
@@ -754,7 +745,6 @@ div:has(> .box_open) {
   width: 26px;
   height: 228px;
   transform: rotateY(60deg) translateZ(233px);
-  /* animation: openCaseRight */
   animation: openCaseRight 400ms ease-in;
   top: 82px;
   left: 35px;
@@ -838,7 +828,6 @@ div:has(> .box_open) {
     translateY(0px); /* 72px */
   z-index: 1;
   filter: drop-shadow(2px 2px 2px black);
-  /* margin-bottom: 25px; */
 }
 
 .down_pipe {
@@ -873,7 +862,6 @@ div:has(> .box_open) {
 .playstation_old {
   height: 70%;
   width: 30px;
-  /* filter: drop-shadow(1px 1px 1px #000); */
   object-fit: contain;
   margin-bottom: 3px;
   margin-right: 4px;
@@ -918,7 +906,6 @@ div:has(> .box_open) {
   left: 10px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  /* overflow: hidden; */
 }
 
 .n64_cartridge::after {
@@ -1052,7 +1039,6 @@ div:has(> .box_open) {
   top: 0;
   width: 243px; /* The width is 345px but we have to enlarge the area because of the drop shadow. */
   height: 375px;
-  /* height: 445px;  */
   margin: 0 auto;
   overflow: visible;
   perspective: 690px;
@@ -1063,8 +1049,7 @@ div:has(> .box_open) {
 .glare-wrapper {
   transform: translateZ(14px);
   height: 380px !important;
-  /* width: 97.4% !important; */
-  /* top: 1px !important; */
+
   border-top-right-radius: 4px !important;
   mask-image: radial-gradient(center, white, black);
   -webkit-mask-image: none !important;
@@ -1246,11 +1231,11 @@ div:has(> .box_open) {
 
 @media screen and (min-width: 1440px) {
   .game_preview__back_open {
-    height: 420px;
+    height: 424px;
   }
 
   .game_preview__disc {
-    top: 150px;
+    top: 170px;
   }
 
   .game_preview__front_inside {

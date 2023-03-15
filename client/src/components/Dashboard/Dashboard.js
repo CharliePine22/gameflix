@@ -6,13 +6,13 @@ import Banner from '../Banner/Banner';
 import Nav from '../Nav/Nav';
 import MainRow from '../MainRow/MainRow';
 import TrendingRow from '../TrendingRow/TrendingRow';
+import { SlOptions } from 'react-icons/sl';
 
 // File Imports
 import axios from 'axios';
 import SpotifyPlayback from '../SpotifyPlayback/SpotifyPlayback';
 import useSpotifyAuth from '../../hooks/useSpotifyAuth';
 import useSteamAuth from '../../hooks/useSteamAuth';
-import UserLibrary from '../UserLibrary/UserLibrary';
 import GameDetails from '../GameDetails/GameDetails';
 import UserCollection from '../UserCollectionPage/UserCollection';
 import Notification from '../Notification/Notification';
@@ -40,6 +40,7 @@ const Dashboard = ({
   const allGenres = useFetchGenres();
   const [displayNotification, setDisplayNotification] = useState(false);
   const [notification, setNotification] = useState({ status: '', message: '' });
+
   // Spotify States
   const [currentTrack, setCurrentTrack] = useState(null);
   const [playAudio, setPlayAudio] = useState(false);
@@ -57,6 +58,7 @@ const Dashboard = ({
 
   // Row States
   const [currentGameOpen, setCurrentGameOpen] = useState(null);
+  const [viewingGameOptions, setViewingGameOptions] = useState(false);
 
   // Search States
   const [searchedGame, setSearchedGame] = useState({ name: '', data: [] });
@@ -64,7 +66,6 @@ const Dashboard = ({
 
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
-
   const spotifyAccessToken = useSpotifyAuth(code);
   const steamCollection = useSteamAuth(id);
 
@@ -157,6 +158,10 @@ const Dashboard = ({
   const closeGameWindow = () => {
     document.body.style.overflow = 'auto';
     setCurrentGameOpen(null);
+  };
+
+  const seeGameOptions = () => {
+    setViewingGameOptions(true);
   };
 
   const playTrack = (track) => {
@@ -261,9 +266,14 @@ const Dashboard = ({
         />
 
         {currentGameOpen && (
-          <h1 className='row__preview_close' onClick={closeGameWindow}>
-            X
-          </h1>
+          <>
+            <h1 className='row__preview_close' onClick={closeGameWindow}>
+              X
+            </h1>
+            <h1 className='row__preview_close options' onClick={seeGameOptions}>
+              <SlOptions />
+            </h1>
+          </>
         )}
         <div
           className={`${currentGameOpen !== null && 'game_preview__modal'}`}

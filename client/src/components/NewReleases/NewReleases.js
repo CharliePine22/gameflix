@@ -6,8 +6,6 @@ import axios from 'axios';
 
 const NewReleases = ({ twitchToken, setGameDetails }) => {
   const [games, setGames] = useState([]);
-  const [currentGame, setCurrentGame] = useState('');
-  const [displayDetails, setDisplayDetails] = useState(false);
   const [loading, setLoading] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
   const newReleases = [];
@@ -19,35 +17,24 @@ const NewReleases = ({ twitchToken, setGameDetails }) => {
       setLoading(true);
 
       try {
-        const scrape_request = await axios.get(`${baseURL}/steam/new_releases`);
-        console.log(scrape_request);
-        // console.log(scrape_request.data);
+        // const scrape_request = await axios.get(`${baseURL}/steam/new_releases`);
+        // console.log(scrape_request);
         return;
-        for (let title of scrape_request.data) {
-          const splitTitle = title.trim().split(' ');
-          newReleases.push(
-            splitTitle
-              .slice(0, splitTitle.length - 3)
-              .join(' ')
-              .trim()
-          );
-        }
-        console.log(newReleases);
-        const newReleasesData = await Promise.all(
-          newReleases.map(async (game) => {
-            const res = await axios.post(
-              `${baseURL}/app/search_trending_game`,
-              {
-                token: twitchToken,
-                gameName: game,
-              }
-            );
-            return res.data[0].game;
-          })
-        );
-        setGames(newReleasesData);
-        setLoading(false);
-        return newReleasesData;
+        // const newReleasesData = await Promise.all(
+        //   newReleases.map(async (game) => {
+        //     const res = await axios.post(
+        //       `${baseURL}/app/search_trending_game`,
+        //       {
+        //         token: twitchToken,
+        //         gameName: game,
+        //       }
+        //     );
+        //     return res.data[0].game;
+        //   })
+        // );
+        // setGames(newReleasesData);
+        // setLoading(false);
+        // return newReleasesData;
       } catch (error) {
         console.log(error);
       }
@@ -74,6 +61,8 @@ const NewReleases = ({ twitchToken, setGameDetails }) => {
       ? 1
       : 0
   );
+
+  return '';
 
   return (
     <div className='new_releases_row'>

@@ -27,6 +27,7 @@
     "passport": "^0.6.0",
     "passport-steam": "^1.0.17",
     "psn-api": "^2.8.1",
+    "puppeteer": "^19.7.3",
     "spotify-web-api-node": "^5.0.2",
     "steamapi": "^2.2.0"
   }

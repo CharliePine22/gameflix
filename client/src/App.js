@@ -53,6 +53,7 @@ function App() {
 
   // Check to see which user is currently logged in and which profile is active
   useEffect(() => {
+    if (!userEmail) navigate('/login');
     const updateUser = async () => {
       try {
         const request = await axios.get(`${baseURL}/app/get_user`, {

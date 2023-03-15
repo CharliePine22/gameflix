@@ -21,9 +21,16 @@ const cors = require('cors');
 dotenv.config();
 
 mongoose.set('strictQuery', true);
-mongoose.connect(process.env.MONGODB_URI, () => {
-  console.log('Database Connected!');
-});
+
+(async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, () => {
+      console.log('Database Connected!');
+    });
+  } catch (err) {
+    console.log('error: ' + err);
+  }
+})();
 
 // Required to get data from user for sessions
 passport.serializeUser((user, done) => {

@@ -7,8 +7,11 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "@vidstack/player": "^1.6.5",
+    "@vidstack/player-react": "^1.6.5",
     "apicalypse": "^0.1.9",
     "axios": "^0.27.2",
+    "lit": "^2.6.1",
     "openid-client": "^5.1.10",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
@@ -25,6 +28,7 @@
     "react-tooltip": "^4.5.1",
     "spotify-web-api-node": "^5.0.2",
     "typewriter-effect": "^2.19.0",
+    "vidstack": "^0.4.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

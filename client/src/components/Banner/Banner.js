@@ -1,6 +1,9 @@
 import './Banner.css';
-import { BiRefresh } from 'react-icons/bi';
+import { useEffect, useState, useRef } from 'react';
+import { BiRefresh, BiVolumeMute, BiVolumeFull } from 'react-icons/bi';
 import useFetchBanner from '../../hooks/useFetchBanner';
+import ReactPlayer from 'react-player/youtube';
+import useDetectOnScreen from '../../hooks/useDetectOnScreen';
 
 function Banner({ setGameDetails, addGame, activeProfile }) {
   const bannerGame = useFetchBanner();
@@ -9,6 +12,17 @@ function Banner({ setGameDetails, addGame, activeProfile }) {
     activeProfile.collection.some(
       (title) => title.id === bannerGame.currentGame.id
     );
+  const [mutedVideo, setMutedVideo] = useState(true);
+  const bannerRef = useRef(null);
+  const refVisible = useDetectOnScreen(bannerRef);
+  const [playingVideo, setPlayingVideo] = useState(true);
+
+  useEffect(() => {
+    if (!bannerGame.currentGame) return;
+    setPlayingVideo(refVisible);
+  }, [refVisible, bannerGame.currentGame]);
+
+  console.log(refVisible);
 
   // If the game description is longer that 150 characters, replace the reaminder with the ellipsis '...'
   const truncate = (str, n) => {
@@ -25,55 +39,65 @@ function Banner({ setGameDetails, addGame, activeProfile }) {
     );
   }
 
-  // if (!isLoading && !game) {
-  //   setRefresh(true);
-  // }
-
   return (
-    <header
-      className='banner'
-      key={bannerGame.currentGame.id}
-      style={{
-        backgroundSize: 'cover',
-        backgroundImage: `url(//images.igdb.com/igdb/image/upload/t_1080p_2x/${bannerGame.currentGame.cover?.image_id}.jpg)`,
-        backgroundPosition: 'center center',
-      }}
-    >
-      <>
-        <div className='banner__contents'>
-          <h1 className='banner__title'>{bannerGame.currentGame?.name}</h1>
+    <header className='banner' key={bannerGame.currentGame.id}>
+      <div ref={bannerRef}>
+        <ReactPlayer
+          className='banner__trailer'
+          url={bannerGame.currentGameTrailer}
+          // poster={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${bannerGame.currentGame.cover?.image_id}.jpg`}
+          playing={playingVideo ? true : false}
+          muted={mutedVideo ? true : false}
+        />
+        <>
+          <div className='banner__contents'>
+            <h1 className='banner__title'>{bannerGame.currentGame?.name}</h1>
 
-          <div className='banner__buttons'>
-            <button
-              className='banner__button'
-              onClick={() => setGameDetails(bannerGame.currentGame)}
-            >
-              See Details
-            </button>
-            {!exists && (
+            <div className='banner__buttons'>
               <button
                 className='banner__button'
-                onClick={() => addGame(bannerGame.currentGame)}
+                onClick={() => setGameDetails(bannerGame.currentGame)}
               >
-                Add to My List
+                See Details
               </button>
-            )}
+              {!exists && (
+                <button
+                  className='banner__button'
+                  onClick={() => addGame(bannerGame.currentGame)}
+                >
+                  Add to My List
+                </button>
+              )}
+            </div>
+
+            <h1 className='banner__description'>
+              {truncate(bannerGame.currentGame?.summary, 150)}
+            </h1>
           </div>
+          <div className='banner--fadeBottom' />
+        </>
 
-          <h1 className='banner__description'>
-            {truncate(bannerGame.currentGame?.summary, 150)}
-          </h1>
-        </div>
-        <div className='banner--fadeBottom' />
-      </>
-
-      {
-        <BiRefresh
-          size={35}
-          className='banner__refresh_icon'
-          onClick={bannerGame.displayNewBanner}
-        />
-      }
+        {
+          <BiRefresh
+            size={35}
+            className='banner__refresh_icon'
+            onClick={bannerGame.displayNewBanner}
+          />
+        }
+        {mutedVideo ? (
+          <BiVolumeMute
+            size={27}
+            className='banner__mute_btn'
+            onClick={() => setMutedVideo(false)}
+          />
+        ) : (
+          <BiVolumeFull
+            size={27}
+            className='banner__volume_btn'
+            onClick={() => setMutedVideo(true)}
+          />
+        )}
+      </div>
     </header>
   );
 }

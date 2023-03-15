@@ -440,7 +440,7 @@ const GamePreview = ({
       case 'PS2':
       case 'PSP':
       case 'fds':
-        return '#000';
+        return '#000000';
       case 'PS3':
         return '#383838';
       case 'N64':
@@ -865,7 +865,7 @@ const GamePreview = ({
               height:
                 gamePlatform.abbreviation == 'X360' &&
                 !viewingPreview &&
-                '376px',
+                '372px',
               backgroundColor:
                 gamePlatform.abbreviation == 'PS2'
                   ? 'black'

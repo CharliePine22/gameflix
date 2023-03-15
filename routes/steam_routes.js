@@ -3,6 +3,7 @@ const router = express.Router();
 const SteamAPI = require('steamapi');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const puppeteer = require('puppeteer');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -50,29 +51,72 @@ router.get('/steam_trending', async (req, res) => {
   }
 });
 
-router.get('/new_releases', async (req, res) => {
-  // Fetch and scrape all games from meta list
-  try {
-    const gamestop_request = await axios.get(
-      'https://www.gamestop.com/collection/new-releases'
-    );
-    const gamestop_res = await gamestop_request.data;
-    const $ = cheerio.load(gamestop_res);
+const getNewReleases = async () => {
+  const browser = await puppeteer.launch({
+    headless: false,
+    defaultViewport: null,
+  });
 
-    // Only grab name of game from each row
-    const games = $(
+  // Open a new page and wait until Gamestop new releases are loaded into DOM
+  const page = await browser.newPage();
+
+  await page.goto('https://www.gamestop.com/collection/new-releases', {
+    waitUntil: 'domcontentloaded',
+  });
+
+  const games = await page.evaluate(() => {
+    // Fetch the first element with class "quote"
+    const gameList = document.querySelectorAll(
       '#catlanding-new-releases > div:nth-child(1) > div:nth-child(3) > div > div > div > div > div > div > div.carousel-4up.has-grid.card-carousel > div'
     );
 
-    const tags = [];
-
-    // Grab every
-    games.each((_idx, el) => {
-      tags.push($(el));
+    // Fetch the sub-elements from the previously fetched quote element
+    // Get the displayed text and return it (`.innerText`)
+    return Array.from(gameList).map((game) => {
+      const link = game.querySelector('a').getAttribute('href');
+      return { link };
     });
-    res.send(tags.slice(0, 10));
-    console.log(tags.slice(0, 10));
-    return;
+  });
+
+  console.log(games);
+
+  const nameValues = games.map(async (element) => {
+    const searchPage = await browser.newPage();
+    // If it's only available on 1 console, the link will be complete otherwise
+    // the link needs to be revised into complete URL
+    if (element.link[0] == '/') {
+      element.link = 'https://www.gamestop.com' + element.link;
+    }
+    await searchPage.goto(element.link);
+
+    let selector;
+    // If it's only available on 1 console, the link will automatically take you
+    // to the product page, requiring a different DOM Selector
+    if (element.link.substring(element.link.length - 4) == 'html') {
+      selector =
+        '#primary-details > div.mobile-selection.product-details-top-desktop > div.product-name-section > h2';
+    } else {
+      selector =
+        '#product-search-results > div.align-items-start.flex-nowrap.flex-column.flex-md-row > div > div.row.product-grid > div.row.infinitescroll-results-grid.product-grid-redesign.wide-tiles > div:nth-child(2) > div > div > div.d-flex.flex-column.full-height.justify-content-between > div.tile-body > div > a > div > p';
+    }
+
+    const newGameName = await searchPage.waitForSelector(selector);
+    return await newGameName.evaluate(async (el) => {
+      const value = el.textContent.split('-')[0].trim();
+      // await searchPage.close();
+      return { value };
+    });
+  });
+
+  return nameValues;
+};
+
+router.get('/new_releases', async (req, res) => {
+  // Fetch and scrape all games from meta list
+  try {
+    const request = await getNewReleases();
+    console.log(request);
+    res.send(request);
   } catch (error) {
     res.send(error);
   }

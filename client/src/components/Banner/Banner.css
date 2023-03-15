@@ -81,15 +81,46 @@
 .banner__refresh_icon {
   cursor: pointer;
   position: absolute;
-  right: 25px;
+  right: 15px;
   bottom: 25px;
   transition: all 50ms ease-in-out;
   opacity: 0.5;
 }
 
-.banner__refresh_icon:hover {
+.banner__mute_btn,
+.banner__volume_btn {
+  position: absolute;
+  right: 65px;
+  bottom: 28.5px;
+  opacity: 0.5;
+  cursor: pointer;
+  z-index: 1;
+  transition: all 50ms ease-in-out;
+}
+
+.banner__refresh_icon:hover,
+.banner__mute_btn:hover,
+.banner__volume_btn:hover {
   opacity: 1;
 }
+
+.banner__trailer {
+  position: absolute;
+  height: 100% !important;
+  width: 100% !important;
+  opacity: 0.6;
+}
+
+.banner__trailer > video {
+  width: 100%;
+}
+
+/* #movie_player > div.html5-video-container > video {
+  display: block;
+  width: 100% !important;
+  height: 100%;
+  position: absolute;
+} */
 
 @keyframes fadeInBannerContent {
   0% {
@@ -100,6 +131,26 @@
   100% {
     transform: translateX(0px);
     opacity: 1;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .banner {
+    min-height: 728px;
+  }
+
+  .banner__contents {
+    padding-top: 130px;
+    top: 35px;
+    margin-left: 60px;
+  }
+
+  .banner__description {
+    max-width: 100%;
+  }
+
+  .banner--fadeBottom {
+    top: 250px;
   }
 }
 
@@ -116,6 +167,7 @@
 
   .banner--fadeBottom {
     height: 11.8rem;
+    top: 19px;
   }
 
   .banner__title {

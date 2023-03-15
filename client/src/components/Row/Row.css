@@ -255,6 +255,13 @@
   opacity: 0.5;
 }
 
+.options {
+  left: 15px;
+  width: 13px;
+  display: flex;
+  height: 20px;
+}
+
 .row__preview_close:hover {
   opacity: 1;
 }

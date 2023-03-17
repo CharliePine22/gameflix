@@ -29,10 +29,6 @@ function App() {
   const [gameDetails, setGameDetails] = useState(null);
   const [currentGameOpen, setCurrentGameOpen] = useState(null);
 
-  // Search States
-  const [searchFinished, setSearchFinished] = useState(false);
-  const [searchSubmitted, setSearchSubmitted] = useState(false);
-
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
   const userEmail = localStorage.getItem('user');
@@ -98,21 +94,8 @@ function App() {
 
   // Search for the game, publisher, or developer that the user types in from nav
   const fetchSubmittedGame = async (game) => {
-    setSearchSubmitted(true);
-    game.replace('Poke', 'Poké');
-    let newGame = game.replace('Poke', 'Poké');
-    const request = await axios.post('/app/search_game', {
-      token: twitchAccessToken,
-      gameName: newGame,
-    });
-
-    if (request.data.length == 0) {
-      setSearchFinished(true);
-      setSearchSubmitted(false);
-    }
-    console.log('HEY');
     navigate(`/search`, {
-      state: { name: game, data: request.data },
+      state: { name: game },
     });
   };
 
@@ -231,7 +214,6 @@ function App() {
   };
 
   const closeSearchResults = () => {
-    setSearchSubmitted(false);
     navigate('/');
   };
 
@@ -274,13 +256,10 @@ function App() {
           <SearchResultsIGDB
             setGameDetails={(id) => setGameDetails(id)}
             closeSearchResults={closeSearchResults}
-            searchGame={fetchSubmittedGame}
             currentGameOpen={currentGameOpen}
             openGame={(game) => openGameWindow(game)}
             closeGameWindow={closeGameWindow}
             addGame={(game) => addGameHandler(game)}
-            searchSubmitted={searchSubmitted}
-            searchFinished={searchFinished}
           />
         }
       />

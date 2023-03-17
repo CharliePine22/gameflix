@@ -53,7 +53,6 @@ const Dashboard = ({
   const [editingUser, setEditingUser] = useState(false);
   const [loggedUser, setLoggedUser] = useState(null);
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const [userCollection, setUserCollection] = useState([]);
   const [viewingCollection, setViewingCollection] = useState(false);
 
   // Row States
@@ -61,7 +60,6 @@ const Dashboard = ({
   const [viewingGameOptions, setViewingGameOptions] = useState(false);
 
   // Search States
-  const [searchedGame, setSearchedGame] = useState({ name: '', data: [] });
   const [gameDetails, setGameDetails] = useState(null);
 
   // Local Variables
@@ -78,6 +76,7 @@ const Dashboard = ({
 
     const fetchSteamTrending = async () => {
       const request = await axios.get(`${baseURL}/steam/steam_trending`);
+
       return request.data;
     };
 
@@ -90,6 +89,7 @@ const Dashboard = ({
         '(2023)': '',
         '/Violet*': '',
       };
+
       const trendingGamesList = await Promise.all(
         trendingGameNames.map((game) => {
           game = game.replace(
@@ -102,12 +102,15 @@ const Dashboard = ({
           game = game.replace('undefined', '');
           game = game.replace('*', '');
           game = game.replace('()', '');
+
           return axios.post(`${baseURL}/app/search_trending_game`, {
             token: twitchToken,
             gameName: game,
           });
         })
       );
+
+      console.log(trendingGamesList);
 
       setTrendingList(trendingGamesList.map((game) => game.data[0]));
       return trendingGamesList;
@@ -236,7 +239,6 @@ const Dashboard = ({
           selectProfile={(profile) => setSelectedProfile(profile)}
           spotifyToken={spotifyAccessToken}
           twitchToken={twitchToken}
-          searchedGame={searchedGame}
           saveEdit={() => setEditingUser(true)}
           setLoggedUser={(user) => setLoggedUser(user)}
           updateCollection={updateCollection}

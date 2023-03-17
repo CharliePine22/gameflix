@@ -46,6 +46,7 @@
   font-size: 1rem;
   max-width: 400px;
   height: 80px;
+  pointer-events: none;
 }
 
 .banner--fadeBottom {
@@ -58,6 +59,7 @@
     rgba(37, 37, 37, 0.61),
     #111
   );
+  pointer-events: none;
 }
 
 .banner__loading {
@@ -114,13 +116,6 @@
 .banner__trailer > video {
   width: 100%;
 }
-
-/* #movie_player > div.html5-video-container > video {
-  display: block;
-  width: 100% !important;
-  height: 100%;
-  position: absolute;
-} */
 
 @keyframes fadeInBannerContent {
   0% {

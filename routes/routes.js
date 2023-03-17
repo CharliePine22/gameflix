@@ -226,7 +226,7 @@ router.post('/search_trending_game', async (req, res) => {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `fields *, game.*, game.cover.*; search "${gameName}"; limit 1;`,
+      body: `fields *, game.*, game.cover.*; search *"${gameName}"; limit 1;`,
     });
     const result = await request.json();
     res.send(result);

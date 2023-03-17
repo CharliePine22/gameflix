@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './SearchResults.css';
 import Skeleton from 'react-loading-skeleton';
+import axios from 'axios';
 import 'react-loading-skeleton/dist/skeleton.css';
 import SkeletonCard from '../SkeletonCard/SkeletonCard';
 import { useLocation } from 'react-router-dom';
@@ -15,40 +16,66 @@ import rpRating from '../../assets/images/ESRB_RP.png';
 const SearchResultsIGDB = ({
   setGameDetails,
   closeSearchResults,
-  searchGame,
   currentGameOpen,
   openGame,
   closeGameWindow,
   addGameHandler,
-  searchSubmitted,
-  searchFinished,
 }) => {
-  const location = useLocation();
-  const searchString = location.state.name;
-  const games = location.state.data;
+  const twitchToken = localStorage.getItem('twitch_auth');
   const recentSearches = JSON.parse(localStorage.getItem('searches'));
-  // Divide top 3 and remainder gmaes
-  const [topGames, setTopGames] = useState([]);
-  const [remainderGames, setRemainderGames] = useState([]);
+  const location = useLocation();
+
   const [recentSearchList, setRecentSearchList] = useState(recentSearches);
-  const [searchValue, setSearchValue] = useState(searchString);
+
+  // Game Preview States
   const [currentGame, setCurrentGame] = useState('');
   const [viewingPreview, setViewingPreview] = useState(false);
 
-  useEffect(() => {
-    if (games.length == 0) return;
-    console.log(searchSubmitted);
-    window.scrollTo(0, 0);
-    setTopGames(games?.slice(0, 3));
-    setRemainderGames(games?.slice(3));
-    if (searchString !== '') {
-      if (!recentSearches) {
-        localStorage.setItem('searches', JSON.stringify([searchString]));
-      } else {
-        recentSearches.push(searchString);
-        localStorage.setItem('searches', JSON.stringify(recentSearches));
+  // Search States
+  const searchString = location.state.name;
+  const [searchValue, setSearchValue] = useState(searchString);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchFinished, setSearchFinished] = useState(false);
+  const [searchSubmitted, setSearchSubmitted] = useState(false);
+
+  const searchGame = async (game) => {
+    try {
+      setSearchSubmitted(true);
+      setSearchFinished(false);
+      let newGame = game.replace('Poke', 'Poké');
+      const request = await axios.post('/app/search_game', {
+        token: twitchToken,
+        gameName: newGame,
+      });
+
+      setSearchResults(request.data);
+      if (searchString !== '') {
+        if (!recentSearches) {
+          localStorage.setItem('searches', JSON.stringify([searchString]));
+        } else {
+          recentSearches.push(searchString);
+          localStorage.setItem('searches', JSON.stringify(recentSearches));
+        }
       }
+      setSearchSubmitted(false);
+      setSearchFinished(true);
+      return searchResults;
+    } catch (error) {
+      setSearchSubmitted(false);
+      setSearchFinished(true);
+      console.log(error);
     }
+
+    // if (request.data.length == 0) {
+    //   setSearchFinished(true);
+    //   setSearchSubmitted(false);
+    // }
+  };
+
+  useEffect(() => {
+    if (searchString == '') return;
+    window.scrollTo(0, 0);
+    searchGame(searchString);
   }, [searchString]);
 
   const removeRecentSearchItem = (name) => {
@@ -110,7 +137,7 @@ const SearchResultsIGDB = ({
   };
 
   // Skeleton Loader
-  if (games.length == 0 || !topGames || !remainderGames) {
+  if (searchSubmitted && !searchFinished) {
     return (
       <div className='search_results'>
         <div className='search_results__nav'>
@@ -156,7 +183,7 @@ const SearchResultsIGDB = ({
     );
   }
 
-  if (games == null) {
+  if (searchResults == null) {
     return (
       <div className='search_results__error'>
         <p>
@@ -215,8 +242,8 @@ const SearchResultsIGDB = ({
         <div className='search_results__recents'>
           <h2>Recent Searches</h2>
           <ul className='recent_searches'>
-            {recentSearches &&
-              uniqueSearches(recentSearches)
+            {recentSearchList &&
+              uniqueSearches(recentSearchList)
                 .slice(0, 4)
                 .map((name, i) => (
                   <li key={i} className='recent_searches__item'>
@@ -230,7 +257,7 @@ const SearchResultsIGDB = ({
 
         {/* Top 3 Search Results */}
         <div className='top_results_row'>
-          {topGames?.map((game) => (
+          {searchResults.slice(0, 3)?.map((game) => (
             <div
               className='top_result_container'
               key={game.id}
@@ -267,7 +294,7 @@ const SearchResultsIGDB = ({
               <div
                 className='game_cover'
                 style={{
-                  backgroundSize: 'cover',
+                  backgroundSize: '100% 100%',
                   backgroundImage: `url(//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg)`,
                   backgroundPosition: 'center',
                 }}
@@ -276,10 +303,10 @@ const SearchResultsIGDB = ({
           ))}
         </div>
         {/* Remaining Games */}
-        {remainderGames.length > 0 && (
+        {searchResults.length > 0 && (
           <div className='remainder_results'>
             <h2>Results</h2>
-            {remainderGames?.map(
+            {searchResults.slice(3)?.map(
               (game) =>
                 game.cover !== undefined && (
                   <div

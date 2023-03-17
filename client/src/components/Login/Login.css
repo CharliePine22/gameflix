@@ -174,9 +174,8 @@
 }
 
 .login__form_wrapper {
-  width: 100%;
+  width: 400px;
   z-index: 2;
-  width: 100%;
 }
 
 .login__background {

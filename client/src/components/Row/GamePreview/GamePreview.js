@@ -10,12 +10,16 @@ import playstationLogo from '../../../assets/images/playstation-logo.png';
 import playstationLogoWhite from '../../../assets/images/ps4-logo.png';
 // PSP
 import pspLogo from '../../../assets/images/psp-logo.png';
+import pspCase from '../../../assets/images/psp-case-front.png';
+import pspCaseSide from '../../../assets/images/psp-case-side.png';
+import pspBackCover from '../../../assets/images/psp-case-back.png';
 // PS Vita
 import psVitaLogo from '../../../assets/images/psvita-logo.png';
 // PlayStation 1
 import ps1Sound from '../../../assets/sounds/platform_sounds/ps1-startup.mp3';
 import ps1Case from '../../../assets/images/ps1-case-template.png';
 // PlayStation 2
+import ps2Case from '../../../assets/images/ps2-case-front.png';
 import ps2DiscBanner from '../../../assets/images/ps2-disc-banner.png';
 import ps2SideBanner from '../../../assets/images/ps2-side-banner.png';
 import ps2BackCover from '../../../assets/images/ps2-back-cover.png';
@@ -46,6 +50,9 @@ import nintendo3dsFront from '../../../assets/images/3ds-case-front.png';
 import gbaLogo from '../../../assets/images/gba-logo.png';
 // Wii
 import wiiLogo from '../../../assets/images/wii_logo.png';
+import wiiCase from '../../../assets/images/wii-case-front.png';
+import wiiCaseBack from '../../../assets/images/wii-case-back.png';
+import wiiCaseSide from '../../../assets/images/wii-case-side.png';
 // Wii U
 import wiiULogo from '../../../assets/images/wiiu-logo.png';
 import wiiUDiscBanner from '../../../assets/images/wiiu-disc-banner.png';
@@ -342,6 +349,8 @@ const GamePreview = ({
     switch (gamePlatform.abbreviation) {
       case 'X360':
         return xbox360Side;
+      case 'PSP':
+        return pspCaseSide;
       case 'PS2':
         return ps2SideBanner;
       case 'PS3':
@@ -352,6 +361,8 @@ const GamePreview = ({
         return nintendoSwitchSide;
       case 'N64':
         return nintendo64CaseSide;
+      case 'Wii':
+        return wiiCaseSide;
       case 'NES':
       case 'fds':
         return nesCaseSide;
@@ -364,6 +375,8 @@ const GamePreview = ({
     switch (gamePlatform.abbreviation) {
       case 'NGC':
         return gamecubeBackCover;
+      case 'PSP':
+        return pspBackCover;
       case 'PS2':
         return ps2BackCover;
       case 'PS3':
@@ -372,8 +385,10 @@ const GamePreview = ({
         return nintendoSwitchBack;
       case 'X360':
         return xbox360Back;
+      case 'Wii':
+        return wiiCaseBack;
       default:
-        return '';
+        return null;
     }
   };
 
@@ -383,51 +398,6 @@ const GamePreview = ({
     setTimeout(function () {
       hideDetails();
     }, 150);
-  };
-
-  // Convert the YYYY-MM-DD to Month, Day, Year
-  const convertDate = (date) => {
-    let months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    let now = new Date(date?.replace(/-/g, '/'));
-    let currentDay = now.getDate();
-    let formattedDay;
-
-    // Give the numbered day the appropriate abbriviation
-    switch (currentDay) {
-      case 1:
-      case 21:
-      case 31:
-        formattedDay = currentDay + 'st';
-        break;
-      case 2:
-      case 22:
-        formattedDay = currentDay + 'nd';
-        break;
-      case 3:
-      case 23:
-        formattedDay = currentDay + 'rd';
-        break;
-      // Most days have the th ending (28th) so set as default
-      default:
-        formattedDay = currentDay + 'th';
-        break;
-    }
-    return (
-      months[now.getMonth()] + ' ' + formattedDay + ', ' + now.getFullYear()
-    );
   };
 
   // Based on the game platform, adjust the colors to reflect the platform/console color scheme
@@ -490,7 +460,7 @@ const GamePreview = ({
         tiltMaxAngleY={35}
         perspective={1000}
         glarePosition={'all'}
-        glareBorderRadius={'2px 6px 6px 0'}
+        glareBorderRadius={'2px 4px 4px 0'}
         transitionEasing={'cubic-bezier(.03,.98,.52,.99)'}
         glareMaxOpacity={'.35'}
         glareColor={'rgba(255,255,255, 1)'}
@@ -535,11 +505,20 @@ const GamePreview = ({
             {gamePlatform.abbreviation == 'N64' && (
               <img src={nintendo64Case} className='n64_game_img' />
             )}
+            {gamePlatform.abbreviation == 'PSP' && (
+              <img src={pspCase} className='psp_game_img' />
+            )}
             {gamePlatform.abbreviation == 'PS1' && (
               <img src={ps1Case} className='ps1_game_img' />
             )}
+            {gamePlatform.abbreviation == 'PS2' && (
+              <img src={ps2Case} className='ps2_game_img' />
+            )}
             {gamePlatform.abbreviation == '3DS' && (
               <img src={nintendo3dsFront} className='nintendo-3ds_game_img' />
+            )}
+            {gamePlatform.abbreviation == 'Wii' && (
+              <img src={wiiCase} className='wii_game_img' />
             )}
 
             {/* FRONT CASE COVER BANNER */}
@@ -548,8 +527,9 @@ const GamePreview = ({
                 gamePlatform.abbreviation == 'Switch' && 'switch_banner'
               }
             ${gamePlatform.abbreviation == 'X360' && 'xbox360_banner'}
+            ${gamePlatform.abbreviation == 'PSP' && 'ps1_banner'}
             ${gamePlatform.abbreviation == 'PS1' && 'ps1_banner'}
-            ${gamePlatform.abbreviation == 'PS2' && 'ps2_banner'}
+            ${gamePlatform.abbreviation == 'PS2' && 'ps1_banner'}
             ${gamePlatform.abbreviation == 'PS3' && 'ps3_banner'}
             ${gamePlatform.abbreviation == 'PS4' && 'ps4_banner'}
             ${gamePlatform.abbreviation == 'Wii' && 'wii_banner'}
@@ -596,6 +576,8 @@ const GamePreview = ({
                       : gamePlatform.abbreviation == 'NDS'
                       ? 'none'
                       : gamePlatform.abbreviation == 'NGC'
+                      ? 'none'
+                      : gamePlatform.abbreviation == 'PSP'
                       ? 'none'
                       : '',
                 }}
@@ -859,6 +841,7 @@ const GamePreview = ({
               background:
                 determineSideBanner() !== '' && `url(${determineSideBanner()})`,
               // backgroundSize: 'cover',
+              backgroundColor: game.abbreviation == 'X360' && 'white',
               backgroundPosition: '50% 100%',
               borderTop:
                 gamePlatform.abbreviation == 'X360' && '4px solid #5dc21e',

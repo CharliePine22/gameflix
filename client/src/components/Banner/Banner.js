@@ -16,13 +16,12 @@ function Banner({ setGameDetails, addGame, activeProfile }) {
   const bannerRef = useRef(null);
   const refVisible = useDetectOnScreen(bannerRef);
   const [playingVideo, setPlayingVideo] = useState(true);
+  const [trailerEnded, setTrailerEnded] = useState(false);
 
   useEffect(() => {
     if (!bannerGame.currentGame) return;
     setPlayingVideo(refVisible);
   }, [refVisible, bannerGame.currentGame]);
-
-  console.log(refVisible);
 
   // If the game description is longer that 150 characters, replace the reaminder with the ellipsis '...'
   const truncate = (str, n) => {
@@ -45,9 +44,14 @@ function Banner({ setGameDetails, addGame, activeProfile }) {
         <ReactPlayer
           className='banner__trailer'
           url={bannerGame.currentGameTrailer}
-          // poster={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${bannerGame.currentGame.cover?.image_id}.jpg`}
           playing={playingVideo ? true : false}
           muted={mutedVideo ? true : false}
+          onEnded={() => setTrailerEnded(true)}
+          light={
+            trailerEnded
+              ? `//images.igdb.com/igdb/image/upload/t_1080p_2x/${bannerGame.currentGame.cover?.image_id}.jpg`
+              : false
+          }
         />
         <>
           <div className='banner__contents'>

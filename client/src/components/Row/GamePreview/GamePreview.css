@@ -101,7 +101,7 @@
   height: 368px;
   background-position: center center !important;
   background-size: cover !important;
-  border-radius: 4px;
+  border-radius: 4px 4px 0 4px;
   transform: rotateY(180deg) translateZ(14px);
   position: absolute;
   top: 0;
@@ -112,7 +112,7 @@
 
 .game_preview__back_cover {
   height: 100%;
-  width: 100.3%;
+  width: 100%;
   position: absolute;
 }
 
@@ -527,11 +527,8 @@ div:has(> .box_open) {
   margin-right: 0px;
 }
 
-.ps2_banner p {
-  margin-left: 8px;
-  font-size: 0.65rem;
-  margin-bottom: 2px;
-  text-shadow: 2px 2px 1px black !important;
+.ps2_game_img {
+  height: 108% !important;
 }
 
 .ps3_banner {
@@ -567,6 +564,14 @@ div:has(> .box_open) {
   margin-bottom: 4px;
 }
 
+.psp_game_img,
+.ps2_game_img {
+  height: 150%;
+  width: 100%;
+  position: absolute;
+  top: -30px;
+}
+
 .seriesX_banner {
   justify-content: center;
 }
@@ -576,9 +581,17 @@ div:has(> .box_open) {
   font-family: verdana;
 }
 
+.wii_game_img {
+  height: 105%;
+  width: 101%;
+  position: absolute;
+  top: -28px;
+}
+
 .wii_banner {
   border-bottom: 2px solid grey;
   overflow: visible;
+  display: none;
 }
 
 .xbox360_banner {
@@ -632,10 +645,10 @@ div:has(> .box_open) {
 
 .game_preview__left {
   width: 28px;
-  height: 377px;
+  height: 375px;
   background-position: center !important;
   background-size: 100% 100% !important;
-  background-color: var(--color-theme);
+  background-color: var(--color-theme) !important;
   transform: rotateY(-89deg) translateZ(14px);
   position: absolute;
   top: 0px;
@@ -1047,7 +1060,7 @@ div:has(> .box_open) {
 }
 
 .glare-wrapper {
-  transform: translateZ(14px);
+  transform: translateZ(16px);
   height: 380px !important;
 
   border-top-right-radius: 4px !important;

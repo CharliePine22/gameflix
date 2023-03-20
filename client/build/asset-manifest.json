@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.762b4cba.css",
-    "main.js": "/static/js/main.3a298968.js",
+    "main.css": "/static/css/main.e177b3c6.css",
+    "main.js": "/static/js/main.55a0900c.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js",
     "reactPlayerSoundCloud.js": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js",
     "reactPlayerVimeo.js": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js",
@@ -99,8 +99,8 @@
     "static/media/mario_pixel_jumping.png": "/static/media/mario_pixel_jumping.2d3e818e95ef4a0db512.png",
     "static/media/nintendo3ds-logo2.png": "/static/media/nintendo3ds-logo2.c7e37eaf52ef8c373e44.png",
     "index.html": "/index.html",
-    "main.762b4cba.css.map": "/static/css/main.762b4cba.css.map",
-    "main.3a298968.js.map": "/static/js/main.3a298968.js.map",
+    "main.e177b3c6.css.map": "/static/css/main.e177b3c6.css.map",
+    "main.55a0900c.js.map": "/static/js/main.55a0900c.js.map",
     "reactPlayerYouTube.1122e8ff.chunk.js.map": "/static/js/reactPlayerYouTube.1122e8ff.chunk.js.map",
     "reactPlayerSoundCloud.1bd76904.chunk.js.map": "/static/js/reactPlayerSoundCloud.1bd76904.chunk.js.map",
     "reactPlayerVimeo.316a6b6d.chunk.js.map": "/static/js/reactPlayerVimeo.316a6b6d.chunk.js.map",
@@ -117,7 +117,7 @@
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.762b4cba.css",
-    "static/js/main.3a298968.js"
+    "static/css/main.e177b3c6.css",
+    "static/js/main.55a0900c.js"
   ]
 }

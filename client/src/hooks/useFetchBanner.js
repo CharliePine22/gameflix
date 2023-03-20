@@ -10,37 +10,45 @@ const useFetchBanner = () => {
   const twitchToken = localStorage.getItem('twitch_auth');
   const baseURL = process.env.REACT_APP_BASE_URL;
 
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const request = await axios.post(`${baseURL}/app/search_game`, {
+        token: twitchToken,
+        gameName: '',
+      });
+      const filteredList = await request.data.sort(function (a, b) {
+        return b.rating - a.rating;
+      });
+      const selectedGame =
+        filteredList[Math.floor(Math.random() * request.data.length - 1)];
+      setBannerGamesList(filteredList);
+      setCurrentGame(selectedGame);
+      let trailer = selectedGame.videos.find((video) =>
+        video.name.includes('Trailer')
+      );
+      setCurrentGameTrailer(
+        `https://www.youtube.com/watch?v=${trailer.video_id}`
+      );
+
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setServerError(error);
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!twitchToken || bannerGamesList.length > 0) return;
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const request = await axios.post(`${baseURL}/app/search_game`, {
-          token: twitchToken,
-          gameName: '',
-        });
-        const filteredList = await request.data.sort(function (a, b) {
-          return b.rating - a.rating;
-        });
-        const selectedGame =
-          filteredList[Math.floor(Math.random() * request.data.length - 1)];
-        setBannerGamesList(filteredList);
-        setCurrentGame(selectedGame);
-        let trailer = selectedGame.videos.find((video) =>
-          video.name.includes('Trailer')
-        );
-        setCurrentGameTrailer(
-          `https://www.youtube.com/watch?v=${trailer.video_id}`
-        );
 
-        setIsLoading(false);
-      } catch (error) {
-        setServerError(error);
-        setIsLoading(false);
-      }
-    };
     fetchData();
   }, [twitchToken]);
+
+  useEffect(() => {
+    if (!serverError) return;
+    fetchData();
+  }, [serverError]);
 
   const displayNewBanner = () => {
     const newGame =

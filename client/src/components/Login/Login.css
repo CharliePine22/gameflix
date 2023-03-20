@@ -174,17 +174,17 @@
 }
 
 .login__form_wrapper {
-  width: 400px;
+  width: 360px;
   z-index: 2;
 }
 
 .login__background {
   position: absolute;
   z-index: -1;
-  top: -180px;
+  top: -260px;
   left: -180px;
   opacity: 0.55;
-  /* transform: perspective(1500px) rotateX(6deg) rotateY(-11deg) rotateZ(4deg); */
+  transform: perspective(380px) rotateY(3deg) translateX(-210px) rotateX(0deg);
   width: 170%;
   overflow: hidden;
 }
@@ -230,9 +230,9 @@
 
   .login__img {
     height: 100%;
-    min-height: 10rem;
-    max-height: 10rem;
-    width: 12rem;
+    min-height: 13rem;
+    max-height: 13rem;
+    width: 10rem;
     margin: 0;
     border: 3px solid transparent;
   }
@@ -312,9 +312,9 @@
   }
 
   .login__img {
-    min-height: 11rem;
-    max-height: 11rem;
-    width: 10rem;
+    min-height: 12rem;
+    max-height: 12rem;
+    width: 8rem;
   }
 }
 

@@ -4,7 +4,7 @@ import Placeholder from '../Placeholder/Placeholder';
 import GamePreview from '../Row/GamePreview/GamePreview';
 import axios from 'axios';
 
-const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
+const TrendingRow = ({ twitchToken, setGameDetails }) => {
   const [games, setGames] = useState([]);
   const [currentGame, setCurrentGame] = useState('');
   const [displayDetails, setDisplayDetails] = useState(false);
@@ -18,11 +18,12 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
     if (!twitchToken) return;
     if (trendingTitlesFetched && trendingTitlesFetched.length > 0) {
       setGames(trendingTitlesFetched);
+      setLoading(false);
       return;
     }
     // Grab games from each genre
-    setLoading(true);
     async function fetchData() {
+      setLoading(true);
       try {
         let trendingTitles = [];
         const request = await axios.post(`${baseURL}/app/trending`, {
@@ -41,16 +42,28 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
           (game) => typeof game == 'object' && trendingTitles.push(game)
         );
 
-        setGames(trendingList);
-        sessionStorage.setItem('trending', JSON.stringify(trendingList));
+        trendingTitles.sort(
+          (a, b) =>
+            b.release_dates.findLast((dates) => dates.date) -
+              a.release_dates.findLast((dates) => dates.date) ||
+            b.hypes - a.hypes
+        );
+
+        setGames(trendingTitles.slice(0, 10));
+
+        sessionStorage.setItem(
+          'trending',
+          JSON.stringify(trendingTitles.slice(0, 10))
+        );
         setLoading(false);
         return request;
       } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     }
     fetchData();
-  }, [twitchToken, trendingList]);
+  }, [twitchToken]);
 
   // Grab trailer video from selected game
   const fetchGameDetails = (game) => {
@@ -63,14 +76,6 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
     setCurrentlyOpen(null);
     setCurrentGame(null);
   };
-
-  games?.sort((a, b) =>
-    a.rating_count > b.rating_count
-      ? -1
-      : b.rating_count > a.rating_count
-      ? 1
-      : 0
-  );
 
   if (loading)
     return (
@@ -105,7 +110,7 @@ const TrendingRow = ({ twitchToken, setGameDetails, trendingList }) => {
                     <img
                       loading='lazy'
                       className='trending_row__poster'
-                      src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.game.cover?.image_id}.jpg`}
+                      src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                       alt={game.name}
                     />
                   </>

@@ -7,6 +7,7 @@ const passport = require('passport');
 const session = require('express-session');
 const passportSteam = require('passport-steam');
 const SteamStrategy = passportSteam.Strategy;
+const CompressionPlugin = require('compression-webpack-plugin');
 
 // Route imports
 const routesUrls = require('./routes/routes');
@@ -136,3 +137,7 @@ app.get(
     res.redirect('/');
   }
 );
+
+module.exports = {
+  plugins: [new CompressionPlugin()],
+};

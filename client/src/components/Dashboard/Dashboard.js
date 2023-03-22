@@ -44,8 +44,6 @@ const Dashboard = ({
   // Spotify States
   const [currentTrack, setCurrentTrack] = useState(null);
   const [playAudio, setPlayAudio] = useState(false);
-  const [currentPlaylist, setCurrentPlaylist] = useState([]);
-  const [trendingList, setTrendingList] = useState([]);
   const [rowsLoading, setRowsLoading] = useState();
 
   // User states
@@ -70,54 +68,6 @@ const Dashboard = ({
   useEffect(() => {
     if (!currentGameOpen) document.body.style.overflow = 'auto';
   }, []);
-
-  useEffect(() => {
-    if (trendingList.length > 0 || !twitchToken) return;
-
-    const fetchSteamTrending = async () => {
-      const request = await axios.get(`${baseURL}/steam/steam_trending`);
-
-      return request.data;
-    };
-
-    const fetchTrendingGames = async () => {
-      const trendingGameNames = await fetchSteamTrending();
-      const mapObj = {
-        Poke: 'Poké',
-        '*': '',
-        '(2022)': '',
-        '(2023)': '',
-        '/Violet*': '',
-      };
-
-      const trendingGamesList = await Promise.all(
-        trendingGameNames.map((game) => {
-          game = game.replace(
-            /Poke|'*'|(2022)|(2023)|\/Violet*/g,
-            function (matched) {
-              return mapObj[matched];
-            }
-          );
-          // Get rid of symbols regex cant handle w/o slowing down (FIND FIX)
-          game = game.replace('undefined', '');
-          game = game.replace('*', '');
-          game = game.replace('()', '');
-
-          return axios.post(`${baseURL}/app/search_trending_game`, {
-            token: twitchToken,
-            gameName: game,
-          });
-        })
-      );
-
-      console.log(trendingGamesList);
-
-      setTrendingList(trendingGamesList.map((game) => game.data[0]));
-      return trendingGamesList;
-    };
-
-    fetchTrendingGames();
-  }, [trendingList, twitchToken]);
 
   //   setViewingSoundtrack(false);
   //   if (!spotifyToken) {
@@ -264,7 +214,6 @@ const Dashboard = ({
         <TrendingRow
           twitchToken={twitchToken}
           setGameDetails={(game) => setGameDetails(game)}
-          trendingList={trendingList}
         />
 
         {currentGameOpen && (

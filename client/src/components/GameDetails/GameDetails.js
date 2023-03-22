@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './GameDetails.css';
 import youtube from '../../youtubeAPI';
-import ReactPlayer from 'react-player/lazy';
 import axios from 'axios';
 
 // Game Platform Logo Images

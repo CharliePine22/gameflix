@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 
@@ -263,14 +263,9 @@ function App() {
           />
         }
       />
-
-      {/* <Route path='/details' 
-      
-      /> */}
-
       <Route
         path='/'
-        element={
+        element={lazy(
           <Dashboard
             fetchGame={(game) => fetchSubmittedGame(game)}
             currentUser={loggedUser}
@@ -289,17 +284,10 @@ function App() {
             removeGame={(game) => removeGameHandler(game)}
             logoutUser={logoutHandler}
           />
-        }
+        )}
       />
     </Routes>
   );
-  // } else {
-  //   return (
-  //     <div className='auth_login__loading'>
-  //       <div className='auth_loading_spinner' />
-  //     </div>
-  //   );
-  // }
 }
 
 export default App;

@@ -158,11 +158,7 @@ router.get('/spotify_album', async (req, res) => {
       tracks: albumTracks.body.items,
     });
   } catch (error) {
-    res.send({
-      code: 400,
-      status: 'ERROR',
-      message: error,
-    });
+    res.send(error);
   }
 });
 
@@ -277,6 +273,7 @@ router.post('/game_genre', async (req, res) => {
       body: `fields *, artworks.*, age_ratings.*, name, cover.*, external_games.*, genres.*, involved_companies.*, involved_companies.company.*, release_dates.*, release_dates.platform, platforms.*, platforms.platform_logo.*, screenshots.*, rating, themes.name, videos.*; sort rating_count desc; where (rating != null & rating_count > 0 & category != (1,5) & themes != 42 & genres = ${genreId}); limit 30;`,
     });
     const result = await request.json();
+    res.setHeader('Set-Cookie', 'HttpOnly;Secure;SameSite=Strict');
     res.send({ [genreTitle]: result });
   } catch (error) {
     console.log(error);
@@ -285,6 +282,7 @@ router.post('/game_genre', async (req, res) => {
 
 router.get('/get_genres', async (req, res) => {
   const allGenres = await genreModel.find({});
+  res.setHeader('Set-Cookie', 'HttpOnly;Secure;SameSite=Strict');
   res.send(allGenres);
   return;
 });

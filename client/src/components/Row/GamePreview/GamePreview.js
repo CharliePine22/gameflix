@@ -1,7 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { SiApplemusic, SiAddthis } from 'react-icons/si';
-import { AiOutlineExpandAlt } from 'react-icons/ai';
-import ReactPlayer from 'react-player/lazy';
 import './GamePreview.css';
 import Tilt from 'react-parallax-tilt';
 
@@ -88,19 +85,14 @@ import useProgressiveImage from '../../../hooks/useProgressiveImage';
 
 const GamePreview = ({
   game,
-  hideDetails,
   gameCover,
   ratingImage,
-  displayDetails,
-  fetchGameDetails,
   addGame,
-  viewGameSoundtrack,
   viewingPreview,
   openGame,
   closeGame,
 }) => {
   const bgLoaded = useProgressiveImage(gameCover);
-  const [unmounting, setUnmounting] = useState(false);
   const [playingDisc, setPlayingDisc] = useState(false);
   const [marioTransition, setMarioTransition] = useState(false);
   const [hoveringAdd, setHoveringAdd] = useState(false);
@@ -392,14 +384,6 @@ const GamePreview = ({
     }
   };
 
-  // Wait for animation to finish before closing details
-  const closeDetails = () => {
-    setUnmounting(true);
-    setTimeout(function () {
-      hideDetails();
-    }, 150);
-  };
-
   // Based on the game platform, adjust the colors to reflect the platform/console color scheme
   const determineCoverColor = () => {
     if (!gamePlatform) return;
@@ -436,7 +420,6 @@ const GamePreview = ({
         return '#5dc21e';
       default:
         return '#172d3e';
-      // return 'linear-gradient(120deg, #00adee, #000000);';
     }
   };
 
@@ -445,11 +428,10 @@ const GamePreview = ({
     audio.play();
     setMarioTransition(true);
     await new Promise((res) => setTimeout(res, 1600));
-    fetchGameDetails(game);
     setMarioTransition(false);
   };
 
-  if (!bgLoaded || !game) return;
+  if (!bgLoaded) return;
 
   return (
     <div className='game_preview__wrapper' onClick={() => console.log(game)}>
@@ -637,16 +619,6 @@ const GamePreview = ({
                     '--color-theme': determineCoverColor(),
                   }}
                 />
-                {/* {game.videos && (
-                <ReactPlayer
-                  url={`https://www.youtube.com/watch?v=${game?.videos[0]?.video_id}`}
-                  className='trailer'
-                  width='100%'
-                  height='250px'
-                  playing={true}
-                  onReady={() => setLoading(false)}
-                />
-              )} */}
               </div>
             </div>
           )}
@@ -840,7 +812,6 @@ const GamePreview = ({
               '--color-theme': determineCoverColor(),
               background:
                 determineSideBanner() !== '' && `url(${determineSideBanner()})`,
-              // backgroundSize: 'cover',
               backgroundColor: game.abbreviation == 'X360' && 'white',
               backgroundPosition: '50% 100%',
               borderTop:

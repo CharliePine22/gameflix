@@ -44,7 +44,6 @@ router.get('/steam_trending', async (req, res) => {
     });
 
     res.send(tags.slice(0, 10));
-    // res.json(result);
     return;
   } catch (error) {
     res.send(error);
@@ -77,8 +76,6 @@ const getNewReleases = async () => {
       return { link };
     });
   });
-
-  console.log(games);
 
   const nameValues = games.map(async (element) => {
     const searchPage = await browser.newPage();

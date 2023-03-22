@@ -3,7 +3,14 @@ import GamePreview from './GamePreview/GamePreview';
 import './Row.css';
 import axios from 'axios';
 import Placeholder from '../Placeholder/Placeholder';
-import { FaPlay, FaPause } from 'react-icons/fa';
+import {
+  FaPlay,
+  FaPause,
+  FaPlusSquare,
+  FaGamepad,
+  FaMusic,
+} from 'react-icons/fa';
+import { CiSquareMore } from 'react-icons/ci';
 // ESRB Logos
 import eRating from '../../assets/images/ESRB_E.png';
 import tRating from '../../assets/images/ESRB_T.png';
@@ -27,18 +34,20 @@ function Row({
   setNotification,
   loading,
 }) {
-  const [currentGame, setCurrentGame] = useState('');
+  const [currentGame, setCurrentGame] = useState(null);
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
-  const [displayDetails, setDisplayDetails] = useState(false);
-  const baseURL = process.env.REACT_APP_BASE_URL;
   const [viewingPreview, setViewingPreview] = useState(false);
+  const [hoveringGame, setHoveringGame] = useState(null);
+  const [playlistLoading, setPlaylistLoading] = useState(false);
 
   const genreTitle = genreDetails[0][0];
   const genreList = genreDetails[0][1];
 
   const fetchGameOST = async (game) => {
     if (!spotifyToken) {
+      setCurrentGame(null);
       setNotification(
         'ERROR',
         'Please connect to Spotify through the nav dropdown!'
@@ -46,9 +55,10 @@ function Row({
       return;
     }
     try {
+      setPlaylistLoading(true);
       const request = await axios.get(`${baseURL}/app/spotify_album`, {
         params: {
-          game,
+          game: game.name,
           token: spotifyToken,
           baseURL,
         },
@@ -56,18 +66,21 @@ function Row({
       if (request.data.status !== 'OK') {
         window.location = '/';
         localStorage.removeItem('spotify_token');
+        setPlaylistLoading(false);
       } else {
+        setCurrentGame(game.id);
         setCurrentPlaylist(request.data.tracks);
         setViewingSoundtrack(true);
+        setPlaylistLoading(false);
+
+        return request.data.tracks;
       }
     } catch (error) {
       console.log(error);
       console.log('OST FETCH ISSUE');
+      setPlaylistLoading(false);
+      return;
     }
-  };
-
-  const imgLoaded = () => {
-    const isReady = false;
   };
 
   // Grab trailer video from selected game
@@ -84,8 +97,8 @@ function Row({
   const viewGameSoundtrack = (e, game) => {
     e.stopPropagation();
     closeGameWindow();
-    fetchGameOST(game.name);
-    setCurrentGame(game.name);
+    setCurrentGame(game.id);
+    fetchGameOST(game);
   };
 
   const closeGameSoundtrack = (e) => {
@@ -155,43 +168,68 @@ function Row({
                         currentGameOpen !== null &&
                         '-1',
                     }}
+                    onMouseOver={() => setHoveringGame(game.id)}
+                    onMouseLeave={() =>
+                      viewingSoundtrack
+                        ? setHoveringGame(game.id)
+                        : setHoveringGame(null)
+                    }
                   >
-                    <div
-                      className={`row__poster_container ${
-                        viewingSoundtrack && currentGameOpen == game.id
-                          ? 'flip'
-                          : ''
-                      }`}
-                      onClick={() => openGame(game)}
-                    >
-                      <>
-                        {/* FRONT OF POSTER */}
-                        <div
-                          className='row__poster_front'
-                          style={{
-                            transformStyle: currentGameOpen && 'revert',
-                          }}
-                        >
-                          <img
-                            loading='lazy'
-                            className='row__poster'
-                            src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
-                            alt={game.name}
-                          />
-                        </div>
-                        {/* BACK OF POSTER */}
-                        <div
-                          className='row__poster_back'
-                          onClick={closeGameSoundtrack}
-                        >
-                          <h3>{game?.name} Spotify OST</h3>
-                          <img
-                            loading='lazy'
-                            className='row__poster_back_img'
-                            src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
-                            alt={game.name}
-                          />
+                    {hoveringGame == game.id && !currentGameOpen && (
+                      <div className='row__blur_wrapper'>
+                        {!playlistLoading ? (
+                          <div
+                            className='row__blur_details'
+                            style={{
+                              display: currentGame == game.id && 'none',
+                            }}
+                          >
+                            {/* ADD GAME */}
+                            <div
+                              className='row__blur_item'
+                              onClick={(e) => addGameHandler(e, game)}
+                            >
+                              <FaPlusSquare className='blur_item_icon' />
+                              <p>Add</p>
+                            </div>
+                            {/* GET DETAILS */}
+                            <div
+                              className='row__blur_item'
+                              onClick={() => {
+                                fetchGameDetails(game);
+                              }}
+                            >
+                              <CiSquareMore className='blur_item_icon more' />
+                              <p>See Details</p>
+                            </div>
+                            {/* GET SOUNDTRACK */}
+                            <div
+                              onClick={(e) => viewGameSoundtrack(e, game)}
+                              className='row__blur_item'
+                            >
+                              <FaMusic className='blur_item_icon music' />
+                              <p>Play Soundtrack</p>
+                            </div>
+                            {/* VIEW 3D CASE */}
+                            <div
+                              className='row__blur_item'
+                              onClick={() => openGame(game)}
+                            >
+                              <FaGamepad className='blur_item_icon' />
+                              <p>View Case</p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className='playlist_loading'>
+                            <div className='playlist_loading_dot' />
+                            <div className='playlist_loading_dot' />
+                            <div className='playlist_loading_dot' />
+                          </div>
+                        )}
+                        {viewingSoundtrack && currentGame == game.id && (
                           <div className='soundtrack_container'>
+                            <span>X</span>
+                            <h3>{game.name} Spotify OST</h3>
                             <ul className='soundtracks'>
                               {currentPlaylist?.map((track) => (
                                 <li
@@ -230,6 +268,24 @@ function Row({
                               ))}
                             </ul>
                           </div>
+                        )}
+                      </div>
+                    )}
+                    <div className='row__poster_container'>
+                      <>
+                        {/* FRONT OF POSTER */}
+                        <div
+                          className='row__poster_front'
+                          style={{
+                            transformStyle: currentGameOpen && 'revert',
+                          }}
+                        >
+                          <img
+                            loading='lazy'
+                            className='row__poster'
+                            src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
+                            alt={game.name}
+                          />
                         </div>
                       </>
                     </div>
@@ -239,14 +295,6 @@ function Row({
                         gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
                         ratingImage={determineESRB(game)}
                         addGame={addGameHandler}
-                        displayDetails={displayDetails}
-                        hideDetails={closeGameWindow}
-                        fetchGameDetails={(game) => {
-                          fetchGameDetails(game);
-                        }}
-                        viewGameSoundtrack={(e, game) => {
-                          viewGameSoundtrack(e, game);
-                        }}
                         viewingPreview={viewingPreview}
                         openGame={() => setViewingPreview(true)}
                         closeGame={() => setViewingPreview(false)}

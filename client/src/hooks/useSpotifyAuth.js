@@ -23,7 +23,7 @@ export default function useSpotifyAuth(code) {
         setExpiresIn(request.data.tokenRequest.body.expires_in);
         window.history.pushState({}, null, '/');
       } catch (error) {
-        console.log('GET TOKEN ERROR');
+        console.log(error);
         window.location = '/';
       }
     };

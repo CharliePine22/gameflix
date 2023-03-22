@@ -79,7 +79,7 @@
 .form__submit_btn {
   width: 100%;
   padding: 15px;
-  margin: 3rem 0 1rem;
+  margin: 1rem 0 1rem;
   cursor: pointer;
   color: #fff;
   background-color: #9147ff;
@@ -93,7 +93,7 @@
 .login__form_actions {
   display: flex;
   flex-direction: column;
-  margin: 0 0 20px;
+  margin-bottom: 30px;
   position: relative;
 }
 
@@ -163,8 +163,8 @@
   flex-direction: column;
   margin: 0;
   width: 100%;
-  min-height: 525px;
-  padding: 60px 48px 40px;
+  min-height: 465px;
+  padding: 40px 48px;
   box-shadow: rgb(0 0 0 / 80%) 0px 3px 8px;
 }
 

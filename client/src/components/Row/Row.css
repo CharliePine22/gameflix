@@ -1,7 +1,105 @@
+.playlist_loading {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playlist_loading_dot {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #4b9cdb;
+  margin: 0 3px;
+}
+
+.playlist_loading_dot:nth-last-child(3) {
+  animation: jumpingAnimation 0.5s 0.1s ease-in infinite;
+}
+.playlist_loading_dot:nth-last-child(2) {
+  animation: jumpingAnimation 0.5s 0.2s ease-in infinite;
+}
+.playlist_loading_dot:nth-last-child(1) {
+  animation: jumpingAnimation 0.5s 0.3s ease-in infinite;
+}
+
+.row__blur_details {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.row__blur_details p {
+  font-weight: 500;
+  font-size: 1.3rem;
+}
+
+.blur_item_icon {
+  margin-right: 10px;
+  height: 20px;
+  width: 23px;
+  transition: all 180ms ease-in-out;
+}
+
+.blur_item_icon.more {
+  height: 22px;
+  width: 22px;
+}
+
+.blur_item_icon.music {
+  height: 18px;
+  width: 18px;
+}
+
+.row__blur_item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: all 180ms ease-in-out;
+}
+
+.row__blur_item:hover {
+  opacity: 1;
+}
+
+.row__blur_item:nth-of-type(1):hover .blur_item_icon {
+  color: #df0024;
+}
+.row__blur_item:nth-of-type(2):hover .blur_item_icon {
+  color: #f3c300;
+}
+.row__blur_item:nth-of-type(3):hover .blur_item_icon {
+  color: #00ac9f;
+}
+.row__blur_item:nth-of-type(4):hover .blur_item_icon {
+  color: #2e6db4;
+}
+
+.row__blur_wrapper {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  backdrop-filter: blur(2px);
+  transition: backdrop-filter 500ms linear;
+  overflow-y: scroll;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.row__blur_wrapper::-webkit-scrollbar {
+  display: none;
+}
+
 .row__loading_container {
   display: flex;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 .row {
@@ -69,8 +167,6 @@
   min-height: 340px;
   max-height: 340px;
   transform-style: preserve-3d;
-  /* box-shadow: -3px 3px 5px #000; */
-  /* box-shadow: 0 2px 9px 3px #000; */
 }
 
 .row__poster_container.flip {
@@ -178,14 +274,13 @@
 .row__poster_wrapper {
   position: relative;
   transform-style: preserve-3d;
-  transition: all 250ms ease-in-out;
+  transition: all 250ms ease-in-out, filter 170ms linear;
   z-index: 3;
   border-radius: 4px;
   margin-right: 25px;
   height: 100%;
-  /* width: 100%; */
   box-shadow: -1px 3px 5px 1px #000;
-  /* transform: perspective(530px) translateZ(10px) rotateY(4deg); */
+  cursor: pointer;
 }
 
 /* Left Side Of Case */
@@ -217,10 +312,11 @@
 }
 
 .row__poster_wrapper:hover {
-  box-shadow: -6px 3px 3px 1px rgb(0 0 0 / 50%);
-  /* transform: perspective(530px) translateZ(10px) rotateY(4deg); */
-
   transform: translate3d(1px, -3px, 0px);
+}
+
+.row__poster_wrapper:hover .row__poster_container {
+  box-shadow: -6px 3px 3px 1px rgb(0 0 0 / 50%);
 }
 
 .row__poster_wrapper:hover > .row__poster_name {
@@ -268,18 +364,24 @@
 
 .row__title {
   font-size: 1.6rem;
-  /* font-style: italic; */
   text-shadow: 4px 4px 2px black;
 }
 
 .soundtrack_container {
   width: 100%;
+  position: absolute;
+  height: 100%;
+}
+
+.soundtrack_container h3 {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: -5px 0 5px;
 }
 
 .soundtracks {
   list-style: none;
   padding: 0;
-  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -293,7 +395,7 @@
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid white;
   border-radius: 4px;
-  padding: 2px 15px 2px 10px;
+  padding: 2px 5px 2px 5px;
   justify-content: space-between;
   align-items: center;
   font-size: 0.8rem;
@@ -349,10 +451,27 @@
   }
 }
 
+@keyframes jumpingAnimation {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 15px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 /* Mobile Devices */
 @media screen and (min-width: 320px) and (max-width: 500px) {
   .row {
     padding-bottom: 10px;
+  }
+
+  .row__blur_details p {
+    font-weight: 500;
+    font-size: 1.1rem;
   }
 
   .row__title {

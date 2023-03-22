@@ -3,9 +3,8 @@
   border: 2px solid white;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  /* object-fit: cover; */
-  /* width: 100%; */
   width: 85%;
+  max-width: 450px;
 }
 
 .stage {
@@ -117,7 +116,6 @@
   animation: displayDetails 300ms ease-in;
   margin: 0 12px;
   height: 100%;
-  /* padding-bottom: 12px; */
 }
 
 .game_details__container h2 {
@@ -232,7 +230,6 @@
   position: relative;
   height: 100%;
   align-items: center;
-  /* height: 620px; */
   justify-content: space-evenly;
 }
 
@@ -249,7 +246,6 @@
 
 .game_platform_logo {
   height: 25px;
-  /* width: 32px; */
   filter: drop-shadow(3px 4px 1px #000);
   margin-right: 5px;
   object-fit: contain;
@@ -290,7 +286,6 @@
 
 .game_details__title {
   font-size: 2rem;
-  /* text-shadow: 5px 4px 3px black; */
   text-shadow: 0px 0 white, 0 0px white, 0px 0 white, 0 0px white, 0px 0px white,
     0px 0px white, 0px 1px white, 1px 0px white;
   text-transform: uppercase;
@@ -366,7 +361,6 @@
   border: 1px solid white;
   border-radius: 2px;
   max-width: 54%;
-  /* margin: 0 20px; */
 }
 
 .publisher,
@@ -396,7 +390,6 @@
   padding: 0;
   width: 100%;
   text-align: center;
-  /* max-width: 60%; */
 }
 
 .platforms_list {
@@ -413,7 +406,6 @@
   height: -webkit-fill-available;
   min-height: 110px;
   width: 98%; /* Set width to 98 to fit active border */
-  /* object-fit: cover; */
   cursor: pointer;
 }
 
@@ -439,10 +431,6 @@
 .similar_game__details {
   height: 100%;
   width: 100%;
-  /* display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center; */
   padding: 0;
   position: relative;
 }
@@ -523,10 +511,6 @@
     max-width: 330px;
   }
 
-  .game_details__media {
-    /* height: 585px; */
-  }
-
   .game_details__container h2 {
     font-size: 2.5rem;
     margin: 15px 0px 25px;
@@ -561,10 +545,6 @@
     justify-content: space-evenly;
   }
 
-  /* .game_details__media {
-    height: 590px;
-  } */
-
   .game_details__title {
     font-size: 1.6rem;
   }
@@ -586,13 +566,7 @@
     width: 96%;
   }
 
-  /* .game_details__details {
-    height: 500px;
-    justify-content: space-between;
-  } */
-
   .game_details__esrb {
-    /* margin-top: 50px; */
     height: 100%;
   }
 
@@ -630,7 +604,6 @@
   .game_details__platforms,
   .game_details__rating,
   .game_details__released {
-    /* height: 60px; */
     justify-content: flex-start;
   }
 
@@ -644,7 +617,6 @@
 
   .platforms_list {
     justify-content: center;
-    /* height: 80px; */
   }
 }
 
@@ -680,17 +652,9 @@
     font-size: 1rem;
   }
 
-  /* .game_details__description_container {
-    margin-top: 210px;
-  } */
-
   .game_details__details {
     margin: 0;
     height: auto;
-  }
-
-  .game_details__media {
-    /* height: 450px; */
   }
 
   .game_details__screenshots {
@@ -741,7 +705,7 @@
   .media_placeholder {
     width: 100%;
     margin-bottom: 20px;
-    height: 550px;
+    height: 450px;
   }
 
   .media_soundtrack__container {

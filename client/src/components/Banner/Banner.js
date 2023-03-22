@@ -8,6 +8,7 @@ function Banner({ setGameDetails, addGame, activeProfile }) {
   const bannerGame = useFetchBanner();
   const bannerRef = useRef();
 
+  console.log(bannerGame.currentGame.id);
   // Don't allow user to add game if already in collection
   const exists =
     activeProfile.collection &&
@@ -24,8 +25,6 @@ function Banner({ setGameDetails, addGame, activeProfile }) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          //do your actions here
-          console.log('It works!');
           setPlayingVideo(true);
         } else {
           setPlayingVideo(false);
@@ -64,18 +63,20 @@ function Banner({ setGameDetails, addGame, activeProfile }) {
   return (
     <header className='banner' key={bannerGame.currentGame.id}>
       <div ref={bannerRef} style={{ width: '100%', height: '100%' }}>
-        <ReactPlayer
-          className='banner__trailer'
-          url={bannerGame.currentGameTrailer}
-          playing={playingVideo ? true : false}
-          muted={mutedVideo ? true : false}
-          onEnded={() => setTrailerEnded(true)}
-          light={
-            trailerEnded
-              ? `//images.igdb.com/igdb/image/upload/t_1080p_2x/${bannerGame.currentGame.cover?.image_id}.jpg`
-              : false
-          }
-        />
+        {bannerGame.currentGameTrailer && (
+          <ReactPlayer
+            className='banner__trailer'
+            url={bannerGame.currentGameTrailer}
+            playing={playingVideo ? true : false}
+            muted={mutedVideo ? true : false}
+            onEnded={() => setTrailerEnded(true)}
+            light={
+              trailerEnded
+                ? `//images.igdb.com/igdb/image/upload/t_1080p_2x/${bannerGame.currentGame.cover?.image_id}.jpg`
+                : false
+            }
+          />
+        )}
 
         <div className='banner__contents'>
           <h1 className='banner__title'>{bannerGame.currentGame?.name}</h1>

@@ -265,7 +265,7 @@ function App() {
       />
       <Route
         path='/'
-        element={lazy(
+        element={
           <Dashboard
             fetchGame={(game) => fetchSubmittedGame(game)}
             currentUser={loggedUser}
@@ -284,7 +284,7 @@ function App() {
             removeGame={(game) => removeGameHandler(game)}
             logoutUser={logoutHandler}
           />
-        )}
+        }
       />
     </Routes>
   );

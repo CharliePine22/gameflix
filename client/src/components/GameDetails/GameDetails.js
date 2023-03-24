@@ -37,7 +37,6 @@ const GameDetails = ({
 }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const [gameDetails, setGameDetails] = useState({});
-  const [gameTrailer, setGameTrailer] = useState('');
   const [loading, setLoading] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [activeScreenshot, setActiveScreenshot] = useState('');
@@ -62,7 +61,6 @@ const GameDetails = ({
         );
       if (!result[0].status < 400) {
         setGameDetails(result[0]);
-        if (result[0].videos) setGameTrailer(result[0]?.videos[0]?.video_id);
       } else {
         setError(
           `Sorry ${activeProfile.name} but our princess is in another castle! Please try again!`
@@ -83,30 +81,6 @@ const GameDetails = ({
     searchGameDetails(game);
     setActiveScreenshot('');
   }, [game]);
-
-  useEffect(() => {
-    const fetchYoutubeTrailer = async () => {
-      try {
-        const trailerRequest = await youtube.youtubeAPI.get('/search', {
-          params: {
-            q: game.name + ' Trailer',
-          },
-        });
-        // https://www.youtube.com/watch?v=NmNn5jfoUH0
-
-        // setDetails((previousDetails) => ({
-        //   ...previousDetails,
-        //   trailer: trailerRequest.data.items[0],
-        // }));
-      } catch (error) {
-        if (error.response.status !== 200) {
-          console.log('No youtube issue');
-          return null;
-        }
-      }
-    };
-    // fetchYoutubeTrailer();
-  }, []);
 
   const toggleFullDescription = () => {
     setShowFullDescription(!showFullDescription);

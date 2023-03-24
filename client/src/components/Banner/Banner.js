@@ -8,7 +8,6 @@ function Banner({ setGameDetails, addGame, activeProfile }) {
   const bannerGame = useFetchBanner();
   const bannerRef = useRef();
 
-  console.log(bannerGame.currentGame.id);
   // Don't allow user to add game if already in collection
   const exists =
     activeProfile.collection &&

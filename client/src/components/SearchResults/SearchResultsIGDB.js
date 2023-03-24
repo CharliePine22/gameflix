@@ -12,9 +12,12 @@ import eRating from '../../assets/images/ESRB_E.png';
 import tRating from '../../assets/images/ESRB_T.png';
 import mRating from '../../assets/images/ESRB_M.png';
 import rpRating from '../../assets/images/ESRB_RP.png';
+import GameDetails from '../GameDetails/GameDetails';
+import Notification from '../Notification/Notification';
 
 const SearchResultsIGDB = ({
   setGameDetails,
+  game,
   closeSearchResults,
   currentGameOpen,
   openGame,
@@ -52,8 +55,10 @@ const SearchResultsIGDB = ({
       if (searchString !== '') {
         if (!recentSearches) {
           localStorage.setItem('searches', JSON.stringify([searchString]));
+          setRecentSearchList(recentSearches);
         } else {
           recentSearches.push(searchString);
+          setRecentSearchList(recentSearches);
           localStorage.setItem('searches', JSON.stringify(recentSearches));
         }
       }
@@ -65,11 +70,6 @@ const SearchResultsIGDB = ({
       setSearchFinished(true);
       console.log(error);
     }
-
-    // if (request.data.length == 0) {
-    //   setSearchFinished(true);
-    //   setSearchSubmitted(false);
-    // }
   };
 
   useEffect(() => {
@@ -136,6 +136,24 @@ const SearchResultsIGDB = ({
     openGame(game);
   };
 
+  console.log(game);
+
+  // if(gameDetails) {
+  //   <><GameDetails
+  //     setNotification={(status, message) => setNotification({ status, message })}
+  //     game={gameDetails}
+  //     closeDetails={() => setGameDetails(null)}
+  //     twitchToken={twitchToken}
+  //     addGame={(game) => addGame(game)}
+  //     removeGame={(game) => removeGame(game)}
+  //     activeProfile={currentProfile} /><Notification
+  //       notification={notification}
+  //       displayNotification={displayNotification}
+  //       hideNotification={() => {
+  //         setNotification({ message: '', status: '' });
+  //       } } /></>
+  // }
+
   // Skeleton Loader
   if (searchSubmitted && !searchFinished) {
     return (
@@ -183,17 +201,6 @@ const SearchResultsIGDB = ({
     );
   }
 
-  if (searchResults == null) {
-    return (
-      <div className='search_results__error'>
-        <p>
-          Sorry, no results for current game, please refine your search and try
-          again!
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div className='search_results'>
       {/* SEARCH NAV */}
@@ -228,9 +235,6 @@ const SearchResultsIGDB = ({
               fetchGameDetails={(game) => {
                 setGameDetails(game);
               }}
-              // viewGameSoundtrack={(e, game) => {
-              //   viewGameSoundtrack(e, game);
-              // }}
               viewingPreview={viewingPreview}
               openGame={() => setViewingPreview(true)}
               closeGame={() => setViewingPreview(false)}
@@ -253,55 +257,67 @@ const SearchResultsIGDB = ({
                 ))}
           </ul>
         </div>
-        <h2>Top Results</h2>
+        {searchResults.length == 0 && (
+          <div className='search_results__error'>
+            <p>
+              Sorry, no results for current game, please refine your search and
+              try again!
+            </p>
+          </div>
+        )}
 
-        {/* Top 3 Search Results */}
-        <div className='top_results_row'>
-          {searchResults.slice(0, 3)?.map((game) => (
-            <div
-              className='top_result_container'
-              key={game.id}
-              onClick={() => setGameDetails(game)}
-            >
-              <div className='top_result_upper'>
+        {searchResults.length > 0 && (
+          <>
+            <h2>Top Results</h2>
+            {/* Top 3 Search Results */}
+            <div className='top_results_row'>
+              {searchResults.slice(0, 3)?.map((game) => (
                 <div
-                  className='result_publisher'
-                  onClick={(e) => displayGameCase(e, game)}
+                  className='top_result_container'
+                  key={game.id}
+                  onClick={() => setGameDetails(game)}
                 >
-                  <h3>3D</h3>
+                  <div className='top_result_upper'>
+                    <div
+                      className='result_publisher'
+                      onClick={(e) => displayGameCase(e, game)}
+                    >
+                      <h3>3D</h3>
+                    </div>
+                    <img
+                      src={`//images.igdb.com/igdb/image/upload/t_screenshot_big/${
+                        game.artworks
+                          ? game.artworks[0]?.image_id
+                          : game.cover?.image_id
+                      }.jpg`}
+                    />
+                  </div>
+                  <div className='top_result_lower'>
+                    <h3 className='game_name'>
+                      {game.name || <Skeleton count={1} />}
+                    </h3>
+                    <ul className='game_theme_list'>
+                      {game.themes?.map(
+                        (theme) =>
+                          theme.name !== 'Sandbox' && (
+                            <li key={theme.id}>{theme.name}</li>
+                          )
+                      )}
+                    </ul>
+                  </div>
+                  <div
+                    className='game_cover'
+                    style={{
+                      backgroundSize: '100% 100%',
+                      backgroundImage: `url(//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg)`,
+                      backgroundPosition: 'center',
+                    }}
+                  />
                 </div>
-                <img
-                  src={`//images.igdb.com/igdb/image/upload/t_screenshot_big/${
-                    game.artworks
-                      ? game.artworks[0]?.image_id
-                      : game.cover?.image_id
-                  }.jpg`}
-                />
-              </div>
-              <div className='top_result_lower'>
-                <h3 className='game_name'>
-                  {game.name || <Skeleton count={1} />}
-                </h3>
-                <ul className='game_theme_list'>
-                  {game.themes?.map(
-                    (theme) =>
-                      theme.name !== 'Sandbox' && (
-                        <li key={theme.id}>{theme.name}</li>
-                      )
-                  )}
-                </ul>
-              </div>
-              <div
-                className='game_cover'
-                style={{
-                  backgroundSize: '100% 100%',
-                  backgroundImage: `url(//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg)`,
-                  backgroundPosition: 'center',
-                }}
-              />
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
         {/* Remaining Games */}
         {searchResults.length > 0 && (
           <div className='remainder_results'>

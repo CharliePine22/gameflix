@@ -153,15 +153,15 @@ const NavDropdown = (props) => {
           </span>
           <p>Link Playstation</p>
         </div>
-        <div className='dropdown__settings_item'>
+        <a href={SPOTIFY_AUTH_URL} className='dropdown__settings_item'>
           <span className='dropdown__settings_item_icon'>
             <FaSpotify
               size={18}
               style={{ color: props.spotifyToken ? '#1DB954' : '#FFF' }}
             />
           </span>
-          <a href={SPOTIFY_AUTH_URL}>Spotify Authentication</a>
-        </div>
+          <p>Spotify Authentication</p>
+        </a>
         <div
           className='dropdown__settings_item'
           style={{

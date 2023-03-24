@@ -9,7 +9,6 @@ import TrendingRow from '../TrendingRow/TrendingRow';
 import { SlOptions } from 'react-icons/sl';
 
 // File Imports
-import axios from 'axios';
 import SpotifyPlayback from '../SpotifyPlayback/SpotifyPlayback';
 import useSpotifyAuth from '../../hooks/useSpotifyAuth';
 import useSteamAuth from '../../hooks/useSteamAuth';
@@ -56,6 +55,7 @@ const Dashboard = ({
   // Row States
   const [currentGameOpen, setCurrentGameOpen] = useState(null);
   const [viewingGameOptions, setViewingGameOptions] = useState(false);
+  const [hoveringGame, setHoveringGame] = useState(null);
 
   // Search States
   const [gameDetails, setGameDetails] = useState(null);
@@ -68,31 +68,6 @@ const Dashboard = ({
   useEffect(() => {
     if (!currentGameOpen) document.body.style.overflow = 'auto';
   }, []);
-
-  //   setViewingSoundtrack(false);
-  //   if (!spotifyToken) {
-  //     console.log('Please connect to Spotify!');
-  //     return;
-  //   }
-  //   try {
-  //     const request = await axios.get(`${baseURL}/app/spotify_album`, {
-  //       params: {
-  //         game,
-  //         token: spotifyToken,
-  //         baseURL,
-  //       },
-  //     });
-  //     if (request.data.status !== 'OK') {
-  //       window.location = '/';
-  //       localStorage.removeItem('spotify_token');
-  //     } else {
-  //       setCurrentPlaylist(request.data.tracks);
-  //       setViewingSoundtrack(true);
-  //     }
-  //   } catch (error) {
-  //     console.log('OST FETCH ISSUE');
-  //   }
-  // };
 
   const changeProfile = (user) => {
     setChangingUser(true);
@@ -250,6 +225,9 @@ const Dashboard = ({
               setNotification({ status, message })
             }
             loading={rowsLoading}
+            hoverGame={(game) => setHoveringGame(game)}
+            hoverAway={() => setHoveringGame(null)}
+            currentHover={hoveringGame}
           />
         ))}
 

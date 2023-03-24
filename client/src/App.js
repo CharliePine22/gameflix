@@ -255,6 +255,7 @@ function App() {
         element={
           <SearchResultsIGDB
             setGameDetails={(id) => setGameDetails(id)}
+            game={gameDetails}
             closeSearchResults={closeSearchResults}
             currentGameOpen={currentGameOpen}
             openGame={(game) => openGameWindow(game)}

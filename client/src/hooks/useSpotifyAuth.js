@@ -6,8 +6,14 @@ export default function useSpotifyAuth(code) {
   const [refreshToken, setRefreshToken] = useState();
   const [expiresIn, setExpiresIn] = useState();
   const baseURL = process.env.REACT_APP_BASE_URL;
+  const prevToken = sessionStorage.getItem('spotify_auth');
 
   useEffect(() => {
+    if (prevToken) {
+      console.log(prevToken);
+      setAccessToken(JSON.parse(prevToken));
+      return;
+    }
     if (!code) return;
     const spotifyAuthentication = async () => {
       try {
@@ -21,6 +27,10 @@ export default function useSpotifyAuth(code) {
         setAccessToken(request.data.tokenRequest.body.access_token);
         setRefreshToken(request.data.tokenRequest.body.refresh_token);
         setExpiresIn(request.data.tokenRequest.body.expires_in);
+        sessionStorage.setItem(
+          'spotify_auth',
+          JSON.stringify(request.data.tokenRequest.body.access_token)
+        );
         window.history.pushState({}, null, '/');
       } catch (error) {
         console.log(error);

@@ -33,13 +33,15 @@ function Row({
   addGame,
   setNotification,
   loading,
+  hoverGame,
+  hoverAway,
+  currentHover,
 }) {
   const [currentGame, setCurrentGame] = useState(null);
   const baseURL = process.env.REACT_APP_BASE_URL;
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   const [viewingPreview, setViewingPreview] = useState(false);
-  const [hoveringGame, setHoveringGame] = useState(null);
   const [playlistLoading, setPlaylistLoading] = useState(false);
 
   const genreTitle = genreDetails[0][0];
@@ -64,8 +66,8 @@ function Row({
         },
       });
       if (request.data.status !== 'OK') {
-        window.location = '/';
-        localStorage.removeItem('spotify_token');
+        console.log(request.data);
+
         setPlaylistLoading(false);
       } else {
         setCurrentGame(game.id);
@@ -168,14 +170,12 @@ function Row({
                         currentGameOpen !== null &&
                         '-1',
                     }}
-                    onMouseOver={() => setHoveringGame(game.id)}
+                    onMouseOver={() => hoverGame(game.id)}
                     onMouseLeave={() =>
-                      viewingSoundtrack
-                        ? setHoveringGame(game.id)
-                        : setHoveringGame(null)
+                      viewingSoundtrack ? hoverGame(game.id) : hoverAway()
                     }
                   >
-                    {hoveringGame == game.id && !currentGameOpen && (
+                    {currentHover == game.id && !currentGameOpen && (
                       <div className='row__blur_wrapper'>
                         {!playlistLoading ? (
                           <div
@@ -228,8 +228,10 @@ function Row({
                         )}
                         {viewingSoundtrack && currentGame == game.id && (
                           <div className='soundtrack_container'>
-                            <span>X</span>
-                            <h3>{game.name} Spotify OST</h3>
+                            <span onClick={(e) => closeGameSoundtrack(e)}>
+                              ←
+                            </span>
+                            <h3>Spotify OST</h3>
                             <ul className='soundtracks'>
                               {currentPlaylist?.map((track) => (
                                 <li

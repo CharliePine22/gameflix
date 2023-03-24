@@ -31,10 +31,11 @@ const findUser = async (email) => {
 // Fetch user information
 router.get('/get_user', async (req, res) => {
   const email = req.query.email;
+  if (!email) res.end();
   try {
     const result = await findUser(email);
     if (result == null) {
-      res.status(401).send('No one logged in!');
+      res.send('No one logged in!');
     }
     res.send(result);
   } catch (e) {

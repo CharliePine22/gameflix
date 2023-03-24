@@ -27,7 +27,7 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
     }
   };
 
-  const loadedImages = allGames.map((game) => (
+  const loadedImages = allGames?.map((game) => (
     <React.Fragment key={game.id}>
       <img
         className='login__img'
@@ -52,7 +52,7 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
     }
   };
 
-  if (loadedImages.length > 0) {
+  if (loadedImages.length > 0 && !userLoggedIn) {
     if (!toLandingPage)
       return (
         <Login
@@ -61,7 +61,6 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
           authenticateUser={(email, password) =>
             authenticateUser(email, password)
           }
-          authError={authError}
         />
       );
 

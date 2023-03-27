@@ -138,16 +138,40 @@ function Row({
       case 2:
       case 8:
       case 9:
-        return <img className='row__poster__esrb_img' src={eRating} />;
+        return (
+          <img
+            className='row__poster__esrb_img'
+            alt='esrb E rating'
+            src={eRating}
+          />
+        );
       case 3:
       case 4:
       case 10:
-        return <img className='row__poster__esrb_img' src={tRating} />;
+        return (
+          <img
+            className='row__poster__esrb_img'
+            alt='esrb T rating'
+            src={tRating}
+          />
+        );
       case 5:
       case 11:
-        return <img className='row__poster__esrb_img' src={mRating} />;
+        return (
+          <img
+            className='row__poster__esrb_img'
+            alt='esrb M rating'
+            src={mRating}
+          />
+        );
       default:
-        return <img className='row__poster__esrb_img' src={rpRating} />;
+        return (
+          <img
+            className='row__poster__esrb_img'
+            alt='esrb RP rating'
+            src={rpRating}
+          />
+        );
     }
   };
 
@@ -286,7 +310,7 @@ function Row({
                             loading='lazy'
                             className='row__poster'
                             src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
-                            alt={game.name}
+                            alt={game.name + ' cover image'}
                           />
                         </div>
                       </>

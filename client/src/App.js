@@ -1,16 +1,20 @@
-import { useState, useEffect, lazy } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
+import loginAudio from './assets/sounds/success.wav';
+import useTwitchAuth from './hooks/useTwitchAuth';
+import axios from 'axios';
+import ProfilesPage from './components/Login/Profiles/ProfilesPage';
 
 // Component Imports
-import ProfilesPage from './components/Login/Profiles/ProfilesPage';
-// File Imports
-import loginAudio from './assets/sounds/success.wav';
-import axios from 'axios';
-import useTwitchAuth from './hooks/useTwitchAuth';
-import Authentication from './components/Authentication/Authentication';
-import Dashboard from './components/Dashboard/Dashboard';
-import SearchResultsIGDB from './components/SearchResults/SearchResultsIGDB';
+const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
+const Authentication = lazy(() =>
+  import('./components/Authentication/Authentication')
+);
+const SearchResultsIGDB = lazy(() =>
+  import('./components/SearchResults/SearchResultsIGDB')
+);
+
 const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
@@ -243,48 +247,54 @@ function App() {
       <Route
         path='/login'
         element={
-          <Authentication
-            loading={isLoading}
-            onLogin={loginAuthentication}
-            twitchToken={twitchAccessToken}
-          />
+          <Suspense fallback={<>...</>}>
+            <Authentication
+              loading={isLoading}
+              onLogin={loginAuthentication}
+              twitchToken={twitchAccessToken}
+            />
+          </Suspense>
         }
       />
       <Route
         path='/search'
         element={
-          <SearchResultsIGDB
-            setGameDetails={(id) => setGameDetails(id)}
-            game={gameDetails}
-            closeSearchResults={closeSearchResults}
-            currentGameOpen={currentGameOpen}
-            openGame={(game) => openGameWindow(game)}
-            closeGameWindow={closeGameWindow}
-            addGame={(game) => addGameHandler(game)}
-          />
+          <Suspense fallback={<>...</>}>
+            <SearchResultsIGDB
+              setGameDetails={(id) => setGameDetails(id)}
+              game={gameDetails}
+              closeSearchResults={closeSearchResults}
+              currentGameOpen={currentGameOpen}
+              openGame={(game) => openGameWindow(game)}
+              closeGameWindow={closeGameWindow}
+              addGame={(game) => addGameHandler(game)}
+            />
+          </Suspense>
         }
       />
       <Route
         path='/'
         element={
-          <Dashboard
-            fetchGame={(game) => fetchSubmittedGame(game)}
-            currentUser={loggedUser}
-            twitchToken={twitchAccessToken}
-            currentProfile={selectedProfile}
-            currentCollection={profileCollection}
-            updateCollection={(collection) =>
-              setProfileCollection(
-                collection.filter((game) => game.id !== null)
-              )
-            }
-            selectProfile={(user) => setSelectedProfile(user)}
-            manageProfiles={() => setSelectedProfile(null)}
-            userNotes={profileNotesData}
-            addGame={(game) => addGameHandler(game)}
-            removeGame={(game) => removeGameHandler(game)}
-            logoutUser={logoutHandler}
-          />
+          <Suspense fallback={<>...</>}>
+            <Dashboard
+              fetchGame={(game) => fetchSubmittedGame(game)}
+              currentUser={loggedUser}
+              twitchToken={twitchAccessToken}
+              currentProfile={selectedProfile}
+              currentCollection={profileCollection}
+              updateCollection={(collection) =>
+                setProfileCollection(
+                  collection.filter((game) => game.id !== null)
+                )
+              }
+              selectProfile={(user) => setSelectedProfile(user)}
+              manageProfiles={() => setSelectedProfile(null)}
+              userNotes={profileNotesData}
+              addGame={(game) => addGameHandler(game)}
+              removeGame={(game) => removeGameHandler(game)}
+              logoutUser={logoutHandler}
+            />
+          </Suspense>
         }
       />
     </Routes>

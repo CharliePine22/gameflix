@@ -150,7 +150,11 @@ const Login = ({ toLanding, authenticateUser, images }) => {
       <div className='login__background'>
         {images.map((game) => (
           <React.Fragment key={game.key}>
-            <img className='login__img' src={game.props.children.props.src} />
+            <img
+              className='login__img'
+              alt={game.name}
+              src={game.props.children.props.src}
+            />
           </React.Fragment>
         ))}
       </div>

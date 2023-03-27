@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import './SearchResults.css';
 import Skeleton from 'react-loading-skeleton';
 import axios from 'axios';
@@ -7,13 +7,12 @@ import SkeletonCard from '../SkeletonCard/SkeletonCard';
 import { useLocation } from 'react-router-dom';
 
 import { FaSearch } from 'react-icons/fa';
-import GamePreview from '../Row/GamePreview/GamePreview';
 import eRating from '../../assets/images/ESRB_E.png';
 import tRating from '../../assets/images/ESRB_T.png';
 import mRating from '../../assets/images/ESRB_M.png';
 import rpRating from '../../assets/images/ESRB_RP.png';
-import GameDetails from '../GameDetails/GameDetails';
-import Notification from '../Notification/Notification';
+
+const GamePreview = lazy(() => import('../Row/GamePreview/GamePreview'));
 
 const SearchResultsIGDB = ({
   setGameDetails,
@@ -136,8 +135,6 @@ const SearchResultsIGDB = ({
     openGame(game);
   };
 
-  console.log(game);
-
   // if(gameDetails) {
   //   <><GameDetails
   //     setNotification={(status, message) => setNotification({ status, message })}
@@ -224,21 +221,23 @@ const SearchResultsIGDB = ({
         {currentGameOpen === currentGame.id && (
           <div className='search_results__game_preview'>
             <h1 onClick={closeGameWindow}>X</h1>
-            <GamePreview
-              style={{ top: '230px' }}
-              game={currentGame}
-              gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${currentGame.cover?.image_id}.jpg`}
-              ratingImage={determineESRB(currentGame)}
-              addGame={addGameHandler}
-              displayDetails={setGameDetails}
-              hideDetails={closeGameWindow}
-              fetchGameDetails={(game) => {
-                setGameDetails(game);
-              }}
-              viewingPreview={viewingPreview}
-              openGame={() => setViewingPreview(true)}
-              closeGame={() => setViewingPreview(false)}
-            />
+            <Suspense fallback={<>...</>}>
+              <GamePreview
+                style={{ top: '230px' }}
+                game={currentGame}
+                gameCover={`https://images.igdb.com/igdb/image/upload/t_1080p_2x/${currentGame.cover?.image_id}.jpg`}
+                ratingImage={determineESRB(currentGame)}
+                addGame={addGameHandler}
+                displayDetails={setGameDetails}
+                hideDetails={closeGameWindow}
+                fetchGameDetails={(game) => {
+                  setGameDetails(game);
+                }}
+                viewingPreview={viewingPreview}
+                openGame={() => setViewingPreview(true)}
+                closeGame={() => setViewingPreview(false)}
+              />
+            </Suspense>
           </div>
         )}
 
@@ -285,7 +284,7 @@ const SearchResultsIGDB = ({
                       <h3>3D</h3>
                     </div>
                     <img
-                      src={`//images.igdb.com/igdb/image/upload/t_screenshot_big/${
+                      src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${
                         game.artworks
                           ? game.artworks[0]?.image_id
                           : game.cover?.image_id
@@ -309,7 +308,7 @@ const SearchResultsIGDB = ({
                     className='game_cover'
                     style={{
                       backgroundSize: '100% 100%',
-                      backgroundImage: `url(//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg)`,
+                      backgroundImage: `url(https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg)`,
                       backgroundPosition: 'center',
                     }}
                   />

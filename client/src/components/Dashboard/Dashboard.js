@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, lazy, Suspense } from 'react';
 
 // Component Imports
 import Row from '../Row/Row';
@@ -6,17 +6,20 @@ import Banner from '../Banner/Banner';
 import Nav from '../Nav/Nav';
 import MainRow from '../MainRow/MainRow';
 import TrendingRow from '../TrendingRow/TrendingRow';
-import { SlOptions } from 'react-icons/sl';
+import NewReleases from '../NewReleases/NewReleases';
 
 // File Imports
 import SpotifyPlayback from '../SpotifyPlayback/SpotifyPlayback';
 import useSpotifyAuth from '../../hooks/useSpotifyAuth';
 import useSteamAuth from '../../hooks/useSteamAuth';
-import GameDetails from '../GameDetails/GameDetails';
-import UserCollection from '../UserCollectionPage/UserCollection';
-import Notification from '../Notification/Notification';
 import useFetchGenres from '../../hooks/useFetchGenres';
-import NewReleases from '../NewReleases/NewReleases';
+import { SlOptions } from 'react-icons/sl';
+
+const GameDetails = lazy(() => import('../GameDetails/GameDetails'));
+const Notification = lazy(() => import('../Notification/Notification'));
+const UserCollection = lazy(() =>
+  import('../UserCollectionPage/UserCollection')
+);
 
 const code = new URLSearchParams(window.location.search).get('code');
 const windowUrl = window.location.search;
@@ -111,45 +114,49 @@ const Dashboard = ({
     if (gameDetails !== null) {
       return (
         <>
-          <GameDetails
-            setNotification={(status, message) =>
-              setNotification({ status, message })
-            }
-            game={gameDetails}
-            closeDetails={() => setGameDetails(null)}
-            twitchToken={twitchToken}
-            addGame={(game) => addGame(game)}
-            removeGame={(game) => removeGame(game)}
-            activeProfile={currentProfile}
-          />
-          <Notification
-            notification={notification}
-            displayNotification={displayNotification}
-            hideNotification={() => {
-              setNotification({ message: '', status: '' });
-            }}
-          />
+          <Suspense fallback={<>...</>}>
+            <GameDetails
+              setNotification={(status, message) =>
+                setNotification({ status, message })
+              }
+              game={gameDetails}
+              closeDetails={() => setGameDetails(null)}
+              twitchToken={twitchToken}
+              addGame={(game) => addGame(game)}
+              removeGame={(game) => removeGame(game)}
+              activeProfile={currentProfile}
+            />
+            <Notification
+              notification={notification}
+              displayNotification={displayNotification}
+              hideNotification={() => {
+                setNotification({ message: '', status: '' });
+              }}
+            />
+          </Suspense>
         </>
       );
     }
 
     if (viewingCollection)
       return (
-        <UserCollection
-          collection={currentCollection}
-          activeProfile={currentProfile}
-          backToHome={() => setViewingCollection(false)}
-          currentTrack={currentTrack}
-          playTrack={playTrack}
-          isPlaying={playAudio}
-          pausePlayback={() => setPlayAudio(false)}
-          resumePlayback={() => setPlayAudio(true)}
-          setSelectedProfile={(profile) => setSelectedProfile(profile)}
-          spotifyToken={spotifyAccessToken}
-          removeGame={(game) => removeGame(game)}
-          updateCollection={updateCollection}
-          userNotes={userNotes}
-        />
+        <Suspense fallback={<>...</>}>
+          <UserCollection
+            collection={currentCollection}
+            activeProfile={currentProfile}
+            backToHome={() => setViewingCollection(false)}
+            currentTrack={currentTrack}
+            playTrack={playTrack}
+            isPlaying={playAudio}
+            pausePlayback={() => setPlayAudio(false)}
+            resumePlayback={() => setPlayAudio(true)}
+            setSelectedProfile={(profile) => setSelectedProfile(profile)}
+            spotifyToken={spotifyAccessToken}
+            removeGame={(game) => removeGame(game)}
+            updateCollection={updateCollection}
+            userNotes={userNotes}
+          />
+        </Suspense>
       );
 
     return (

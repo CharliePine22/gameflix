@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Login from '../Login/Login';
 import './Authentication.css';
 import axios from 'axios';
-import LandingPage from '../LandingPage/LandingPage';
 import useFetchPopular from '../../hooks/useFetchPopular';
+const LandingPage = lazy(() => import('../LandingPage/LandingPage'));
 
-const Authentication = ({ loading, twitchToken, onLogin }) => {
+const Authentication = ({ onLogin }) => {
   const allGames = useFetchPopular();
   const [imgsLoading, setImgsLoading] = useState(true);
   const [toLandingPage, setToLandingPage] = useState(false);
-  const [authError, setAuthError] = useState('');
   const userLoggedIn = localStorage.getItem('user');
   const navigate = useNavigate();
   const baseURL = process.env.REACT_APP_BASE_URL;
@@ -43,11 +42,9 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
         email,
         password,
       });
-      setAuthError('');
       onLogin(response.data.user);
       return response;
     } catch (e) {
-      setAuthError(e.response.data.message);
       return e.response.data.message;
     }
   };
@@ -65,12 +62,14 @@ const Authentication = ({ loading, twitchToken, onLogin }) => {
       );
 
     return (
-      <LandingPage
-        toSignIn={() => {
-          setToLandingPage(false);
-        }}
-        images={loadedImages}
-      />
+      <Suspense fallback={<>...</>}>
+        <LandingPage
+          toSignIn={() => {
+            setToLandingPage(false);
+          }}
+          images={loadedImages}
+        />
+      </Suspense>
     );
   } else {
     return (

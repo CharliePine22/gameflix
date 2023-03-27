@@ -155,10 +155,14 @@
   }
 }
 
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 420px) {
   .nav__avatar_container {
     height: 35px;
     width: 35px;
     position: relative;
   }
+
+  /* .search_active {
+    margin-right: 0px;
+  } */
 }

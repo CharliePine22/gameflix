@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import GamePreview from './GamePreview/GamePreview';
+import React, { useState, lazy, Suspense } from 'react';
 import './Row.css';
 import axios from 'axios';
 import Placeholder from '../Placeholder/Placeholder';
@@ -16,6 +15,8 @@ import eRating from '../../assets/images/ESRB_E.png';
 import tRating from '../../assets/images/ESRB_T.png';
 import mRating from '../../assets/images/ESRB_M.png';
 import rpRating from '../../assets/images/ESRB_RP.png';
+
+const GamePreview = lazy(() => import('./GamePreview/GamePreview'));
 
 function Row({
   activeProfile,
@@ -309,22 +310,24 @@ function Row({
                           <img
                             loading='lazy'
                             className='row__poster'
-                            src={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
+                            src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover?.image_id}.jpg`}
                             alt={game.name + ' cover image'}
                           />
                         </div>
                       </>
                     </div>
                     {currentGameOpen === game.id && (
-                      <GamePreview
-                        game={game}
-                        gameCover={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
-                        ratingImage={determineESRB(game)}
-                        addGame={addGameHandler}
-                        viewingPreview={viewingPreview}
-                        openGame={() => setViewingPreview(true)}
-                        closeGame={() => setViewingPreview(false)}
-                      />
+                      <Suspense fallback={<>...</>}>
+                        <GamePreview
+                          game={game}
+                          gameCover={`https://images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
+                          ratingImage={determineESRB(game)}
+                          addGame={addGameHandler}
+                          viewingPreview={viewingPreview}
+                          openGame={() => setViewingPreview(true)}
+                          closeGame={() => setViewingPreview(false)}
+                        />
+                      </Suspense>
                     )}
                   </div>
                 )}

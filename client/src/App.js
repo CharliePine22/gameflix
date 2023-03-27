@@ -248,11 +248,7 @@ function App() {
         path='/login'
         element={
           <Suspense fallback={<>...</>}>
-            <Authentication
-              loading={isLoading}
-              onLogin={loginAuthentication}
-              twitchToken={twitchAccessToken}
-            />
+            <Authentication onLogin={loginAuthentication} />
           </Suspense>
         }
       />

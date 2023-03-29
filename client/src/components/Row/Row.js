@@ -68,7 +68,6 @@ function Row({
       });
       if (request.data.status !== 'OK') {
         console.log(request.data);
-
         setPlaylistLoading(false);
       } else {
         setCurrentGame(game.id);
@@ -80,9 +79,8 @@ function Row({
       }
     } catch (error) {
       console.log(error);
-      console.log('OST FETCH ISSUE');
       setPlaylistLoading(false);
-      return;
+      return error;
     }
   };
 

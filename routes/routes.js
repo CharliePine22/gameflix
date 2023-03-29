@@ -171,6 +171,7 @@ router.post('/search_game', async (req, res) => {
 
   const headers = {
     'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
+    'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
   const url = `https://api.igdb.com/v4/games`;
@@ -194,6 +195,7 @@ router.post('/search_game_details', async (req, res) => {
 
   const headers = {
     'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
+    'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
   const url = `https://api.igdb.com/v4/games`;
@@ -216,6 +218,7 @@ router.post('/search_trending_game', async (req, res) => {
   const gameName = req.body.gameName;
   const headers = {
     'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
+    'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
   const url = `https://api.igdb.com/v4/search`;
@@ -239,6 +242,7 @@ router.post('/popular_titles', async (req, res) => {
 
   const headers = {
     'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
+    'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
   const url = `https://api.igdb.com/v4/games`;
@@ -262,6 +266,7 @@ router.post('/game_genre', async (req, res) => {
 
   const headers = {
     'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
+    'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
   const url = `https://api.igdb.com/v4/games`;

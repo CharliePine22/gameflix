@@ -154,6 +154,7 @@ const Login = ({ toLanding, authenticateUser, images }) => {
               className='login__img'
               alt={game.name}
               src={game.props.children.props.src}
+              loading='lazy'
             />
           </React.Fragment>
         ))}

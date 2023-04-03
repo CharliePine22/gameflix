@@ -10,6 +10,12 @@ const TrendingRow = ({ twitchToken, setGameDetails }) => {
   let currentDate = Math.floor(new Date().getTime() / 1000);
   let trendingTitlesFetched = JSON.parse(sessionStorage.getItem('trending'));
 
+  //   [[redirects]]
+  // from = “/app/"
+  // to = “https://cybrary2022.onrender.com/app/:splat 2”
+  // status = 200
+  // force = true
+  // headers = {X-From = “Netlify”}
   useEffect(() => {
     if (!twitchToken) return;
     if (trendingTitlesFetched && trendingTitlesFetched.length > 0) {

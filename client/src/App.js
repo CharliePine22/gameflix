@@ -184,8 +184,6 @@ function App() {
     }
   };
 
-  console.log(profileCollection);
-
   // Login user if verification succeeds.
   const loginAuthentication = (user) => {
     localStorage.setItem('user', user.email);

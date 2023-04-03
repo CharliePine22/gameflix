@@ -541,6 +541,7 @@
 
   .search_results__error {
     font-size: 2rem;
+    height: 40vh;
   }
 
   .search_results__nav {

@@ -34,6 +34,7 @@ const Dashboard = ({
   manageProfiles,
   updateCollection,
   selectProfile,
+  updateGameStatus,
   fetchGame,
   addGame,
   removeGame,
@@ -64,7 +65,6 @@ const Dashboard = ({
   const [gameDetails, setGameDetails] = useState(null);
 
   // Local Variables
-  const baseURL = process.env.REACT_APP_BASE_URL;
   const spotifyAccessToken = useSpotifyAuth(code);
   const steamCollection = useSteamAuth(id);
 
@@ -227,7 +227,7 @@ const Dashboard = ({
             currentGameOpen={currentGameOpen}
             openGame={(game) => openGameWindow(game)}
             closeGameWindow={closeGameWindow}
-            addGame={(game) => addGame(game)}
+            updateGameStatus={(action, game) => updateGameStatus(action, game)}
             setNotification={(status, message) =>
               setNotification({ status, message })
             }
@@ -235,6 +235,7 @@ const Dashboard = ({
             hoverGame={(game) => setHoveringGame(game)}
             hoverAway={() => setHoveringGame(null)}
             currentHover={hoveringGame}
+            currentCollection={currentCollection}
           />
         ))}
 

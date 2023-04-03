@@ -87,7 +87,6 @@ const GamePreview = ({
   game,
   gameCover,
   ratingImage,
-  addGame,
   viewingPreview,
   openGame,
   closeGame,
@@ -692,7 +691,6 @@ const GamePreview = ({
                   <button
                     onMouseOver={() => setHoveringAdd(true)}
                     onMouseOut={() => setHoveringAdd(false)}
-                    onClick={(e) => addGame(e, game)}
                   >
                     Add
                   </button>

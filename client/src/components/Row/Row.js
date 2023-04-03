@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import './Row.css';
 import axios from 'axios';
 import Placeholder from '../Placeholder/Placeholder';
@@ -6,6 +6,7 @@ import {
   FaPlay,
   FaPause,
   FaPlusSquare,
+  FaMinusSquare,
   FaGamepad,
   FaMusic,
 } from 'react-icons/fa';
@@ -31,12 +32,13 @@ function Row({
   currentGameOpen,
   closeGameWindow,
   openGame,
-  addGame,
+  updateGameStatus,
   setNotification,
   loading,
   hoverGame,
   hoverAway,
   currentHover,
+  currentCollection,
 }) {
   const [currentGame, setCurrentGame] = useState(null);
   const baseURL = process.env.REACT_APP_BASE_URL;
@@ -90,9 +92,29 @@ function Row({
     setGameDetails(game);
   };
 
-  const addGameHandler = (e, game) => {
-    e.stopPropagation();
-    addGame(game);
+  const checkGameOwned = (game) => {
+    const exists = currentCollection.some((item) => item.id === game.id);
+    if (exists) {
+      return (
+        <div
+          className='row__blur_item'
+          onClick={() => updateGameStatus('REMOVE', game)}
+        >
+          <FaMinusSquare className='blur_item_icon' />
+          <p>Remove</p>
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className='row__blur_item'
+          onClick={() => updateGameStatus('ADD', game)}
+        >
+          <FaPlusSquare className='blur_item_icon' />
+          <p>Add</p>
+        </div>
+      );
+    }
   };
 
   const viewGameSoundtrack = (e, game) => {
@@ -208,13 +230,8 @@ function Row({
                             }}
                           >
                             {/* ADD GAME */}
-                            <div
-                              className='row__blur_item'
-                              onClick={(e) => addGameHandler(e, game)}
-                            >
-                              <FaPlusSquare className='blur_item_icon' />
-                              <p>Add</p>
-                            </div>
+                            {checkGameOwned(game)}
+
                             {/* GET DETAILS */}
                             <div
                               className='row__blur_item'
@@ -320,7 +337,6 @@ function Row({
                           game={game}
                           gameCover={`https://images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover?.image_id}.jpg`}
                           ratingImage={determineESRB(game)}
-                          addGame={addGameHandler}
                           viewingPreview={viewingPreview}
                           openGame={() => setViewingPreview(true)}
                           closeGame={() => setViewingPreview(false)}

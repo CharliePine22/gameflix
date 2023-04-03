@@ -82,7 +82,7 @@ router.post('/signin', (req, res) => {
   findUser(email).then(function (user) {
     if (user == null || password !== user.password)
       res
-        .status(400)
+        .status(401)
         .send({ message: 'Incorrect email or password!', undefined });
     if (user && password == user.password) {
       res.status(200).send({ message: 'User logged in successfully!', user });

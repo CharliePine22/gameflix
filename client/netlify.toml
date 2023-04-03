@@ -1,5 +1,5 @@
 [[redirects]]
-from = “/api/"
+from = “/app/"
 to = “https://cybrary2022.onrender.com/app/:splat 2”
 status = 200
 force = true

@@ -43,7 +43,11 @@ passport.deserializeUser((user, done) => {
 
 // Coors
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://cybrary2022.onrender.com'],
+  origin: [
+    'http://localhost:3000',
+    'https://cybrary2022.onrender.com',
+    'https://gameflixx.netlify.app/',
+  ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,

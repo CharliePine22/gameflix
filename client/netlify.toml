@@ -1,0 +1,10 @@
+[[redirects]]
+from = “/api/"
+to = “https://cybrary2022.onrender.com/app/:splat 2”
+status = 200
+force = true
+headers = {X-From = “Netlify”}
+[[headers]]
+for = "/”
+[headers.values]
+Access-Control-Allow-Origin = “*”

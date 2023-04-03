@@ -27,6 +27,8 @@ const TrendingRow = ({ twitchToken, setGameDetails }) => {
           currentDate: currentDate,
         });
 
+        console.log(request);
+
         const uniqueTitles = new Set();
         request.data.filter(
           (item) =>

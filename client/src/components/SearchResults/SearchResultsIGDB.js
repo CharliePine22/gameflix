@@ -318,7 +318,7 @@ const SearchResultsIGDB = ({
           </>
         )}
         {/* Remaining Games */}
-        {searchResults.length > 0 && (
+        {searchResults.length > 3 && (
           <div className='remainder_results'>
             <h2>Results</h2>
             {searchResults.slice(3)?.map(

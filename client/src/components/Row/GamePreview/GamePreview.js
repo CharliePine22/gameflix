@@ -62,6 +62,9 @@ import xbox360Back from '../../../assets/images/360-back.png';
 import xbox360Sound from '../../../assets/sounds/platform_sounds/360-startup.mp3';
 // Steam Logo
 import steamLogo from '../../../assets/images/steam-logo-transparent.png';
+import steamCover from '../../../assets/images/steam-case-front.png';
+import steamCaseSide from '../../../assets/images/steam-case-side.png';
+import steamCaseBack from '../../../assets/images/steam-case-back.png';
 // Apple Logo
 import iosLogo from '../../../assets/images/apple-logo.png';
 // Android Logo
@@ -73,6 +76,8 @@ import snesLogo from '../../../assets/images/snes-logo.png';
 // NES
 import nesLogo from '../../../assets/images/nes-logo.png';
 import nesCaseSide from '../../../assets/images/nes-side-case.png';
+import nesCaseFront from '../../../assets/images/nes-case-front.png';
+import nesCaseBack from '../../../assets/images/nes-case-back.png';
 
 // Game Platform Startup Sounds
 import gamecubeSound from '../../../assets/sounds/platform_sounds/gamecube-startup.mp3';
@@ -96,13 +101,31 @@ const GamePreview = ({
   const [hoveringAdd, setHoveringAdd] = useState(false);
   const [hoveringDetails, setHoveringDetails] = useState(false);
 
-  const gamePlatformId = game.release_dates.sort(function (a, b) {
-    return a.date - b.date;
-  })[0].platform;
+  console.log(game.release_dates);
+
+  const grabGamePlatformId = () => {
+    // Ids of arcdade platforms to be excluded
+    const arcadeIds = [52, 55, 71, 77, 99, 129, 152, 374, 149];
+
+    // Try to find first platform it was released on
+    const gamePlatformIds = game.release_dates.sort(function (a, b) {
+      return a.date - b.date;
+    });
+
+    if (gamePlatformIds.length == 1) {
+      return gamePlatformIds[0].platorm;
+    }
+
+    for (let gamePlatform of gamePlatformIds) {
+      if (arcadeIds.includes(gamePlatform.platform)) continue;
+      else return gamePlatform.platform;
+    }
+  };
 
   const gamePlatform = game.platforms.filter(
-    (platform) => platform.id == gamePlatformId
+    (platform) => platform.id == grabGamePlatformId()
   )[0];
+  console.log(gamePlatform);
 
   let audio = new Audio(pipeAudio);
 
@@ -356,6 +379,8 @@ const GamePreview = ({
       case 'NES':
       case 'fds':
         return nesCaseSide;
+      case 'PC':
+        return steamCaseSide;
       default:
         return '';
     }
@@ -377,6 +402,10 @@ const GamePreview = ({
         return xbox360Back;
       case 'Wii':
         return wiiCaseBack;
+      case 'PC':
+        return steamCaseBack;
+      case 'NES':
+        return nesCaseBack;
       default:
         return null;
     }
@@ -391,6 +420,7 @@ const GamePreview = ({
       case 'PS1':
       case 'PS2':
       case 'PSP':
+      case 'NES':
       case 'fds':
         return '#000000';
       case 'PS3':
@@ -416,6 +446,8 @@ const GamePreview = ({
         return '#107C10';
       case 'X360':
         return '#5dc21e';
+      case 'PC':
+        return '#c0c0c0';
       default:
         return '#172d3e';
     }
@@ -457,9 +489,12 @@ const GamePreview = ({
         >
           {/* FRONT SIDE OF CASE */}
           <div
-            className={`game_preview__front ${
-              gamePlatform.abbreviation == 'Switch' && 'switch_case'
-            } ${viewingPreview && 'game_preview__front_open'}`}
+            className={`game_preview__front 
+            ${gamePlatform.abbreviation == 'Switch' && 'switch_case'} 
+            ${gamePlatform.abbreviation == 'PC' && 'pc_case'} 
+            ${viewingPreview && 'game_preview__front_open'}
+            ${gamePlatform.abbreviation == 'NES' && 'nes_case'}
+    `}
             style={{
               backgroundImage: `url(${bgLoaded})`,
               height: `${
@@ -500,6 +535,12 @@ const GamePreview = ({
             {gamePlatform.abbreviation == 'Wii' && (
               <img src={wiiCase} className='wii_game_img' />
             )}
+            {gamePlatform.abbreviation == 'PC' && (
+              <img src={steamCover} className='steam_game_img' />
+            )}
+            {gamePlatform.abbreviation == 'NES' && (
+              <img src={nesCaseFront} className='nes_game_img' />
+            )}
 
             {/* FRONT CASE COVER BANNER */}
             <div
@@ -515,6 +556,8 @@ const GamePreview = ({
             ${gamePlatform.abbreviation == 'Wii' && 'wii_banner'}
             ${gamePlatform.abbreviation == 'Series X' && 'seriesX_banner'}
             ${gamePlatform.abbreviation == 'N64' && 'n64_banner'}
+            ${gamePlatform.abbreviation == 'PC' && 'ps1_banner'}
+            ${gamePlatform.abbreviation == 'NES' && 'ps1_banner'}
             `}
               style={{ background: determineCoverColor() }}
             >
@@ -551,6 +594,8 @@ const GamePreview = ({
                       ? 'none'
                       : gamePlatform.abbreviation == 'Wii'
                       ? 'none'
+                      : gamePlatform.abbreviation == 'PC'
+                      ? 'none'
                       : gamePlatform.abbreviation == '3DS'
                       ? 'none'
                       : gamePlatform.abbreviation == 'NDS'
@@ -558,6 +603,8 @@ const GamePreview = ({
                       : gamePlatform.abbreviation == 'NGC'
                       ? 'none'
                       : gamePlatform.abbreviation == 'PSP'
+                      ? 'none'
+                      : gamePlatform.abbreviation == 'NES'
                       ? 'none'
                       : '',
                 }}
@@ -809,7 +856,8 @@ const GamePreview = ({
               '--color-theme': determineCoverColor(),
               background:
                 determineSideBanner() !== '' && `url(${determineSideBanner()})`,
-              backgroundColor: game.abbreviation == 'X360' && 'white',
+              backgroundColor:
+                game.abbreviation == 'X360' && 'white !important',
               backgroundPosition: '50% 100%',
               borderTop:
                 gamePlatform.abbreviation == 'X360' && '4px solid #5dc21e',

@@ -88,7 +88,6 @@ router.post('/refresh_token', async (req, res) => {
       message: 'Token Refreshed!',
       body: request,
     });
-    console.log('Access Token has been refreshed!');
   } catch (error) {
     res.json(error);
   }
@@ -175,6 +174,7 @@ router.post('/search_game', async (req, res) => {
     Authorization: `Bearer ${token}`,
   };
   console.log(gameName);
+  console.log('FIRED');
   const url = `https://api.igdb.com/v4/games`;
   try {
     const request = await fetch(url, {
@@ -283,7 +283,7 @@ router.post('/game_genre', async (req, res) => {
     res.cookie('cookie2', 'value2', { sameSite: 'none', secure: true });
     res.send({ [genreTitle]: result });
   } catch (error) {
-    console.log(error);
+    res.send(error);
   }
 });
 
@@ -332,7 +332,7 @@ router.post('/upcoming', async (req, res) => {
     const result = await request.json();
     res.send(result);
   } catch (error) {
-    console.log(error);
+    res.send(error);
   }
 });
 
@@ -355,7 +355,7 @@ router.post('/trending', async (req, res) => {
     const result = await request.json();
     res.send(result);
   } catch (error) {
-    console.log(error);
+    res.send(error);
   }
 });
 
@@ -870,7 +870,6 @@ router.put('/add_imported_collection', async (req, res) => {
       response: request,
     });
   } catch (error) {
-    console.log(error);
     res.status(400, {
       message: 'There was an error importing the data, please try again!',
     });
@@ -922,9 +921,9 @@ router.put('/update_game_backlog', async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     res.status(400, {
       message: 'There was an error with your request, please try again.',
+      error: error,
     });
     return;
   }

@@ -581,6 +581,13 @@ div:has(> .box_open) {
   font-family: verdana;
 }
 
+.steam_game_img {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: -26px;
+}
+
 .wii_game_img {
   height: 105%;
   width: 101%;
@@ -872,6 +879,11 @@ div:has(> .box_open) {
   width: 20px;
 }
 
+.pc_case {
+  background-position: bottom;
+  background-size: 100% 95%;
+}
+
 .playstation_old {
   height: 70%;
   width: 30px;
@@ -891,6 +903,19 @@ div:has(> .box_open) {
 .nes {
   height: 60px;
   width: 140px;
+}
+
+.nes_game_img {
+  height: 108%;
+  width: 101%;
+  position: absolute;
+  left: -1px;
+  top: -26px;
+}
+
+.nes_case {
+  background-position: top;
+  background-size: 90% 57%;
 }
 
 .nintendo-ds {

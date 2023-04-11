@@ -162,7 +162,7 @@
     position: relative;
   }
 
-  /* .search_active {
-    margin-right: 0px;
-  } */
+  .search_active {
+    margin-right: 12px;
+  }
 }

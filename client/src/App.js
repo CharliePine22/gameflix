@@ -56,6 +56,7 @@ function App() {
   useEffect(() => {
     if (!userEmail) navigate('/login');
     const updateUser = async () => {
+      console.log(userEmail);
       try {
         const request = await axios.get(`${baseURL}/app/get_user`, {
           params: {

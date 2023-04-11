@@ -146,6 +146,7 @@
 
   .search_results__container_skeleton {
     margin: 0px 20px;
+    top: 9.8rem;
   }
 
   .skeleton_title {

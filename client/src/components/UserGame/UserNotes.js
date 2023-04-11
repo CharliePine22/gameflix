@@ -3,7 +3,6 @@ import './UserNotes.css';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { MdEditNote } from 'react-icons/md';
 import { FaAngleDown } from 'react-icons/fa';
-import { IoTrashOutline } from 'react-icons/io5';
 import axios from 'axios';
 import NoteDetails from './NoteDetails';
 
@@ -53,7 +52,6 @@ const UserGameNotes = ({
       createNotes();
     } else {
       if (currentNote !== null) return;
-      notesRef?.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [gameNotes, currentTab]);
 
@@ -75,7 +73,6 @@ const UserGameNotes = ({
   useEffect(() => {
     if (!gameNotes) return;
     setCurrentTab(gameNotes?.gameNotes[0]?.tabName);
-    console.log('new game');
   }, [gameNotes]);
 
   useEffect(() => {
@@ -87,10 +84,9 @@ const UserGameNotes = ({
   }, [tabRef, noteTab]);
 
   useEffect(() => {
-    // tabEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    notesRef?.current?.scrollIntoView({ behavior: 'smooth' });
     return () => clearTimeout(timer);
   }, []);
-  console.log(gameNotes);
 
   const updateProfileNotes = async () => {
     if (!gameNotes) return;
@@ -100,7 +96,7 @@ const UserGameNotes = ({
       notes: gameNotes,
     });
 
-    console.log(request);
+    return request;
   };
 
   const editTabHandler = () => {

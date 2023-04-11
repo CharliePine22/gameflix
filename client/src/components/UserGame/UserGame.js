@@ -200,9 +200,6 @@ const UserGame = ({
       } catch (error) {
         console.log(error);
       }
-
-      // setPlaytime(Math.floor(game.playtime / 60));
-      // setRating(game.user_rating);
     };
     fetchAppData();
   }, [game]);
@@ -434,7 +431,7 @@ const UserGame = ({
           className='user_game_banner_img'
           src={
             game.banner_image ||
-            game.imageURL.replace('cover_big_2x', '1080p_2x')
+            game.cover_image.replace('cover_big_2x', '1080p_2x')
           }
         />
         <div className='user_game__current_stats'>

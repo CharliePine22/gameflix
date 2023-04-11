@@ -29,7 +29,8 @@
     "spotify-web-api-node": "^5.0.2",
     "typewriter-effect": "^2.19.0",
     "vidstack": "^0.4.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",

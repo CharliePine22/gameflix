@@ -17,6 +17,7 @@ const useFetchBanner = () => {
         token: twitchToken,
         gameName: '',
       });
+      console.log(request);
       const filteredList = await request.data.sort(function (a, b) {
         return b.rating - a.rating;
       });
@@ -36,6 +37,7 @@ const useFetchBanner = () => {
       console.log(error);
       setServerError(error);
       setIsLoading(false);
+      return;
     }
   };
 
@@ -44,11 +46,6 @@ const useFetchBanner = () => {
 
     fetchData();
   }, [twitchToken]);
-
-  useEffect(() => {
-    if (!serverError) return;
-    fetchData();
-  }, [serverError]);
 
   const displayNewBanner = () => {
     const newGame =

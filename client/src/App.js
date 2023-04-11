@@ -220,7 +220,7 @@ function App() {
     setLoggedUser(null);
     setSelectedProfile(null);
     localStorage.clear();
-    localStorage.setItem('twitch_auth', twitchAccessToken);
+    // localStorage.setItem('twitch_auth', twitchAccessToken);
   };
 
   if (!userProfile && loggedUser) {

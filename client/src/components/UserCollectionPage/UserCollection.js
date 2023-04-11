@@ -1,6 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './UserCollection.css';
 import { FaSistrix, FaHome, FaStar } from 'react-icons/fa';
+import { CiSquareMore } from 'react-icons/ci';
+import { read, utils, writeFile } from 'xlsx';
+import axios from 'axios';
+
 import UserGame from '../UserGame/UserGame';
 import useContextMenu from '../../hooks/useContextMenu';
 import bronzeTrophy from '../../assets/images/ps-trophy-bronze.png';
@@ -28,7 +32,7 @@ const UserCollection = ({
   const [isMobile, setIsMobile] = useState(false);
   const [currentGame, setCurrentGame] = useState(null);
   const [currentlyAdjusting, setCurrentlyAdjusting] = useState(null);
-  const [changingGame, setChangingGame] = useState(false);
+  const [viewingCSVDropdown, setViewingCSVDropdown] = useState(false);
   // SPOTLIGHT STATES
   const [spotlightList, setSpotlightList] = useState([]);
   const [spotlightFilter, setSpotlightFilter] = useState('playtime');
@@ -37,8 +41,8 @@ const UserCollection = ({
   const [filteredList, setFilteredList] = useState([]);
   // STATUS LIST STATES
   const [statusFilter, setStatusFilter] = useState('backlog');
-  const filterRef = useRef();
 
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const { anchorPoint, showTitleMenu } = useContextMenu();
   const trophies = [platinumTrophy, goldTrophy, bronzeTrophy];
 
@@ -198,6 +202,66 @@ const UserCollection = ({
     setCurrentlyAdjusting(null);
   };
 
+  const importUserCollection = async (collection) => {
+    try {
+      const request = await axios.put(
+        `${baseURL}/app/add_imported_collection`,
+        {
+          email: localStorage.getItem('user'),
+          profile: localStorage.getItem('profile'),
+          collection,
+        }
+      );
+      console.log(request);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Allow user to import their own collection via CSV file
+  const handleImport = ($event) => {
+    const files = $event.target.files;
+    if (files.length) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const wb = read(event.target.result);
+        const sheets = wb.SheetNames;
+
+        if (sheets.length) {
+          const rows = utils.sheet_to_json(wb.Sheets[sheets[0]]);
+          setFilteredList(rows);
+          importUserCollection(rows);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+    setViewingCSVDropdown(false);
+  };
+
+  // Allow user to export their collection from their own file
+  const handleExport = () => {
+    const headings = [
+      [
+        'name',
+        'id',
+        'cover_image',
+        'playtime',
+        'origin',
+        'status',
+        'user_rating',
+        'banner_image',
+      ],
+    ];
+    const wb = utils.book_new();
+    const ws = utils.json_to_sheet([]);
+    utils.sheet_add_aoa(ws, headings);
+    utils.sheet_add_json(ws, filteredList, { origin: 'A2', skipHeader: true });
+    utils.book_append_sheet(wb, ws, 'Game');
+    writeFile(wb, 'Game Collection.xlsx');
+    setViewingCSVDropdown(false);
+  };
+
   // HTML RENDER
   return (
     <div className='user_collection__wrapper'>
@@ -227,6 +291,36 @@ const UserCollection = ({
                 src={activeProfile.avatar}
               />
               {activeProfile.name.trim()}'s Collection
+              <CiSquareMore
+                className='user_collection__upload_icon'
+                onClick={() => setViewingCSVDropdown(!viewingCSVDropdown)}
+              />
+              {viewingCSVDropdown && (
+                <div>
+                  <ul className='upload_dropdown_list'>
+                    <li>
+                      {' '}
+                      <input
+                        style={{ display: 'none' }}
+                        type='file'
+                        name='file'
+                        className='custom-file-input'
+                        id='inputGroupFile'
+                        required
+                        onChange={handleImport}
+                        accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
+                      />
+                      <label
+                        className='custom-file-label'
+                        htmlFor='inputGroupFile'
+                      >
+                        Import CSV
+                      </label>
+                    </li>
+                    <li onClick={handleExport}>Export CSV</li>
+                  </ul>
+                </div>
+              )}
               <FaHome
                 className='user_collection__home_icon'
                 onClick={backToHome}
@@ -293,7 +387,7 @@ const UserCollection = ({
                     }}
                   >
                     {' '}
-                    <img src={game.imageURL} />
+                    <img src={game.cover_image} />
                     <p>{game.name}</p>
                     {game.name == activeProfile.favorite_game && (
                       <FaStar className='list_item_favorite' />
@@ -329,7 +423,7 @@ const UserCollection = ({
                   onClick={() => viewGameHandler(game)}
                 >
                   {' '}
-                  <img src={game.imageURL} />
+                  <img src={game.cover_image} />
                   <p>{game.name}</p>
                 </li>
               ))
@@ -352,9 +446,6 @@ const UserCollection = ({
           <div className='user_collection__actions'>
             <button className='persona_font' onClick={backToHome}>
               Back
-              {/* <div className='persona_box' style={{ background: '#1cfeff' }} />
-              <div className='persona_box' style={{ background: 'white' }} />
-              <div className='persona_box' style={{ background: '#ff0022' }} /> */}
             </button>
           </div>
         </div>
@@ -425,7 +516,7 @@ const UserCollection = ({
                       >
                         <img
                           className='spotlight_image'
-                          src={top.banner_url || top.imageURL}
+                          src={top.banner_url || top.cover_image}
                         />
                         <div className='spotlight_container__row'>
                           <img
@@ -605,7 +696,7 @@ const UserCollection = ({
                                 <img
                                   loading='lazy'
                                   className='user_collection__poster'
-                                  src={game.imageURL}
+                                  src={game.cover_image}
                                   alt={game.name}
                                 />
                               </div>
@@ -630,11 +721,11 @@ const UserCollection = ({
                                   className='user_collection__poster'
                                   src={
                                     isMobile
-                                      ? game.imageURL.replace(
+                                      ? game.cover_image.replace(
                                           'cover_big',
                                           '1080p'
                                         )
-                                      : game.imageURL
+                                      : game.cover_image
                                   }
                                   alt={game.name}
                                 />

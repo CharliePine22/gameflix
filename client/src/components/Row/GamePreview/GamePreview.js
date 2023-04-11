@@ -80,7 +80,6 @@ import n64Sound from '../../../assets/sounds/platform_sounds/n64-startup.mp3';
 
 import pipeAudio from '../../../assets/sounds/pipe-sound.mp3';
 import marioStanding from '../../../assets/images/mario_pixel_standing.png';
-import marioJumping from '../../../assets/images/mario_pixel_jumping.png';
 import useProgressiveImage from '../../../hooks/useProgressiveImage';
 
 const GamePreview = ({

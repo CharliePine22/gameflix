@@ -174,6 +174,7 @@ router.post('/search_game', async (req, res) => {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
+  console.log(gameName);
   const url = `https://api.igdb.com/v4/games`;
   try {
     const request = await fetch(url, {
@@ -534,10 +535,11 @@ router.post('/update_collection', async (req, res) => {
           'profiles.$.collection': {
             name: gameName,
             id: gameId,
-            imageURL,
+            cover_image: imageURL,
             playtime,
             origin,
-            status,
+            status: status || 'BACKLOG',
+            user_rating: 0,
           },
         },
       }, // list fields you like to change
@@ -581,7 +583,6 @@ router.put('/remove_game', async (req, res) => {
       response: request,
     });
   } catch (error) {
-    console.log(error);
     res.status(400, {
       message: 'There was an error with your request, please try again.',
     });
@@ -841,6 +842,37 @@ router.put('/update_game_trophies', async (req, res) => {
     console.log(error);
     res.status(400, {
       message: 'There was an error with your request, please try again.',
+    });
+  }
+});
+
+//* UPDATE USER COLLECTION WITH IMPORTED DATA
+router.put('/add_imported_collection', async (req, res) => {
+  const importedCollection = req.body.collection;
+  const email = req.body.email;
+  const profile = req.body.profile;
+
+  try {
+    const request = await userModel.findOneAndUpdate(
+      { email: email, profiles: { $elemMatch: { name: profile } } },
+      {
+        $set: {
+          'profiles.$.collection': importedCollection,
+        },
+      }, // list fields you like to change
+      { new: true, setDefaultsOnInsert: false, upsert: true }
+    );
+
+    res.send({
+      code: 200,
+      status: 'OK',
+      message: 'Collection updated with imported data!',
+      response: request,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400, {
+      message: 'There was an error importing the data, please try again!',
     });
   }
 });

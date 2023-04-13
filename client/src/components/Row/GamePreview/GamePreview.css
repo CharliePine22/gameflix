@@ -97,11 +97,12 @@
 }
 
 .game_preview__back {
-  width: 243px;
+  width: 242px;
   height: 368px;
   background-position: center center !important;
   background-size: cover !important;
-  border-radius: 4px 4px 0 4px;
+  border-radius: 4px 0px 0 4px;
+  transform-style: preserve-3d;
   transform: rotateY(180deg) translateZ(14px);
   position: absolute;
   top: 0;
@@ -110,10 +111,34 @@
   right: 0;
 }
 
+.n64_back {
+  background-size: 100% 72% !important;
+  background-repeat: no-repeat !important;
+  background-position: 100% 0% !important;
+}
+
+.n64_back > img {
+  transform: translateZ(-1px) scale(1);
+}
+
+.viewing_back {
+  transition: all 250ms ease-in-out;
+  transform: rotateY(180deg) !important;
+}
+
 .game_preview__back_cover {
   height: 100%;
   width: 100%;
   position: absolute;
+  object-fit: fill;
+  transform: translateZ(5px) scale(1);
+}
+
+.ps2_back_cover {
+  top: -7px;
+  left: 2px;
+  height: 99%;
+  width: 100%;
 }
 
 .game_preview__back_open {
@@ -489,7 +514,7 @@ div:has(> .box_open) {
 }
 
 .n64_game_img {
-  height: 100%;
+  height: 99%;
   width: 100%;
   position: absolute;
   top: 0;
@@ -528,48 +553,25 @@ div:has(> .box_open) {
 }
 
 .ps2_game_img {
-  height: 108% !important;
+  height: 104% !important;
 }
 
-.ps3_banner {
-  border-bottom: 2px solid maroon;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.75) 70%,
-    rgba(105, 105, 105, 0.7) 100%
-  ) !important;
-  top: -28px;
-}
-
-.ps3_banner img {
-  height: 62%;
-  margin-left: 4px;
-  margin-right: 4px;
-  margin-bottom: 0px;
-}
-
-.ps3_banner p {
-  text-shadow: 2px 2px 1px black !important;
-  margin-bottom: 2px;
-}
-
-.ps4_banner {
-  height: 32px;
-}
-
-.ps4_banner p {
-  font-size: 1.25rem;
-  text-shadow: 2px 2px 1px black !important;
-  margin-bottom: 4px;
+.ps3_game_img {
+  width: 100%;
+  height: 103%;
+  position: absolute;
+  top: -26px;
+  transform: translateZ(2px);
+  border-radius: 0 4px 4px 0;
 }
 
 .psp_game_img,
 .ps2_game_img {
-  height: 150%;
   width: 100%;
   position: absolute;
-  top: -30px;
+  top: -26px;
+  transform: translateZ(2px);
+  border-radius: 0 4px 4px 0;
 }
 
 .seriesX_banner {
@@ -656,11 +658,10 @@ div:has(> .box_open) {
   background-position: center !important;
   background-size: 100% 100% !important;
   background-color: var(--color-theme) !important;
-  transform: rotateY(-89deg) translateZ(14px);
+  transform: rotateY(-90deg) translateZ(14px);
   position: absolute;
-  top: 0px;
+  top: 1px;
   left: 0px;
-  border-top-right-radius: 3px;
   border-bottom: 4px solid var(--color-theme);
 }
 
@@ -936,6 +937,15 @@ div:has(> .box_open) {
   width: 100%;
 }
 
+.xbox-360_game_img {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: -26px;
+  transform: translateZ(2px);
+  border-radius: 0 4px 4px 0;
+}
+
 .n64_cartridge {
   height: 160px;
   width: 231px;
@@ -1027,14 +1037,6 @@ div:has(> .box_open) {
 .switch_case_left {
   height: 293px;
 }
-/* 
-.switch_middle {
-  height: 350px;
-} */
-
-/* .switch_case_open {
-  animation: openCaseBackSwitch 500ms ease-in-out forwards;
-} */
 
 .switch_banner {
   top: 0px !important;
@@ -1086,9 +1088,8 @@ div:has(> .box_open) {
 
 .glare-wrapper {
   transform: translateZ(16px);
-  height: 380px !important;
-
-  border-top-right-radius: 4px !important;
+  height: 379px !important;
+  top: 1px !important;
   mask-image: radial-gradient(center, white, black);
   -webkit-mask-image: none !important;
 }

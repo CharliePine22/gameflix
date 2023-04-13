@@ -186,16 +186,26 @@
   height: 8.5rem;
   margin: 8px 4px;
   width: 23rem;
-  background-color: rgb(55, 55, 55);
-  box-shadow: rgb(0 0 0 / 45%) 0px 0px 5px 4px;
+  box-shadow: rgb(0 0 0 / 16%) 0px 0px 4px 1px;
   position: relative;
   cursor: pointer;
+  opacity: 0.7;
+  border: 0.2rem solid transparent;
+  z-index: 2;
+}
+
+.results_container:hover {
+  opacity: 1;
+  border: 0.2rem solid #fff;
+  box-shadow: 0 0 0.2rem #fff, 0 0 0.2rem #fff, 0 0 0.9rem #bc13fe,
+    0 0 0.8rem #bc13fe, 0 0 1.5rem #bc13fe, inset 0 0 0.2rem #bc13fe;
 }
 
 .results_container_content {
   width: 100%;
   cursor: pointer;
   position: relative;
+  background-color: rgb(55, 55, 55);
 }
 
 .results_container_img {
@@ -423,6 +433,7 @@
   background: transparent;
   backdrop-filter: blur(5px);
   border-radius: 0 0 6px 6px;
+  width: 100%;
 }
 
 /* MOBILE */

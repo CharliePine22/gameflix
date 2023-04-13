@@ -332,7 +332,7 @@ const SearchResultsIGDB = ({
                     <div
                       className='results_container_img'
                       style={{
-                        backgroundSize: 'cover',
+                        backgroundSize: '100% 105%',
                         backgroundImage: `url(//images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg)`,
                         backgroundPosition: 'center',
                       }}

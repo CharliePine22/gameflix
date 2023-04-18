@@ -33,6 +33,7 @@ function App() {
   const [notification, setNotification] = useState({ status: '', message: '' });
   const [gameDetails, setGameDetails] = useState(null);
   const [currentGameOpen, setCurrentGameOpen] = useState(null);
+  const [changingGameStatus, setChangingGameStatus] = useState(false);
 
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
@@ -48,15 +49,18 @@ function App() {
         id: id,
       },
     });
+    console.log(request);
     setProfileNotesData(request.data);
     return request.data;
   };
+
+  console.log(profileNotesData);
 
   // Check to see which user is currently logged in and which profile is active
   useEffect(() => {
     if (!userEmail) navigate('/login');
     const updateUser = async () => {
-      console.log(userEmail);
+      if (!userEmail) navigate('/login');
       try {
         const request = await axios.get(`${baseURL}/app/get_user`, {
           params: {
@@ -106,10 +110,10 @@ function App() {
   };
 
   const updateGameStatus = async (action, game) => {
+    setChangingGameStatus(true);
     if (action == 'ADD') {
       const exists = profileCollection.some((item) => item.id === game.id);
       if (exists) {
-        console.log('IN LIB BRO');
         setNotification({
           message: `${game.name} is already in your collection!`,
           status: 'ERROR',
@@ -141,14 +145,15 @@ function App() {
           status: 'SUCCESS',
         });
         setDisplayNotification(true);
+        setChangingGameStatus('success');
         return;
       } catch (error) {
-        console.log(error);
         setNotification({
           message: `Unable to add ${game.name} to your collection!`,
           status: 'ERROR',
         });
         setDisplayNotification(true);
+        setChangingGameStatus('error');
         return error;
       }
     } else {
@@ -172,6 +177,7 @@ function App() {
           status: 'SUCCESS',
         });
         setDisplayNotification(true);
+        setChangingGameStatus('success');
         return;
       } catch (error) {
         console.log(error);
@@ -180,6 +186,7 @@ function App() {
           status: 'ERROR',
         });
         setDisplayNotification(true);
+        setChangingGameStatus('error');
         return error;
       }
     }
@@ -221,7 +228,6 @@ function App() {
     setLoggedUser(null);
     setSelectedProfile(null);
     localStorage.clear();
-    // localStorage.setItem('twitch_auth', twitchAccessToken);
   };
 
   if (!userProfile && loggedUser) {
@@ -287,6 +293,8 @@ function App() {
                 updateGameStatus(action, game)
               }
               logoutUser={logoutHandler}
+              gameStatus={changingGameStatus}
+              resetGameStatus={() => setChangingGameStatus(false)}
             />
           </Suspense>
         }

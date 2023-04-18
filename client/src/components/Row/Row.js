@@ -39,6 +39,7 @@ function Row({
   hoverAway,
   currentHover,
   currentCollection,
+  gameStatus,
 }) {
   const [currentGame, setCurrentGame] = useState(null);
   const baseURL = process.env.REACT_APP_BASE_URL;
@@ -221,7 +222,15 @@ function Row({
                     }
                   >
                     {currentHover == game.id && !currentGameOpen && (
-                      <div className='row__blur_wrapper'>
+                      <div
+                        className={`row__blur_wrapper ${
+                          gameStatus == 'error'
+                            ? 'blur_error'
+                            : gameStatus == 'success'
+                            ? 'blur_success'
+                            : ''
+                        }`}
+                      >
                         {!playlistLoading ? (
                           <div
                             className='row__blur_details'

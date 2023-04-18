@@ -525,7 +525,7 @@
   height: 100%;
   width: 100%;
   padding: 0;
-  padding-left: 6px;
+  /* padding-left: 6px; */
   list-style: none;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -590,7 +590,7 @@
   }
 
   .user_collection__left_header {
-    padding: 0;
+    padding-bottom: 15px;
     margin-bottom: 15px;
     width: 100%;
   }

@@ -39,6 +39,8 @@ const Dashboard = ({
   addGame,
   removeGame,
   logoutUser,
+  gameStatus,
+  resetGameStatus,
 }) => {
   const allGenres = useFetchGenres();
   const [displayNotification, setDisplayNotification] = useState(false);
@@ -78,6 +80,11 @@ const Dashboard = ({
     setTimeout(() => {
       setChangingUser(false);
     }, 2000);
+  };
+
+  const resetGame = () => {
+    setHoveringGame(null);
+    resetGameStatus();
   };
 
   const openGameWindow = (game) => {
@@ -227,15 +234,17 @@ const Dashboard = ({
             currentGameOpen={currentGameOpen}
             openGame={(game) => openGameWindow(game)}
             closeGameWindow={closeGameWindow}
+            G
             updateGameStatus={(action, game) => updateGameStatus(action, game)}
             setNotification={(status, message) =>
               setNotification({ status, message })
             }
             loading={rowsLoading}
             hoverGame={(game) => setHoveringGame(game)}
-            hoverAway={() => setHoveringGame(null)}
+            hoverAway={() => resetGame()}
             currentHover={hoveringGame}
             currentCollection={currentCollection}
+            gameStatus={gameStatus}
           />
         ))}
 

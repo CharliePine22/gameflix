@@ -37,13 +37,13 @@ const UserGame = ({
   const [trophies, setTrophies] = useState(game.trophies);
   const [achievementFilter, setAchievementFilter] = useState('unlocked');
   const [trophyFilter, setTrophyFilter] = useState('unlocked');
+  const [currentGameNotes, setCurrentGameNotes] = useState(null);
   // Playtime States
   const [playtime, setPlaytime] = useState(Math.floor(game.playtime / 60));
   const [changingPlaytime, setChangingPlaytime] = useState(false);
   // Rating States
   const [rating, setRating] = useState(game.user_rating);
   const [changingRating, setChangingRating] = useState(false);
-  const [gameNews, setGameNews] = useState(null);
   const [changingBanner, setChangingBanner] = useState(false);
   const [bannerLink, setBannerLink] = useState('');
   // BACKLOG, CURRENTLY PLAYING, COMPLETED, STARTED, ABANDONED, 100%, NOT OWNED
@@ -52,7 +52,6 @@ const UserGame = ({
   // Hooks and Storage Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
   const steamID = localStorage.getItem('steamID');
-  const achievementsIntegrated = localStorage.getItem('achivementsConn');
   const userEmail = localStorage.getItem('user');
   const trophyPercentage = Math.floor(
     (trophies?.filter((game) => game.earned == true).length /
@@ -67,17 +66,25 @@ const UserGame = ({
       100
   );
 
-  console.log(game);
-
-  const gamefaqsURL = `https://gamefaqs.gamespot.com/search?game=${game.name.replaceAll(
-    ' ',
-    '+'
-  )}`;
-
   const addNoteItem = () => {
     userNotes.notes_collection.push({
       id: game.id,
-      gameNotes: [
+      tabs: [
+        {
+          tabName: 'Notes',
+          notes: [
+            {
+              id: 0,
+              note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +!`,
+              date: formattedToday,
+            },
+          ],
+        },
+      ],
+    });
+    setCurrentGameNotes({
+      id: game.id,
+      tabs: [
         {
           tabName: 'Notes',
           notes: [
@@ -92,11 +99,20 @@ const UserGame = ({
     });
   };
 
+  console.log(userNotes);
+
   useEffect(() => {
-    if (userNotes.notes_collection.filter((g) => g.id == game.id).length > 0)
-      return;
-    else addNoteItem();
-  }, [game]);
+    if (!userNotes) return;
+    if (userNotes.notes_collection.filter((g) => g.id == game.id).length > 0) {
+      console.log('WHO');
+      setCurrentGameNotes(
+        userNotes.notes_collection.filter((g) => g.id == game.id)[0]
+      );
+    } else {
+      console.log('WHAT');
+      addNoteItem();
+    }
+  }, [game, userNotes]);
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -192,7 +208,6 @@ const UserGame = ({
             }
           );
 
-          console.log(addAchievements);
           setCurrentGame(request.data.response.game);
           updateCollection(request.data.response.profile.collection);
           setAchievements(addAchievements.data.response.game.achievements);
@@ -248,7 +263,6 @@ const UserGame = ({
         rating: ratingValue,
         gameId: game.id,
       });
-      console.log(request);
       localStorage.setItem('profile', request.data.response.profile.name);
       // setProfile(request.data.response.profile);
       setCurrentGame(request.data.response.game);
@@ -269,7 +283,6 @@ const UserGame = ({
 
   const updatePlaytime = async () => {
     if (game.playtime == playtime) {
-      console.log('No new changes');
       return;
     } else {
       try {
@@ -279,7 +292,7 @@ const UserGame = ({
           playtime: playtime * 60,
           gameId: game.id,
         });
-        console.log(request);
+
         localStorage.setItem('profile', request.data.response.profile.name);
         // setProfile(request.data.response.profile);
         setCurrentGame(request.data.response.game);
@@ -300,8 +313,6 @@ const UserGame = ({
   };
 
   const updateBacklog = async (status) => {
-    console.log('HAPPENING');
-
     try {
       const request = await axios.put(`${baseURL}/app/update_game_backlog`, {
         email: userEmail,
@@ -309,10 +320,9 @@ const UserGame = ({
         status: status,
         gameId: game.id,
       });
-      console.log(request);
+
       localStorage.setItem('profile', request.data.response.profile.name);
-      console.log(request.data);
-      console.log(request.data.response.profile.collection);
+
       setCurrentGame(request.data.response.game);
       updateCollection(request.data.response.profile.collection);
       // setNotification({
@@ -819,11 +829,7 @@ const UserGame = ({
             profile={activeProfile}
             windowViewHandler={windowViewHandler}
             viewStatus={viewStatus}
-            gameNotes={
-              userNotes?.notes_collection?.filter(
-                (item) => item.id == game.id
-              )[0]
-            }
+            gameNotes={currentGameNotes}
           />
         </div>
       </div>

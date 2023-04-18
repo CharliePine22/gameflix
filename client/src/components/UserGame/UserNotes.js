@@ -23,6 +23,7 @@ const UserGameNotes = ({
 }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const userEmail = localStorage.getItem('user');
+  console.log(gameNotes);
 
   // Tab Hooks
   const [currentTab, setCurrentTab] = useState('');
@@ -32,7 +33,7 @@ const UserGameNotes = ({
   // Note Hooks
   const [noteValue, setNoteValue] = useState('');
   const [currentNote, setCurrentNote] = useState(null);
-  let noteTab = gameNotes?.gameNotes?.filter(
+  let noteTab = gameNotes?.tabs?.filter(
     (item) => item.tabName == currentTab
   )[0];
   const notesRef = useRef(null);
@@ -51,7 +52,7 @@ const UserGameNotes = ({
     if (!profile.notesId) {
       createNotes();
     } else {
-      if (currentNote !== null) return;
+      setCurrentTab(noteTab);
     }
   }, [gameNotes, currentTab]);
 
@@ -72,7 +73,7 @@ const UserGameNotes = ({
 
   useEffect(() => {
     if (!gameNotes) return;
-    setCurrentTab(gameNotes?.gameNotes[0]?.tabName);
+    setCurrentTab(gameNotes?.tabs[0]?.tabName);
   }, [gameNotes]);
 
   useEffect(() => {
@@ -95,6 +96,7 @@ const UserGameNotes = ({
       noteId: gameNotes.id,
       notes: gameNotes,
     });
+    console.log(request);
 
     return request;
   };
@@ -135,7 +137,7 @@ const UserGameNotes = ({
   const tabFormSubmitHandler = async (e) => {
     e.preventDefault();
     if (tabValue == '') return;
-    gameNotes.gameNotes.push({
+    gameNotes.tabs.push({
       tabName: tabValue,
       notes: [],
     });
@@ -226,7 +228,7 @@ const UserGameNotes = ({
             </h4>
             <div className='user_notes__header'>
               <ul className='user_notes__tabs'>
-                {gameNotes?.gameNotes?.map((item) => (
+                {gameNotes?.tabs.map((item) => (
                   <li
                     key={item.tabName}
                     className='user_notes__tab'
@@ -273,10 +275,9 @@ const UserGameNotes = ({
           </>
           <div className='user_notes__notes_wrapper'>
             <ul className='user_notes__notes'>
-              {gameNotes?.gameNotes?.filter(
-                (item) => item.tabName == currentTab
-              )[0]?.notes?.length > 0 ? (
-                gameNotes?.gameNotes
+              {gameNotes?.tabs?.filter((item) => item.tabName == currentTab)[0]
+                ?.notes?.length > 0 ? (
+                gameNotes?.tabs
                   ?.filter((item) => item.tabName == currentTab)[0]
                   ?.notes.map((note) => (
                     <li

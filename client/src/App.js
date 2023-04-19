@@ -54,8 +54,6 @@ function App() {
     return request.data;
   };
 
-  console.log(profileNotesData);
-
   // Check to see which user is currently logged in and which profile is active
   useEffect(() => {
     if (!userEmail) navigate('/login');
@@ -82,6 +80,7 @@ function App() {
     if (!userProfile || !loggedUser) return;
 
     const getProfileData = (profile) => {
+      console.log('USER CHANGE');
       const currentProfile = loggedUser.profiles.filter((obj) => {
         return obj.name === profile;
       });

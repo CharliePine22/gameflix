@@ -81,6 +81,7 @@
 .dropdown__settings_item a {
   text-decoration: none;
   color: white;
+  margin: 0 auto;
 }
 
 .dropdown__settings_item:hover > p,
@@ -116,4 +117,5 @@
 .steam_btn {
   height: 30px;
   width: 100%;
+  max-width: 145px;
 }

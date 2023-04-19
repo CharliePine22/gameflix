@@ -143,7 +143,7 @@ const NavDropdown = (props) => {
           <p>Account Settings</p>
         </div>
       </div>
-      <div className='dropdown__settings'>
+      {/* <div className='dropdown__settings'>
         <div
           className='dropdown__settings_item'
           onClick={generatePlaystationTitles}
@@ -175,7 +175,7 @@ const NavDropdown = (props) => {
             <img className='steam_btn' src={steamAuthBtn} />
           </Link>
         </div>
-      </div>
+      </div> */}
       <div className='dropdown__settings_links'>
         <Link
           to='/login'

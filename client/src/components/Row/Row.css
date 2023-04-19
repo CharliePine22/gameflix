@@ -39,7 +39,7 @@
 }
 
 .blur_item_icon {
-  margin-right: 10px;
+  margin-right: 8px;
   height: 20px;
   width: 23px;
   transition: all 180ms ease-in-out;
@@ -53,6 +53,7 @@
 .blur_item_icon.music {
   height: 18px;
   width: 18px;
+  margin-right: 10px;
 }
 
 .row__blur_item {
@@ -86,6 +87,7 @@
   height: 99%;
   width: 98%;
   backdrop-filter: blur(3px);
+  filter: brightness(1.3);
   transition: backdrop-filter 500ms linear;
   overflow-y: scroll;
   background: rgba(0, 0, 0, 0.5);

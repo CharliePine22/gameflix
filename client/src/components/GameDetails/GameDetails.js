@@ -30,8 +30,7 @@ import { AiOutlineExpandAlt, AiFillYoutube } from 'react-icons/ai';
 const GameDetails = ({
   game,
   closeDetails,
-  addGame,
-  removeGame,
+  updateGameStatus,
   activeProfile,
   twitchToken,
 }) => {
@@ -110,11 +109,11 @@ const GameDetails = ({
   };
 
   const addGameHandler = async () => {
-    await addGame(game);
+    await updateGameStatus('ADD', game);
   };
 
   const removeGameHandler = async () => {
-    await removeGame(game);
+    await updateGameStatus('REMOVE', game);
   };
 
   // Convert name of platforms into a PNG icon

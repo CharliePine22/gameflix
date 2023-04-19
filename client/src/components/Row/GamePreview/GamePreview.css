@@ -97,11 +97,11 @@
 }
 
 .game_preview__back {
-  width: 242px;
+  width: 238px;
   height: 368px;
   background-position: center center !important;
   background-size: cover !important;
-  border-radius: 4px 0px 0 4px;
+  border-radius: 4px 2px 0 4px;
   transform-style: preserve-3d;
   transform: rotateY(180deg) translateZ(14px);
   position: absolute;
@@ -109,6 +109,7 @@
   left: 0;
   bottom: 0;
   right: 0;
+  background-repeat: no-repeat !important;
 }
 
 .n64_back {
@@ -128,10 +129,11 @@
 
 .game_preview__back_cover {
   height: 100%;
-  width: 100%;
+  width: 100.5%;
   position: absolute;
   object-fit: fill;
-  transform: translateZ(5px) scale(1);
+  transform: translateZ(0px) scale(1);
+  left: -1px;
 }
 
 .ps2_back_cover {
@@ -174,7 +176,7 @@
   background-image: none;
   background-color: rgba(0, 0, 0, 0.4);
   position: absolute;
-  top: 29px;
+  top: 32px;
 }
 
 .bottom_open {
@@ -533,11 +535,11 @@ div:has(> .box_open) {
 }
 
 .ps1_game_img {
-  height: 100.6%;
-  width: 124%;
+  height: 100.2%;
+  width: 100%;
   position: absolute;
   top: -2px;
-  left: -2px;
+  left: -1px;
   object-fit: fill;
   border: 1px solid transparent;
 }
@@ -561,7 +563,6 @@ div:has(> .box_open) {
   height: 103%;
   position: absolute;
   top: -26px;
-  transform: translateZ(2px);
   border-radius: 0 4px 4px 0;
 }
 
@@ -570,7 +571,6 @@ div:has(> .box_open) {
   width: 100%;
   position: absolute;
   top: -26px;
-  transform: translateZ(2px);
   border-radius: 0 4px 4px 0;
 }
 
@@ -750,8 +750,7 @@ div:has(> .box_open) {
 
 .game_preview__right {
   width: 26px;
-  height: 375px;
-  /* height: 345px; */
+  height: 377px;
   transform: rotateY(91deg) translateZ(232px) translateX(-4px);
   background-image: none;
   background-color: rgba(0, 0, 0, 0.7);
@@ -942,7 +941,6 @@ div:has(> .box_open) {
   width: 100%;
   position: absolute;
   top: -26px;
-  transform: translateZ(2px);
   border-radius: 0 4px 4px 0;
 }
 
@@ -1019,6 +1017,8 @@ div:has(> .box_open) {
   border-bottom: 4px solid rgb(228, 0, 15) !important;
   border-left: 4px solid rgb(228, 0, 15) !important;
   height: 372px;
+  background-position: 72% 0% !important;
+  background-size: 100% 72% !important;
 }
 
 .switch_case_right {
@@ -1087,11 +1087,17 @@ div:has(> .box_open) {
 }
 
 .glare-wrapper {
-  transform: translateZ(16px);
+  transform: translateZ(14px);
   height: 379px !important;
   top: 1px !important;
   mask-image: radial-gradient(center, white, black);
   -webkit-mask-image: none !important;
+}
+
+.glare-back {
+  left: 2px;
+  width: 99%;
+  border-radius: 4px 0px 0px 5px;
 }
 
 .trailer {

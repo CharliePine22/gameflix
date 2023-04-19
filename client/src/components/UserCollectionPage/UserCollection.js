@@ -136,7 +136,11 @@ const UserCollection = ({
     } else {
       setFilteredList(
         [...collection].sort((a, b) =>
-          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+          a.name.toUpperCase() > b.name.toUpperCase()
+            ? 1
+            : a.name.toUpperCase() < b.name.toUpperCase()
+            ? -1
+            : 0
         )
       );
     }
@@ -373,7 +377,11 @@ const UserCollection = ({
             {searchValue == '' ? (
               collection
                 .sort((a, b) =>
-                  a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+                  a.name.toUpperCase() > b.name.toUpperCase()
+                    ? 1
+                    : a.name.toUpperCase() < b.name.toUpperCase()
+                    ? -1
+                    : 0
                 )
                 .map((game) => (
                   <li

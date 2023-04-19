@@ -129,8 +129,9 @@ const Dashboard = ({
               game={gameDetails}
               closeDetails={() => setGameDetails(null)}
               twitchToken={twitchToken}
-              addGame={(game) => addGame(game)}
-              removeGame={(game) => removeGame(game)}
+              updateGameStatus={(action, game) =>
+                updateGameStatus(action, game)
+              }
               activeProfile={currentProfile}
             />
             <Notification
@@ -159,7 +160,7 @@ const Dashboard = ({
             resumePlayback={() => setPlayAudio(true)}
             setSelectedProfile={(profile) => setSelectedProfile(profile)}
             spotifyToken={spotifyAccessToken}
-            removeGame={(game) => removeGame(game)}
+            updateGameStatus={(action, game) => updateGameStatus(action, game)}
             updateCollection={updateCollection}
             userNotes={userNotes}
           />
@@ -175,7 +176,7 @@ const Dashboard = ({
           onLogout={logoutUser}
           fetchSubmittedGame={fetchGame}
           toProfilePage={() => localStorage.removeItem('profile')}
-          selectProfile={(profile) => setSelectedProfile(profile)}
+          selectProfile={selectProfile}
           spotifyToken={spotifyAccessToken}
           twitchToken={twitchToken}
           saveEdit={() => setEditingUser(true)}

@@ -13,7 +13,9 @@ const ProfileEditor = (props) => {
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   // Current Profile Name
-  const [nameValue, setNameValue] = useState(currentProfile.name);
+  const currentProfileName =
+    localStorage.getItem('profile') || currentProfile.name;
+  const [nameValue, setNameValue] = useState(currentProfileName);
   // Title Input State and Ref
   const titleRef = useRef('');
   const [titleValue, setTitleValue] = useState(currentProfile.favorite_game);
@@ -43,7 +45,6 @@ const ProfileEditor = (props) => {
   const [currentGenre, setCurrentGenre] = useState(
     currentProfile.favorite_genre
   );
-  console.log(searchValue);
 
   const genreList = [
     'Action',
@@ -155,11 +156,11 @@ const ProfileEditor = (props) => {
       const request = await axios.delete(`${baseURL}/app/delete_profile`, {
         data: { email: props.userEmail, name: currentProfile.name },
       });
-      console.log(request);
       props.saveEdit();
       props.viewAllProfiles();
     } catch (error) {
       console.log(error);
+      return error;
     }
     setLoading(false);
   };
@@ -182,6 +183,7 @@ const ProfileEditor = (props) => {
         setCurrentAvatar(URL.createObjectURL(e.target.files[0]));
       } catch (e) {
         console.log(e);
+        return e;
       }
       setLoading(false);
     }
@@ -198,10 +200,10 @@ const ProfileEditor = (props) => {
           `${baseURL}/app/update_avatar_link`,
           data
         );
-        console.log(request.data);
         setCurrentAvatar(imgLink);
       } catch (e) {
         console.log(e);
+        return e;
       }
       setLoading(false);
     }
@@ -221,17 +223,18 @@ const ProfileEditor = (props) => {
   const saveUserData = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     // Make inputs OPTIONAL
     const userData = {
       email: props.userEmail,
       originalName: currentProfile.name,
       newName: nameValue.trim(),
       newColor: color,
-      favoriteGenre: currentGenre.trim(),
-      favoriteGame: titleValue.trim(),
+      favoriteGenre: currentGenre ? currentGenre.trim() : 'Action',
+      favoriteGame: titleValue ? titleValue.trim() : 'None',
       gameId: titleId,
       imageURL: titleImage,
-      favoriteConsole: consoleValue.trim(),
+      favoriteConsole: consoleValue ? consoleValue.trim() : 'None',
       twitchToken: props.twitchToken,
     };
 
@@ -241,9 +244,9 @@ const ProfileEditor = (props) => {
         userData
       );
 
-      localStorage.setItem('user', JSON.stringify(request.data.response.user));
+      localStorage.setItem('user', request.data.response.user.email);
+      localStorage.setItem('profile', request.data.response.profile.name);
       setStatusMessage(request.data.message);
-      // props.getProfile(request.data.response.profile);
       props.saveEdit();
       props.viewAllProfiles();
     } catch (error) {

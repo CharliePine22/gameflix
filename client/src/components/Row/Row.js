@@ -249,7 +249,7 @@ function Row({
                               }}
                             >
                               <CiSquareMore className='blur_item_icon more' />
-                              <p>See Details</p>
+                              <p>Details</p>
                             </div>
                             {/* GET SOUNDTRACK */}
                             <div
@@ -257,7 +257,7 @@ function Row({
                               className='row__blur_item'
                             >
                               <FaMusic className='blur_item_icon music' />
-                              <p>Play Soundtrack</p>
+                              <p>Soundtrack</p>
                             </div>
                             {/* VIEW 3D CASE */}
                             <div

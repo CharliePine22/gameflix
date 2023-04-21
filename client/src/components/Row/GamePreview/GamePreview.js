@@ -6,6 +6,10 @@ import Tilt from 'react-parallax-tilt';
 import pspCase from '../../../assets/images/psp-case-front.png';
 import pspCaseSide from '../../../assets/images/psp-case-side.png';
 import pspBackCover from '../../../assets/images/psp-case-back.png';
+// PS Vita
+import psVitaCase from '../../../assets/images/vita-case.png';
+import psVitaSide from '../../../assets/images/vita-case-side.png';
+import psVitaBackCover from '../../../assets/images/vita-back.png';
 // PlayStation 1
 import ps1Case from '../../../assets/images/ps1-case-template.png';
 import ps1CaseBack from '../../../assets/images/ps1-case-back.png';
@@ -33,6 +37,10 @@ import nintendoSwitchBack from '../../../assets/images/switch-back.png';
 // Gameboy Color
 import gbcCase from '../../../assets/images/gbc-case.png';
 import gbcCaseBack from '../../../assets/images/gbc-case-back.png';
+// Gameboy Advanced
+import gbaCase from '../../../assets/images/gba-case.png';
+import gbaCaseSide from '../../../assets/images/gba-case-side.png';
+import gbaCaseBack from '../../../assets/images/gba-case-back.png';
 // GameCube
 import gamecubeBackCover from '../../../assets/images/gamecube-cover-back.png';
 import gamecubeCaseSide from '../../../assets/images/gamecube-case-side.png';
@@ -79,7 +87,7 @@ const GamePreview = ({
 
   const grabGamePlatformId = () => {
     // Ids of arcdade platforms to be excluded
-    const arcadeIds = [52, 55, 71, 77, 99, 129, 152, 374, 149];
+    const arcadeIds = [52, 55, 58, 71, 77, 99, 129, 152, 374, 149];
 
     // Try to find first platform it was released on
     const gamePlatformIds = game.release_dates.sort(function (a, b) {
@@ -112,6 +120,8 @@ const GamePreview = ({
     switch (gamePlatform.abbreviation) {
       case 'X360':
         return xbox360Side;
+      case 'GBA':
+        return gbaCaseSide;
       case 'XONE':
         return xbox1Side;
       case 'NGC':
@@ -139,6 +149,8 @@ const GamePreview = ({
         return nesCaseSide;
       case 'PC':
         return steamCaseSide;
+      case 'Vita':
+        return psVitaSide;
       default:
         return '';
     }
@@ -148,6 +160,8 @@ const GamePreview = ({
     switch (gamePlatform.abbreviation) {
       case 'Game Boy':
         return gbcCaseBack;
+      case 'GBA':
+        return gbaCaseBack;
       case 'NGC':
         return gamecubeBackCover;
       case 'PSP':
@@ -176,6 +190,8 @@ const GamePreview = ({
         return nesCaseBack;
       case 'N64':
         return nintendo64CaseBack;
+      case 'Vita':
+        return psVitaBackCover;
       default:
         return null;
     }
@@ -200,7 +216,10 @@ const GamePreview = ({
       case 'Switch':
         return '#e4000f';
       case 'PS4':
+      case 'Vita':
         return '#003791';
+      case 'GBA':
+        return '#808080';
       case 'PS5':
       case 'NDS':
       case '3DS':
@@ -284,6 +303,9 @@ const GamePreview = ({
             {gamePlatform.abbreviation == 'N64' && (
               <img src={nintendo64Case} className='n64_game_img' />
             )}
+            {gamePlatform.abbreviation == 'Vita' && (
+              <img src={psVitaCase} className='ps3_game_img' />
+            )}
             {gamePlatform.abbreviation == 'PSP' && (
               <img src={pspCase} className='psp_game_img' />
             )}
@@ -301,6 +323,9 @@ const GamePreview = ({
             )}
             {gamePlatform.abbreviation == 'PS4' && (
               <img src={ps4Case} className='ps3_game_img' />
+            )}
+            {gamePlatform.abbreviation == 'GBA' && (
+              <img src={gbaCase} className='ps3_game_img' />
             )}
             {gamePlatform.abbreviation == 'X360' && (
               <img src={xbox360Case} className='xbox-360_game_img' />

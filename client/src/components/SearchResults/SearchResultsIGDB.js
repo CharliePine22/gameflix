@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import './SearchResults.css';
 import Skeleton from 'react-loading-skeleton';
 import axios from 'axios';
@@ -11,8 +11,11 @@ import eRating from '../../assets/images/ESRB_E.png';
 import tRating from '../../assets/images/ESRB_T.png';
 import mRating from '../../assets/images/ESRB_M.png';
 import rpRating from '../../assets/images/ESRB_RP.png';
+import Pagination from '../Pagination/Pagination';
+import GameDetails from '../GameDetails/GameDetails';
 
 const GamePreview = lazy(() => import('../Row/GamePreview/GamePreview'));
+let PageSize = 13;
 
 const SearchResultsIGDB = ({
   setGameDetails,
@@ -26,7 +29,7 @@ const SearchResultsIGDB = ({
   const twitchToken = localStorage.getItem('twitch_auth');
   const recentSearches = JSON.parse(localStorage.getItem('searches'));
   const location = useLocation();
-
+  const [currentPage, setCurrentPage] = useState(1);
   const [recentSearchList, setRecentSearchList] = useState(recentSearches);
 
   // Game Preview States
@@ -40,6 +43,14 @@ const SearchResultsIGDB = ({
   const [searchFinished, setSearchFinished] = useState(false);
   const [searchSubmitted, setSearchSubmitted] = useState(false);
 
+  // Slice searched data based on current pagincation settings
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+
+    return searchResults.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, searchResults]);
+
   const searchGame = async (game) => {
     try {
       setSearchSubmitted(true);
@@ -51,6 +62,7 @@ const SearchResultsIGDB = ({
       });
 
       setSearchResults(request.data);
+      setCurrentPage(1);
       if (searchString !== '') {
         if (!recentSearches) {
           localStorage.setItem('searches', JSON.stringify([searchString]));
@@ -135,21 +147,20 @@ const SearchResultsIGDB = ({
     openGame(game);
   };
 
-  // if(gameDetails) {
-  //   <><GameDetails
-  //     setNotification={(status, message) => setNotification({ status, message })}
-  //     game={gameDetails}
-  //     closeDetails={() => setGameDetails(null)}
-  //     twitchToken={twitchToken}
-  //     addGame={(game) => addGame(game)}
-  //     removeGame={(game) => removeGame(game)}
-  //     activeProfile={currentProfile} /><Notification
-  //       notification={notification}
-  //       displayNotification={displayNotification}
-  //       hideNotification={() => {
-  //         setNotification({ message: '', status: '' });
-  //       } } /></>
-  // }
+  if (game) {
+    <>
+      <GameDetails
+        // setNotification={(status, message) =>
+        //   setNotification({ status, message })
+        // }
+        game={game}
+        closeDetails={() => setGameDetails(null)}
+        twitchToken={twitchToken}
+        // addGame={(game) => addGame(game)}
+        // removeGame={(game) => removeGame(game)}
+      />
+    </>;
+  }
 
   // Skeleton Loader
   if (searchSubmitted && !searchFinished) {
@@ -169,22 +180,6 @@ const SearchResultsIGDB = ({
           </div>
         </div>
         <div className='search_results__container_skeleton'>
-          <div className='search_results__recents'>
-            <h2>Recent Searches</h2>
-            <ul className='recent_searches'>
-              {recentSearches &&
-                uniqueSearches(recentSearches)
-                  .slice(0, 4)
-                  .map((name, i) => (
-                    <li key={i} className='recent_searches__item'>
-                      <p onClick={() => searchGame(name)}>{name}</p>
-                      <span onClick={() => removeRecentSearchItem(name)}>
-                        X
-                      </span>
-                    </li>
-                  ))}
-            </ul>
-          </div>
           <div className='top_results_row_skeleton'>
             <h2>Top Results</h2>
             <SkeletonCard count={3} type='full' />
@@ -241,21 +236,6 @@ const SearchResultsIGDB = ({
           </div>
         )}
 
-        {/* RECENT SEARCHES */}
-        <div className='search_results__recents'>
-          <h2>Recent Searches</h2>
-          <ul className='recent_searches'>
-            {recentSearchList &&
-              uniqueSearches(recentSearchList)
-                .slice(0, 4)
-                .map((name, i) => (
-                  <li key={i} className='recent_searches__item'>
-                    <p onClick={() => searchGame(name)}>{name}</p>
-                    <span onClick={() => removeRecentSearchItem(name)}>X</span>
-                  </li>
-                ))}
-          </ul>
-        </div>
         {searchResults.length == 0 && (
           <div className='search_results__error'>
             <p>
@@ -265,7 +245,7 @@ const SearchResultsIGDB = ({
           </div>
         )}
 
-        {searchResults.length > 0 && (
+        {currentTableData.length > 0 && (
           <>
             <h2>Top Results</h2>
             {/* Top 3 Search Results */}
@@ -318,10 +298,10 @@ const SearchResultsIGDB = ({
           </>
         )}
         {/* Remaining Games */}
-        {searchResults.length > 3 && (
+        {currentTableData.length > 3 && (
           <div className='remainder_results'>
             <h2>Results</h2>
-            {searchResults.slice(3)?.map(
+            {currentTableData.slice(3)?.map(
               (game) =>
                 game.cover !== undefined && (
                   <div
@@ -359,8 +339,15 @@ const SearchResultsIGDB = ({
             )}
           </div>
         )}
+        <Pagination
+          className='pagination-bar'
+          currentPage={currentPage}
+          totalCount={searchResults.length - 3}
+          pageSize={PageSize}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </div>
-      <div className='search_bottom_fade' />
+      {/* <div className='search_bottom_fade' /> */}
     </div>
   );
 };

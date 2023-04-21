@@ -13,7 +13,7 @@
   max-width: 95%;
   padding: 10px 5px 3px;
   text-align: center;
-  text-shadow: 3px 2px 3px blac;
+  text-shadow: 3px 2px 3px black;
 }
 
 .game_cover {
@@ -154,7 +154,7 @@
   width: 25px;
   position: absolute;
   bottom: 4px;
-  right: 4px;
+  left: -86px;
   background: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
   display: flex;
@@ -168,9 +168,11 @@
 
 .remainder_results {
   margin-top: 50px;
+  margin-bottom: 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  min-height: 290px;
 }
 
 .remainder_results_skeleton {
@@ -246,10 +248,14 @@
   top: 13rem;
 }
 
+.search_results__container > h2,
 .search_results__container h2 {
-  margin-bottom: 15px;
   width: 100%;
   font-size: 2rem;
+}
+
+.search_results__container > h2 {
+  margin-bottom: 10px;
 }
 
 .search_results__error {
@@ -302,7 +308,7 @@
   justify-content: center;
   align-items: center;
   border-bottom: 2px solid rgb(55, 55, 55);
-  z-index: 2;
+  z-index: 3;
   background-color: #111;
   position: fixed;
   box-shadow: 0px 5px 9px black;
@@ -383,6 +389,12 @@
   position: relative;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 6px 3px;
+  overflow: hidden;
+}
+
+.top_result_container:hover .top_result_upper img {
+  transform: scale(1);
+  filter: brightness(1.2);
 }
 
 .top_result_details_icon,
@@ -426,6 +438,9 @@
   height: 100%;
   width: 100%;
   position: absolute;
+  transition: transform 400ms, filter 500ms ease-in-out;
+  /* filter: blur(2px); */
+  transform: scale(1.2);
 }
 
 .top_result_lower {
@@ -626,6 +641,7 @@
 
   .remainder_results {
     margin-top: 25px;
+    margin-bottom: 15px;
   }
 
   .result_add_icon {
@@ -658,6 +674,12 @@
   .search_results__container h2 {
     text-align: center;
     font-size: 2rem;
+  }
+
+  .remainder_results h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 5px;
   }
 
   .search_results__nav {
@@ -699,6 +721,26 @@
 
   .top_result_upper {
     height: 13rem;
+  }
+}
+
+@media screen and (max-width: 1900px) {
+  .results_container {
+    height: 7rem;
+    margin: 6px 4px;
+    width: 15rem;
+  }
+
+  .game_name_remainder {
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 100%;
+    padding: 3px 2px 0px;
+  }
+
+  .results_container_img {
+    height: 100%;
+    min-width: 90px;
   }
 }
 

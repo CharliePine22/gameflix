@@ -18,6 +18,7 @@ const ProfilesPage = (props) => {
 
   // Handler to update application if user edits or creates a profile
   const updateProfiles = () => {
+    console.log('UPDATE PROFILES CHANGE NOW BRO');
     props.updatingUser();
   };
 
@@ -37,8 +38,6 @@ const ProfilesPage = (props) => {
   if (profiles == null) {
     return;
   }
-
-  console.log(profiles);
 
   if (creatingProfile !== null && creatingProfile !== 'new') {
     return (
@@ -83,7 +82,10 @@ const ProfilesPage = (props) => {
                 className={`profile__user_avatar ${
                   editingProfiles && 'editing'
                 }`}
-                style={{ backgroundColor: user.color }}
+                style={{
+                  '--color-theme': user.color,
+                  backgroundColor: user.color,
+                }}
                 src={user.avatar ? `${user.avatar}` : defaultAvatar}
               />
               {editingProfiles && <MdEdit className='edit-icon' />}

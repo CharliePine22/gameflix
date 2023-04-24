@@ -19,7 +19,6 @@ const UserGame = ({
   game,
   activeProfile,
   closeStats,
-  setProfile,
   setNotification,
   setCurrentGame,
   updateCollection,

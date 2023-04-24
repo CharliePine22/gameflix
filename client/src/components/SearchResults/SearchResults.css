@@ -154,7 +154,7 @@
   width: 25px;
   position: absolute;
   bottom: 4px;
-  left: -86px;
+  left: 5px;
   background: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
   display: flex;
@@ -279,7 +279,7 @@
 }
 
 .search_results__game_preview > div {
-  transform: translateY(70%) scale(1.25);
+  transform: translateY(70%) scale(1.1);
 }
 
 .search_results__game_preview > h1 {
@@ -452,6 +452,53 @@
 }
 
 /* MOBILE */
+@media screen and (max-width: 1900px) {
+  .results_container {
+    height: 7rem;
+    margin: 6px 4px;
+    width: 15rem;
+  }
+
+  .game_name_remainder {
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 95%;
+    padding: 3px 5px 0px;
+  }
+
+  .results_container_img {
+    height: 100%;
+    min-width: 90px;
+  }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  .game_name {
+    font-size: 1rem;
+    max-width: 65%;
+    margin-left: 90px;
+  }
+
+  .game_cover {
+    height: 118px;
+    width: 80px;
+    bottom: 60px;
+    left: 5px;
+  }
+
+  .search_results__nav_search input {
+    min-width: 570px;
+  }
+
+  .top_result_upper {
+    height: 12.5rem;
+  }
+
+  .top_result_lower {
+    height: 7.5rem;
+  }
+}
+
 @media screen and (max-width: 375px) {
   .results_container {
     width: 18rem !important;
@@ -484,7 +531,7 @@
   }
 
   .game_name_remainder {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     width: 100%;
     max-width: 95%;
     padding: 5px 0px 3px 4px;
@@ -721,52 +768,5 @@
 
   .top_result_upper {
     height: 13rem;
-  }
-}
-
-@media screen and (max-width: 1900px) {
-  .results_container {
-    height: 7rem;
-    margin: 6px 4px;
-    width: 15rem;
-  }
-
-  .game_name_remainder {
-    font-size: 0.9rem;
-    width: 100%;
-    max-width: 100%;
-    padding: 3px 2px 0px;
-  }
-
-  .results_container_img {
-    height: 100%;
-    min-width: 90px;
-  }
-}
-
-@media screen and (min-width: 800px) and (max-width: 1000px) {
-  .game_name {
-    font-size: 1rem;
-    max-width: 65%;
-    margin-left: 90px;
-  }
-
-  .game_cover {
-    height: 118px;
-    width: 80px;
-    bottom: 60px;
-    left: 5px;
-  }
-
-  .search_results__nav_search input {
-    min-width: 570px;
-  }
-
-  .top_result_upper {
-    height: 12.5rem;
-  }
-
-  .top_result_lower {
-    height: 7.5rem;
   }
 }

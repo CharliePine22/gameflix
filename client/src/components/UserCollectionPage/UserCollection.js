@@ -466,7 +466,6 @@ const UserCollection = ({
                 game={currentGame}
                 activeProfile={activeProfile}
                 closeStats={() => setCurrentGame(null)}
-                setProfile={(profile) => setSelectedProfile(profile)}
                 setCurrentGame={(game) => setCurrentGame(game)}
                 updateCollection={updateCollection}
                 userNotes={userNotes}

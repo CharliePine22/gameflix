@@ -5,7 +5,7 @@ import axios from 'axios';
 import 'react-loading-skeleton/dist/skeleton.css';
 import SkeletonCard from '../SkeletonCard/SkeletonCard';
 import { useLocation } from 'react-router-dom';
-
+import { useSearchParams } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import eRating from '../../assets/images/ESRB_E.png';
 import tRating from '../../assets/images/ESRB_T.png';
@@ -35,6 +35,7 @@ const SearchResultsIGDB = ({
   // Game Preview States
   const [currentGame, setCurrentGame] = useState('');
   const [viewingPreview, setViewingPreview] = useState(false);
+  const [searchParams] = useSearchParams();
 
   // Search States
   const searchString = location.state.name;
@@ -42,6 +43,7 @@ const SearchResultsIGDB = ({
   const [searchResults, setSearchResults] = useState([]);
   const [searchFinished, setSearchFinished] = useState(false);
   const [searchSubmitted, setSearchSubmitted] = useState(false);
+  const query = searchParams.get('name');
 
   // Slice searched data based on current pagincation settings
   const currentTableData = useMemo(() => {
@@ -84,10 +86,10 @@ const SearchResultsIGDB = ({
   };
 
   useEffect(() => {
-    if (searchString == '') return;
+    if (query == '') return;
     window.scrollTo(0, 0);
-    searchGame(searchString);
-  }, [searchString]);
+    searchGame(query);
+  }, [query]);
 
   const removeRecentSearchItem = (name) => {
     const newList = recentSearches.filter((item) => item !== name);
@@ -310,6 +312,12 @@ const SearchResultsIGDB = ({
                     onClick={() => setGameDetails(game)}
                   >
                     <div
+                      className='remainder_3d'
+                      onClick={(e) => displayGameCase(e, game)}
+                    >
+                      <h3>3D</h3>
+                    </div>
+                    <div
                       className='results_container_img'
                       style={{
                         backgroundSize: '100% 105%',
@@ -319,13 +327,7 @@ const SearchResultsIGDB = ({
                     />
                     <div className='results_container_content'>
                       <h3 className='game_name_remainder'>{game.name}</h3>
-                      <div
-                        className='remainder_3d'
-                        onClick={(e) => displayGameCase(e, game)}
-                      >
-                        <h3>3D</h3>
-                      </div>
-                      {/* <p>{game.publisher}</p> */}
+
                       <ul className='game_theme_list_lower'>
                         {game.themes?.map(
                           (theme, i) =>

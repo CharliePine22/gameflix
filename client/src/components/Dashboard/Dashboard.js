@@ -31,16 +31,14 @@ const Dashboard = ({
   currentProfile,
   currentCollection,
   userNotes,
-  manageProfiles,
   updateCollection,
   selectProfile,
   updateGameStatus,
   fetchGame,
-  addGame,
-  removeGame,
   logoutUser,
   gameStatus,
   resetGameStatus,
+  changeProfile,
 }) => {
   const allGenres = useFetchGenres();
   const [displayNotification, setDisplayNotification] = useState(false);
@@ -52,10 +50,6 @@ const Dashboard = ({
   const [rowsLoading, setRowsLoading] = useState();
 
   // User states
-  const [changingUser, setChangingUser] = useState(false);
-  const [editingUser, setEditingUser] = useState(false);
-  const [loggedUser, setLoggedUser] = useState(null);
-  const [selectedProfile, setSelectedProfile] = useState(null);
   const [viewingCollection, setViewingCollection] = useState(false);
 
   // Row States
@@ -73,14 +67,6 @@ const Dashboard = ({
   useEffect(() => {
     if (!currentGameOpen) document.body.style.overflow = 'auto';
   }, []);
-
-  const changeProfile = (user) => {
-    setChangingUser(true);
-    localStorage.setItem('profile', user.name);
-    setTimeout(() => {
-      setChangingUser(false);
-    }, 2000);
-  };
 
   const resetGame = () => {
     setHoveringGame(null);
@@ -106,16 +92,10 @@ const Dashboard = ({
     setCurrentTrack(track);
   };
 
-  // Loading screen for profile change
-  if (changingUser) {
-    return (
-      <div className='loading_profile__container'>
-        <div className='loading_profile'>
-          <img src={currentProfile.avatar} alt='current user avatar' />
-        </div>
-      </div>
-    );
-  }
+  const toProfileSelection = () => {
+    localStorage.removeItem('profile');
+    window.location.reload();
+  };
 
   if (currentProfile) {
     if (gameDetails !== null) {
@@ -158,7 +138,6 @@ const Dashboard = ({
             isPlaying={playAudio}
             pausePlayback={() => setPlayAudio(false)}
             resumePlayback={() => setPlayAudio(true)}
-            setSelectedProfile={(profile) => setSelectedProfile(profile)}
             spotifyToken={spotifyAccessToken}
             updateGameStatus={(action, game) => updateGameStatus(action, game)}
             updateCollection={updateCollection}
@@ -175,12 +154,11 @@ const Dashboard = ({
           changeUser={changeProfile}
           onLogout={logoutUser}
           fetchSubmittedGame={fetchGame}
-          toProfilePage={() => localStorage.removeItem('profile')}
+          toProfilePage={toProfileSelection}
           selectProfile={selectProfile}
           spotifyToken={spotifyAccessToken}
           twitchToken={twitchToken}
-          saveEdit={() => setEditingUser(true)}
-          setLoggedUser={(user) => setLoggedUser(user)}
+          saveEdit={() => console.log('saving edit')}
           updateCollection={updateCollection}
           currentCollection={currentCollection}
           viewCollection={() => setViewingCollection(true)}
@@ -188,7 +166,7 @@ const Dashboard = ({
 
         <Banner
           setGameDetails={(id) => setGameDetails(id)}
-          addGame={(game) => addGame(game)}
+          addGame={(game) => updateGameStatus('ADD', game)}
           activeProfile={currentProfile}
         />
         <MainRow

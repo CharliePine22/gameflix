@@ -1,5 +1,10 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useNavigate,
+  createSearchParams,
+} from 'react-router-dom';
 import './App.css';
 import loginAudio from './assets/sounds/success.wav';
 import useTwitchAuth from './hooks/useTwitchAuth';
@@ -103,7 +108,8 @@ function App() {
 
   // Search for the game, publisher, or developer that the user types in from nav
   const fetchSubmittedGame = async (game) => {
-    navigate(`/search`, {
+    navigate(`/search?name=${game}`, {
+      search: `?${createSearchParams({ name: game })}`,
       state: { name: game },
     });
   };
@@ -229,6 +235,20 @@ function App() {
     localStorage.clear();
   };
 
+  // Loading screen for profile change
+  if (changingUser) {
+    return (
+      <div className='loading_profile__container'>
+        <div
+          className='loading_profile'
+          style={{ '--color-theme': selectedProfile.color }}
+        >
+          <img src={selectedProfile.avatar} alt='current user avatar' />
+        </div>
+      </div>
+    );
+  }
+
   if (!userProfile && loggedUser) {
     return (
       <ProfilesPage
@@ -285,8 +305,8 @@ function App() {
                   collection.filter((game) => game.id !== null)
                 )
               }
+              changeProfile={(user) => changeProfile(user)}
               selectProfile={(user) => setSelectedProfile(user)}
-              manageProfiles={() => setSelectedProfile(null)}
               userNotes={profileNotesData}
               updateGameStatus={(action, game) =>
                 updateGameStatus(action, game)

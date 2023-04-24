@@ -94,8 +94,6 @@ const GamePreview = ({
       return a.date - b.date;
     });
 
-    console.log(gamePlatformIds);
-
     if (gamePlatformIds.length == 1) {
       return gamePlatformIds[0].platform;
     }
@@ -145,6 +143,7 @@ const GamePreview = ({
       case 'WiiU':
         return wiiUCaseSide;
       case 'NES':
+      case 'SNES':
       case 'fds':
         return nesCaseSide;
       case 'PC':
@@ -187,6 +186,7 @@ const GamePreview = ({
       case 'PC':
         return steamCaseBack;
       case 'NES':
+      case 'SNES':
         return nesCaseBack;
       case 'N64':
         return nintendo64CaseBack;
@@ -207,6 +207,7 @@ const GamePreview = ({
       case 'PS2':
       case 'PSP':
       case 'NES':
+      case 'SNES':
       case 'fds':
         return '#000000';
       case 'PS3':
@@ -275,8 +276,8 @@ const GamePreview = ({
             className={`game_preview__front 
             ${gamePlatform.abbreviation == 'Switch' && 'switch_case'} 
             ${gamePlatform.abbreviation == 'PC' && 'pc_case'} 
-            ${viewingPreview && 'game_preview__front_open'}
             ${gamePlatform.abbreviation == 'NES' && 'nes_case'}
+            ${gamePlatform.abbreviation == 'PS1' && 'ps1_cover'}
     `}
             style={{
               backgroundImage: `url(${bgLoaded})`,
@@ -288,8 +289,6 @@ const GamePreview = ({
                   : ''
               }`,
 
-              backgroundPosition:
-                gamePlatform.abbreviation == 'PS1' && '-90% 50%',
               borderTop: `${determineCoverColor()} solid ${
                 gamePlatform.abbreviation == 'PS1' ||
                 gamePlatform.abbreviation == 'N64'
@@ -352,9 +351,10 @@ const GamePreview = ({
             {gamePlatform.abbreviation == 'PC' && (
               <img src={steamCover} className='steam_game_img' />
             )}
-            {gamePlatform.abbreviation == 'NES' && (
-              <img src={nesCaseFront} className='nes_game_img' />
-            )}
+            {gamePlatform.abbreviation == 'NES' ||
+              (gamePlatform.abbreviation == 'SNES' && (
+                <img src={nesCaseFront} className='nes_game_img' />
+              ))}
             {gamePlatform.abbreviation == 'NGC' && (
               <img src={gamecubeCase} className='nes_game_img' />
             )}
@@ -363,45 +363,6 @@ const GamePreview = ({
 
             {gamePlatform.abbreviation !== 'PS1' && ratingImage}
           </div>
-
-          {/* INSIDE OF FRONT  */}
-          {viewingPreview && (
-            <div
-              className={`game_preview__front_inside ${
-                gamePlatform.abbreviation == 'Switch' && 'switch_case_back'
-              }`}
-              style={{
-                background: `${determineCoverColor()}`,
-                borderTop: `${determineCoverColor()} solid 7px`,
-                borderBottom: `${determineCoverColor()} solid 7px`,
-                borderLeft: `${determineCoverColor()} solid 7px`,
-              }}
-            >
-              {/* Game Manual */}
-              <img src={gameCover} className='game_preview__manual' />
-              {/* The crease to give 3D Effect */}
-              <div className='game_preview__manual_middle_crease' />
-              <div className='game_preview__manual_bottom_crease' />
-              {/* ESRB IMAGE */}
-              {ratingImage}
-
-              <div className='game_preview__front_inside_details'>
-                {/* TABS */}
-                <div
-                  className='game_preview__manual_tab_top'
-                  style={{
-                    '--color-theme': determineCoverColor(),
-                  }}
-                />
-                <div
-                  className='game_preview__manual_tab_bottom'
-                  style={{
-                    '--color-theme': determineCoverColor(),
-                  }}
-                />
-              </div>
-            </div>
-          )}
 
           {/* MIDDLE CREASE */}
           <div

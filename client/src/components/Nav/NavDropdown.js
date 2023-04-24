@@ -102,7 +102,6 @@ const NavDropdown = (props) => {
                     src={user.avatar}
                     className='dropdown__profile_icon'
                     alt={`${user.name} avatar icon`}
-                    style={{ backgroundColor: user.color }}
                   />
                   <p className='dropdown__profile_name'>{user.name}</p>
                 </li>

@@ -55,7 +55,6 @@
   top: 31px;
   cursor: pointer;
   opacity: 0.5;
-  /* z-index: 1; */
 }
 
 .hovering {
@@ -147,7 +146,6 @@
   flex-direction: column;
   margin: 0 10px;
   position: relative;
-  /* width: 17vw; */
 }
 
 .profile__user_avatar {
@@ -165,11 +163,12 @@
 .profile__user_avatar:hover {
   outline: 2px inset #fff;
   outline-offset: -2px;
-  opacity: 0.75;
+  box-shadow: 0 0 7px 3px var(--color-theme);
 }
 
 .profile__user_avatar:hover ~ .profile__user_name {
   opacity: 1;
+  z-index: 3;
 }
 
 .profile__user_avatar:hover ~ .edit-icon {
@@ -181,6 +180,7 @@
   opacity: 0.5;
   font-size: 1rem;
   margin-top: 5px;
+  pointer-events: none;
 }
 
 @keyframes displayProfiles {
@@ -273,7 +273,7 @@
   .profile__user:hover > .profile__user_avatar {
     outline: 2px inset #fff;
     outline-offset: -2px;
-    opacity: 0.5;
+    opacity: 0.75;
   }
 
   .profile__user_name {

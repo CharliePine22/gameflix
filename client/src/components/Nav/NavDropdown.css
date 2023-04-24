@@ -50,7 +50,7 @@
   margin-right: 10px;
   object-fit: cover;
   object-position: 50% 10%;
-  background: whitesmoke;
+  background: transparent;
 }
 
 .dropdown__profiles_manage {

@@ -5,7 +5,7 @@ import axios from 'axios';
 import 'react-loading-skeleton/dist/skeleton.css';
 import SkeletonCard from '../SkeletonCard/SkeletonCard';
 import { useLocation } from 'react-router-dom';
-import { useSearchParams } from 'react-router-dom';
+
 import { FaSearch } from 'react-icons/fa';
 import eRating from '../../assets/images/ESRB_E.png';
 import tRating from '../../assets/images/ESRB_T.png';
@@ -36,7 +36,6 @@ const SearchResultsIGDB = ({
   // Game Preview States
   const [currentGame, setCurrentGame] = useState('');
   const [viewingPreview, setViewingPreview] = useState(false);
-  const [searchParams] = useSearchParams();
 
   // Search States
   const searchString = location.state.name;
@@ -44,7 +43,6 @@ const SearchResultsIGDB = ({
   const [searchResults, setSearchResults] = useState([]);
   const [searchFinished, setSearchFinished] = useState(false);
   const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const query = searchParams.get('name');
 
   // Slice searched data based on current pagincation settings
   const currentTableData = useMemo(() => {
@@ -87,10 +85,10 @@ const SearchResultsIGDB = ({
   };
 
   useEffect(() => {
-    if (query == '') return;
+    if (searchString == '') return;
     window.scrollTo(0, 0);
-    searchGame(query);
-  }, [query]);
+    searchGame(searchString);
+  }, [searchString]);
 
   const removeRecentSearchItem = (name) => {
     const newList = recentSearches.filter((item) => item !== name);

@@ -31,6 +31,7 @@ const SearchResultsIGDB = ({
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
   const [recentSearchList, setRecentSearchList] = useState(recentSearches);
+  const baseURL = process.env.REACT_APP_BASE_URL;
 
   // Game Preview States
   const [currentGame, setCurrentGame] = useState('');
@@ -58,7 +59,7 @@ const SearchResultsIGDB = ({
       setSearchSubmitted(true);
       setSearchFinished(false);
       let newGame = game.replace('Poke', 'Poké');
-      const request = await axios.post('/app/search_game', {
+      const request = await axios.post(`${baseURL}/app/search_game`, {
         token: twitchToken,
         gameName: newGame,
       });

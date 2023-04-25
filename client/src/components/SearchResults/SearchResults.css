@@ -264,7 +264,7 @@
   align-items: center;
   justify-content: center;
   color: red;
-  margin: 30px 20px 0;
+  margin: 0 20px 0;
   text-align: center;
 }
 
@@ -593,7 +593,6 @@
 
   .search_results {
     width: 100%;
-    top: 5rem;
   }
 
   .search_results__container {

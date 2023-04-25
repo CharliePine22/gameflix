@@ -45,8 +45,8 @@ passport.deserializeUser((user, done) => {
 const corsOptions = {
   origin: [
     'http://localhost:3000',
-    'https://cybrary2022.onrender.com',
     'https://gameflixx.netlify.app',
+    'https://gameflix-psi.vercel.app',
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, //access-control-allow-credentials:true

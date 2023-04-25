@@ -507,13 +507,21 @@
     width: 95px;
   }
 
+  .game_details__screenshots {
+    min-width: 100px;
+  }
+
+  .media_placeholder {
+    height: 650px;
+  }
+
   .media_soundtrack__container {
     max-width: 330px;
   }
 
   .game_details__container h2 {
     font-size: 2.5rem;
-    margin: 15px 0px 25px;
+    margin: 15px 0px 5px;
   }
 }
 

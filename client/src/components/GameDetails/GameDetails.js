@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './GameDetails.css';
-import youtube from '../../youtubeAPI';
 import axios from 'axios';
 
 // Game Platform Logo Images
@@ -33,6 +32,7 @@ const GameDetails = ({
   updateGameStatus,
   activeProfile,
   twitchToken,
+  currentCollection,
 }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const [gameDetails, setGameDetails] = useState({});
@@ -40,9 +40,10 @@ const GameDetails = ({
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [activeScreenshot, setActiveScreenshot] = useState('');
   const [error, setError] = useState('');
-  const currentCollection = activeProfile.collection;
-  const exists =
-    currentCollection && currentCollection.some((item) => item.id === game.id);
+  const exists = currentCollection.some((item) => item.id === game.id);
+
+  console.log(currentCollection);
+  console.log(exists);
   let coverImageURL = 'images.igdb.com/igdb/image/upload/t_cover_big_2x/';
 
   const searchGameDetails = async () => {
@@ -507,7 +508,7 @@ const GameDetails = ({
           </p>
         </div>
         <div className='game_details__actions'>
-          {!currentCollection || !exists ? (
+          {!exists ? (
             <span className='snes_button' onClick={addGameHandler}>
               ADD
             </span>

@@ -1,10 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import {
-  Routes,
-  Route,
-  useNavigate,
-  createSearchParams,
-} from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 import loginAudio from './assets/sounds/success.wav';
 import useTwitchAuth from './hooks/useTwitchAuth';
@@ -276,8 +271,6 @@ function App() {
         element={
           <Suspense fallback={<>...</>}>
             <SearchResultsIGDB
-              setGameDetails={(id) => setGameDetails(id)}
-              game={gameDetails}
               closeSearchResults={closeSearchResults}
               currentGameOpen={currentGameOpen}
               openGame={(game) => openGameWindow(game)}
@@ -285,6 +278,11 @@ function App() {
               updateGameStatus={(action, game) =>
                 updateGameStatus(action, game)
               }
+              currentProfile={selectedProfile}
+              setNotification={(status, message) =>
+                setNotification({ status, message })
+              }
+              currentCollection={profileCollection}
             />
           </Suspense>
         }

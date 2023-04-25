@@ -166,6 +166,16 @@
   font-size: 0.7rem;
 }
 
+.remainder_3d:hover {
+  background: rgba(0, 0, 0, 1);
+}
+
+.remainder_add {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
 .remainder_results {
   margin-top: 50px;
   margin-bottom: 20px;

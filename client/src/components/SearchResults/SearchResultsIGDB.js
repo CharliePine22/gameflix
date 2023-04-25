@@ -6,7 +6,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import SkeletonCard from '../SkeletonCard/SkeletonCard';
 import { useLocation } from 'react-router-dom';
 
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaPlusSquare } from 'react-icons/fa';
 import eRating from '../../assets/images/ESRB_E.png';
 import tRating from '../../assets/images/ESRB_T.png';
 import mRating from '../../assets/images/ESRB_M.png';
@@ -18,13 +18,14 @@ const GamePreview = lazy(() => import('../Row/GamePreview/GamePreview'));
 let PageSize = 13;
 
 const SearchResultsIGDB = ({
-  setGameDetails,
-  game,
   closeSearchResults,
   currentGameOpen,
   openGame,
   closeGameWindow,
-  addGameHandler,
+  updateGameStatus,
+  setNotification,
+  currentProfile,
+  currentCollection,
 }) => {
   const twitchToken = localStorage.getItem('twitch_auth');
   const recentSearches = JSON.parse(localStorage.getItem('searches'));
@@ -32,6 +33,7 @@ const SearchResultsIGDB = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [recentSearchList, setRecentSearchList] = useState(recentSearches);
   const baseURL = process.env.REACT_APP_BASE_URL;
+  const [gameDetails, setGameDetails] = useState(null);
 
   // Game Preview States
   const [currentGame, setCurrentGame] = useState('');
@@ -148,19 +150,25 @@ const SearchResultsIGDB = ({
     openGame(game);
   };
 
-  if (game) {
-    <>
-      <GameDetails
-        // setNotification={(status, message) =>
-        //   setNotification({ status, message })
-        // }
-        game={game}
-        closeDetails={() => setGameDetails(null)}
-        twitchToken={twitchToken}
-        // addGame={(game) => addGame(game)}
-        // removeGame={(game) => removeGame(game)}
-      />
-    </>;
+  const goToDetails = (game) => {
+    console.log(game);
+    setGameDetails(game);
+  };
+
+  if (gameDetails) {
+    return (
+      <>
+        <GameDetails
+          setNotification={setNotification}
+          game={gameDetails}
+          closeDetails={() => setGameDetails(null)}
+          twitchToken={twitchToken}
+          updateGameStatus={updateGameStatus}
+          activeProfile={currentProfile}
+          currentCollection={currentCollection}
+        />
+      </>
+    );
   }
 
   // Skeleton Loader
@@ -223,12 +231,8 @@ const SearchResultsIGDB = ({
                 game={currentGame}
                 gameCover={`https://images.igdb.com/igdb/image/upload/t_1080p_2x/${currentGame.cover?.image_id}.jpg`}
                 ratingImage={determineESRB(currentGame)}
-                addGame={addGameHandler}
                 displayDetails={setGameDetails}
                 hideDetails={closeGameWindow}
-                fetchGameDetails={(game) => {
-                  setGameDetails(game);
-                }}
                 viewingPreview={viewingPreview}
                 openGame={() => setViewingPreview(true)}
                 closeGame={() => setViewingPreview(false)}
@@ -255,7 +259,7 @@ const SearchResultsIGDB = ({
                 <div
                   className='top_result_container'
                   key={game.id}
-                  onClick={() => setGameDetails(game)}
+                  onClick={() => goToDetails(game)}
                 >
                   <div className='top_result_upper'>
                     <div
@@ -308,7 +312,7 @@ const SearchResultsIGDB = ({
                   <div
                     className='results_container'
                     key={game.id}
-                    onClick={() => setGameDetails(game)}
+                    onClick={() => goToDetails(game)}
                   >
                     <div
                       className='remainder_3d'
@@ -316,6 +320,14 @@ const SearchResultsIGDB = ({
                     >
                       <h3>3D</h3>
                     </div>
+                    {/* <div
+                      className='remainder_add'
+                      onClick={() => updateGameStatus('ADD', game)}
+                    >
+                      <h3>
+                        <FaPlusSquare />
+                      </h3>
+                    </div> */}
                     <div
                       className='results_container_img'
                       style={{

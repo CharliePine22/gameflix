@@ -308,7 +308,9 @@
   }
 
   .login__form_container h1 {
-    margin-bottom: 36px;
+    margin-bottom: 25px;
+    text-align: center;
+    text-shadow: 1px 1px rgba(255, 255, 255, 0.7);
   }
 
   .login__img {

@@ -108,8 +108,7 @@ function App() {
 
   // Search for the game, publisher, or developer that the user types in from nav
   const fetchSubmittedGame = async (game) => {
-    navigate(`/search?name=${game}`, {
-      search: `?${createSearchParams({ name: game })}`,
+    navigate(`/search`, {
       state: { name: game },
     });
   };

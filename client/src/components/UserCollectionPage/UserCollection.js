@@ -41,8 +41,8 @@ const UserCollection = ({
   const [filteredList, setFilteredList] = useState([]);
   // STATUS LIST STATES
   const [statusFilter, setStatusFilter] = useState('backlog');
-
   const baseURL = process.env.REACT_APP_BASE_URL;
+
   const { anchorPoint, showTitleMenu } = useContextMenu();
   const trophies = [platinumTrophy, goldTrophy, bronzeTrophy];
 
@@ -558,9 +558,7 @@ const UserCollection = ({
                       ? 'Playtime'
                       : listFilter == 'rating'
                       ? 'Rating'
-                      : listFilter == 'status'
-                      ? 'Status'
-                      : 'Trophies'}
+                      : 'Status'}
                   </p>
                   <ul className='user_collection__list_filters__list'>
                     <li
@@ -602,14 +600,6 @@ const UserCollection = ({
                       }}
                     >
                       Status
-                    </li>
-                    <span> | </span>
-
-                    <li
-                      style={{ color: listFilter == 'trophies' && 'white' }}
-                      onClick={() => setListFilter('trophies')}
-                    >
-                      Trophies
                     </li>
                   </ul>
                   {listFilter == 'status' && (

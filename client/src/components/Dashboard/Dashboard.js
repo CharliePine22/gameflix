@@ -113,6 +113,7 @@ const Dashboard = ({
                 updateGameStatus(action, game)
               }
               activeProfile={currentProfile}
+              currentCollection={currentCollection}
             />
             <Notification
               notification={notification}

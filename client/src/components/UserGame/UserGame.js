@@ -263,7 +263,6 @@ const UserGame = ({
         gameId: game.id,
       });
       localStorage.setItem('profile', request.data.response.profile.name);
-      // setProfile(request.data.response.profile);
       setCurrentGame(request.data.response.game);
       updateCollection(request.data.response.profile.collection);
       // setNotification({
@@ -293,7 +292,6 @@ const UserGame = ({
         });
 
         localStorage.setItem('profile', request.data.response.profile.name);
-        // setProfile(request.data.response.profile);
         setCurrentGame(request.data.response.game);
         updateCollection(request.data.response.profile.collection);
         // setNotification({
@@ -474,7 +472,7 @@ const UserGame = ({
           {/* RATING */}
           <div className='rating_container'>
             <div className='stats_item'>
-              <h3 style={{ paddingBottom: changingRating && '4px' }}>RATING</h3>
+              <h3>RATING</h3>
               <span
                 onClick={() => setChangingRating(true)}
                 className='previous_rating'
@@ -482,10 +480,23 @@ const UserGame = ({
               >
                 {game.user_rating || 0}%
               </span>
-              <div
+
+              <input
+                className='rating_input'
+                type='number'
+                min='1'
+                max='100'
+                value={game.user_rating || 0}
+                onSubmit={updateRatingHandler}
+                style={{
+                  width: !changingRating && '0px',
+                  display: !changingRating && 'none',
+                }}
+              />
+
+              {/* <div
                 className='rating_stars'
                 onMouseMove={handleMouseMove}
-                onClick={updateRatingHandler}
                 style={{
                   width: !changingRating && '0px',
                   display: !changingRating && 'none',
@@ -498,7 +509,7 @@ const UserGame = ({
                   height={20}
                   outlined={true}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
 

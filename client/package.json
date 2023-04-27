@@ -18,6 +18,7 @@
     "react-dom": "^18.2.0",
     "react-dynamic-star": "^0.0.2",
     "react-icons": "^4.4.0",
+    "react-image": "^4.1.0",
     "react-loading-skeleton": "^3.1.0",
     "react-parallax-tilt": "^1.7.91",
     "react-player": "^2.10.1",

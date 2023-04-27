@@ -85,20 +85,6 @@
   opacity: var(--o);
 }
 
-.xbox360_disc_banner > img {
-  height: 100%;
-  width: 100%;
-  object-fit: fill;
-  border-radius: 50% 50% 0 0;
-}
-
-.game_preview__disc_console_banner > .gamecube {
-  margin-left: 0;
-  margin-bottom: 3px;
-  height: 23px;
-  width: 96px;
-}
-
 .game_preview__front {
   width: 243px;
   height: 345px;

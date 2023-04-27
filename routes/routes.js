@@ -173,8 +173,7 @@ router.post('/search_game', async (req, res) => {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
-  console.log(gameName);
-  console.log('FIRED');
+
   const url = `https://api.igdb.com/v4/games`;
   try {
     const request = await fetch(url, {
@@ -184,6 +183,32 @@ router.post('/search_game', async (req, res) => {
     });
     const result = await request.json();
     res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//* IGDB GAME SEARCH
+router.post('/fetch_banner_list', async (req, res) => {
+  const token = req.body.token;
+
+  const headers = {
+    'Client-ID': 'kr3nccu71yvbuffq6ko4bnokn3kdj1',
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+  const url = `https://api.igdb.com/v4/games`;
+  try {
+    const request = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: `fields name, summary, cover.*; sort rating_count desc; where (rating != null & rating_count > 0); limit 100;`,
+    });
+    const result = await request.json();
+    const filteredList = await result.sort(function (a, b) {
+      return b.rating - a.rating;
+    });
+    res.send(filteredList.slice(50));
   } catch (error) {
     console.log(error);
   }

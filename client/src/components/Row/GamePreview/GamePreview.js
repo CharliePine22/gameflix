@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Img } from 'react-image';
 import './GamePreview.css';
 import Tilt from 'react-parallax-tilt';
 
@@ -246,7 +247,7 @@ const GamePreview = ({
   if (!bgLoaded) return;
 
   return (
-    <div className='game_preview__wrapper' onClick={() => console.log(game)}>
+    <div className='game_preview__wrapper'>
       <Tilt
         tiltEnable={!viewingPreview}
         glareEnable={true}
@@ -300,63 +301,63 @@ const GamePreview = ({
             }}
           >
             {gamePlatform.abbreviation == 'N64' && (
-              <img src={nintendo64Case} className='n64_game_img' />
+              <Img src={nintendo64Case} className='n64_game_img' />
             )}
             {gamePlatform.abbreviation == 'Vita' && (
-              <img src={psVitaCase} className='ps3_game_img' />
+              <Img src={psVitaCase} className='ps3_game_img' />
             )}
             {gamePlatform.abbreviation == 'PSP' && (
-              <img src={pspCase} className='psp_game_img' />
+              <Img src={pspCase} className='psp_game_img' />
             )}
             {gamePlatform.abbreviation == 'Game Boy' && (
-              <img src={gbcCase} className='ps1_game_img' />
+              <Img src={gbcCase} className='ps1_game_img' />
             )}
             {gamePlatform.abbreviation == 'PS1' && (
-              <img src={ps1Case} className='ps1_game_img' />
+              <Img src={ps1Case} className='ps1_game_img' />
             )}
             {gamePlatform.abbreviation == 'PS2' && (
-              <img src={ps2Case} className='ps2_game_img' />
+              <Img src={ps2Case} className='ps2_game_img' />
             )}
             {gamePlatform.abbreviation == 'PS3' && (
-              <img src={ps3Case} className='ps3_game_img' />
+              <Img src={ps3Case} className='ps3_game_img' />
             )}
             {gamePlatform.abbreviation == 'PS4' && (
-              <img src={ps4Case} className='ps3_game_img' />
+              <Img src={ps4Case} className='ps3_game_img' />
             )}
             {gamePlatform.abbreviation == 'GBA' && (
-              <img src={gbaCase} className='ps3_game_img' />
+              <Img src={gbaCase} className='ps3_game_img' />
             )}
             {gamePlatform.abbreviation == 'X360' && (
-              <img src={xbox360Case} className='xbox-360_game_img' />
+              <Img src={xbox360Case} className='xbox-360_game_img' />
             )}
             {gamePlatform.abbreviation == 'Switch' && (
-              <img
+              <Img
                 src={nintendoSwitchCase}
                 style={{ top: '0px' }}
                 className='xbox-360_game_img'
               />
             )}
             {gamePlatform.abbreviation == 'XONE' && (
-              <img src={xbox1Case} className='xbox-360_game_img' />
+              <Img src={xbox1Case} className='xbox-360_game_img' />
             )}
             {gamePlatform.abbreviation == '3DS' && (
-              <img src={nintendo3dsFront} className='nintendo-3ds_game_img' />
+              <Img src={nintendo3dsFront} className='nintendo-3ds_game_img' />
             )}
             {gamePlatform.abbreviation == 'Wii' && (
-              <img src={wiiCase} className='wii_game_img' />
+              <Img src={wiiCase} className='wii_game_img' />
             )}
             {gamePlatform.abbreviation == 'WiiU' && (
-              <img src={wiiUCase} className='wii_game_img' />
+              <Img src={wiiUCase} className='wii_game_img' />
             )}
             {gamePlatform.abbreviation == 'PC' && (
-              <img src={steamCover} className='steam_game_img' />
+              <Img src={steamCover} className='steam_game_img' />
             )}
             {gamePlatform.abbreviation == 'NES' ||
               (gamePlatform.abbreviation == 'SNES' && (
-                <img src={nesCaseFront} className='nes_game_img' />
+                <Img src={nesCaseFront} className='nes_game_img' />
               ))}
             {gamePlatform.abbreviation == 'NGC' && (
-              <img src={gamecubeCase} className='nes_game_img' />
+              <Img src={gamecubeCase} className='nes_game_img' />
             )}
 
             {/* FRONT CASE COVER BANNER */}
@@ -402,7 +403,7 @@ const GamePreview = ({
               borderRight: `${determineCoverColor()} solid 3px`,
             }}
           >
-            <img
+            <Img
               src={determineBackCover()}
               className={`game_preview__back_cover ${
                 gamePlatform.abbreviation == 'PS2' && 'ps2_back_cover'

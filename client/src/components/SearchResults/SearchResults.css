@@ -289,7 +289,7 @@
 }
 
 .search_results__game_preview > div {
-  transform: translateY(70%) scale(1.1);
+  transform: translateY(55%) scale(1.1);
 }
 
 .search_results__game_preview > h1 {

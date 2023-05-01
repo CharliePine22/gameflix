@@ -6,6 +6,7 @@ import { FaMedal, FaMusic, FaAngleDown } from 'react-icons/fa';
 import { DynamicStar } from 'react-dynamic-star';
 import useContextMenu from '../../hooks/useContextMenu';
 import UserGameNotes from './UserNotes';
+import SpotifyPlayback from '../SpotifyPlayback/SpotifyPlayback';
 
 const today = new Date();
 const yyyy = today.getFullYear();
@@ -23,6 +24,11 @@ const UserGame = ({
   setCurrentGame,
   updateCollection,
   userNotes,
+  spotifyToken,
+  currentTrack,
+  playAudio,
+  pausePlayback,
+  beginPlayback,
 }) => {
   // RATING, PLAYTIME, ACHIEVEMENTS, SPOTIFY, NOTES, STATUS(COMPLETED, BACKLOG, ETC.), PLATFORMS OWNED
   const { anchorPoint, showBannerMenu, resetContext } = useContextMenu();
@@ -843,6 +849,15 @@ const UserGame = ({
           />
         </div>
       </div>
+      {spotifyToken && (
+        <SpotifyPlayback
+          spotifyToken={spotifyToken}
+          playAudio={playAudio}
+          beginPlayback={beginPlayback}
+          pausePlayback={pausePlayback}
+          trackUri={currentTrack?.uri}
+        />
+      )}
     </div>
   );
 };

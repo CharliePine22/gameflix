@@ -31,7 +31,6 @@ function App() {
   const [profileNotesData, setProfileNotesData] = useState(null);
   const [displayNotification, setDisplayNotification] = useState(false);
   const [notification, setNotification] = useState({ status: '', message: '' });
-  const [gameDetails, setGameDetails] = useState(null);
   const [currentGameOpen, setCurrentGameOpen] = useState(null);
   const [changingGameStatus, setChangingGameStatus] = useState(false);
 

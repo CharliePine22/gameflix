@@ -241,7 +241,7 @@ const SearchResultsIGDB = ({
           </div>
         )}
 
-        {searchResults.length == 0 && (
+        {searchResults.length == 0 && searchFinished && (
           <div className='search_results__error'>
             <p>
               Sorry, no results for current game, please refine your search and
@@ -360,7 +360,6 @@ const SearchResultsIGDB = ({
           onPageChange={(page) => setCurrentPage(page)}
         />
       </div>
-      {/* <div className='search_bottom_fade' /> */}
     </div>
   );
 };

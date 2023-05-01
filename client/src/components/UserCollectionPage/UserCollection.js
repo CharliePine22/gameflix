@@ -496,6 +496,11 @@ const UserCollection = ({
                   setCurrentGame={(game) => setCurrentGame(game)}
                   updateCollection={updateCollection}
                   userNotes={userNotes}
+                  spotifyToken={spotifyToken}
+                  currentTrack={currentTrack}
+                  playAudio={isPlaying}
+                  pausePlayback={pausePlayback}
+                  beginPlayback={resumePlayback}
                 />
               </>
             )}

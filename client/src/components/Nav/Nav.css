@@ -50,7 +50,7 @@
 .nav_edit_profile {
   height: 150vh;
   width: 105vw;
-  position: absolute;
+  position: fixed;
   top: -340px;
   left: -60px;
   background: rgb(5, 5, 5);
@@ -160,9 +160,5 @@
     height: 35px;
     width: 35px;
     position: relative;
-  }
-
-  .search_active {
-    margin-right: 12px;
   }
 }

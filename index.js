@@ -47,8 +47,7 @@ const corsOptions = {
     'http://localhost:3000',
     'https://gameflixx.netlify.app',
     'https://gameflix-psi.vercel.app',
-    'https://gameflixx.netlify.app/',
-    'https://gameflix-psi.vercel.app/',
+    'https://gameflix.up.railway.app',
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, //access-control-allow-credentials:true

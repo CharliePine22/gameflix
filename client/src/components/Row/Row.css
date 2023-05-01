@@ -30,7 +30,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 .row__blur_details p {
@@ -481,7 +481,7 @@
   }
 
   .row__blur_details {
-    justify-content: space-around;
+    justify-content: space-evenly;
   }
 
   .row__blur_details p {

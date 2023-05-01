@@ -142,8 +142,8 @@ const NavDropdown = (props) => {
           <p>Account Settings</p>
         </div>
       </div>
-      {/* <div className='dropdown__settings'>
-        <div
+      <div className='dropdown__settings'>
+        {/* <div
           className='dropdown__settings_item'
           onClick={generatePlaystationTitles}
         >
@@ -151,7 +151,7 @@ const NavDropdown = (props) => {
             <FaPlaystation size={18} />
           </span>
           <p>Link Playstation</p>
-        </div>
+        </div> */}
         <a href={SPOTIFY_AUTH_URL} className='dropdown__settings_item'>
           <span className='dropdown__settings_item_icon'>
             <FaSpotify
@@ -161,7 +161,7 @@ const NavDropdown = (props) => {
           </span>
           <p>Spotify Authentication</p>
         </a>
-        <div
+        {/* <div
           className='dropdown__settings_item'
           style={{
             alignItems: 'center',
@@ -173,8 +173,8 @@ const NavDropdown = (props) => {
           <Link to={`http://localhost:3001/api/auth/steam`}>
             <img className='steam_btn' src={steamAuthBtn} />
           </Link>
-        </div>
-      </div> */}
+        </div> */}
+      </div>
       <div className='dropdown__settings_links'>
         <Link
           to='/login'

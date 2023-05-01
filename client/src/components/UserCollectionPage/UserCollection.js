@@ -28,6 +28,7 @@ const UserCollection = ({
 }) => {
   const [searchValue, setSearchValue] = useState('');
   const [searchList, setSearchList] = useState([]);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const [viewingList, setViewingList] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [currentGame, setCurrentGame] = useState(null);
@@ -61,6 +62,29 @@ const UserCollection = ({
 
     return () => clearTimeout(delaySearch);
   }, [searchValue]);
+  console.log(filteredList);
+
+  useEffect(() => {
+    const loadImage = (image) => {
+      return new Promise((resolve, reject) => {
+        const loadImg = new Image();
+        loadImg.src = image.cover_image;
+        // wait 2 seconds to simulate loading time
+        loadImg.onload = () =>
+          setTimeout(() => {
+            resolve(image.cover_image);
+          }, 2000);
+
+        loadImg.onerror = (err) => reject(err);
+      });
+    };
+
+    Promise.all(filteredList.map((image) => loadImage(image)))
+      .then(() => setImagesLoaded(true))
+      .catch((err) => console.log('Failed to load images', err));
+  }, []);
+
+  console.log(imagesLoaded);
 
   // Listen for screen size to determine if user is on mobile
   useEffect(() => {
@@ -267,478 +291,483 @@ const UserCollection = ({
   };
 
   // HTML RENDER
-  return (
-    <div className='user_collection__wrapper'>
-      <div
-        className='user_collection__container'
-        style={{
-          background: '#111',
-        }}
-      >
-        {/* LEFT SIDE */}
+  if (imagesLoaded)
+    return (
+      <div className='user_collection__wrapper'>
         <div
-          className='user_collection__left'
+          className='user_collection__container'
           style={{
-            height: viewingList && '250%',
-            marginBottom: viewingList && '25px',
-            display: isMobile && currentGame && 'none',
+            background: '#111',
           }}
         >
-          <div className='user_collection__left_header'>
-            <h2>
-              <img
-                style={{
-                  height: '50px',
-                  width: '50px',
-                  borderRadius: '4px',
-                }}
-                src={activeProfile.avatar}
-              />
-              {activeProfile.name.trim()}'s Collection
-              <CiSquareMore
-                className='user_collection__upload_icon'
-                onClick={() => setViewingCSVDropdown(!viewingCSVDropdown)}
-              />
-              {viewingCSVDropdown && (
-                <div>
-                  <ul className='upload_dropdown_list'>
-                    <li>
-                      {' '}
-                      <input
-                        style={{ display: 'none' }}
-                        type='file'
-                        name='file'
-                        className='custom-file-input'
-                        id='inputGroupFile'
-                        required
-                        onChange={handleImport}
-                        accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
-                      />
-                      <label
-                        className='custom-file-label'
-                        htmlFor='inputGroupFile'
-                      >
-                        Import CSV
-                      </label>
-                    </li>
-                    <li onClick={handleExport}>Export CSV</li>
-                  </ul>
-                </div>
-              )}
-              <FaHome
-                className='user_collection__home_icon'
-                onClick={backToHome}
-              />
-            </h2>
-
-            <div className='user_collection__search'>
-              <FaSistrix className='user_collection__search_icon' />
-              <input
-                className='user_collection__search_input'
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <ul
-            className='user_collection__title_list'
+          {/* LEFT SIDE */}
+          <div
+            className='user_collection__left'
             style={{
-              height: viewingList && '100%',
-              display: viewingList && 'flex',
+              height: viewingList && '250%',
+              marginBottom: viewingList && '25px',
+              display: isMobile && currentGame && 'none',
             }}
           >
-            <p
-              className='user_collection__total'
+            <div className='user_collection__left_header'>
+              <h2>
+                <img
+                  style={{
+                    height: '50px',
+                    width: '50px',
+                    borderRadius: '4px',
+                  }}
+                  src={activeProfile.avatar}
+                />
+                {activeProfile.name.trim()}'s Collection
+                <CiSquareMore
+                  className='user_collection__upload_icon'
+                  onClick={() => setViewingCSVDropdown(!viewingCSVDropdown)}
+                />
+                {viewingCSVDropdown && (
+                  <div>
+                    <ul className='upload_dropdown_list'>
+                      <li>
+                        {' '}
+                        <input
+                          style={{ display: 'none' }}
+                          type='file'
+                          name='file'
+                          className='custom-file-input'
+                          id='inputGroupFile'
+                          required
+                          onChange={handleImport}
+                          accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
+                        />
+                        <label
+                          className='custom-file-label'
+                          htmlFor='inputGroupFile'
+                        >
+                          Import CSV
+                        </label>
+                      </li>
+                      <li onClick={handleExport}>Export CSV</li>
+                    </ul>
+                  </div>
+                )}
+                <FaHome
+                  className='user_collection__home_icon'
+                  onClick={backToHome}
+                />
+              </h2>
+
+              <div className='user_collection__search'>
+                <FaSistrix className='user_collection__search_icon' />
+                <input
+                  className='user_collection__search_input'
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <ul
+              className='user_collection__title_list'
               style={{
-                color: 'white',
-                paddingLeft: '7px',
-                marginBottom: '5px',
-                position: 'fixed',
-                top: '132px',
-                left: '1px',
-                fontSize: '.95rem',
-                width: '100%',
-                height: '22px',
-                background:
-                  'linear-gradient(to right, rgba(25,25,25,.5) 0%,rgba(17,17,17,1) 46%,rgba(1,1,1,1) 50%,rgba(10,10,10,1) 53%,rgba(78,78,78,1) 76%,rgba(56,56,56,1) 87%,rgba(27,27,27,1) 100%)',
-                display: 'flex',
-                alignItems: 'center',
+                height: viewingList && '100%',
+                display: viewingList && 'flex',
               }}
             >
-              {searchList.length <= 0 && searchValue == '' ? 'All' : 'Results'}{' '}
-              (
-              <span style={{ fontSize: '.75rem' }}>
-                {searchValue == '' ? collection.length : searchList.length}
-              </span>
-              )
-            </p>
-
-            {searchValue == '' ? (
-              collection
-                .sort((a, b) =>
-                  a.name.toUpperCase() > b.name.toUpperCase()
-                    ? 1
-                    : a.name.toUpperCase() < b.name.toUpperCase()
-                    ? -1
-                    : 0
+              <p
+                className='user_collection__total'
+                style={{
+                  color: 'white',
+                  paddingLeft: '7px',
+                  marginBottom: '5px',
+                  position: 'fixed',
+                  top: '132px',
+                  left: '1px',
+                  fontSize: '.95rem',
+                  width: '100%',
+                  height: '22px',
+                  background:
+                    'linear-gradient(to right, rgba(25,25,25,.5) 0%,rgba(17,17,17,1) 46%,rgba(1,1,1,1) 50%,rgba(10,10,10,1) 53%,rgba(78,78,78,1) 76%,rgba(56,56,56,1) 87%,rgba(27,27,27,1) 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                {searchList.length <= 0 && searchValue == ''
+                  ? 'All'
+                  : 'Results'}{' '}
+                (
+                <span style={{ fontSize: '.75rem' }}>
+                  {searchValue == '' ? collection.length : searchList.length}
+                </span>
                 )
-                .map((game) => (
+              </p>
+
+              {searchValue == '' ? (
+                collection
+                  .sort((a, b) =>
+                    a.name.toUpperCase() > b.name.toUpperCase()
+                      ? 1
+                      : a.name.toUpperCase() < b.name.toUpperCase()
+                      ? -1
+                      : 0
+                  )
+                  .map((game) => (
+                    <li
+                      className='title_list__item'
+                      key={game.id}
+                      onClick={() => viewGameHandler(game)}
+                      onContextMenu={(e) => viewGameHeaders(e, game)}
+                      style={{
+                        background: currentGame?.id == game.id && '#9147ff',
+                        color: currentGame?.id == game.id && 'white',
+                      }}
+                    >
+                      {' '}
+                      <img src={game.cover_image} />
+                      <p>{game.name}</p>
+                      {game.name == activeProfile.favorite_game && (
+                        <FaStar className='list_item_favorite' />
+                      )}
+                      {showTitleMenu && (
+                        <ul
+                          onMouseEnter={(e) => e.stopPropagation(true)}
+                          className='user_collection__game_context'
+                          style={{
+                            top: anchorPoint.y,
+                            left: anchorPoint.x,
+                            zIndex: 6,
+                          }}
+                        >
+                          <li className='banner_context__item'>
+                            Add to Favorites
+                          </li>
+                          <li
+                            className='banner_context__item'
+                            onClick={(e) => removeGameHandler(e, game)}
+                          >
+                            Delete Game
+                          </li>
+                        </ul>
+                      )}
+                    </li>
+                  ))
+              ) : searchList.length > 0 && searchValue != '' ? (
+                searchList.map((game) => (
                   <li
                     className='title_list__item'
                     key={game.id}
                     onClick={() => viewGameHandler(game)}
-                    onContextMenu={(e) => viewGameHeaders(e, game)}
-                    style={{
-                      background: currentGame?.id == game.id && '#9147ff',
-                      color: currentGame?.id == game.id && 'white',
-                    }}
                   >
                     {' '}
                     <img src={game.cover_image} />
                     <p>{game.name}</p>
-                    {game.name == activeProfile.favorite_game && (
-                      <FaStar className='list_item_favorite' />
-                    )}
-                    {showTitleMenu && (
-                      <ul
-                        onMouseEnter={(e) => e.stopPropagation(true)}
-                        className='user_collection__game_context'
-                        style={{
-                          top: anchorPoint.y,
-                          left: anchorPoint.x,
-                          zIndex: 6,
-                        }}
-                      >
-                        <li className='banner_context__item'>
-                          Add to Favorites
-                        </li>
-                        <li
-                          className='banner_context__item'
-                          onClick={(e) => removeGameHandler(e, game)}
-                        >
-                          Delete Game
-                        </li>
-                      </ul>
-                    )}
                   </li>
                 ))
-            ) : searchList.length > 0 && searchValue != '' ? (
-              searchList.map((game) => (
-                <li
-                  className='title_list__item'
-                  key={game.id}
-                  onClick={() => viewGameHandler(game)}
+              ) : (
+                <p
+                  style={{
+                    color: 'white',
+                    fontSize: '3.2rem',
+                    position: 'absolute',
+                    top: '44%',
+                    left: '16px',
+                  }}
                 >
-                  {' '}
-                  <img src={game.cover_image} />
-                  <p>{game.name}</p>
-                </li>
-              ))
-            ) : (
-              <p
-                style={{
-                  color: 'white',
-                  fontSize: '3.2rem',
-                  position: 'absolute',
-                  top: '44%',
-                  left: '16px',
-                }}
-              >
-                No Matches
-              </p>
-            )}
-            <div className='user_collection__title_list_shadow' />
-            <div className='user_collection__title_list_shadow top_shadow' />
-          </ul>
-          <div className='user_collection__actions'>
-            <button className='persona_font' onClick={backToHome}>
-              Back
-            </button>
-          </div>
-        </div>
-
-        {/* RIGHT SIDE */}
-        <div className='user_collection__right'>
-          {currentGame !== null && (
-            <>
-              <UserGame
-                game={currentGame}
-                activeProfile={activeProfile}
-                closeStats={() => setCurrentGame(null)}
-                setCurrentGame={(game) => setCurrentGame(game)}
-                updateCollection={updateCollection}
-                userNotes={userNotes}
-              />
-            </>
-          )}
-
-          {!currentGame && (
-            // SPOTLIGHT
-            <>
-              {!isMobile && (
-                <div className='user_collection__spotlight_wrapper'>
-                  <div className='spotlight_filters'>
-                    {/* MOST PLAYED, HIGHEST RATED, MOST ACHIEVEMENTS */}
-                    <h2 className='spotlight_filter'>
-                      {spotlightFilter == 'playtime'
-                        ? 'Most Played'
-                        : spotlightFilter == 'user_rating'
-                        ? 'Highest Rated'
-                        : 'Most Achievements'}{' '}
-                    </h2>
-                    <ul className='spotlight_filter__options'>
-                      <li
-                        onClick={() => setSpotlightFilter('playtime')}
-                        style={{
-                          color: spotlightFilter == 'playtime' && 'white',
-                        }}
-                      >
-                        Most Played
-                      </li>
-                      <li
-                        onClick={() => setSpotlightFilter('user_rating')}
-                        style={{
-                          color: spotlightFilter == 'user_rating' && 'white',
-                        }}
-                      >
-                        Highest Rated
-                      </li>
-                      <li
-                        onClick={() => setSpotlightFilter('achievements')}
-                        style={{
-                          color: spotlightFilter == 'achievements' && 'white',
-                        }}
-                      >
-                        Most Achievements
-                      </li>
-                    </ul>
-                  </div>
-                  <div className='user_collection__spotlight'>
-                    {spotlightList.slice(0, 3).map((top, i) => (
-                      <figure
-                        key={top.id}
-                        className='spotlight_container'
-                        onClick={() => viewGameHandler(top)}
-                      >
-                        <img
-                          className='spotlight_image'
-                          src={top.banner_url || top.cover_image}
-                        />
-                        <div className='spotlight_container__row'>
-                          <img
-                            className='spotlight_trophy_image'
-                            src={trophies[i]}
-                          />
-                          <figcaption className='spotlight_details'>
-                            <p>
-                              {spotlightFilter == 'playtime'
-                                ? `${Math.floor(top.playtime / 60)} hours`
-                                : spotlightFilter == 'user_rating'
-                                ? top.user_rating + '%'
-                                : 'ACHIEVE'}{' '}
-                            </p>
-                          </figcaption>
-                        </div>
-                      </figure>
-                    ))}
-                  </div>
-                </div>
+                  No Matches
+                </p>
               )}
+              <div className='user_collection__title_list_shadow' />
+              <div className='user_collection__title_list_shadow top_shadow' />
+            </ul>
+            <div className='user_collection__actions'>
+              <button className='persona_font' onClick={backToHome}>
+                Back
+              </button>
+            </div>
+          </div>
 
-              {/* COVER LIST */}
-              <div className='user_collection__list_container'>
-                <div className='user_collection__list_filters'>
-                  <p style={{ marginBottom: '2px', fontSize: '1.5rem' }}>
-                    {listFilter == 'alphabetical'
-                      ? 'All Games'
-                      : listFilter == 'achievements'
-                      ? 'Achievements'
-                      : listFilter == 'playtime'
-                      ? 'Playtime'
-                      : listFilter == 'rating'
-                      ? 'Rating'
-                      : 'Status'}
-                  </p>
-                  <ul className='user_collection__list_filters__list'>
-                    <li
-                      style={{ color: listFilter == 'alphabetical' && 'white' }}
-                      onClick={() => setListFilter('alphabetical')}
-                    >
-                      All
-                    </li>
-                    <span> | </span>
-                    <li
-                      style={{ color: listFilter == 'achievements' && 'white' }}
-                      onClick={() => setListFilter('achievements')}
-                    >
-                      Achievements
-                    </li>
-                    <span> | </span>
+          {/* RIGHT SIDE */}
+          <div className='user_collection__right'>
+            {currentGame !== null && (
+              <>
+                <UserGame
+                  game={currentGame}
+                  activeProfile={activeProfile}
+                  closeStats={() => setCurrentGame(null)}
+                  setCurrentGame={(game) => setCurrentGame(game)}
+                  updateCollection={updateCollection}
+                  userNotes={userNotes}
+                />
+              </>
+            )}
 
-                    <li
-                      style={{ color: listFilter == 'playtime' && 'white' }}
-                      onClick={() => setListFilter('playtime')}
-                    >
-                      Playtime
-                    </li>
-                    <span> | </span>
-
-                    <li
-                      style={{ color: listFilter == 'rating' && 'white' }}
-                      onClick={() => setListFilter('rating')}
-                    >
-                      Rating
-                    </li>
-                    <span> | </span>
-
-                    <li
-                      style={{ color: listFilter == 'status' && 'white' }}
-                      onClick={() => {
-                        setListFilter('status');
-                        setStatusFilter('backlog');
-                      }}
-                    >
-                      Status
-                    </li>
-                  </ul>
-                  {listFilter == 'status' && (
-                    <div
-                      className='user_collection__list_filters__list'
-                      style={{ margin: '0' }}
-                    >
-                      <ul
-                        className='user_collection__list_filters__list_status'
-                        style={{ flexDirection: 'row' }}
-                      >
+            {!currentGame && (
+              // SPOTLIGHT
+              <>
+                {!isMobile && (
+                  <div className='user_collection__spotlight_wrapper'>
+                    <div className='spotlight_filters'>
+                      {/* MOST PLAYED, HIGHEST RATED, MOST ACHIEVEMENTS */}
+                      <h2 className='spotlight_filter'>
+                        {spotlightFilter == 'playtime'
+                          ? 'Most Played'
+                          : spotlightFilter == 'user_rating'
+                          ? 'Highest Rated'
+                          : 'Most Achievements'}{' '}
+                      </h2>
+                      <ul className='spotlight_filter__options'>
                         <li
+                          onClick={() => setSpotlightFilter('playtime')}
                           style={{
-                            color: statusFilter == 'backlog' && 'white',
+                            color: spotlightFilter == 'playtime' && 'white',
                           }}
-                          onClick={() => setStatusFilter('backlog')}
                         >
-                          Backlog
+                          Most Played
                         </li>
-                        <span> | </span>
                         <li
+                          onClick={() => setSpotlightFilter('user_rating')}
                           style={{
-                            color: statusFilter == 'started' && 'white',
+                            color: spotlightFilter == 'user_rating' && 'white',
                           }}
-                          onClick={() => setStatusFilter('started')}
                         >
-                          Started
+                          Highest Rated
                         </li>
-                        <span> | </span>
                         <li
+                          onClick={() => setSpotlightFilter('achievements')}
                           style={{
-                            color: statusFilter == 'playing' && 'white',
+                            color: spotlightFilter == 'achievements' && 'white',
                           }}
-                          onClick={() => setStatusFilter('playing')}
                         >
-                          Playing
-                        </li>
-                        <span> | </span>
-                        <li
-                          style={{
-                            color: statusFilter == 'finished' && 'white',
-                          }}
-                          onClick={() => setStatusFilter('finished')}
-                        >
-                          Finished
-                        </li>
-                        <span> | </span>
-                        <li
-                          style={{
-                            color: statusFilter == '100%' && 'white',
-                          }}
-                          onClick={() => setStatusFilter('100%')}
-                        >
-                          100%
-                        </li>
-                        <span> | </span>
-                        <li
-                          style={{
-                            color: statusFilter == 'abandonded' && 'white',
-                          }}
-                          onClick={() => setStatusFilter('abandonded')}
-                        >
-                          Abandonded
-                        </li>
-                        <span> | </span>
-                        <li
-                          style={{
-                            color: statusFilter == 'not owned' && 'white',
-                          }}
-                          onClick={() => setStatusFilter('not owned')}
-                        >
-                          Not Owned
+                          Most Achievements
                         </li>
                       </ul>
                     </div>
-                  )}
-                </div>
-                <ul className='user_collection__list'>
-                  {!isMobile || (isMobile && searchValue == '')
-                    ? filteredList.map((game) => (
-                        <li
-                          className='list_item'
-                          key={game.id}
-                          onClick={() => viewGameHandler(game)}
+                    <div className='user_collection__spotlight'>
+                      {spotlightList.slice(0, 3).map((top, i) => (
+                        <figure
+                          key={top.id}
+                          className='spotlight_container'
+                          onClick={() => viewGameHandler(top)}
                         >
-                          <div className='user_collection__poster_container'>
-                            <div className='gradient' />
-                            <>
-                              {/* FRONT OF POSTER */}
-                              <div className='user_collection__poster_front'>
-                                <img
-                                  loading='lazy'
-                                  className='user_collection__poster'
-                                  src={game.cover_image}
-                                  alt={game.name}
-                                />
-                              </div>
-                            </>
+                          <img
+                            className='spotlight_image'
+                            src={top.banner_url || top.cover_image}
+                          />
+                          <div className='spotlight_container__row'>
+                            <img
+                              className='spotlight_trophy_image'
+                              src={trophies[i]}
+                            />
+                            <figcaption className='spotlight_details'>
+                              <p>
+                                {spotlightFilter == 'playtime'
+                                  ? `${Math.floor(top.playtime / 60)} hours`
+                                  : spotlightFilter == 'user_rating'
+                                  ? top.user_rating + '%'
+                                  : 'ACHIEVE'}{' '}
+                              </p>
+                            </figcaption>
                           </div>
-                          {getFilterStat(game)}
-                        </li>
-                      ))
-                    : searchList.map((game) => (
-                        <li
-                          className='list_item'
-                          key={game.id}
-                          onClick={() => viewGameHandler(game)}
-                        >
-                          <div className='user_collection__poster_container'>
-                            <div className='gradient' />
-                            <>
-                              {/* FRONT OF POSTER */}
-                              <div className='user_collection__poster_front'>
-                                <img
-                                  loading='lazy'
-                                  className='user_collection__poster'
-                                  src={
-                                    isMobile
-                                      ? game.cover_image.replace(
-                                          'cover_big',
-                                          '1080p'
-                                        )
-                                      : game.cover_image
-                                  }
-                                  alt={game.name}
-                                />
-                              </div>
-                            </>
-                          </div>
-                        </li>
+                        </figure>
                       ))}
-                </ul>
-              </div>
-            </>
-          )}
+                    </div>
+                  </div>
+                )}
+
+                {/* COVER LIST */}
+                <div className='user_collection__list_container'>
+                  <div className='user_collection__list_filters'>
+                    <p style={{ marginBottom: '2px', fontSize: '1.5rem' }}>
+                      {listFilter == 'alphabetical'
+                        ? 'All Games'
+                        : listFilter == 'achievements'
+                        ? 'Achievements'
+                        : listFilter == 'playtime'
+                        ? 'Playtime'
+                        : listFilter == 'rating'
+                        ? 'Rating'
+                        : 'Status'}
+                    </p>
+                    <ul className='user_collection__list_filters__list'>
+                      <li
+                        style={{
+                          color: listFilter == 'alphabetical' && 'white',
+                        }}
+                        onClick={() => setListFilter('alphabetical')}
+                      >
+                        All
+                      </li>
+                      <span> | </span>
+                      <li
+                        style={{
+                          color: listFilter == 'achievements' && 'white',
+                        }}
+                        onClick={() => setListFilter('achievements')}
+                      >
+                        Achievements
+                      </li>
+                      <span> | </span>
+
+                      <li
+                        style={{ color: listFilter == 'playtime' && 'white' }}
+                        onClick={() => setListFilter('playtime')}
+                      >
+                        Playtime
+                      </li>
+                      <span> | </span>
+
+                      <li
+                        style={{ color: listFilter == 'rating' && 'white' }}
+                        onClick={() => setListFilter('rating')}
+                      >
+                        Rating
+                      </li>
+                      <span> | </span>
+
+                      <li
+                        style={{ color: listFilter == 'status' && 'white' }}
+                        onClick={() => {
+                          setListFilter('status');
+                          setStatusFilter('backlog');
+                        }}
+                      >
+                        Status
+                      </li>
+                    </ul>
+                    {listFilter == 'status' && (
+                      <div
+                        className='user_collection__list_filters__list'
+                        style={{ margin: '0' }}
+                      >
+                        <ul
+                          className='user_collection__list_filters__list_status'
+                          style={{ flexDirection: 'row' }}
+                        >
+                          <li
+                            style={{
+                              color: statusFilter == 'backlog' && 'white',
+                            }}
+                            onClick={() => setStatusFilter('backlog')}
+                          >
+                            Backlog
+                          </li>
+                          <span> | </span>
+                          <li
+                            style={{
+                              color: statusFilter == 'started' && 'white',
+                            }}
+                            onClick={() => setStatusFilter('started')}
+                          >
+                            Started
+                          </li>
+                          <span> | </span>
+                          <li
+                            style={{
+                              color: statusFilter == 'playing' && 'white',
+                            }}
+                            onClick={() => setStatusFilter('playing')}
+                          >
+                            Playing
+                          </li>
+                          <span> | </span>
+                          <li
+                            style={{
+                              color: statusFilter == 'finished' && 'white',
+                            }}
+                            onClick={() => setStatusFilter('finished')}
+                          >
+                            Finished
+                          </li>
+                          <span> | </span>
+                          <li
+                            style={{
+                              color: statusFilter == '100%' && 'white',
+                            }}
+                            onClick={() => setStatusFilter('100%')}
+                          >
+                            100%
+                          </li>
+                          <span> | </span>
+                          <li
+                            style={{
+                              color: statusFilter == 'abandonded' && 'white',
+                            }}
+                            onClick={() => setStatusFilter('abandonded')}
+                          >
+                            Abandonded
+                          </li>
+                          <span> | </span>
+                          <li
+                            style={{
+                              color: statusFilter == 'not owned' && 'white',
+                            }}
+                            onClick={() => setStatusFilter('not owned')}
+                          >
+                            Not Owned
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                  <ul className='user_collection__list'>
+                    {!isMobile || (isMobile && searchValue == '')
+                      ? filteredList.map((game) => (
+                          <li
+                            className='list_item'
+                            key={game.id}
+                            onClick={() => viewGameHandler(game)}
+                          >
+                            <div className='user_collection__poster_container'>
+                              <div className='gradient' />
+                              <>
+                                {/* FRONT OF POSTER */}
+                                <div className='user_collection__poster_front'>
+                                  <img
+                                    className='user_collection__poster'
+                                    src={game.cover_image}
+                                    alt={game.name}
+                                  />
+                                </div>
+                              </>
+                            </div>
+                            {getFilterStat(game)}
+                          </li>
+                        ))
+                      : searchList.map((game) => (
+                          <li
+                            className='list_item'
+                            key={game.id}
+                            onClick={() => viewGameHandler(game)}
+                          >
+                            <div className='user_collection__poster_container'>
+                              <div className='gradient' />
+                              <>
+                                {/* FRONT OF POSTER */}
+                                <div className='user_collection__poster_front'>
+                                  <img
+                                    className='user_collection__poster'
+                                    src={
+                                      isMobile
+                                        ? game.cover_image.replace(
+                                            'cover_big',
+                                            '1080p'
+                                          )
+                                        : game.cover_image
+                                    }
+                                    alt={game.name}
+                                  />
+                                </div>
+                              </>
+                            </div>
+                          </li>
+                        ))}
+                  </ul>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default UserCollection;

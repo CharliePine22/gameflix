@@ -1,6 +1,6 @@
 [[redirects]]
 from = “/"
-to = “https://gameflix-psi.vercel.app/:splat 2”
+to = “https://gameflix-psi.vercel.app:splat 2”
 status = 200
 force = true
 headers = {X-From = “Netlify”}

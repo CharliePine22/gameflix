@@ -23,8 +23,6 @@ function App() {
   const navigate = useNavigate();
   // User states
   const [changingUser, setChangingUser] = useState(false);
-  const [updatingUser, setUpdatingUser] = useState(false);
-  const [editingUser, setEditingUser] = useState(false);
   const [loggedUser, setLoggedUser] = useState(null);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [profileCollection, setProfileCollection] = useState([]);
@@ -79,7 +77,6 @@ function App() {
     if (!userProfile || !loggedUser) return;
 
     const getProfileData = (profile) => {
-      console.log('USER CHANGE');
       const currentProfile = loggedUser.profiles.filter((obj) => {
         return obj.name === profile;
       });
@@ -245,9 +242,7 @@ function App() {
   if (!userProfile && loggedUser) {
     return (
       <ProfilesPage
-        updatingUser={() => setUpdatingUser(true)}
-        saveEdit={() => setEditingUser(true)}
-        updateUser={updatingUser}
+        updateUser={(user) => setLoggedUser(user)}
         currentUser={loggedUser}
         selectProfile={(user) => setSelectedProfile(user)}
         twitchAccessToken={twitchAccessToken}

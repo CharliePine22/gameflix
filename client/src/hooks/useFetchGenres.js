@@ -13,7 +13,7 @@ export default function useFetchGenres() {
     const fetchGenres = async () => {
       const request = await axios.get(`${baseURL}/app/get_genres`);
       const last_updated = new Date(request.data.last_updated);
-
+      console.log(request);
       if (currentDate > last_updated.setDate(last_updated.getDate() + 1)) {
         return updateGenresAPI();
       } else {
@@ -38,6 +38,7 @@ export default function useFetchGenres() {
       const completeGenreList = genreTitles.map((genre) => genre.data);
       updateGenresCollection(completeGenreList);
       setIsLoading(false);
+      return completeGenreList;
     };
 
     fetchGenres();
@@ -49,6 +50,7 @@ export default function useFetchGenres() {
       date: currentDate,
     });
     setGenreGamesList(request.data.genres_list);
+    return request.data.genres_list;
   };
 
   return { genreGamesList, isLoading };

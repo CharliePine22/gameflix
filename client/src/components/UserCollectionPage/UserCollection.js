@@ -62,7 +62,6 @@ const UserCollection = ({
 
     return () => clearTimeout(delaySearch);
   }, [searchValue]);
-  console.log(filteredList);
 
   useEffect(() => {
     const loadImage = (image) => {
@@ -84,15 +83,13 @@ const UserCollection = ({
       .catch((err) => console.log('Failed to load images', err));
   }, []);
 
-  console.log(imagesLoaded);
-
   // Listen for screen size to determine if user is on mobile
   useEffect(() => {
-    if (window.innerWidth <= 600) {
+    if (window.innerWidth <= 650) {
       setIsMobile(true);
     }
     function handleResize() {
-      if (window.innerWidth <= 600) {
+      if (window.innerWidth <= 650) {
         setIsMobile(true);
       } else {
         setIsMobile(false);
@@ -168,7 +165,7 @@ const UserCollection = ({
         )
       );
     }
-  }, [listFilter, statusFilter]);
+  }, [listFilter, statusFilter, collection]);
 
   // Select which game is being viewed
   const viewGameHandler = (game) => {
@@ -325,7 +322,7 @@ const UserCollection = ({
                   onClick={() => setViewingCSVDropdown(!viewingCSVDropdown)}
                 />
                 {viewingCSVDropdown && (
-                  <div>
+                  <div className='upload_dropdown_wrapper'>
                     <ul className='upload_dropdown_list'>
                       <li>
                         {' '}

@@ -16,12 +16,6 @@ const ProfilesPage = (props) => {
     props.selectProfile(user);
   };
 
-  // Handler to update application if user edits or creates a profile
-  const updateProfiles = () => {
-    console.log('UPDATE PROFILES CHANGE NOW BRO');
-    props.updatingUser();
-  };
-
   // Handler to determine click function when editing profiles or not
   const profileSelectHandler = (user) => {
     if (!editingProfiles) chooseCurrentProfile(user);
@@ -33,6 +27,7 @@ const ProfilesPage = (props) => {
   // Determine what user is selected and grab their profiles
   useEffect(() => {
     setProfiles(props.currentUser.profiles);
+    setEditingProfiles(false);
   }, [props.currentUser]);
 
   if (profiles == null) {
@@ -42,11 +37,10 @@ const ProfilesPage = (props) => {
   if (creatingProfile !== null && creatingProfile !== 'new') {
     return (
       <ProfileEditor
-        saveEdit={props.saveEdit}
+        saveEdit={props.updateUser}
         currentProfile={creatingProfile}
         viewAllProfiles={() => setCreatingProfile(null)}
         userEmail={props.currentUser.email}
-        getProfile={(test) => console.log(test)}
         twitchToken={props.twitchToken}
       />
     );
@@ -55,7 +49,7 @@ const ProfilesPage = (props) => {
   if (creatingProfile !== null && creatingProfile == 'new') {
     return (
       <ProfileCreation
-        updateUser={updateProfiles}
+        updateUser={props.updateUser}
         userEmail={props.currentUser.email}
         viewAllProfiles={() => setCreatingProfile(null)}
       />

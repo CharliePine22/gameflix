@@ -23,7 +23,6 @@ const UserGameNotes = ({
 }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const userEmail = localStorage.getItem('user');
-  console.log(gameNotes);
 
   // Tab Hooks
   const [currentTab, setCurrentTab] = useState('');
@@ -51,8 +50,9 @@ const UserGameNotes = ({
   useEffect(() => {
     if (!profile.notesId) {
       createNotes();
-    } else {
-      setCurrentTab(noteTab);
+    } else if (profile.notesId && !gameNotes) {
+      setNoteValue('Here are your notes');
+      setTabValue('Notes');
     }
   }, [gameNotes, currentTab]);
 
@@ -96,7 +96,6 @@ const UserGameNotes = ({
       noteId: gameNotes.id,
       notes: gameNotes,
     });
-    console.log(request);
 
     return request;
   };

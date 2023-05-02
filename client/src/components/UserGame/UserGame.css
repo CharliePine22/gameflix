@@ -114,7 +114,13 @@
   font-size: 1.25rem;
   cursor: pointer;
   position: relative;
-  top: 2px;
+  top: 1px;
+  right: 2px;
+}
+
+.music_icon:hover {
+  transform: scale(1.1);
+  filter: brightness(1.75);
 }
 
 .playtime_input {
@@ -217,15 +223,16 @@
   font-size: 0.9rem;
   line-height: 1;
   margin-bottom: 6px;
+  cursor: default;
 }
 
 .status_btn {
   cursor: pointer;
-  padding: 6px 15px;
+  padding: 4px 10px;
   border: 0;
-  border-radius: 4px;
+  border-radius: 2px;
   color: white;
-  font-weight: bold;
+  /* font-weight: bold; */
   width: fit-content;
   font-size: 0.75rem;
 }
@@ -710,7 +717,7 @@
   }
 
   .rating_container h3 {
-    padding-bottom: 2px;
+    padding-bottom: 1px;
   }
 
   .user_game__current_stats {

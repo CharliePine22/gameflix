@@ -3,7 +3,6 @@ import './UserGame.css';
 import axios from 'axios';
 import { FiClock } from 'react-icons/fi';
 import { FaMedal, FaMusic, FaAngleDown } from 'react-icons/fa';
-import { DynamicStar } from 'react-dynamic-star';
 import useContextMenu from '../../hooks/useContextMenu';
 import UserGameNotes from './UserNotes';
 import SpotifyPlayback from '../SpotifyPlayback/SpotifyPlayback';
@@ -104,17 +103,14 @@ const UserGame = ({
     });
   };
 
-  console.log(userNotes);
-
   useEffect(() => {
-    if (!userNotes) return;
+    if (!userNotes.notes_collection) return;
     if (userNotes.notes_collection.filter((g) => g.id == game.id).length > 0) {
       console.log('WHO');
       setCurrentGameNotes(
         userNotes.notes_collection.filter((g) => g.id == game.id)[0]
       );
     } else {
-      console.log('WHAT');
       addNoteItem();
     }
   }, [game, userNotes]);
@@ -224,12 +220,6 @@ const UserGame = ({
     fetchAppData();
   }, [game]);
 
-  const handleMouseMove = (event) => {
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const position = Math.floor(event.clientX - bounds.left) / 20;
-    setRating(Math.floor(event.clientX - bounds.left) / 20);
-  };
-
   const getAchievementCount = (list) => {
     if (!list) return 'N/A';
     const numberAchieved = list.filter(
@@ -256,32 +246,19 @@ const UserGame = ({
   }
 
   const updateRatingHandler = async () => {
-    let ratingValue = rating * 20;
-    if (rating * 20 >= 100) {
-      ratingValue = 100;
-    }
-
     try {
       const request = await axios.put(`${baseURL}/app/update_game_rating`, {
         email: userEmail,
         currentProfile: activeProfile.name,
-        rating: ratingValue,
+        rating: rating,
         gameId: game.id,
       });
       localStorage.setItem('profile', request.data.response.profile.name);
       setCurrentGame(request.data.response.game);
       updateCollection(request.data.response.profile.collection);
-      // setNotification({
-      //   message: `${game.name} playtime successfully updated!`,
-      //   status: 'SUCCESS',
-      // });
       setChangingRating(false);
     } catch (error) {
       console.log(error);
-      // setNotification({
-      //   message: `Something went wrong, please try again!`,
-      //   status: 'ERROR',
-      // });
     }
   };
 
@@ -360,6 +337,17 @@ const UserGame = ({
     if (e.key === 'Escape') {
       setChangingPlaytime(false);
       setPlaytime(Math.floor(game.playtime / 60));
+    }
+  };
+
+  // Determine if user is updating or canceling playtime change
+  const determineRatingAction = (e) => {
+    if (e.key === 'Enter') {
+      updateRatingHandler();
+    }
+    if (e.key === 'Escape') {
+      setChangingRating(false);
+      setRating(game.user_rating);
     }
   };
 
@@ -484,7 +472,7 @@ const UserGame = ({
                 className='previous_rating'
                 style={{ display: changingRating && 'none' }}
               >
-                {game.user_rating || 0}%
+                {game.user_rating}%
               </span>
 
               <input
@@ -492,37 +480,21 @@ const UserGame = ({
                 type='number'
                 min='1'
                 max='100'
-                value={game.user_rating || 0}
-                onSubmit={updateRatingHandler}
+                value={rating}
+                onKeyDown={determineRatingAction}
+                onChange={(e) => setRating(e.target.value)}
                 style={{
                   width: !changingRating && '0px',
                   display: !changingRating && 'none',
                 }}
               />
-
-              {/* <div
-                className='rating_stars'
-                onMouseMove={handleMouseMove}
-                style={{
-                  width: !changingRating && '0px',
-                  display: !changingRating && 'none',
-                }}
-              >
-                <DynamicStar
-                  rating={rating}
-                  totalStars={5}
-                  width={20}
-                  height={20}
-                  outlined={true}
-                />
-              </div> */}
             </div>
           </div>
 
           {/* BACKLOG STATUS */}
           <div className='achievement_count_container'>
             <div className='stats_item'>
-              <h3 style={{ paddingTop: '5px' }}>STATUS</h3>
+              <h3>STATUS</h3>
               <button
                 onClick={() => setChangingBacklog(!changingBacklog)}
                 style={{

@@ -4,9 +4,9 @@
   position: absolute;
   background: #9147ff;
   border-radius: 3px;
-  padding: 2px 2px;
+  padding: 5px 4px;
   bottom: -8px;
-  left: 32px;
+  left: 42px;
   min-width: 65px;
   width: 50%;
   text-align: center;
@@ -228,6 +228,7 @@
   z-index: 10;
   background: rgba(10, 10, 10, 0.8);
   right: 0px;
+  height: 67px;
 }
 
 .upload_dropdown_list label {
@@ -242,6 +243,14 @@
 .upload_dropdown_list li:hover {
   background: white;
   color: black;
+}
+
+.upload_dropdown_wrapper {
+  position: absolute;
+  top: -50px;
+  right: 4px;
+  height: 100px;
+  width: 200px;
 }
 
 .user_collection__actions {
@@ -614,12 +623,7 @@
 
 @media screen and (max-width: 950px) {
   .filter_stat {
-    padding: 2px 2px;
-    bottom: -8px;
-    left: 36px;
-    min-width: 65px;
-    width: 50%;
-    font-size: 0.95rem;
+    left: 34px;
   }
 
   .rating_stat {
@@ -682,7 +686,23 @@
 }
 
 /* MOBILE DEVICES */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 650px) {
+  .filter_stat {
+    left: 28px;
+    bottom: -6px;
+    padding: 4px;
+  }
+
+  .rating_stat {
+    left: 46px;
+    bottom: -11px;
+    padding: 9px 2px;
+    min-width: unset;
+    max-width: unset;
+    width: 35px;
+    text-align: center;
+  }
+
   .list_item {
     margin: 5px 4px 12px;
   }
@@ -709,14 +729,15 @@
     font-size: 2.2rem;
     cursor: pointer;
     position: absolute;
-    left: 280px;
+    left: 270px;
     bottom: 7px;
   }
 
   .upload_dropdown_list {
     top: 90%;
-    right: 88px;
+    right: 81px;
     bottom: 0;
+    width: 100px;
   }
 
   .upload_dropdown_list li {
@@ -790,10 +811,10 @@
   }
 
   .user_collection__poster_container {
-    max-height: 200px;
-    max-width: 7.5rem;
-    min-height: 200px;
-    min-width: 7.5rem;
+    min-height: 225px;
+    max-height: 225px;
+    min-width: 8rem;
+    max-width: 8rem;
   }
 
   .user_collection__search_icon {

@@ -125,8 +125,8 @@ const ProfileCreation = (props) => {
         `${baseURL}/app/create_new_profile`,
         userData
       );
-      localStorage.setItem('user', JSON.stringify(request.data.response));
-      props.updateUser();
+      localStorage.setItem('user', request.data.response.email);
+      props.updateUser(request.data.response);
       props.viewAllProfiles();
     } catch (e) {
       console.log(e);

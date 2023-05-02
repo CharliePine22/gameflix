@@ -156,7 +156,7 @@ const ProfileEditor = (props) => {
       const request = await axios.delete(`${baseURL}/app/delete_profile`, {
         data: { email: props.userEmail, name: currentProfile.name },
       });
-      props.saveEdit();
+      props.saveEdit(request.data.response);
       props.viewAllProfiles();
     } catch (error) {
       console.log(error);
@@ -247,7 +247,7 @@ const ProfileEditor = (props) => {
       localStorage.setItem('user', request.data.response.user.email);
       localStorage.setItem('profile', request.data.response.profile.name);
       setStatusMessage(request.data.message);
-      props.saveEdit();
+      props.saveEdit(request.data.response);
       props.viewAllProfiles();
     } catch (error) {
       setStatusMessage(error);

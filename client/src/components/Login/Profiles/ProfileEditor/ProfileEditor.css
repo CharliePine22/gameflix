@@ -641,6 +641,7 @@
     transparent
   );
   width: 100%;
+  display: none;
 }
 
 .profile_edit__header h3 {
@@ -993,7 +994,7 @@
   }
 
   .profile_edit__form_wrapper {
-    padding: 145px 0px 0px;
+    padding: 100px 0px 0px;
     width: 300px;
   }
 

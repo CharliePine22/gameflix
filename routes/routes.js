@@ -990,7 +990,7 @@ const deleteProfile = async (name, email) => {
       {
         $pull: { profiles: { name: name } },
       },
-      { safe: true, upsert: true }
+      { safe: true, upsert: true, new: true }
     );
     return request;
   } catch (error) {

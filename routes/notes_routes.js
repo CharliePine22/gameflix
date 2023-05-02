@@ -74,10 +74,9 @@ router.put('/update_notes', async (req, res) => {
 
 router.get('/get_notes', async (req, res) => {
   const notesId = req.query.id;
-  console.log(notesId);
   const userNotes = await noteModel.findOne({ notesID: notesId });
-  console.log('NOTES SENT');
-  res.send(userNotes);
+  if (userNotes == null) res.send([]);
+  else res.send(userNotes);
 });
 
 module.exports = router;

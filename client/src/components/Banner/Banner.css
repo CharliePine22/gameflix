@@ -2,8 +2,6 @@
   color: #fff;
   object-fit: contain;
   min-height: 508px;
-  animation: fadeInBannerContent 1.75s cubic-bezier(0.165, 0.84, 0.44, 1)
-    forwards;
   position: relative;
 }
 
@@ -29,8 +27,8 @@
   padding-top: 100px;
   padding-bottom: 40px;
   position: relative;
-  /* background: rgba(0, 0, 0, 0.4); */
-  /* animation: fadeInBannerContent 2s cubic-bezier(0.075, 0.82, 0.165, 1) forwards; */
+  animation: fadeInBannerContent 1.75s cubic-bezier(0.165, 0.84, 0.44, 1)
+    forwards;
 }
 
 .banner__title {

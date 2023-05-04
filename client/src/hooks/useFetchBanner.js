@@ -15,7 +15,6 @@ const useFetchBanner = () => {
       const request = await axios.post(`${baseURL}/app/fetch_banner_list`, {
         token: twitchToken,
       });
-
       const selectedGame =
         request.data[Math.floor(Math.random() * request.data.length - 1)];
       setBannerGamesList(request.data);
@@ -32,15 +31,21 @@ const useFetchBanner = () => {
 
   useEffect(() => {
     if (!twitchToken || bannerGamesList.length > 0) return;
-
     fetchData();
   }, [twitchToken]);
 
   const displayNewBanner = () => {
     const newGame =
       bannerGamesList[Math.floor(Math.random() * bannerGamesList.length - 1)];
-    setCurrentGame(newGame);
-    return newGame;
+    if (!newGame) {
+      setCurrentGame(
+        bannerGamesList[Math.floor(Math.random() * bannerGamesList.length - 1)]
+      );
+      return;
+    } else {
+      setCurrentGame(newGame);
+      return;
+    }
   };
 
   return {

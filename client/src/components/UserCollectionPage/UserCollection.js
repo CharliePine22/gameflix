@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './UserCollection.css';
 import { FaSistrix, FaHome, FaStar } from 'react-icons/fa';
 import { CiSquareMore } from 'react-icons/ci';
@@ -34,6 +34,8 @@ const UserCollection = ({
   const [currentGame, setCurrentGame] = useState(null);
   const [currentlyAdjusting, setCurrentlyAdjusting] = useState(null);
   const [viewingCSVDropdown, setViewingCSVDropdown] = useState(false);
+  const imageRef = useRef(0);
+
   // SPOTLIGHT STATES
   const [spotlightList, setSpotlightList] = useState([]);
   const [spotlightFilter, setSpotlightFilter] = useState('playtime');

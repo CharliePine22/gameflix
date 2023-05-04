@@ -202,7 +202,7 @@ router.post('/fetch_banner_list', async (req, res) => {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `fields name, summary, cover.*; sort rating_count desc; where (rating != null & rating_count > 0); limit 100;`,
+      body: `fields name, summary, cover.*, artworks.*; sort rating_count desc; where (rating != null & rating_count > 0); limit 100;`,
     });
     const result = await request.json();
     if (result.Docs) return;

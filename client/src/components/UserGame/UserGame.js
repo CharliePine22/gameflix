@@ -62,6 +62,7 @@ const UserGame = ({
       trophies?.length) *
       100
   );
+
   const achievementPercentage = Math.floor(
     (achievements?.filter(
       (game) => game.achieved == true || game.earned == true
@@ -103,18 +104,38 @@ const UserGame = ({
     });
   };
 
+  const createNewGameNote = () => {
+    userNotes.notes_collection = [
+      {
+        id: game.id,
+        tabs: [
+          {
+            tabName: 'Notes',
+            notes: [
+              {
+                id: 0,
+                note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +!`,
+                date: formattedToday,
+              },
+            ],
+          },
+        ],
+      },
+    ];
+  };
+
   useEffect(() => {
-    if (!userNotes.notes_collection) return;
-    if (userNotes.notes_collection.filter((g) => g.id == game.id).length > 0) {
-      console.log('WHO');
+    if (!userNotes.notes_collection) createNewGameNote();
+    else if (userNotes.notes_collection.filter((g) => g.id == game.id)) {
+      addNoteItem();
+    } else {
       setCurrentGameNotes(
         userNotes.notes_collection.filter((g) => g.id == game.id)[0]
       );
-    } else {
-      addNoteItem();
     }
   }, [game, userNotes]);
 
+  console.log(currentGameNotes);
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.keyCode === 27) {
@@ -215,6 +236,7 @@ const UserGame = ({
         }
       } catch (error) {
         console.log(error);
+        return error;
       }
     };
     fetchAppData();
@@ -240,7 +262,6 @@ const UserGame = ({
       const minutes = totalMinutes % 60;
       const hours = Math.floor(totalMinutes / 60);
       if (minutes == 0) return hours + ' hours';
-      // setPlaytime(hours)
       return `${hours}.${padTo2Digits(minutes)} hours`;
     }
   }
@@ -277,17 +298,9 @@ const UserGame = ({
         localStorage.setItem('profile', request.data.response.profile.name);
         setCurrentGame(request.data.response.game);
         updateCollection(request.data.response.profile.collection);
-        // setNotification({
-        //   message: `${game.name} playtime successfully updated!`,
-        //   status: 'SUCCESS',
-        // });
         setChangingPlaytime(false);
       } catch (error) {
         console.log(error);
-        // setNotification({
-        //   message: `Something went wrong, please try again!`,
-        //   status: 'ERROR',
-        // });
       }
     }
   };
@@ -305,17 +318,10 @@ const UserGame = ({
 
       setCurrentGame(request.data.response.game);
       updateCollection(request.data.response.profile.collection);
-      // setNotification({
-      //   message: `${game.name} backlog successfully updated!`,
-      //   status: 'SUCCESS',
-      // });
       setChangingBacklog(false);
     } catch (error) {
       console.log(error);
-      // setNotification({
-      //   message: `Something went wrong, please try again!`,
-      //   status: 'ERROR',
-      // });
+      return error;
     }
   };
 
@@ -369,16 +375,10 @@ const UserGame = ({
       localStorage.setItem('profile', request.data.response.profile.name);
       setCurrentGame(request.data.response.game);
       updateCollection(request.data.response.profile.collection);
-      // setNotification({
-      //   message: `${game.name} playtime successfully updated!`,
-      //   status: 'SUCCESS',
-      // });
+      return request.data;
     } catch (error) {
       console.log(error);
-      //   setNotification({
-      //     message: `Something went wrong, please try again!`,
-      //     status: 'ERROR',
-      //   });
+      return error;
     }
     setChangingBanner(false);
     setBannerLink('');

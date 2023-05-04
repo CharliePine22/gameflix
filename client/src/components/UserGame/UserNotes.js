@@ -89,6 +89,8 @@ const UserGameNotes = ({
     return () => clearTimeout(timer);
   }, []);
 
+  console.log(gameNotes);
+
   const updateProfileNotes = async () => {
     if (!gameNotes) return;
     const request = await axios.put(`${baseURL}/notes/update_notes`, {
@@ -104,7 +106,11 @@ const UserGameNotes = ({
     if (!editingTab) {
       setEditingTab(true);
     } else {
-      noteTab.tabName = tabRef.current.innerText;
+      if ((noteTab.tabName = '')) {
+        noteTab.tabName = 'Notes';
+      } else {
+        noteTab.tabName = tabRef.current.innerText;
+      }
       updateProfileNotes();
       setCurrentTab(tabRef.current.innerText);
       setEditingTab(false);
@@ -197,15 +203,11 @@ const UserGameNotes = ({
               contentEditable={editingTab}
               suppressContentEditableWarning={true}
               onBlur={editTabHandler}
-              // onInput={(e) => e.preventDefault()}
               onKeyPress={(e) => {
                 e.preventDefault();
                 console.log(e.currentTarget);
                 if (e.key === 'Enter') editTabHandler();
               }}
-              // onKeyUp={(e) => {
-              //   if (e.key === 'Enter') editTabHandler();
-              // }}
             >
               <p
                 ref={tabRef}

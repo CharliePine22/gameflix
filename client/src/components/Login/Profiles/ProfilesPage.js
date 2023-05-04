@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './ProfilesPage.css';
 import defaultAvatar from '../../../assets/images/basic_avatar.png';
 import { MdEdit } from 'react-icons/md';
@@ -9,6 +9,9 @@ const ProfilesPage = (props) => {
   const [editingProfiles, setEditingProfiles] = useState(false);
   const [creatingProfile, setCreatingProfile] = useState(null);
   const [profiles, setProfiles] = useState(null);
+  const [imgsLoaded, setImgsLoaded] = useState(false);
+
+  const imgRef = useRef(0);
 
   // Set active profile
   const chooseCurrentProfile = (user) => {
@@ -29,6 +32,16 @@ const ProfilesPage = (props) => {
     setProfiles(props.currentUser.profiles);
     setEditingProfiles(false);
   }, [props.currentUser]);
+
+  const profileCount = profiles?.length;
+
+  const imagesReady = () => {
+    imgRef.current++;
+    console.log(imgRef.current);
+    if (imgRef.current == profileCount) {
+      setImgsLoaded(true);
+    }
+  };
 
   if (profiles == null) {
     return;
@@ -63,7 +76,10 @@ const ProfilesPage = (props) => {
       <div className='profile_edit__header'>
         <h3>GAMEFLIX</h3>
       </div>
-      <div className='profile__container'>
+      <div
+        className='profile__container'
+        style={{ display: imgsLoaded ? 'flex' : 'none' }}
+      >
         <h3>Who's gaming?</h3>
         <ul className='profile__list'>
           {profiles.map((user) => (
@@ -81,6 +97,7 @@ const ProfilesPage = (props) => {
                   backgroundColor: user.color,
                 }}
                 src={user.avatar ? `${user.avatar}` : defaultAvatar}
+                onLoad={imagesReady}
               />
               {editingProfiles && <MdEdit className='edit-icon' />}
               <span className='profile__user_name'>{user.name}</span>

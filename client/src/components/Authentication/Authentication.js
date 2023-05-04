@@ -23,7 +23,6 @@ const Authentication = ({ onLogin }) => {
 
   const imageLoaded = () => {
     counter.current += 1;
-    console.log(allGames.length);
     if (counter.current >= allGames.length) {
       setImgsLoading(false);
     }

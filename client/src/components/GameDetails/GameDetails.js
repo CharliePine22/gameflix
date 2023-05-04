@@ -21,8 +21,7 @@ import segaLogo from '../../assets/images/sega-logo.png';
 import snesLogo from '../../assets/images/snes-logo.png';
 import gamecubeLogo from '../../assets/images/gamecube-logo.png';
 // Modules
-import Carousel, { CarouselItem } from './Carousel';
-import { AiOutlineExpandAlt, AiFillYoutube } from 'react-icons/ai';
+import { AiOutlineExpandAlt } from 'react-icons/ai';
 
 // ('https://www.youtube.com/watch?v=${GAMEVIDEOID}');
 
@@ -37,14 +36,11 @@ const GameDetails = ({
   const baseURL = process.env.REACT_APP_BASE_URL;
   const [gameDetails, setGameDetails] = useState({});
   const [loading, setLoading] = useState(false);
+  const [bgLoaded, setBgLoaded] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [activeScreenshot, setActiveScreenshot] = useState('');
   const [error, setError] = useState('');
   const exists = currentCollection.some((item) => item.id === game.id);
-
-  console.log(currentCollection);
-  console.log(exists);
-  let coverImageURL = 'images.igdb.com/igdb/image/upload/t_cover_big_2x/';
 
   const searchGameDetails = async () => {
     try {
@@ -54,25 +50,26 @@ const GameDetails = ({
       });
 
       const result = await request.data;
-      console.log(result);
       if (game.name !== result[0].name)
         setError(
           `Sorry ${activeProfile.name} but our princess is in another castle! Please try again!`
         );
       if (!result[0].status < 400) {
         setGameDetails(result[0]);
+        return;
       } else {
         setError(
           `Sorry ${activeProfile.name} but our princess is in another castle! Please try again!`
         );
+        return;
       }
     } catch (error) {
       setError(
         `Sorry ${activeProfile.name} but our princess is in another castle! Please try again!`
       );
-      console.log(error);
+      setLoading(false);
+      return error;
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -297,8 +294,6 @@ const GameDetails = ({
     );
   };
 
-  console.log(game);
-
   if (Object.keys(gameDetails).length == 0 || loading) {
     return (
       <div className='game_details__wrapper' data-title='.dot-falling'>
@@ -310,10 +305,14 @@ const GameDetails = ({
   }
 
   return (
-    <div className='game_details__wrapper'>
+    <div
+      className='game_details__wrapper'
+      style={{ display: bgLoaded ? '' : 'none' }}
+    >
       <img
         className='game_details__background'
         src={`//images.igdb.com/igdb/image/upload/t_1080p_2x/${gameDetails.cover?.image_id}.jpg`}
+        onLoad={() => setBgLoaded(true)}
       />
       <div className='game_details__container'>
         <h2>{gameDetails.name}</h2>

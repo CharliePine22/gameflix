@@ -19,8 +19,11 @@ const Authentication = ({ onLogin }) => {
     if (userLoggedIn) navigate('/');
   }, []);
 
+  useEffect(() => {});
+
   const imageLoaded = () => {
     counter.current += 1;
+    console.log(allGames.length);
     if (counter.current >= allGames.length) {
       setImgsLoading(false);
     }
@@ -49,7 +52,7 @@ const Authentication = ({ onLogin }) => {
     }
   };
 
-  if (loadedImages.length === 100 && !userLoggedIn) {
+  if (loadedImages.length == 100 && !userLoggedIn) {
     if (!toLandingPage)
       return (
         <Login

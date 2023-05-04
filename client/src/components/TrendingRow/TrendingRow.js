@@ -10,12 +10,6 @@ const TrendingRow = ({ twitchToken, setGameDetails }) => {
   let currentDate = Math.floor(new Date().getTime() / 1000);
   let trendingTitlesFetched = JSON.parse(sessionStorage.getItem('trending'));
 
-  //   [[redirects]]
-  // from = “/app/"
-  // to = “https://cybrary2022.onrender.com/app/:splat 2”
-  // status = 200
-  // force = true
-  // headers = {X-From = “Netlify”}
   useEffect(() => {
     if (!twitchToken) return;
     if (trendingTitlesFetched && trendingTitlesFetched.length > 0) {
@@ -69,16 +63,16 @@ const TrendingRow = ({ twitchToken, setGameDetails }) => {
     fetchData();
   }, [twitchToken]);
 
-  if (loading)
-    return (
-      <div className='row__loading_container'>
-        {[...Array(10)].map((item, i) => (
-          <div key={i} className='trending_row__placeholder__wrapper'>
-            <Placeholder key={i} delay={i} />
-          </div>
-        ))}
-      </div>
-    );
+  if (loading) return null;
+  // return (
+  //   <div className='row__loading_container'>
+  //     {[...Array(10)].map((item, i) => (
+  //       <div key={i} className='trending_row__placeholder__wrapper'>
+  //         <Placeholder key={i} delay={i} />
+  //       </div>
+  //     ))}
+  //   </div>
+  // );
 
   return (
     <div className='trending_row'>

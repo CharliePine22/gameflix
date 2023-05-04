@@ -541,7 +541,7 @@
   }
 
   .game_name_remainder {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     width: 100%;
     max-width: 95%;
     padding: 5px 0px 3px 4px;
@@ -627,7 +627,8 @@
   }
 
   .search_results__nav_search input {
-    min-width: 330px;
+    min-width: 290px;
+    max-width: 290px;
   }
 
   .search_results__recents {

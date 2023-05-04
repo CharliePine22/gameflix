@@ -14,6 +14,7 @@ import useSpotifyAuth from '../../hooks/useSpotifyAuth';
 import useSteamAuth from '../../hooks/useSteamAuth';
 import useFetchGenres from '../../hooks/useFetchGenres';
 import { SlOptions } from 'react-icons/sl';
+import Placeholder from '../Placeholder/Placeholder';
 
 const GameDetails = lazy(() => import('../GameDetails/GameDetails'));
 const Notification = lazy(() => import('../Notification/Notification'));
@@ -196,37 +197,49 @@ const Dashboard = ({
           </>
         )}
         <div
-          className={`${currentGameOpen !== null && 'game_preview__modal'}`}
+          className={`${currentGameOpen !== null ? 'game_preview__modal' : ''}`}
         />
 
-        {allGenres.genreGamesList.map((request) => (
-          <Row
-            key={Object.keys(request)}
-            activeProfile={currentProfile}
-            spotifyToken={spotifyAccessToken}
-            genreDetails={Object.entries(request)}
-            playTrack={playTrack}
-            currentTrack={currentTrack}
-            setGameDetails={(game) => setGameDetails(game)}
-            resumePlayback={(e) => setPlayAudio(true)}
-            pausePlayback={(e) => setPlayAudio(false)}
-            isPlaying={playAudio}
-            currentGameOpen={currentGameOpen}
-            openGame={(game) => openGameWindow(game)}
-            closeGameWindow={closeGameWindow}
-            G
-            updateGameStatus={(action, game) => updateGameStatus(action, game)}
-            setNotification={(status, message) =>
-              setNotification({ status, message })
-            }
-            loading={rowsLoading}
-            hoverGame={(game) => setHoveringGame(game)}
-            hoverAway={() => resetGame()}
-            currentHover={hoveringGame}
-            currentCollection={currentCollection}
-            gameStatus={gameStatus}
-          />
-        ))}
+        {allGenres.genreGamesList.length > 0 ? (
+          allGenres.genreGamesList.map((request) => (
+            <Row
+              key={Object.keys(request)}
+              activeProfile={currentProfile}
+              spotifyToken={spotifyAccessToken}
+              genreDetails={Object.entries(request)}
+              playTrack={playTrack}
+              currentTrack={currentTrack}
+              setGameDetails={(game) => setGameDetails(game)}
+              resumePlayback={(e) => setPlayAudio(true)}
+              pausePlayback={(e) => setPlayAudio(false)}
+              isPlaying={playAudio}
+              currentGameOpen={currentGameOpen}
+              openGame={(game) => openGameWindow(game)}
+              closeGameWindow={closeGameWindow}
+              G
+              updateGameStatus={(action, game) =>
+                updateGameStatus(action, game)
+              }
+              setNotification={(status, message) =>
+                setNotification({ status, message })
+              }
+              loading={rowsLoading}
+              hoverGame={(game) => setHoveringGame(game)}
+              hoverAway={() => resetGame()}
+              currentHover={hoveringGame}
+              currentCollection={currentCollection}
+              gameStatus={gameStatus}
+            />
+          ))
+        ) : (
+          <div className='row__loading_container'>
+            {[...Array(10)].map((item, i) => (
+              <div key={i} className='row__placeholder__wrapper'>
+                <Placeholder key={i} delay={i} />
+              </div>
+            ))}
+          </div>
+        )}
 
         {spotifyAccessToken && (
           <SpotifyPlayback

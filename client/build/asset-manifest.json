@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.fda9ad38.css",
-    "main.js": "/static/js/main.9980e63a.js",
+    "main.js": "/static/js/main.4f0bee0c.js",
     "static/css/782.e08a6e1f.chunk.css": "/static/css/782.e08a6e1f.chunk.css",
     "static/js/782.be0f3a79.chunk.js": "/static/js/782.be0f3a79.chunk.js",
     "static/css/204.da9ea457.chunk.css": "/static/css/204.da9ea457.chunk.css",
     "static/js/204.77b3b4b4.chunk.js": "/static/js/204.77b3b4b4.chunk.js",
     "static/css/749.4a1b3b72.chunk.css": "/static/css/749.4a1b3b72.chunk.css",
-    "static/js/749.7dbbd002.chunk.js": "/static/js/749.7dbbd002.chunk.js",
+    "static/js/749.695f43d5.chunk.js": "/static/js/749.695f43d5.chunk.js",
     "static/css/427.23290b9a.chunk.css": "/static/css/427.23290b9a.chunk.css",
     "static/js/427.f02804f8.chunk.js": "/static/js/427.f02804f8.chunk.js",
     "static/js/787.b18a59c4.chunk.js": "/static/js/787.b18a59c4.chunk.js",
@@ -128,13 +128,13 @@
     "static/media/nes-side-case.png": "/static/media/nes-side-case.db43b45d5b967fd59172.png",
     "index.html": "/index.html",
     "main.fda9ad38.css.map": "/static/css/main.fda9ad38.css.map",
-    "main.9980e63a.js.map": "/static/js/main.9980e63a.js.map",
+    "main.4f0bee0c.js.map": "/static/js/main.4f0bee0c.js.map",
     "782.e08a6e1f.chunk.css.map": "/static/css/782.e08a6e1f.chunk.css.map",
     "782.be0f3a79.chunk.js.map": "/static/js/782.be0f3a79.chunk.js.map",
     "204.da9ea457.chunk.css.map": "/static/css/204.da9ea457.chunk.css.map",
     "204.77b3b4b4.chunk.js.map": "/static/js/204.77b3b4b4.chunk.js.map",
     "749.4a1b3b72.chunk.css.map": "/static/css/749.4a1b3b72.chunk.css.map",
-    "749.7dbbd002.chunk.js.map": "/static/js/749.7dbbd002.chunk.js.map",
+    "749.695f43d5.chunk.js.map": "/static/js/749.695f43d5.chunk.js.map",
     "427.23290b9a.chunk.css.map": "/static/css/427.23290b9a.chunk.css.map",
     "427.f02804f8.chunk.js.map": "/static/js/427.f02804f8.chunk.js.map",
     "787.b18a59c4.chunk.js.map": "/static/js/787.b18a59c4.chunk.js.map",
@@ -173,6 +173,6 @@
   },
   "entrypoints": [
     "static/css/main.fda9ad38.css",
-    "static/js/main.9980e63a.js"
+    "static/js/main.4f0bee0c.js"
   ]
 }

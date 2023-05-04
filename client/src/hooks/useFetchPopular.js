@@ -14,9 +14,11 @@ export default function useFetchPopular() {
 
       // If a week has passed since the last update, run a new update
       if (currentDate > last_updated.setDate(last_updated.getDate() + 7)) {
-        return updatePopularGamesAPI();
+        updatePopularGamesAPI();
+        return;
       } else {
-        return setBannerGamesList(request.data.popular_games_list);
+        setBannerGamesList(request.data.popular_games_list);
+        return;
       }
     };
     fetchPopularGames();

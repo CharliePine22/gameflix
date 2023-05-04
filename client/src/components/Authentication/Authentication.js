@@ -49,7 +49,7 @@ const Authentication = ({ onLogin }) => {
     }
   };
 
-  if (loadedImages.length > 0 && !userLoggedIn) {
+  if (loadedImages.length === 100 && !userLoggedIn) {
     if (!toLandingPage)
       return (
         <Login

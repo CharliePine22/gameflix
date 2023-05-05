@@ -158,22 +158,21 @@ const Login = ({ toLanding, authenticateUser, images }) => {
             </div>
           </div>
         </div>
-      </div>
-
-      <div
-        className='login__background'
-        style={{ display: done ? '' : 'none' }}
-      >
-        {images.map((game) => (
-          <React.Fragment key={game.key}>
-            <img
-              className='login__img'
-              alt={game.name}
-              src={game.props.children.props.src}
-              onLoad={imageLoadHandler}
-            />
-          </React.Fragment>
-        ))}
+        <div
+          className='login__background'
+          style={{ display: done ? '' : 'none' }}
+        >
+          {images.map((game) => (
+            <React.Fragment key={game.key}>
+              <img
+                className='login__img'
+                alt={game.name}
+                src={game.props.children.props.src}
+                onLoad={imageLoadHandler}
+              />
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </>
   );

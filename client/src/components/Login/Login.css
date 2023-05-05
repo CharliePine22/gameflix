@@ -187,7 +187,7 @@
   opacity: 0.55;
   transform: perspective(380px) rotateY(3deg) translateX(-210px) rotateX(0deg);
   width: 170%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .login__img {
@@ -221,7 +221,7 @@
 
 @media screen and (max-width: 450px) {
   .login__background {
-    left: 255px;
+    left: 255px !important;
   }
 }
 

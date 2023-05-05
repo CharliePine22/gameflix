@@ -41,6 +41,7 @@
   overflow: hidden;
   position: relative;
   display: flex;
+  z-index: 2;
 }
 
 .form__create_account {
@@ -216,6 +217,12 @@
   opacity: 0.5;
   font-family: 'Anton', sans-serif;
   letter-spacing: 4px;
+}
+
+@media screen and (max-width: 450px) {
+  .login__background {
+    left: 255px;
+  }
 }
 
 /* Mobile Devices */

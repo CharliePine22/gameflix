@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/static/css/main.fda9ad38.css",
-    "main.js": "/static/js/main.5122c2bf.js",
+    "main.js": "/static/js/main.202b5707.js",
     "static/css/782.e08a6e1f.chunk.css": "/static/css/782.e08a6e1f.chunk.css",
     "static/js/782.944b3643.chunk.js": "/static/js/782.944b3643.chunk.js",
     "static/css/204.ebd1ac5f.chunk.css": "/static/css/204.ebd1ac5f.chunk.css",
     "static/js/204.6f3cae95.chunk.js": "/static/js/204.6f3cae95.chunk.js",
-    "static/css/749.4a1b3b72.chunk.css": "/static/css/749.4a1b3b72.chunk.css",
+    "static/css/749.75e03683.chunk.css": "/static/css/749.75e03683.chunk.css",
     "static/js/749.658294f9.chunk.js": "/static/js/749.658294f9.chunk.js",
     "static/css/117.71fcfb74.chunk.css": "/static/css/117.71fcfb74.chunk.css",
     "static/js/117.6603285a.chunk.js": "/static/js/117.6603285a.chunk.js",
@@ -128,12 +128,12 @@
     "static/media/nes-side-case.png": "/static/media/nes-side-case.db43b45d5b967fd59172.png",
     "index.html": "/index.html",
     "main.fda9ad38.css.map": "/static/css/main.fda9ad38.css.map",
-    "main.5122c2bf.js.map": "/static/js/main.5122c2bf.js.map",
+    "main.202b5707.js.map": "/static/js/main.202b5707.js.map",
     "782.e08a6e1f.chunk.css.map": "/static/css/782.e08a6e1f.chunk.css.map",
     "782.944b3643.chunk.js.map": "/static/js/782.944b3643.chunk.js.map",
     "204.ebd1ac5f.chunk.css.map": "/static/css/204.ebd1ac5f.chunk.css.map",
     "204.6f3cae95.chunk.js.map": "/static/js/204.6f3cae95.chunk.js.map",
-    "749.4a1b3b72.chunk.css.map": "/static/css/749.4a1b3b72.chunk.css.map",
+    "749.75e03683.chunk.css.map": "/static/css/749.75e03683.chunk.css.map",
     "749.658294f9.chunk.js.map": "/static/js/749.658294f9.chunk.js.map",
     "117.71fcfb74.chunk.css.map": "/static/css/117.71fcfb74.chunk.css.map",
     "117.6603285a.chunk.js.map": "/static/js/117.6603285a.chunk.js.map",
@@ -173,6 +173,6 @@
   },
   "entrypoints": [
     "static/css/main.fda9ad38.css",
-    "static/js/main.5122c2bf.js"
+    "static/js/main.202b5707.js"
   ]
 }

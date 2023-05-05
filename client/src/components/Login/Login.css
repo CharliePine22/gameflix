@@ -184,10 +184,10 @@
   z-index: -1;
   top: -260px;
   left: -180px;
-  opacity: 0.55;
+  opacity: 0.75;
   transform: perspective(380px) rotateY(3deg) translateX(-210px) rotateX(0deg);
   width: 170%;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 .login__img {

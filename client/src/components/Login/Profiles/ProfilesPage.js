@@ -78,7 +78,7 @@ const ProfilesPage = (props) => {
       </div>
       <div
         className='profile__container'
-        style={{ display: imgsLoaded ? 'flex' : 'none' }}
+        // style={{ display: imgsLoaded ? 'flex' : 'none' }}
       >
         <h3>Who's gaming?</h3>
         <ul className='profile__list'>

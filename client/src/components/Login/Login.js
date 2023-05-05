@@ -80,13 +80,13 @@ const Login = ({ toLanding, authenticateUser, images }) => {
     <>
       <div
         className='login__wrapper'
-        style={{ display: done ? 'flex' : 'none' }}
+        // style={{ display: done ? 'flex' : 'none' }}
       >
         <div className='login'>
           <div className='login__form_wrapper'>
             <div className='login__form_container'>
               <form className='login__form' onSubmit={formSubmitHandler}>
-                {!loading && done ? (
+                {!loading ? (
                   <>
                     <h1>Sign In</h1>
                     <div className='login__form_actions'>
@@ -162,7 +162,7 @@ const Login = ({ toLanding, authenticateUser, images }) => {
 
       <div
         className='login__background'
-        style={{ display: done ? 'revert' : 'none' }}
+        style={{ display: done ? '' : 'none' }}
       >
         {images.map((game) => (
           <React.Fragment key={game.key}>

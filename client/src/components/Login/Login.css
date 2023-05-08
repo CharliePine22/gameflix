@@ -41,7 +41,6 @@
   overflow: hidden;
   position: relative;
   display: flex;
-  z-index: 2;
 }
 
 .form__create_account {

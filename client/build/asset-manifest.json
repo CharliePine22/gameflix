@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/static/css/main.fda9ad38.css",
-    "main.js": "/static/js/main.674a0739.js",
+    "main.js": "/static/js/main.fb9d8edf.js",
     "static/css/782.e08a6e1f.chunk.css": "/static/css/782.e08a6e1f.chunk.css",
     "static/js/782.7679cf5d.chunk.js": "/static/js/782.7679cf5d.chunk.js",
     "static/css/204.ebd1ac5f.chunk.css": "/static/css/204.ebd1ac5f.chunk.css",
     "static/js/204.6f3cae95.chunk.js": "/static/js/204.6f3cae95.chunk.js",
-    "static/css/749.7f8c0fce.chunk.css": "/static/css/749.7f8c0fce.chunk.css",
+    "static/css/749.de264bb8.chunk.css": "/static/css/749.de264bb8.chunk.css",
     "static/js/749.829e4f79.chunk.js": "/static/js/749.829e4f79.chunk.js",
     "static/css/117.71fcfb74.chunk.css": "/static/css/117.71fcfb74.chunk.css",
     "static/js/117.6603285a.chunk.js": "/static/js/117.6603285a.chunk.js",
@@ -128,12 +128,12 @@
     "static/media/nes-side-case.png": "/static/media/nes-side-case.db43b45d5b967fd59172.png",
     "index.html": "/index.html",
     "main.fda9ad38.css.map": "/static/css/main.fda9ad38.css.map",
-    "main.674a0739.js.map": "/static/js/main.674a0739.js.map",
+    "main.fb9d8edf.js.map": "/static/js/main.fb9d8edf.js.map",
     "782.e08a6e1f.chunk.css.map": "/static/css/782.e08a6e1f.chunk.css.map",
     "782.7679cf5d.chunk.js.map": "/static/js/782.7679cf5d.chunk.js.map",
     "204.ebd1ac5f.chunk.css.map": "/static/css/204.ebd1ac5f.chunk.css.map",
     "204.6f3cae95.chunk.js.map": "/static/js/204.6f3cae95.chunk.js.map",
-    "749.7f8c0fce.chunk.css.map": "/static/css/749.7f8c0fce.chunk.css.map",
+    "749.de264bb8.chunk.css.map": "/static/css/749.de264bb8.chunk.css.map",
     "749.829e4f79.chunk.js.map": "/static/js/749.829e4f79.chunk.js.map",
     "117.71fcfb74.chunk.css.map": "/static/css/117.71fcfb74.chunk.css.map",
     "117.6603285a.chunk.js.map": "/static/js/117.6603285a.chunk.js.map",
@@ -173,6 +173,6 @@
   },
   "entrypoints": [
     "static/css/main.fda9ad38.css",
-    "static/js/main.674a0739.js"
+    "static/js/main.fb9d8edf.js"
   ]
 }

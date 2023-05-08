@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import './Login.css';
+import vgCollage from '../../assets/images/vg-collage.jpg';
 
 const Login = ({ toLanding, authenticateUser, images }) => {
   // States
@@ -77,17 +78,14 @@ const Login = ({ toLanding, authenticateUser, images }) => {
   };
 
   return (
-    <div
-      className='login__wrapper'
-      // style={{ display: done ? 'flex' : 'none' }}
-    >
+    <div className='login__wrapper'>
       <div className='login'>
         <div className='login__form_wrapper'>
           <div className='login__form_container'>
             <form className='login__form' onSubmit={formSubmitHandler}>
               {!loading ? (
                 <>
-                  <h1>Sign In</h1>
+                  <h1>LOGIN</h1>
                   <div className='login__form_actions'>
                     <label className='form_label' htmlFor='email' />
                     <input
@@ -156,20 +154,17 @@ const Login = ({ toLanding, authenticateUser, images }) => {
           </div>
         </div>
       </div>
-      <div
-        className='login__background'
-        // style={{ display: done ? '' : 'none' }}
-      >
-        {images.map((game) => (
+      <div className='login__background'>
+        <img src={vgCollage} />
+        {/* {images.map((game) => (
           <React.Fragment key={game.key}>
             <img
               className='login__img'
               alt={game.name}
               src={game.props.children.props.src}
-              // onLoad={imageLoadHandler}
             />
           </React.Fragment>
-        ))}
+        ))} */}
       </div>
     </div>
   );

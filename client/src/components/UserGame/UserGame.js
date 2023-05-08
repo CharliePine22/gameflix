@@ -71,43 +71,34 @@ const UserGame = ({
       100
   );
 
-  const addNoteItem = () => {
-    userNotes.notes_collection.push({
-      id: game.id,
-      tabs: [
-        {
-          tabName: 'Notes',
-          notes: [
-            {
-              id: 0,
-              note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +!`,
-              date: formattedToday,
-            },
-          ],
-        },
-      ],
+  const updateProfileNotes = async () => {
+    const currentGame = userNotes.notes_collection.filter(
+      (g) => g.id == game.id
+    )[0];
+
+    if (!currentGame) return;
+
+    const request = await axios.put(`${baseURL}/notes/update_notes`, {
+      profile: activeProfile,
+      gameId: currentGame.id,
+      notes: currentGame,
+      email: userEmail,
     });
-    setCurrentGameNotes({
-      id: game.id,
-      tabs: [
-        {
-          tabName: 'Notes',
-          notes: [
-            {
-              id: 0,
-              note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +!`,
-              date: formattedToday,
-            },
-          ],
-        },
-      ],
-    });
+
+    console.log(request);
+
+    setCurrentGameNotes(
+      userNotes.notes_collection.filter((g) => g.id == game.id)[0]
+    );
+
+    return request;
   };
 
   const createNewGameNote = () => {
     userNotes.notes_collection = [
       {
         id: game.id,
+        name: game.name,
         tabs: [
           {
             tabName: 'Notes',
@@ -122,20 +113,40 @@ const UserGame = ({
         ],
       },
     ];
+
+    setCurrentGameNotes({
+      id: game.id,
+      name: game.name,
+      tabs: [
+        {
+          tabName: 'Notes',
+          notes: [
+            {
+              id: 0,
+              note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +!`,
+              date: formattedToday,
+            },
+          ],
+        },
+      ],
+    });
+    updateProfileNotes();
   };
 
   useEffect(() => {
-    if (!userNotes.notes_collection) createNewGameNote();
-    else if (userNotes.notes_collection.filter((g) => g.id == game.id)) {
-      addNoteItem();
-    } else {
+    if (
+      !userNotes.notes_collection ||
+      userNotes.notes_collection.filter((g) => g.id == game.id).length == 0
+    )
+      createNewGameNote();
+    else {
+      console.log(userNotes.notes_collection.filter((g) => g.id == game.id));
       setCurrentGameNotes(
         userNotes.notes_collection.filter((g) => g.id == game.id)[0]
       );
     }
   }, [game, userNotes]);
 
-  console.log(currentGameNotes);
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.keyCode === 27) {
@@ -375,13 +386,13 @@ const UserGame = ({
       localStorage.setItem('profile', request.data.response.profile.name);
       setCurrentGame(request.data.response.game);
       updateCollection(request.data.response.profile.collection);
+      setChangingBanner(false);
+      setBannerLink('');
       return request.data;
     } catch (error) {
       console.log(error);
       return error;
     }
-    setChangingBanner(false);
-    setBannerLink('');
   };
 
   return (
@@ -472,7 +483,7 @@ const UserGame = ({
                 className='previous_rating'
                 style={{ display: changingRating && 'none' }}
               >
-                {game.user_rating}%
+                {game.user_rating || 0}%
               </span>
 
               <input
@@ -480,7 +491,7 @@ const UserGame = ({
                 type='number'
                 min='1'
                 max='100'
-                value={rating}
+                value={rating || 0}
                 onKeyDown={determineRatingAction}
                 onChange={(e) => setRating(e.target.value)}
                 style={{
@@ -818,6 +829,7 @@ const UserGame = ({
             windowViewHandler={windowViewHandler}
             viewStatus={viewStatus}
             gameNotes={currentGameNotes}
+            updateNotes={updateProfileNotes}
           />
         </div>
       </div>

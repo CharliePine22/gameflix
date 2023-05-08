@@ -362,7 +362,7 @@
 
 .user_game__banner {
   width: 100%;
-  height: 475px;
+  height: 500px;
   /* position: absolute; */
   position: relative;
   z-index: 1;
@@ -636,7 +636,7 @@
   }
 
   .user_game__banner {
-    height: 452px;
+    height: 400px;
   }
 }
 

@@ -3,7 +3,6 @@ import './UserNotes.css';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { MdEditNote } from 'react-icons/md';
 import { FaAngleDown } from 'react-icons/fa';
-import axios from 'axios';
 import NoteDetails from './NoteDetails';
 
 // Get current date and format it
@@ -16,14 +15,11 @@ if (mm < 10) mm = '0' + mm;
 const formattedToday = mm + '/' + dd + '/' + yyyy;
 
 const UserGameNotes = ({
-  profile,
   windowViewHandler,
   viewStatus,
   gameNotes,
+  updateNotes,
 }) => {
-  const baseURL = process.env.REACT_APP_BASE_URL;
-  const userEmail = localStorage.getItem('user');
-
   // Tab Hooks
   const [currentTab, setCurrentTab] = useState('');
   const [editingTab, setEditingTab] = useState(false);
@@ -38,23 +34,6 @@ const UserGameNotes = ({
   const notesRef = useRef(null);
   const tabRef = useRef(null);
   const tabEndRef = useRef(null);
-
-  const createNotes = async () => {
-    const request = await axios.post(`${baseURL}/notes/create_note`, {
-      email: userEmail,
-      profile: profile.name,
-    });
-    return request;
-  };
-
-  useEffect(() => {
-    if (!profile.notesId) {
-      createNotes();
-    } else if (profile.notesId && !gameNotes) {
-      setNoteValue('Here are your notes');
-      setTabValue('Notes');
-    }
-  }, [gameNotes, currentTab]);
 
   useEffect(() => {
     const handleEnter = (event) => {
@@ -89,29 +68,16 @@ const UserGameNotes = ({
     return () => clearTimeout(timer);
   }, []);
 
-  console.log(gameNotes);
-
-  const updateProfileNotes = async () => {
-    if (!gameNotes) return;
-    const request = await axios.put(`${baseURL}/notes/update_notes`, {
-      userNotesId: profile.notesId,
-      noteId: gameNotes.id,
-      notes: gameNotes,
-    });
-
-    return request;
-  };
-
   const editTabHandler = () => {
     if (!editingTab) {
       setEditingTab(true);
     } else {
-      if ((noteTab.tabName = '')) {
+      if (noteTab.tabName == '') {
         noteTab.tabName = 'Notes';
       } else {
         noteTab.tabName = tabRef.current.innerText;
       }
-      updateProfileNotes();
+      updateNotes();
       setCurrentTab(tabRef.current.innerText);
       setEditingTab(false);
     }
@@ -127,6 +93,8 @@ const UserGameNotes = ({
     );
   };
 
+  console.log(noteTab);
+
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (noteValue == '') return;
@@ -135,7 +103,7 @@ const UserGameNotes = ({
       note: noteValue,
       date: formattedToday,
     });
-    updateProfileNotes();
+    updateNotes();
     setNoteValue('');
   };
 
@@ -147,7 +115,7 @@ const UserGameNotes = ({
       notes: [],
     });
     setCurrentTab(tabValue);
-    updateProfileNotes();
+    updateNotes();
     setTabValue('');
     setAddingTab(false);
   };
@@ -162,7 +130,7 @@ const UserGameNotes = ({
     console.log(oldNote);
     oldNote.note = newNote;
     oldNote.date = formattedToday;
-    updateProfileNotes();
+    updateNotes();
 
     setCurrentNote(null);
   };
@@ -170,7 +138,7 @@ const UserGameNotes = ({
   const deleteNoteHandler = (note) => {
     const updatedList = noteTab.notes.filter((item) => item.note !== note);
     noteTab.notes = updatedList;
-    updateProfileNotes();
+    updateNotes();
 
     setCurrentNote(null);
   };
@@ -216,8 +184,9 @@ const UserGameNotes = ({
                     ? '2px solid #9147ff'
                     : '2px solid transparent',
                   userSelect: editingTab ? 'auto' : 'none',
-                  padding: '0px 6px',
+                  padding: '14px 6px 0',
                   transition: 'all 200ms',
+                  lineHeight: '28px',
                 }}
               >
                 {currentTab}

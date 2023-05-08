@@ -4,72 +4,52 @@ const noteModel = require('../models/UserNotesModel');
 const userModel = require('../models/NewUserModels');
 const mongoose = require('mongoose');
 
-router.post('/create_note', async (req, res) => {
-  const noteId = mongoose.Types.ObjectId();
-  const profileName = req.body.profile;
-  const email = req.body.email;
-
-  const newNote = new noteModel({
-    notesID: noteId,
-    notes_collection: [],
-  });
-
-  try {
-    const request = await userModel.findOneAndUpdate(
-      {
-        email: email,
-      },
-      {
-        $set: {
-          'profiles.$[el].notesId': noteId,
-        },
-      },
-      { arrayFilters: [{ 'el.name': profileName }], new: true }
-    );
-
-    if (request == null) {
-      res.send({
-        code: 400,
-        status: 'NOT OK',
-        message: 'Unable to create a new note, please try again!',
-        response: request,
-      });
-    } else {
-      const currentProfile = request.profiles.filter(
-        (profile) => profile.name === profileName
-      );
-      newNote.save();
-      res.send({
-        code: 200,
-        status: 'OK',
-        message: 'Note created!',
-        response: { profile: currentProfile[0] },
-      });
-      return;
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(400, {
-      message: 'There was an error with your request, please try again.',
-    });
-  }
-});
-
 router.put('/update_notes', async (req, res) => {
-  const notesId = req.body.noteId;
+  const gameId = req.body.gameId;
   const notesCollection = req.body.notes;
-  const userNotesId = req.body.userNotesId;
+  const profileName = req.body.profile.name;
+  const userNotesId = req.body.profile.notesId;
+  const email = req.body.email;
+  const noteId = mongoose.Types.ObjectId();
 
   const request = await noteModel.findOneAndUpdate(
-    { notesID: userNotesId },
+    { notesId: new mongoose.Types.ObjectId(userNotesId), gameId: gameId },
     {
       $addToSet: {
         notes_collection: notesCollection,
       },
     },
-    { arrayFilters: [{ 'el.id': notesId }], new: true }
+    { arrayFilters: [{ 'element.id': { $eq: gameId } }], new: true }
   );
+
   res.send(request);
+  return;
+
+  if (!request) {
+    const newNote = new noteModel({
+      notesID: noteId,
+      notes_collection: notesCollection,
+    });
+    console.log('CREATING NEW NOTE MODEL');
+
+    await userModel.findOneAndUpdate(
+      {
+        email: email,
+      },
+      {
+        $set: {
+          'profiles.$[el].notesId': noteId.toString(),
+        },
+      },
+      { arrayFilters: [{ 'el.name': profileName }], new: true }
+    );
+    newNote.save();
+    res.send(newNote);
+    return;
+  } else {
+    res.send(request);
+    return;
+  }
 });
 
 router.get('/get_notes', async (req, res) => {

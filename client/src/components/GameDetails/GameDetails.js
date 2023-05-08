@@ -319,7 +319,7 @@ const GameDetails = ({
         <div className='game_details__details'>
           <div className='game_details__media'>
             <div className='media_placeholder'>
-              <AiOutlineExpandAlt className='game_details__swap_icon' />
+              {/* <AiOutlineExpandAlt className='game_details__swap_icon' /> */}
               <img
                 className='details_img'
                 src={

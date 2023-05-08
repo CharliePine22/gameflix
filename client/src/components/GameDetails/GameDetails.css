@@ -560,7 +560,8 @@
 
 @media screen and (max-width: 590px) {
   .details_img {
-    width: 78%;
+    width: 100%;
+    max-width: 100%;
   }
 
   .game_details__actions {
@@ -591,6 +592,7 @@
     flex-direction: column;
     justify-content: flex-start;
     height: 100% !important;
+    width: auto;
   }
 
   .game_details__screenshots {
@@ -644,7 +646,7 @@
 
   .game_details__container h2 {
     font-size: 2.2rem;
-    margin: 5px 0px 10px;
+    margin: 10px 0px 15px;
   }
 
   .game_details__data {
@@ -663,11 +665,12 @@
   .game_details__details {
     margin: 0;
     height: auto;
+    flex-direction: column;
   }
 
   .game_details__screenshots {
-    min-width: 70px;
-    max-width: 70px;
+    min-width: 100%;
+    flex-direction: row;
   }
 
   .game_details__swap_icon {
@@ -714,6 +717,7 @@
     width: 100%;
     margin-bottom: 20px;
     height: 450px;
+    flex-direction: column;
   }
 
   .media_soundtrack__container {

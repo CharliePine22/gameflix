@@ -48,6 +48,10 @@
   font-size: 0.9rem;
 }
 
+.form__create_account > span {
+  font-weight: 600;
+}
+
 .form__create_account > span:hover {
   text-decoration: underline;
   cursor: pointer;
@@ -163,14 +167,20 @@
   flex-direction: column;
   margin: 0;
   width: 100%;
-  min-height: 465px;
-  padding: 40px 48px;
-  box-shadow: rgb(0 0 0 / 80%) 0px 3px 8px;
+  min-height: 435px;
+  padding: 45px 48px 25px;
+  backdrop-filter: blur(2px);
+  /* box-shadow: rgb(0 0 0 / 80%) 0px 3px 8px; */
+  box-shadow: rgb(0 0 0 / 80%) 0px 1px 5px 1px, rgb(0 0 0 / 80%) 0px 2px 9px 5px;
 }
 
 .login__form_container h1 {
-  margin-bottom: 40px;
+  margin-bottom: 38px;
   user-select: none;
+  text-align: center;
+  font-size: 2.35rem;
+  text-shadow: 2px 1px 2px #9147ff;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .login__form_wrapper {
@@ -183,10 +193,9 @@
   z-index: -1;
   top: -260px;
   left: -180px;
-  opacity: 0.75;
-  transform: perspective(380px) rotateY(3deg) translateX(-210px) rotateX(0deg);
-  width: 170%;
-  overflow: hidden;
+  opacity: 0.9;
+  transform: perspective(380px) rotateY(3deg) translateX(-210px) rotateX(2deg);
+  width: 230%;
 }
 
 .login__img {
@@ -195,7 +204,6 @@
   max-height: 22rem;
   width: 15rem;
   margin: 2.5px 4px;
-  /* border: 3px solid transparent; */
 }
 
 .login__image_loading {
@@ -221,6 +229,9 @@
 @media screen and (max-width: 450px) {
   .login__background {
     left: 255px !important;
+    transform: perspective(380px) rotateY(3deg) translateX(-1360px)
+      rotateX(3deg);
+    width: 100%;
   }
 }
 
@@ -328,12 +339,6 @@
 
 /* Tablets to laptops */
 @media screen and (min-width: 751px) and (max-width: 1280px) {
-  .login__background {
-    width: 170%;
-    top: -570px;
-    left: -308px;
-  }
-
   .login__img {
     min-height: 16rem;
     max-height: 16rem;
@@ -342,9 +347,9 @@
 }
 
 /* For larger screens and desktops, increease image sizes */
-@media screen and (min-width: 1510px) {
+@media screen and (min-width: 1440px) {
   .login__background {
     top: -440px;
-    left: -600px;
+    left: -400px;
   }
 }

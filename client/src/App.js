@@ -124,6 +124,7 @@ function App() {
           id: game.id,
           imageURL: `//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover.image_id}.jpg`,
           playtime: 0,
+          user_rating: 0,
           origin: 'gameflix',
           status: 'BACKLOG',
         });

@@ -51,7 +51,7 @@ const Authentication = ({ onLogin }) => {
     }
   };
 
-  if (loadedImages.length == 100 && !userLoggedIn) {
+  if (!userLoggedIn) {
     if (!toLandingPage)
       return (
         <Login

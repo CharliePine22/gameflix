@@ -77,101 +77,101 @@ const Login = ({ toLanding, authenticateUser, images }) => {
   };
 
   return (
-    <div
-      className='login__wrapper'
-      // style={{ display: done ? 'flex' : 'none' }}
-    >
-      <div className='login'>
-        <div className='login__form_wrapper'>
-          <div className='login__form_container'>
-            <form className='login__form' onSubmit={formSubmitHandler}>
-              {!loading ? (
-                <>
-                  <h1>Sign In</h1>
-                  <div className='login__form_actions'>
-                    <label className='form_label' htmlFor='email' />
-                    <input
-                      ref={emailRef}
-                      onFocus={() => setCurrentFocus('email')}
-                      onChange={checkEmailValidity}
-                      onBlur={emailBlurHandler}
-                      className={`form_input ${
-                        emailRef.current?.value !== '' && hasEmailError
-                          ? 'error'
-                          : ''
-                      }`}
-                      type='email'
-                    />
-                    <span
-                      className={`form_actions_placeholder ${
-                        emailRef.current?.value || currentFocus == 'email'
-                          ? 'focused'
-                          : ''
-                      }`}
-                    >
-                      Email
-                    </span>
+    <>
+      <div className='login__wrapper'>
+        <div className='login'>
+          <div className='login__form_wrapper'>
+            <div className='login__form_container'>
+              <form className='login__form' onSubmit={formSubmitHandler}>
+                {!loading ? (
+                  <>
+                    <h1>Sign In</h1>
+                    <div className='login__form_actions'>
+                      <label className='form_label' htmlFor='email' />
+                      <input
+                        ref={emailRef}
+                        onFocus={() => setCurrentFocus('email')}
+                        onChange={checkEmailValidity}
+                        onBlur={emailBlurHandler}
+                        className={`form_input ${
+                          emailRef.current?.value !== '' && hasEmailError
+                            ? 'error'
+                            : ''
+                        }`}
+                        type='email'
+                      />
+                      <span
+                        className={`form_actions_placeholder ${
+                          emailRef.current?.value || currentFocus == 'email'
+                            ? 'focused'
+                            : ''
+                        }`}
+                      >
+                        Email
+                      </span>
+                    </div>
+                    <div className='login__form_actions'>
+                      <label className='form_label' htmlFor='email' />
+                      <input
+                        ref={passwordRef}
+                        onFocus={() => setCurrentFocus('password')}
+                        onChange={checkPasswordValidity}
+                        onBlur={passwordBlurHandler}
+                        className={`form_input ${
+                          passwordRef.current?.value !== undefined &&
+                          hasPasswordError &&
+                          passwordRef.current.value.length > 0
+                            ? 'error'
+                            : ''
+                        }`}
+                        type='password'
+                      />
+                      <span
+                        className={`form_actions_placeholder ${
+                          passwordRef.current?.value ||
+                          currentFocus == 'password'
+                            ? 'password_focused'
+                            : ''
+                        }`}
+                      >
+                        Password
+                      </span>
+                      {authError && (
+                        <p className='login__auth_error'>{authError}</p>
+                      )}
+                    </div>
+                    <button className='form__submit_btn'>Sign In</button>
+                    <p className='form__create_account'>
+                      Don't have an account?{' '}
+                      <span onClick={toLandingPage}>Create one now</span>.
+                    </p>
+                  </>
+                ) : (
+                  <div className='login__loading'>
+                    <div className='loading_spinner' />
                   </div>
-                  <div className='login__form_actions'>
-                    <label className='form_label' htmlFor='email' />
-                    <input
-                      ref={passwordRef}
-                      onFocus={() => setCurrentFocus('password')}
-                      onChange={checkPasswordValidity}
-                      onBlur={passwordBlurHandler}
-                      className={`form_input ${
-                        passwordRef.current?.value !== undefined &&
-                        hasPasswordError &&
-                        passwordRef.current.value.length > 0
-                          ? 'error'
-                          : ''
-                      }`}
-                      type='password'
-                    />
-                    <span
-                      className={`form_actions_placeholder ${
-                        passwordRef.current?.value || currentFocus == 'password'
-                          ? 'password_focused'
-                          : ''
-                      }`}
-                    >
-                      Password
-                    </span>
-                    {authError && (
-                      <p className='login__auth_error'>{authError}</p>
-                    )}
-                  </div>
-                  <button className='form__submit_btn'>Sign In</button>
-                  <p className='form__create_account'>
-                    Don't have an account?{' '}
-                    <span onClick={toLandingPage}>Create one now</span>.
-                  </p>
-                </>
-              ) : (
-                <div className='login__loading'>
-                  <div className='loading_spinner' />
-                </div>
-              )}
-            </form>
+                )}
+              </form>
+            </div>
           </div>
         </div>
-        <div
-          className='login__background'
-          style={{ display: done ? '' : 'none' }}
-        >
-          {images.map((game) => (
-            <React.Fragment key={game.key}>
-              <img
-                className='login__img'
-                alt={game.name}
-                src={game.props.children.props.src}
-                onLoad={imageLoadHandler}
-              />
-            </React.Fragment>
-          ))}
-        </div>
       </div>
-    </div>
+      <div
+        className='login__background'
+        style={{ display: done ? '' : 'none' }}
+      >
+        {images.map((game) => (
+          <React.Fragment key={game.key}>
+            <img
+              className='login__img'
+              alt={game.name}
+              src={game.props.children.props.src}
+              onLoad={imageLoadHandler}
+            />
+          </React.Fragment>
+        ))}
+      </div>
+    </>
   );
 };
 

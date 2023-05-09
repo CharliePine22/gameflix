@@ -448,40 +448,6 @@ const GameDetails = ({
                 </div>
               </div>
             </div>
-            {/* SIMILAR GAMES  */}
-            {/* <div className='media_soundtrack__container'>
-              <Carousel>
-                {game.similar_games?.map((game) => (
-                  <CarouselItem
-                    imageUrl={`//images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
-                    key={game.id}
-                    width='100%'
-                  >
-                    <div
-                      className='similar_game__container'
-                      onClick={() => searchGameDetails(game.id)}
-                      // onClick={() => console.log(game)}
-                    >
-                      <div className='similar_game__details'>
-                        <p className='similar_game__company'>
-                          <i>{game.involved_companies?.at(-1).company.name}</i>
-                        </p>
-                        <ul className='similar_game__genres'>
-                          {game.genres?.map((genre) => (
-                            <li
-                              key={genre.name}
-                              style={{ fontSize: '1.15rem' }}
-                            >
-                              {genre.name.split('(')[0]}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </Carousel>
-            </div> */}
           </div>
         </div>
         <div className='game_details__description_container'>

@@ -19,8 +19,6 @@ const Authentication = ({ onLogin }) => {
     if (userLoggedIn) navigate('/');
   }, []);
 
-  useEffect(() => {});
-
   const imageLoaded = () => {
     counter.current += 1;
     if (counter.current >= allGames.length) {
@@ -55,7 +53,6 @@ const Authentication = ({ onLogin }) => {
     if (!toLandingPage)
       return (
         <Login
-          images={loadedImages}
           toLanding={() => setToLandingPage(true)}
           authenticateUser={(email, password) =>
             authenticateUser(email, password)

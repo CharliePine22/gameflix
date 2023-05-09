@@ -229,8 +229,8 @@
 @media screen and (max-width: 450px) {
   .login__background {
     left: 255px !important;
-    transform: perspective(380px) rotateY(3deg) translateX(-1360px)
-      rotateX(3deg);
+    transform: perspective(380px) rotateY(3deg) translateX(-1620px)
+      translateY(-200px) rotateX(3deg);
     width: 100%;
   }
 }
@@ -320,12 +320,12 @@
   }
 
   .login__form_container {
-    min-height: 420px;
-    padding: 32px 40px 32px;
+    min-height: 435px;
+    padding: 42px 40px 32px;
   }
 
   .login__form_container h1 {
-    margin-bottom: 35px;
+    margin-bottom: 45px;
     text-align: center;
   }
 

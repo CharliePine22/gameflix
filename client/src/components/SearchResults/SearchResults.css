@@ -611,11 +611,10 @@
   }
 
   .search_results__container h2 {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     width: 100%;
     text-align: center;
     font-size: 2rem;
-    margin-bottom: 4px !important;
   }
 
   .search_results__error {
@@ -736,7 +735,7 @@
   .remainder_results h2 {
     text-align: center;
     font-size: 2rem;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
 
   .search_results__nav {

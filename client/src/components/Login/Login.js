@@ -2,22 +2,15 @@ import React, { useState, useRef } from 'react';
 import './Login.css';
 import vgCollage from '../../assets/images/vg-collage.jpg';
 
-const Login = ({ toLanding, authenticateUser, images }) => {
+const Login = ({ toLanding, authenticateUser }) => {
   // States
   const [hasEmailError, setHasEmailError] = useState(false);
   const [hasPasswordError, setHasPasswordError] = useState(false);
   const [currentFocus, setCurrentFocus] = useState(null);
   const [authError, setAuthError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
-  const imageRef = useRef(0);
 
   document.body.style.overflow = 'hidden';
-
-  const imageLoadHandler = () => {
-    imageRef.current += 1;
-    if (imageRef.current == 100) setDone(true);
-  };
 
   // Refs
   const emailRef = useRef('');

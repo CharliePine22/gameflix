@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+}
+
+.App {
+  /* background-color: #0d0d29; */
+  /* background-color: #02020f; */
+  /* background-color: rgb(32, 32, 32); POTENTIAL NEW COLOR*/
+  /* background-color: rgb(22, 22, 22);  OLD COLOR */
+  user-select: none;
+}
+
+.loading_profile__container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading_profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  width: 150px;
+  background: black;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+  border-radius: 4px;
+}
+
+.loading_profile::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  background-color: black;
+  background-repeat: no-repeat;
+  background-size: 50% 50%, 50% 50%;
+  background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+  background-image: linear-gradient(#fff, #fff);
+  animation: rotate 1s linear infinite;
+}
+
+.loading_profile::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 6px;
+  top: 6px;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+  background: var(--color-theme);
+  border-radius: 2px;
+}
+
+.loading_profile img {
+  height: 98%;
+  width: 98%;
+  border-radius: 2px;
+  object-fit: cover;
+  object-position: 50% 10%;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(1turn);
+  }
+}

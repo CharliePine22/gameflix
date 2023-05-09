@@ -1,0 +1,45 @@
+.notification__container {
+  height: 100%;
+}
+
+.notification__message {
+  font-size: 1.25rem;
+  padding: 0 10px;
+  text-align: center;
+  text-shadow: 2px 2px 1px black;
+}
+
+.notification__title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  padding: 7px 0;
+  text-align: center;
+  text-shadow: 3px 2px 1px rgb(255 255 255 / 30%);
+}
+
+.notification__wrapper {
+  padding: 2px 0;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  height: 170px;
+  width: 250px;
+  z-index: 10;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid white;
+  color: white;
+  box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 80%);
+}
+
+.notification__fade-in {
+  transform: translateY(0px);
+  transition: opacity 1s ease, transform 1.25s ease;
+}
+
+.notification__fade-out {
+  opacity: 0;
+  transform: translateY(90px);
+  transition: opacity 1s ease, transform 1.25s ease;
+  pointer-events: none;
+}

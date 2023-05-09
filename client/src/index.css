@@ -1,0 +1,102 @@
+@font-face {
+  font-family: 'Rexlia';
+  src: local('Rexlia'), url(./assets/fonts/rexlia_rg.otf) format('opentype');
+}
+@font-face {
+  font-family: 'Gasalt';
+  src: local('Gasalt'), url(./assets/fonts/Gasalt-Black.ttf) format('opentype');
+}
+@font-face {
+  font-family: 'Ferrum';
+  src: local('Ferrum'), url(./assets/fonts/ferrum.otf) format('opentype');
+}
+@font-face {
+  font-family: 'Persona';
+  src: local('Persona'),
+    url(./assets/fonts/Persona5MenuFontPrototype-Regular.ttf) format('opentype');
+}
+@font-face {
+  font-family: 'ModernPlaystation';
+  src: local('ModernPlaystation'),
+    url(./assets/fonts/PsBold.ttf) format('opentype');
+}
+@font-face {
+  font-family: 'OldPlaystation';
+  src: local('OldPlaystation'), url(./assets/fonts/PsOld.ttf) format('opentype');
+}
+@font-face {
+  font-family: 'Xbox';
+  src: local('Xbox'), url(./assets/fonts/Xbox.ttf) format('opentype');
+}
+@font-face {
+  font-family: 'Mario';
+  src: local('MarioFont'), url(./assets/fonts/MarioFont.ttf) format('opentype');
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #111;
+  overflow: visible;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+.persona_font {
+  font-family: Persona;
+}
+
+.old_playstation_font {
+  font-family: OldPlaystation;
+  font-size: 0.65rem;
+}
+
+.modern_playstation_font {
+  font-family: ModernPlaystation;
+  text-shadow: 1px 1px 2px black;
+}
+
+.nintendo_font {
+  font-family: Mario;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+}
+
+.xbox_font {
+  font-family: Xbox;
+  font-size: 0.9rem;
+}
+
+.persona_box {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  z-index: -1;
+}
+
+/* p, */
+a,
+li {
+  font-family: Ferrum;
+}
+
+h2 {
+  font-family: Rexlia;
+}
+
+h4 {
+  font-family: Gasalt;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

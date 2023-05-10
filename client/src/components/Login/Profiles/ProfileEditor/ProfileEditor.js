@@ -1,12 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
-import './ProfileEditor.css';
-import SearchList from './SearchList';
-import axios from 'axios';
-import { MdEdit } from 'react-icons/md';
-import { SketchPicker } from 'react-color';
-import { FaAngleDown } from 'react-icons/fa';
+import React, { useRef, useState, useEffect } from "react";
+import "./ProfileEditor.css";
+import SearchList from "./SearchList";
+import axios from "axios";
+import { MdEdit } from "react-icons/md";
+import { SketchPicker } from "react-color";
+import { FaAngleDown } from "react-icons/fa";
 
 const ProfileEditor = (props) => {
+  document.body.style.overflow = "hidden";
   const baseURL = process.env.REACT_APP_BASE_URL;
   const currentProfile = props.currentProfile;
   const isAdmin = currentProfile.isAdmin;
@@ -14,59 +15,59 @@ const ProfileEditor = (props) => {
   const [searchLoading, setSearchLoading] = useState(false);
   // Current Profile Name
   const currentProfileName =
-    localStorage.getItem('profile') || currentProfile.name;
+    localStorage.getItem("profile") || currentProfile.name;
   const [nameValue, setNameValue] = useState(currentProfileName);
   // Title Input State and Ref
-  const titleRef = useRef('');
+  const titleRef = useRef("");
   const [titleValue, setTitleValue] = useState(currentProfile.favorite_game);
   const [titleId, setTitleId] = useState(0);
-  const [titleImage, setTitleImage] = useState('');
+  const [titleImage, setTitleImage] = useState("");
   const [titleList, setTitleList] = useState([]);
-  let searchValue = '';
+  let searchValue = "";
   // Console Input State and Ref
-  const consoleRef = useRef('');
+  const consoleRef = useRef("");
   const [consoleValue, setConsoleValue] = useState(
     currentProfile.favorite_console
   );
   // Profile form states
-  const [statusMessage, setStatusMessage] = useState('');
+  const [statusMessage, setStatusMessage] = useState("");
   const [currentAvatar, setCurrentAvatar] = useState(currentProfile.avatar);
   const [imgFilePreview, setImgFilePreview] = useState(null);
-  const fileInputRef = useRef('');
-  const [imgLink, setImgLink] = useState('');
+  const fileInputRef = useRef("");
+  const [imgLink, setImgLink] = useState("");
   const [usingImgLink, setUsingImgLink] = useState(false);
   const [changingAvatar, setChangingAvatar] = useState(false);
   // Color states
   const [changingColor, setChangingColor] = useState(false);
   const [color, setColor] = useState(currentProfile.color);
   // Genre states
-  const genreRef = useRef('');
+  const genreRef = useRef("");
   const [changingGenre, setChangingGenre] = useState(false);
   const [currentGenre, setCurrentGenre] = useState(
     currentProfile.favorite_genre
   );
 
   const genreList = [
-    'Action',
-    'Adventure',
-    'Arcade',
-    'Card & Board',
-    'Family',
-    'Fighting',
-    'Indie',
-    'MMO (Massive Multiplayer)',
-    'Platformer',
-    'Puzzle',
-    'Racing',
-    'RPG',
-    'Shooter',
-    'Sports',
-    'Strategy',
+    "Action",
+    "Adventure",
+    "Arcade",
+    "Card & Board",
+    "Family",
+    "Fighting",
+    "Indie",
+    "MMO (Massive Multiplayer)",
+    "Platformer",
+    "Puzzle",
+    "Racing",
+    "RPG",
+    "Shooter",
+    "Sports",
+    "Strategy",
   ];
 
   useEffect(() => {
     if (
-      titleValue == '' ||
+      titleValue == "" ||
       titleValue == currentProfile.favorite_game ||
       searchLoading
     ) {
@@ -96,10 +97,10 @@ const ProfileEditor = (props) => {
         setChangingColor(false);
       }
     };
-    window.addEventListener('keydown', handleEsc);
+    window.addEventListener("keydown", handleEsc);
 
     return () => {
-      window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener("keydown", handleEsc);
     };
   }, []);
 
@@ -110,9 +111,9 @@ const ProfileEditor = (props) => {
         setChangingGenre(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [genreRef]);
 
@@ -170,11 +171,11 @@ const ProfileEditor = (props) => {
     setLoading(true);
     // Append email and profile name to find correct profile to update
     const data = new FormData();
-    data.append('email', props.userEmail);
-    data.append('name', currentProfile.name);
+    data.append("email", props.userEmail);
+    data.append("name", currentProfile.name);
     // User uploads image
-    if (method == 'file') {
-      data.append('avatar', e.target.files[0]);
+    if (method == "file") {
+      data.append("avatar", e.target.files[0]);
       try {
         const request = await axios.post(
           `${baseURL}/app/update_avatar_file`,
@@ -215,7 +216,7 @@ const ProfileEditor = (props) => {
     if (!usingImgLink) {
       setUsingImgLink(true);
     } else {
-      updateAvatar(e, 'link');
+      updateAvatar(e, "link");
     }
   };
 
@@ -230,11 +231,11 @@ const ProfileEditor = (props) => {
       originalName: currentProfile.name,
       newName: nameValue.trim(),
       newColor: color,
-      favoriteGenre: currentGenre ? currentGenre.trim() : 'Action',
-      favoriteGame: titleValue ? titleValue.trim() : 'None',
+      favoriteGenre: currentGenre ? currentGenre.trim() : "Action",
+      favoriteGame: titleValue ? titleValue.trim() : "None",
       gameId: titleId,
       imageURL: titleImage,
-      favoriteConsole: consoleValue ? consoleValue.trim() : 'None',
+      favoriteConsole: consoleValue ? consoleValue.trim() : "None",
       twitchToken: props.twitchToken,
     };
 
@@ -244,8 +245,8 @@ const ProfileEditor = (props) => {
         userData
       );
 
-      localStorage.setItem('user', request.data.response.user.email);
-      localStorage.setItem('profile', request.data.response.profile.name);
+      localStorage.setItem("user", request.data.response.user.email);
+      localStorage.setItem("profile", request.data.response.profile.name);
       setStatusMessage(request.data.message);
       props.saveEdit(request.data.response);
       props.viewAllProfiles();
@@ -258,13 +259,13 @@ const ProfileEditor = (props) => {
   // Loading spinner
   if (loading) {
     return (
-      <div className='profile_edit__container'>
-        <div className='profile_edit__header'>
+      <div className="profile_edit__container">
+        <div className="profile_edit__header">
           <h3>GAMEFLIX</h3>
         </div>
-        <div className='profile_edit__form_wrapper'>
-          <div className='profile__loading'>
-            <div className='profile__loading_spinner' />
+        <div className="profile_edit__form_wrapper">
+          <div className="profile__loading">
+            <div className="profile__loading_spinner" />
           </div>
         </div>
       </div>
@@ -272,24 +273,24 @@ const ProfileEditor = (props) => {
   }
 
   return (
-    <div className='profile_edit__container'>
-      <div className='profile_edit__header'>
+    <div className="profile_edit__container">
+      <div className="profile_edit__header">
         <h3>GAMEFLIX</h3>
       </div>
-      <div className='profile_edit__form_wrapper'>
-        <h3>{currentProfile !== true ? 'Edit Profile' : 'Create Profile'}</h3>
+      <div className="profile_edit__form_wrapper">
+        <h3>{currentProfile !== true ? "Edit Profile" : "Create Profile"}</h3>
         <div
           className={`form_container ${
-            changingAvatar && 'avatar_select_container'
+            changingAvatar && "avatar_select_container"
           }`}
         >
           {/* USER AVATAR CONTAINER */}
           <div
-            style={{ paddingTop: changingAvatar && '10px' }}
-            className='form_avatar_container'
+            style={{ paddingTop: changingAvatar && "10px" }}
+            className="form_avatar_container"
           >
             <img
-              className={`current_avatar ${changingAvatar && 'avatar_select'}`}
+              className={`current_avatar ${changingAvatar && "avatar_select"}`}
               style={{
                 backgroundColor: color ? color : currentProfile.color,
               }}
@@ -297,20 +298,20 @@ const ProfileEditor = (props) => {
             />
             {!changingAvatar && (
               <span
-                className='current_avatar_edit'
+                className="current_avatar_edit"
                 onClick={() => setChangingAvatar(true)}
               >
-                <MdEdit style={{ height: '100%' }} />
+                <MdEdit style={{ height: "100%" }} />
               </span>
             )}
           </div>
           {/* USER FORM */}
-          <div className='form_right'>
+          <div className="form_right">
             {!changingAvatar && (
-              <form className='profile_edit__form'>
+              <form className="profile_edit__form">
                 {/* NAME */}
                 <input
-                  className='name_input'
+                  className="name_input"
                   onChange={(e) => setNameValue(e.target.value)}
                   value={nameValue}
                   autoFocus
@@ -318,7 +319,7 @@ const ProfileEditor = (props) => {
                 {/* COLOR */}
                 <p>Color</p>
                 <input
-                  className='color_input'
+                  className="color_input"
                   style={{
                     color: color,
                   }}
@@ -326,7 +327,7 @@ const ProfileEditor = (props) => {
                   value={color}
                 />
                 <button
-                  type='button'
+                  type="button"
                   onClick={() => setChangingColor(!changingColor)}
                   style={{
                     backgroundColor: color,
@@ -336,38 +337,38 @@ const ProfileEditor = (props) => {
                   <SketchPicker
                     color={color}
                     onChangeComplete={colorChangeHandler}
-                    className='profile_color_palette'
+                    className="profile_color_palette"
                   />
                 )}
               </form>
             )}
             {/* USER PERSONAL */}
             <div
-              className={`form_personal ${changingAvatar && 'personal_avatar'}`}
+              className={`form_personal ${changingAvatar && "personal_avatar"}`}
             >
               <h4
                 style={{
-                  textAlign: changingAvatar ? 'center' : 'left',
+                  textAlign: changingAvatar ? "center" : "left",
                 }}
               >
-                {!changingAvatar ? 'Your Playstyle' : 'Current'}
+                {!changingAvatar ? "Your Playstyle" : "Current"}
               </h4>
               {/* AVATAR FILE */}
               {changingAvatar && (
                 <>
                   <div
                     className={`upload_avatar_actions ${
-                      usingImgLink && 'img_link_actions'
+                      usingImgLink && "img_link_actions"
                     }`}
                   >
                     <input
-                      className='upload_file_input'
-                      type='file'
-                      accept='image/*'
-                      style={{ display: 'none' }}
+                      className="upload_file_input"
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
                       multiple={false}
                       ref={fileInputRef}
-                      onChange={(e) => updateAvatar(e, 'file')}
+                      onChange={(e) => updateAvatar(e, "file")}
                     />
 
                     {!usingImgLink && (
@@ -380,14 +381,14 @@ const ProfileEditor = (props) => {
                     )}
                     {/* AVATAR URL */}
                     <button onClick={determineLinkAction}>
-                      {!usingImgLink ? 'Enter link' : 'Submit'}
+                      {!usingImgLink ? "Enter link" : "Submit"}
                     </button>
                     {usingImgLink && (
                       <input
                         className={`console_input ${
-                          changingAvatar && 'img_input'
+                          changingAvatar && "img_input"
                         }`}
-                        placeholder={'Enter link to image or gif'}
+                        placeholder={"Enter link to image or gif"}
                         value={imgLink}
                         onChange={(e) => setImgLink(e.target.value)}
                       />
@@ -398,11 +399,11 @@ const ProfileEditor = (props) => {
               {/* TITLE */}
               {!changingAvatar && (
                 <>
-                  <p className='form_personal_title'>Favorite Title</p>
+                  <p className="form_personal_title">Favorite Title</p>
                   <input
                     ref={titleRef}
                     value={titleValue}
-                    className='title_input'
+                    className="title_input"
                     onBlur={titleBlurHandler}
                     onChange={(e) => {
                       titleRef.current = titleValue;
@@ -410,11 +411,11 @@ const ProfileEditor = (props) => {
                     }}
                   />
                   {searchLoading && (
-                    <div className='profile__search_loading'>
-                      <div className='profile__search_loading_spinner' />
+                    <div className="profile__search_loading">
+                      <div className="profile__search_loading_spinner" />
                     </div>
                   )}
-                  {titleList.length > 0 && titleValue !== '' && (
+                  {titleList.length > 0 && titleValue !== "" && (
                     <SearchList
                       list={titleList}
                       selectGame={selectGameHandler}
@@ -425,7 +426,7 @@ const ProfileEditor = (props) => {
               {/* CONSOLE */}
               {!changingAvatar && (
                 <>
-                  <p className='form_personal_console'>Favorite Console</p>
+                  <p className="form_personal_console">Favorite Console</p>
                   <input
                     ref={titleRef}
                     value={consoleValue}
@@ -433,29 +434,29 @@ const ProfileEditor = (props) => {
                       consoleRef.current = consoleValue;
                       setConsoleValue(e.target.value);
                     }}
-                    className={`console_input ${changingAvatar && 'img_input'}`}
+                    className={`console_input ${changingAvatar && "img_input"}`}
                     placeholder={
-                      changingAvatar ? 'https://www.example.com' : ''
+                      changingAvatar ? "https://www.example.com" : ""
                     }
                   />
                 </>
               )}
               {/* GENRE */}
-              <div className='genre_dropdown'>
+              <div className="genre_dropdown">
                 {!changingAvatar && (
                   <>
-                    <p className='form_personal_genre'>Favorite Genre</p>
+                    <p className="form_personal_genre">Favorite Genre</p>
                     <button onClick={() => setChangingGenre(!changingGenre)}>
                       {currentGenre !== undefined
                         ? `${currentGenre}`
-                        : 'Action'}{' '}
-                      <FaAngleDown className='genre_arrow' />
+                        : "Action"}{" "}
+                      <FaAngleDown className="genre_arrow" />
                     </button>
                   </>
                 )}
                 {/* <FaAngleDown className='genre_arrow' /> */}
                 {changingGenre && (
-                  <div ref={genreRef} className='genre_dropdown_content'>
+                  <div ref={genreRef} className="genre_dropdown_content">
                     {genreList.map((genre) => (
                       <span
                         onClick={() => genreChangeHandler(genre)}
@@ -471,18 +472,18 @@ const ProfileEditor = (props) => {
           </div>
         </div>
         {/* FORM ACTIONS */}
-        <div className='form_actions'>
+        <div className="form_actions">
           {!changingAvatar && (
-            <button className='save_btn' onClick={saveUserData}>
+            <button className="save_btn" onClick={saveUserData}>
               Save
             </button>
           )}
-          <button className='cancel_btn' onClick={cancelButtonHandler}>
-            {!changingAvatar ? 'Cancel' : 'Back'}
+          <button className="cancel_btn" onClick={cancelButtonHandler}>
+            {!changingAvatar ? "Cancel" : "Back"}
           </button>
           {!isAdmin && (
             <button
-              className='delete_profile_btn justify-start'
+              className="delete_profile_btn justify-start"
               onClick={deleteProfileHandler}
             >
               Delete Profile

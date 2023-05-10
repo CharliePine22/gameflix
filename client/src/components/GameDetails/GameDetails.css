@@ -5,7 +5,7 @@
   border-bottom-left-radius: 4px;
   width: 85%;
   max-width: 450px;
-  box-shadow: 0px 2px 5px 2px black;
+  /* box-shadow: 0px 2px 5px 2px black; */
 }
 
 .stage {
@@ -320,6 +320,7 @@
   display: flex;
   height: 600px;
   justify-content: center;
+  box-shadow: 0px 2px 5px 2px black;
 }
 
 .media_soundtrack__background {
@@ -588,7 +589,6 @@
 
   .game_details__info_container_top {
     width: 100%;
-    margin-bottom: 25px;
   }
 
   .game_details__media {
@@ -647,17 +647,18 @@
   }
 
   .game_details__container {
-    margin: 0 16px;
+    margin: 0 14px;
   }
 
   .game_details__container h2 {
-    font-size: 1.7rem;
-    margin: 17px 0px 19px;
+    font-size: 2rem;
+    margin: 25px 0px 20px;
   }
 
   .game_details__data {
     margin: 0;
     width: 380px;
+    height: 200px;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: flex-start;
@@ -710,7 +711,7 @@
 
   .media_placeholder {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     height: 450px;
     flex-direction: column;
   }

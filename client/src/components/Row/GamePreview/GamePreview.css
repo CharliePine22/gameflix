@@ -262,7 +262,7 @@
   width: 100vw;
   background: rgba(0, 0, 0, 0.7);
   left: 0;
-  top: 0;
+  top: -1px;
   z-index: 2;
 }
 
@@ -589,6 +589,11 @@
   .game_preview__wrapper {
     transform: scale(1.15);
   }
+  .game_preview__middle {
+    height: 406px;
+    top: 10px !important;
+    position: absolute;
+  }
 }
 
 @media screen and (max-width: 650px) {
@@ -639,10 +644,3 @@
   }
 }
 
-@media screen and (min-width: 1440px) {
-  .game_preview__middle {
-    height: 406px;
-    top: 10px !important;
-    position: absolute;
-  }
-}

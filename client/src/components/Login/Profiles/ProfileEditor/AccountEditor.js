@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import axios from "axios";
 
 const AccountEditor = ({
   closeAccountSettings,
@@ -9,21 +9,21 @@ const AccountEditor = ({
 }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const [deletingAccount, setDeletingAccount] = useState(false);
-  const [updateStatus, setUpdateStatus] = useState('');
+  const [updateStatus, setUpdateStatus] = useState("");
   // EMAIL STATES
   const [emailValue, setEmailValue] = useState(currentUser.email);
-  const [newEmailValue, setNewEmailValue] = useState('');
-  let repeatValue = '';
+  const [newEmailValue, setNewEmailValue] = useState("");
+  let repeatValue = "";
   const [changingEmail, setChangingEmail] = useState(false);
   // PASSWORD STATES
   const [passwordValue, setPasswordValue] = useState(currentUser.password);
   const [hidePassword, setHidePassword] = useState(true);
-  const [newPasswordValue, setNewPasswordValue] = useState('');
+  const [newPasswordValue, setNewPasswordValue] = useState("");
   const [changingPassword, setChangingPassword] = useState(false);
 
   useEffect(() => {
     if (hidePassword) {
-      const hiddenPassword = currentUser.password.replace(/./gi, '*');
+      const hiddenPassword = currentUser.password.replace(/./gi, "*");
       setPasswordValue(hiddenPassword);
     } else {
       setPasswordValue(currentUser.password);
@@ -31,7 +31,7 @@ const AccountEditor = ({
   }, [hidePassword]);
 
   const updateEmail = async (email) => {
-    setUpdateStatus('');
+    setUpdateStatus("");
     try {
       const request = await axios.post(`${baseURL}/app/update_user_email`, {
         originalEmail: currentUser.email,
@@ -40,13 +40,13 @@ const AccountEditor = ({
 
       if (request.data.status < 400) {
         setLoggedUser(request.data.user);
-        setUpdateStatus({ type: 'success', message: request.data.message });
+        setUpdateStatus({ type: "success", message: request.data.message });
         setEmailValue(request.data.user.email);
-        setNewEmailValue('');
+        setNewEmailValue("");
         setChangingEmail(false);
       } else {
-        setUpdateStatus({ type: 'error', message: request.data.message });
-        setNewEmailValue('');
+        setUpdateStatus({ type: "error", message: request.data.message });
+        setNewEmailValue("");
       }
     } catch (error) {
       console.log(error);
@@ -58,11 +58,11 @@ const AccountEditor = ({
       setChangingEmail(true);
       setChangingPassword(false);
     } else {
-      if (newEmailValue !== '') {
+      if (newEmailValue !== "") {
         updateEmail(newEmailValue);
       } else {
         setChangingEmail(false);
-        setNewEmailValue('');
+        setNewEmailValue("");
       }
     }
   };
@@ -72,9 +72,9 @@ const AccountEditor = ({
       await axios.delete(`${baseURL}/app/delete_account`, {
         data: { id: currentUser._id },
       });
-      window.location = '/';
-      localStorage.removeItem('user');
-      localStorage.removeItem('profile');
+      window.location = "/";
+      localStorage.removeItem("user");
+      localStorage.removeItem("profile");
     } catch (error) {
       console.log(error);
     }
@@ -85,11 +85,11 @@ const AccountEditor = ({
       setChangingPassword(true);
       setChangingEmail(false);
     } else {
-      if (newPasswordValue !== '') {
+      if (newPasswordValue !== "") {
         repeatValue = newEmailValue;
       } else {
         setChangingPassword(false);
-        setNewPasswordValue('');
+        setNewPasswordValue("");
       }
     }
   };
@@ -108,28 +108,28 @@ const AccountEditor = ({
   };
 
   return (
-    <div className='profile_edit__container'>
-      <div className='profile_edit__header'>
+    <div className="profile_edit__container">
+      <div className="profile_edit__header">
         <h3>GAMEFLIX</h3>
       </div>
-      <div className='profile_edit__form_wrapper' style={{ height: '350px' }}>
+      <div className="profile_edit__form_wrapper" style={{ height: "350px" }}>
         <h3>Account Settings</h3>
-        <div className='form_container'>
-          <form className='account_edit__form'>
+        <div className="form_container">
+          <form className="account_edit__form">
             {/* EMAIL CONTAINER */}
-            <div className='account_email_container'>
-              {updateStatus.type == 'error' ? (
-                <p className='account_email_error'>{updateStatus.message}</p>
+            <div className="account_email_container">
+              {updateStatus.type == "error" ? (
+                <p className="account_email_error">{updateStatus.message}</p>
               ) : (
-                <p className='account_email_success'>{updateStatus.message}</p>
+                <p className="account_email_success">{updateStatus.message}</p>
               )}
               <h4
-                style={{ color: 'white', fontSize: '2rem', marginLeft: '2px' }}
+                style={{ color: "white", fontSize: "2rem", marginLeft: "2px" }}
               >
                 Email
               </h4>
               <input
-                className='account_email_input'
+                className="account_email_input"
                 onChange={(e) => setEmailValue(e.target.value)}
                 value={emailValue}
               />
@@ -138,19 +138,19 @@ const AccountEditor = ({
               {changingEmail && (
                 <>
                   <input
-                    className='account_email_input'
+                    className="account_email_input"
                     onChange={(e) => setNewEmailValue(e.target.value)}
                     value={newEmailValue}
-                    placeholder='Enter new email'
+                    placeholder="Enter new email"
                     autoFocus
                   />
                   <button
-                    type='button'
+                    type="button"
                     onClick={() => {
-                      setNewEmailValue('');
+                      setNewEmailValue("");
                       setChangingEmail(false);
                     }}
-                    className='account_email_save_btn'
+                    className="account_email_save_btn"
                   >
                     Cancel
                   </button>
@@ -158,28 +158,28 @@ const AccountEditor = ({
               )}
 
               <button
-                type='button'
+                type="button"
                 onClick={emailChangeHandler}
-                className='save_btn'
+                className="save_btn"
               >
-                {!changingEmail ? 'Change Email' : 'Save Email'}
+                {!changingEmail ? "Change Email" : "Save Email"}
               </button>
             </div>
 
             {/* PASSWORD CONTAINER */}
-            <div className='account_password_container'>
+            <div className="account_password_container">
               <h4
-                style={{ color: 'white', fontSize: '2rem', marginLeft: '2px' }}
+                style={{ color: "white", fontSize: "2rem", marginLeft: "2px" }}
               >
                 Password
               </h4>
               <input
-                className='account_password_input'
+                className="account_password_input"
                 onChange={(e) => setPasswordValue(e.target.value)}
                 value={passwordValue}
               />
               <span
-                className='account_password_visible_icon'
+                className="account_password_visible_icon"
                 onClick={() => setHidePassword(!hidePassword)}
               >
                 {!hidePassword ? <AiFillEye /> : <AiFillEyeInvisible />}
@@ -189,44 +189,44 @@ const AccountEditor = ({
               {changingPassword && (
                 <>
                   <input
-                    className='account_password_input'
+                    className="account_password_input"
                     onChange={(e) => setNewPasswordValue(e.target.value)}
                     value={newPasswordValue}
-                    placeholder='Enter new password'
+                    placeholder="Enter new password"
                     autoFocus
                   />
                   <button
-                    type='button'
+                    type="button"
                     onClick={() => {
-                      setNewPasswordValue('');
+                      setNewPasswordValue("");
                       setChangingPassword(false);
                     }}
-                    className='account_password_save_btn'
+                    className="account_password_save_btn"
                   >
                     Cancel
                   </button>
                 </>
               )}
               <button
-                type='button'
+                type="button"
                 onClick={passwordChangeHandler}
-                className='save_btn'
+                className="save_btn"
               >
-                {!changingPassword ? 'Change Password' : 'Save Password'}
+                {!changingPassword ? "Change Password" : "Save Password"}
               </button>
             </div>
           </form>
         </div>
         {/* FORM ACTIONS */}
         <div
-          className='form_actions'
-          style={{ justifyContent: 'space-between' }}
+          className="form_actions"
+          style={{ justifyContent: "space-between" }}
         >
-          <button className='cancel_btn' onClick={closeAccountSettings}>
+          <button className="cancel_btn" onClick={closeAccountSettings}>
             Back
           </button>
           <button
-            className='delete_account_btn'
+            className="delete_account_btn"
             onClick={() => setDeletingAccount(true)}
           >
             Delete Account
@@ -234,23 +234,23 @@ const AccountEditor = ({
         </div>
       </div>
       {deletingAccount && (
-        <div className='delete_account_modal'>
-          <div className='delete_account_modal_content'>
+        <div className="delete_account_modal">
+          <div className="delete_account_modal_content">
             <h4>Are you sure you want to delete your account?</h4>
-            <div className='delete_account_modal_actions'>
-              <div className='modal_action_option'>
+            <div className="delete_account_modal_actions">
+              <div className="modal_action_option">
                 <p>Yes</p>
                 <span
-                  className='video-game-button'
+                  className="video-game-button"
                   onClick={deleteAccountHandler}
                 >
                   A
                 </span>
               </div>
-              <div className='modal_action_option'>
+              <div className="modal_action_option">
                 <p>No</p>
                 <span
-                  className='video-game-button'
+                  className="video-game-button"
                   onClick={() => setDeletingAccount(false)}
                 >
                   B

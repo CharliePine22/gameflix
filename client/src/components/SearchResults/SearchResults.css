@@ -22,7 +22,8 @@
   position: absolute;
   bottom: 38px;
   left: 8px;
-  box-shadow: -2px 2px 6px 2px black;
+  filter: drop-shadow(-4px 4px 4px black);
+
 }
 
 .game_playtime {
@@ -218,6 +219,9 @@
   cursor: pointer;
   position: relative;
   background-color: rgb(55, 55, 55);
+  display: flex;
+justify-content: center;
+align-content: center;
 }
 
 .results_container_img {
@@ -313,7 +317,7 @@
 
 .search_results__nav {
   display: flex;
-  height: 180px;
+  height: 150px;
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -473,7 +477,6 @@
     font-size: 0.9rem;
     width: 100%;
     max-width: 95%;
-    padding: 3px 5px 0px;
   }
 
   .results_container_img {
@@ -544,7 +547,6 @@
     font-size: 0.75rem;
     width: 100%;
     max-width: 95%;
-    padding: 5px 0px 3px 4px;
   }
 
   .game_theme_list {
@@ -606,7 +608,7 @@
   }
 
   .search_results__container {
-    margin: 0 10px;
+    margin: 0 0px;
     top: 8.85rem;
   }
 
@@ -708,14 +710,14 @@
     display: inline-flex;
     height: 5.5rem;
     margin: 5px 0px;
-    width: 11.4rem;
+    width: 11.5rem;
     background-color: rgb(35, 35, 35);
     position: relative;
   }
 
   .results_container_img {
     height: 100%;
-    min-width: 75px;
+    min-width: 72px;
   }
 
   .search_results {

@@ -31,7 +31,7 @@ const TrendingRow = ({ twitchToken, setGameDetails }) => {
 
         if (request.data.message) {
           localStorage.removeItem('twitch_auth');
-          window.location.refresh();
+          return;
         }
 
         const uniqueTitles = new Set();

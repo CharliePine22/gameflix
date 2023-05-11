@@ -25,6 +25,7 @@ const UserGameNotes = ({
   const [editingTab, setEditingTab] = useState(false);
   const [tabValue, setTabValue] = useState('');
   const [addingTab, setAddingTab] = useState(false);
+  const [addingNote, setAddingNote] = useState(false);
   // Note Hooks
   const [noteValue, setNoteValue] = useState('');
   const [currentNote, setCurrentNote] = useState(null);
@@ -34,21 +35,6 @@ const UserGameNotes = ({
   const notesRef = useRef(null);
   const tabRef = useRef(null);
   const tabEndRef = useRef(null);
-
-  useEffect(() => {
-    const handleEnter = (event) => {
-      if (editingTab) {
-        if (event.keyCode == 13) {
-          console.log(tabValue);
-        }
-      }
-    };
-    window.addEventListener('keydown', handleEnter);
-
-    return () => {
-      window.removeEventListener('keydown', handleEnter);
-    };
-  }, []);
 
   useEffect(() => {
     if (!gameNotes) return;
@@ -64,16 +50,20 @@ const UserGameNotes = ({
   }, [tabRef, noteTab]);
 
   useEffect(() => {
-    notesRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    if (!addingNote) return;
+    notesRef.current.scrollIntoView({ behavior: 'smooth' });
+    setAddingNote(false);
     return () => clearTimeout(timer);
-  }, []);
+  }, [addingNote]);
 
   const editTabHandler = () => {
     if (!editingTab) {
       setEditingTab(true);
     } else {
-      if (noteTab.tabName == '') {
+      if (tabRef.current.innerText == '' || tabRef.current.innerText == '/n') {
+        console.log('EMPTY');
         noteTab.tabName = 'Notes';
+        return;
       } else {
         noteTab.tabName = tabRef.current.innerText;
       }
@@ -93,11 +83,10 @@ const UserGameNotes = ({
     );
   };
 
-  console.log(noteTab);
-
   const formSubmitHandler = (e) => {
     e.preventDefault();
     if (noteValue == '') return;
+    setAddingNote(true);
     noteTab.notes.push({
       id: noteTab.notes.length + 1,
       note: noteValue,
@@ -127,7 +116,6 @@ const UserGameNotes = ({
   };
 
   const saveNoteHandler = (oldNote, newNote) => {
-    console.log(oldNote);
     oldNote.note = newNote;
     oldNote.date = formattedToday;
     updateNotes();
@@ -171,9 +159,15 @@ const UserGameNotes = ({
               contentEditable={editingTab}
               suppressContentEditableWarning={true}
               onBlur={editTabHandler}
-              onKeyPress={(e) => {
+              // onKeyPress={(e) => {
+              //   e.preventDefault();
+              //   console.log(e.currentTarget);
+              //   if (e.key === 'Enter') editTabHandler();
+              // }}
+              onKeyDown={(e) => {
                 e.preventDefault();
-                console.log(e.currentTarget);
+                // setTabValue(e.currentTarget.innerText);
+                console.log(e.currentTarget.innerText);
                 if (e.key === 'Enter') editTabHandler();
               }}
             >
@@ -261,9 +255,12 @@ const UserGameNotes = ({
               ) : (
                 <p className='no_notes_msg'>No Notes</p>
               )}
+              <div
+                ref={notesRef}
+                style={{ width: '10px', marginLeft: '5px' }}
+              />
             </ul>
           </div>
-          <div ref={notesRef} style={{ width: '10px', marginLeft: '5px' }} />
           <div
             className='user_notes__form_container'
             style={{ display: `${!viewStatus.notes ? 'none' : 'block'}` }}

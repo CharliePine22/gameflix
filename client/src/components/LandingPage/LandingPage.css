@@ -299,15 +299,15 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   text-align: right;
-  margin-right: 10px;
 }
 
 .information_right_description {
   text-align: right;
   font-size: 1.25rem;
   max-width: 85%;
+  margin-left: 45px;
 }
 
 .information_right_title {

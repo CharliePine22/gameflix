@@ -140,9 +140,10 @@
 }
 
 .game_details__data p {
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 0;
   text-align: center;
+  text-shadow: 2px 1px 1px BLACK;
 }
 
 .game_details__description {
@@ -158,6 +159,7 @@
   flex-direction: column;
   align-items: center;
   color: white;
+  margin-top: 22px;
 }
 
 .game_details__details {
@@ -246,11 +248,17 @@
   justify-content: center;
 }
 
+.game_details__platforms {
+  width: 100%;
+  justify-content: space-evenly;
+}
+
 .game_platform_logo {
-  height: 25px;
+  height: 28px;
   filter: drop-shadow(3px 4px 1px #000);
-  margin-right: 5px;
+  margin-right: 7px;
   object-fit: contain;
+  margin-top: 3px;
 }
 
 .game_details__screenshots {
@@ -288,8 +296,7 @@
 
 .game_details__title {
   font-size: 2rem;
-  text-shadow: 0px 0 white, 0 0px white, 0px 0 white, 0 0px white, 0px 0px white,
-    0px 0px white, 0px 1px white, 1px 0px white;
+  text-shadow: 3px 3px 2px black;
   text-transform: uppercase;
   text-align: center;
 }
@@ -369,7 +376,7 @@
 .publisher,
 .platform {
   list-style: none;
-  cursor: pointer;
+  cursor: default;
   width: 100%;
   margin-right: 7px;
 }
@@ -402,7 +409,7 @@
   align-items: center;
   max-width: 100%;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .screenshot_thumbnail {
@@ -523,8 +530,20 @@
   }
 
   .game_details__container h2 {
-    font-size: 2.5rem;
-    margin: 15px 0px 5px;
+    font-size: 2.8rem;
+    margin: 25px 0px 25px;
+  }
+
+  .game_details__data p {
+    font-size: 1.4rem;
+  }
+
+  .game_details__description_container {
+    margin-top: 22px;
+  }
+
+  .game_details__title {
+    font-size: 2.1rem;
   }
 }
 
@@ -576,7 +595,7 @@
     flex-direction: row;
     margin-top: 20px;
     align-items: flex-start;
-    width: 96%;
+    width: 100%;
   }
 
   .game_details__esrb {
@@ -589,13 +608,13 @@
 
   .game_details__info_container_top {
     width: 100%;
+    height: auto;
   }
 
   .game_details__media {
     flex-direction: column;
-    justify-content: flex-start;
-    height: 100% !important;
-    width: auto;
+    justify-content: space-between;
+    height: 520px;
   }
 
   .game_details__screenshots {
@@ -604,15 +623,9 @@
   }
 
   .game_details__title {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin-bottom: 6px;
     border-bottom: 1px solid white;
-  }
-
-  .media_placeholder {
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 6px;
   }
 
   .game_details__publishers,
@@ -631,8 +644,8 @@
   }
 
   .platforms_list {
-    justify-content: center;
-    max-width: 65%;
+    justify-content: space-evenly;
+    max-width: 100%;
   }
 }
 
@@ -652,16 +665,16 @@
 
   .game_details__container h2 {
     font-size: 2rem;
-    margin: 25px 0px 20px;
+    margin: 18px 0px 20px;
   }
 
   .game_details__data {
     margin: 0;
-    width: 380px;
-    height: 200px;
+    /* width: 380px;
+    height: 160px;
     flex-wrap: wrap;
     justify-content: space-around;
-    align-items: flex-start;
+    align-items: flex-start; */
   }
 
   .game_details__description {
@@ -690,9 +703,13 @@
     font-size: 0.9rem;
   }
 
+  .game_details__description_container {
+    margin-top: 25px;
+  }
+
   .game_details__error {
-    font-size: 1.8rem;
-    height: 465px;
+    font-size: 1.4rem;
+    height: 395px;
   }
 
   .game_details__error span {
@@ -705,23 +722,28 @@
     margin: 20px 0;
   }
 
+  .game_details__media {
+    flex-direction: column;
+    justify-content: space-between;
+    height: 540px;
+  }
+
   .game_details__publishers {
     width: 100px;
   }
 
   .media_placeholder {
     width: 100%;
-    margin-bottom: 25px;
     height: 450px;
     flex-direction: column;
   }
 
-  .screenshot_thumbnail {
-    min-height: 80px;
+  .platform {
+    margin: 0 5px;
   }
 
-  .snes_button {
-    padding: 10px 60px;
+  .screenshot_thumbnail {
+    min-height: 80px;
   }
 }
 
@@ -734,7 +756,9 @@
   }
 
   .snes_button {
-    padding: 10px 40px;
+    font-size: 1.1rem;
+    margin-top: 30px;
+    padding: 5px 32px;
   }
 }
 

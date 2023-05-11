@@ -85,8 +85,6 @@ const UserGame = ({
       email: userEmail,
     });
 
-    console.log(request);
-
     setCurrentGameNotes(
       userNotes.notes_collection.filter((g) => g.id == game.id)[0]
     );
@@ -95,8 +93,28 @@ const UserGame = ({
   };
 
   const createNewGameNote = () => {
-    userNotes.notes_collection = [
-      {
+    // If user has no notes for any other games, create an empty array
+    if (userNotes.notes_collection.length == 0) {
+      userNotes.notes_collection = [
+        {
+          id: game.id,
+          name: game.name,
+          tabs: [
+            {
+              tabName: 'Notes',
+              notes: [
+                {
+                  id: 0,
+                  note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +`,
+                  date: formattedToday,
+                },
+              ],
+            },
+          ],
+        },
+      ];
+
+      setCurrentGameNotes({
         id: game.id,
         name: game.name,
         tabs: [
@@ -105,31 +123,50 @@ const UserGame = ({
             notes: [
               {
                 id: 0,
-                note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +!`,
+                note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +`,
                 date: formattedToday,
               },
             ],
           },
         ],
-      },
-    ];
+      });
+    }
+    // If user has notes for others game, simply update the array
+    else {
+      userNotes.notes_collection.push({
+        id: game.id,
+        name: game.name,
+        tabs: [
+          {
+            tabName: 'Notes',
+            notes: [
+              {
+                id: 0,
+                note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +`,
+                date: formattedToday,
+              },
+            ],
+          },
+        ],
+      });
+      setCurrentGameNotes({
+        id: game.id,
+        name: game.name,
+        tabs: [
+          {
+            tabName: 'Notes',
+            notes: [
+              {
+                id: 0,
+                note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +`,
+                date: formattedToday,
+              },
+            ],
+          },
+        ],
+      });
+    }
 
-    setCurrentGameNotes({
-      id: game.id,
-      name: game.name,
-      tabs: [
-        {
-          tabName: 'Notes',
-          notes: [
-            {
-              id: 0,
-              note: `These are your notes for ${game.name}! Click me to edit this or start your own tab by clicking the +!`,
-              date: formattedToday,
-            },
-          ],
-        },
-      ],
-    });
     updateProfileNotes();
   };
 

@@ -14,7 +14,7 @@ function Banner({ setGameDetails, addGame, activeProfile }) {
       </div>
     );
   }
-  const hasArt = bannerGame.currentGame.artworks !== undefined;
+  const hasArt = bannerGame.currentGame?.artworks !== undefined;
 
   // Don't allow user to add game if already in collection
   const exists =

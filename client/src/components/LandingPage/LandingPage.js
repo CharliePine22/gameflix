@@ -23,7 +23,7 @@ const LandingPage = ({ toSignIn, images }) => {
   const [error, setError] = useState(null);
   const [inputFocused, setInputFocused] = useState(false);
   const [creatingNewUser, setCreatingNewUser] = useState(false);
-
+  document.body.style.overflow = 'auto';
   const signUpRef = useRef('');
   // Regex for email validity
   const re =

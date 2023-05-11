@@ -46,7 +46,6 @@ function App() {
         id: id,
       },
     });
-    console.log(request);
     setProfileNotesData(request.data);
     return request.data;
   };

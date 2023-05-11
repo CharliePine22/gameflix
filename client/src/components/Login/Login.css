@@ -170,7 +170,7 @@
   width: 100%;
   min-height: 435px;
   padding: 45px 48px 25px;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
   /* box-shadow: rgb(0 0 0 / 80%) 0px 3px 8px; */
   box-shadow: rgb(0 0 0 / 80%) 0px 1px 5px 1px, rgb(0 0 0 / 80%) 0px 2px 9px 5px;
 }
@@ -318,6 +318,7 @@
 @media screen and (max-width: 430px) {
   .login {
     width: 350px;
+    height: 750px;
   }
 
   .login__form_container {
@@ -326,7 +327,7 @@
   }
 
   .login__form_container h1 {
-    margin-bottom: 45px;
+    margin-bottom: 40px;
     text-align: center;
   }
 

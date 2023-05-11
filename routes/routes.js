@@ -202,14 +202,14 @@ router.post('/fetch_banner_list', async (req, res) => {
     const request = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: `fields name, summary, cover.*, artworks.*; sort rating_count desc; where (rating != null & rating_count > 0); limit 100;`,
+      body: `fields name, summary, cover.*, artworks.*; sort rating_count desc; where (rating != null & rating_count > 0 & cover != null); limit 100;`,
     });
     const result = await request.json();
     if (result.Docs) return;
     const filteredList = await result.sort(function (a, b) {
       return b.rating - a.rating;
     });
-    res.send(filteredList.slice(50));
+    res.send(filteredList);
   } catch (error) {
     console.log(error);
   }

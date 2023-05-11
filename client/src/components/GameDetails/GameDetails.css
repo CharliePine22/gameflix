@@ -725,7 +725,7 @@
   .game_details__media {
     flex-direction: column;
     justify-content: space-between;
-    height: 540px;
+    height: 520px;
   }
 
   .game_details__publishers {

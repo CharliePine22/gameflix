@@ -29,6 +29,11 @@ const TrendingRow = ({ twitchToken, setGameDetails }) => {
 
         console.log(request);
 
+        if (request.data.message) {
+          localStorage.removeItem('twitch_auth');
+          window.location.refresh();
+        }
+
         const uniqueTitles = new Set();
         request.data.filter(
           (item) =>

@@ -4,7 +4,6 @@ import useFetchBanner from '../../hooks/useFetchBanner';
 
 function Banner({ setGameDetails, addGame, activeProfile }) {
   const bannerGame = useFetchBanner();
-  console.log(bannerGame)
 
   // Wait for game deatils to finish loading or the game name shows up undefined
   // Undefined is a game name apart of the dataset and will display jibberish

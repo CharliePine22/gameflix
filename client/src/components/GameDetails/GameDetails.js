@@ -289,7 +289,7 @@ const GameDetails = ({
     );
   };
 
-  if (Object.keys(gameDetails).length == 0 || loading || !bgLoaded) {
+  if (Object.keys(gameDetails).length == 0 || loading) {
     return (
       <div className='game_details__wrapper' data-title='.dot-falling'>
         <div className='stage'>

@@ -17,6 +17,7 @@ export default function useSpotifyAuth(code) {
     if (!code) return;
     const spotifyAuthentication = async () => {
       try {
+        console.log(code);
         const request = await axios.post(
           `${baseURL}/app/spotify_authentication`,
           {
@@ -33,7 +34,7 @@ export default function useSpotifyAuth(code) {
         );
         window.history.pushState({}, null, '/');
       } catch (error) {
-        console.log(error);
+        localStorage.setItem('error', error);
         window.location = '/';
       }
     };

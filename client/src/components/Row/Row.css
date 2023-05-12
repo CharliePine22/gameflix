@@ -402,7 +402,7 @@
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid white;
   border-radius: 4px;
-  padding: 2px 5px 2px 5px;
+  padding: 5px;
   justify-content: space-between;
   align-items: center;
   font-size: 0.8rem;
@@ -510,10 +510,10 @@
 
   .row__preview_close {
     background: #fff;
-color: black;
-font-size: 1.5rem;
-padding: 5px 9px;
-right: 32px;
-top: 50px;
+    color: black;
+    font-size: 1.5rem;
+    padding: 5px 9px;
+    right: 32px;
+    top: 50px;
   }
 }

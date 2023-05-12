@@ -5,7 +5,7 @@ export default function useSpotifyAuth(code) {
   const [accessToken, setAccessToken] = useState();
   const [refreshToken, setRefreshToken] = useState();
   const [expiresIn, setExpiresIn] = useState();
-  const baseURL = process.env.REACT_APP_BASE_URL;
+  const baseURL = process.env.REACT_APP_SPOTIFY_REDIRECT;
   const prevToken = sessionStorage.getItem('spotify_auth');
 
   useEffect(() => {

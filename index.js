@@ -126,6 +126,7 @@ app.listen(process.env.PORT || 3001, () =>
 );
 
 app.get('/', (req, res) => {
+  console.log('HEY');
   res.redirect(`http://localhost:3000?${req.user.id}`);
   // res.send(req.user.id);
 });

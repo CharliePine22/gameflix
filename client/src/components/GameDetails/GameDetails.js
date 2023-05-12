@@ -388,7 +388,7 @@ const GameDetails = ({
               <div className='game_details__data'>
                 {/* RELEASE DATE */}
                 <div className='game_details__released'>
-                  <h4 className='game_details__title'>Release Date</h4>
+                  <h4 className='game_details__title'>Released</h4>
                   <p>{convertDate(gameDetails?.release_dates[0]?.human)}</p>
                 </div>
                 {/* PLATFORMS */}

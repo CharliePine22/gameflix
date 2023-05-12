@@ -704,7 +704,7 @@
   }
 
   .game_details__description_container {
-    margin-top: 25px;
+    margin-top: 22px;
   }
 
   .game_details__error {
@@ -725,7 +725,7 @@
   .game_details__media {
     flex-direction: column;
     justify-content: space-between;
-    height: 520px;
+    height: 530px;
   }
 
   .game_details__publishers {

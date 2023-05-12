@@ -76,6 +76,7 @@
   padding: 10px 0px 10px 5px;
   color: #fff;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .dropdown__settings_item a {
@@ -108,6 +109,7 @@
   line-height: 16px;
   padding: 5px 10px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .dropdown__settings_link:hover {

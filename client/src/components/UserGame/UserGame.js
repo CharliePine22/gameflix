@@ -526,7 +526,7 @@ const UserGame = ({
               <input
                 className='rating_input'
                 type='number'
-                min='1'
+                min='0'
                 max='100'
                 value={rating || 0}
                 onKeyDown={determineRatingAction}

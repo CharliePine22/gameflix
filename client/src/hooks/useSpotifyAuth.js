@@ -10,7 +10,6 @@ export default function useSpotifyAuth(code) {
 
   useEffect(() => {
     if (prevToken) {
-      console.log(prevToken);
       setAccessToken(JSON.parse(prevToken));
       return;
     }
@@ -25,6 +24,7 @@ export default function useSpotifyAuth(code) {
             baseURL,
           }
         );
+        console.log(request);
         setAccessToken(request.data.tokenRequest.body.access_token);
         setRefreshToken(request.data.tokenRequest.body.refresh_token);
         setExpiresIn(request.data.tokenRequest.body.expires_in);
@@ -32,7 +32,7 @@ export default function useSpotifyAuth(code) {
           'spotify_auth',
           JSON.stringify(request.data.tokenRequest.body.access_token)
         );
-        window.history.pushState({}, null, '/');
+        window.history.pushState({}, '', '/');
       } catch (error) {
         localStorage.setItem('error', error);
         window.location = '/';

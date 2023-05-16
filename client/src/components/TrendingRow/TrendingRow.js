@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './TrendingRow.css';
-import Placeholder from '../Placeholder/Placeholder';
 import axios from 'axios';
 
 const TrendingRow = ({ twitchToken, setGameDetails }) => {
@@ -26,6 +25,10 @@ const TrendingRow = ({ twitchToken, setGameDetails }) => {
           token: twitchToken,
           currentDate: currentDate,
         });
+        // const request = await axios.get(`${baseURL}/steam/steam_trending`, {
+        //   token: twitchToken,
+        //   currentDate: currentDate,
+        // });
 
         console.log(request);
 

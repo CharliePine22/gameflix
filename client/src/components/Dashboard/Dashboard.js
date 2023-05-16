@@ -22,7 +22,6 @@ const UserCollection = lazy(() =>
   import('../UserCollectionPage/UserCollection')
 );
 
-const code = new URLSearchParams(window.location.search).get('code');
 const windowUrl = window.location.search;
 const id = windowUrl.split('?')[1];
 
@@ -40,6 +39,7 @@ const Dashboard = ({
   gameStatus,
   resetGameStatus,
   changeProfile,
+  spotifyToken,
 }) => {
   const allGenres = useFetchGenres();
   const [displayNotification, setDisplayNotification] = useState(false);
@@ -62,8 +62,8 @@ const Dashboard = ({
   const [gameDetails, setGameDetails] = useState(null);
 
   // Local Variables
-  const spotifyAccessToken = useSpotifyAuth(code);
-  const steamCollection = useSteamAuth(id);
+  // const spotifyAccessToken = useSpotifyAuth(code);
+  // const steamCollection = useSteamAuth(id);
 
   useEffect(() => {
     if (!currentGameOpen) document.body.style.overflow = 'auto';
@@ -116,6 +116,7 @@ const Dashboard = ({
               activeProfile={currentProfile}
               currentCollection={currentCollection}
             />
+
             <Notification
               notification={notification}
               displayNotification={displayNotification}
@@ -140,10 +141,11 @@ const Dashboard = ({
             isPlaying={playAudio}
             pausePlayback={() => setPlayAudio(false)}
             resumePlayback={() => setPlayAudio(true)}
-            spotifyToken={spotifyAccessToken}
+            spotifyToken={spotifyToken}
             updateGameStatus={(action, game) => updateGameStatus(action, game)}
             updateCollection={updateCollection}
             userNotes={userNotes}
+            trackUri={currentTrack?.uri}
           />
         </Suspense>
       );
@@ -158,7 +160,7 @@ const Dashboard = ({
           fetchSubmittedGame={fetchGame}
           toProfilePage={toProfileSelection}
           selectProfile={selectProfile}
-          spotifyToken={spotifyAccessToken}
+          spotifyToken={spotifyToken}
           twitchToken={twitchToken}
           saveEdit={() => console.log('saving edit')}
           updateCollection={updateCollection}
@@ -202,7 +204,7 @@ const Dashboard = ({
             <Row
               key={Object.keys(request)}
               activeProfile={currentProfile}
-              spotifyToken={spotifyAccessToken}
+              spotifyToken={spotifyToken}
               genreDetails={Object.entries(request)}
               playTrack={playTrack}
               currentTrack={currentTrack}
@@ -213,7 +215,6 @@ const Dashboard = ({
               currentGameOpen={currentGameOpen}
               openGame={(game) => openGameWindow(game)}
               closeGameWindow={closeGameWindow}
-              G
               updateGameStatus={(action, game) =>
                 updateGameStatus(action, game)
               }
@@ -238,9 +239,9 @@ const Dashboard = ({
           </div>
         )}
 
-        {spotifyAccessToken && (
+        {spotifyToken && (
           <SpotifyPlayback
-            spotifyToken={spotifyAccessToken}
+            spotifyToken={spotifyToken}
             playAudio={playAudio}
             beginPlayback={(e) => setPlayAudio(true)}
             pausePlayback={(e) => setPlayAudio(false)}

@@ -46,7 +46,6 @@ const corsOptions = {
   origin: [
     'http://localhost:3000',
     'https://gameflixx.netlify.app',
-    'https://gameflix-psi.vercel.app',
     'https://gameflix.up.railway.app',
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -126,9 +125,10 @@ app.listen(process.env.PORT || 3001, () =>
 );
 
 app.get('/', (req, res) => {
-  console.log('HEY');
-  res.redirect(`http://localhost:3000?${req.user.id}`);
-  // res.send(req.user.id);
+  // res.redirect(`/?${req.user.id}`);
+  // res.redirect(`http://localhost:3000?${req.user.id}`);
+  res.redirect(`${process.env.CLIENT_URL}?token=${req.query.access_token}`);
+  // res.redirect(`http://localhost:3000`);
 });
 
 app.get('/api/auth/steam', passport.authenticate('steam'), function (req, res) {

@@ -187,6 +187,7 @@ const GamePreview = ({
       case 'PC':
         return steamCaseBack;
       case 'NES':
+      case 'fds':
       case 'SNES':
         return nesCaseBack;
       case 'N64':
@@ -353,7 +354,8 @@ const GamePreview = ({
               <Img src={steamCover} className='steam_game_img' />
             )}
             {gamePlatform.abbreviation == 'NES' ||
-              (gamePlatform.abbreviation == 'SNES' && (
+              gamePlatform.abbreviation == 'SNES' ||
+              (gamePlatform.abbreviation == 'fds' && (
                 <Img src={nesCaseFront} className='nes_game_img' />
               ))}
             {gamePlatform.abbreviation == 'NGC' && (

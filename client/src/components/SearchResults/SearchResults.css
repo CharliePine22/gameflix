@@ -23,7 +23,6 @@
   bottom: 38px;
   left: 8px;
   filter: drop-shadow(-4px 4px 4px black);
-
 }
 
 .game_playtime {
@@ -220,8 +219,8 @@
   position: relative;
   background-color: rgb(55, 55, 55);
   display: flex;
-justify-content: center;
-align-content: center;
+  justify-content: center;
+  align-content: center;
 }
 
 .results_container_img {
@@ -547,6 +546,8 @@ align-content: center;
     font-size: 0.75rem;
     width: 100%;
     max-width: 95%;
+    padding: 0px 0px 10px;
+    margin: auto;
   }
 
   .game_theme_list {

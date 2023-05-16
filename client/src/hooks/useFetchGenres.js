@@ -12,7 +12,8 @@ export default function useFetchGenres() {
   useEffect(() => {
     const fetchGenres = async () => {
       const request = await axios.get(`${baseURL}/app/get_genres`);
-      const last_updated = new Date(request.data.last_updated);
+      const last_updated = new Date(request.data[0].last_updated);
+      console.log(last_updated);
       if (currentDate > last_updated.setDate(last_updated.getDate() + 1)) {
         return updateGenresAPI();
       } else {

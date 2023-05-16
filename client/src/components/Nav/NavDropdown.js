@@ -15,11 +15,12 @@ import { MdEdit } from 'react-icons/md';
 
 import steamAuthBtn from '../../assets/images/steam-auth-btn.png';
 
-const SPOTIFY_AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_SPOTIFY_REDIRECT}&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state`;
+// const SPOTIFY_AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_SPOTIFY_REDIRECT}&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state`;
 
 const NavDropdown = (props) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const allProfiles = props.allProfiles;
+  const existingToken = sessionStorage.getItem('spotify_token');
 
   // Listens for escape key press to close nav dropdown
   useEffect(() => {
@@ -152,15 +153,21 @@ const NavDropdown = (props) => {
           </span>
           <p>Link Playstation</p>
         </div> */}
-        <a href={SPOTIFY_AUTH_URL} className='dropdown__settings_item'>
+        <Link
+          to={`${baseURL}/spotify/test_spotify`}
+          className='dropdown__settings_item'
+          onClick={(e) => existingToken && e.preventDefault()}
+        >
+          {/* <div className='dropdown__settings_item' onClick={() => getSpotify()}> */}
           <span className='dropdown__settings_item_icon'>
             <FaSpotify
               size={18}
               style={{ color: props.spotifyToken ? '#1DB954' : '#FFF' }}
             />
           </span>
-          <p>Spotify Authentication</p>
-        </a>
+          <p>Connect to Spotify</p>
+          {/* </div> */}
+        </Link>
         {/* <div
           className='dropdown__settings_item'
           style={{
@@ -170,7 +177,7 @@ const NavDropdown = (props) => {
             paddingLeft: '0',
           }}
         >
-          <Link to={`http://localhost:3001/api/auth/steam`}>
+          <Link to={`baseURL/api/auth/steam`}>
             <img className='steam_btn' src={steamAuthBtn} />
           </Link>
         </div> */}

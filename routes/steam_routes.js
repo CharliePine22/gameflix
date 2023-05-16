@@ -27,15 +27,25 @@ router.get('/get_owned_games', async (req, res) => {
 
 router.get('/steam_trending', async (req, res) => {
   // Fetch and scrape currently trending games
+  console.log('HERE');
+
   try {
     const request = await axios.get(
-      'https://www.npd.com/news/entertainment-top-10/2023/top-10-video-games/'
+      'https://www.behindthevoiceactors.com/top-listings/?type=pop_game_weekly'
     );
+    // const request = await axios.get(
+    //   'https://www.npd.com/news/entertainment-top-10/2023/top-10-video-games/'
+    // );
     const result = request.data;
+
     const $ = cheerio.load(result);
 
     // Only grab name of game from each row
-    const games = $('table > tbody > tr > td:nth-child(3)');
+    // const games = $('table > tbody > tr > td:nth-child(3)');
+    const games = $(
+      '#top_listings > tbody > tr:nth-child(2) > td:nth-child(2) > a > b'
+    );
+
     const tags = [];
 
     // Grab every

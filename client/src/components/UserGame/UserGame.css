@@ -430,7 +430,6 @@
 .user_game__current_stats {
   color: white;
   display: flex;
-  /* justify-content: space-around; */
   justify-content: flex-start;
   align-items: center;
   position: absolute;

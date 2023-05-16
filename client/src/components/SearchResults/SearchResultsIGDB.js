@@ -104,6 +104,11 @@ const SearchResultsIGDB = ({
     }
   };
 
+  const shrinkName = (name) => {
+    if (name.length > 50) return name.slice(0, 50) + '...';
+    return name;
+  };
+
   const uniqueSearches = (searches) => {
     let result = [];
     for (let item of searches) {
@@ -337,7 +342,9 @@ const SearchResultsIGDB = ({
                       }}
                     />
                     <div className='results_container_content'>
-                      <h3 className='game_name_remainder'>{game.name}</h3>
+                      <h3 className='game_name_remainder'>
+                        {shrinkName(game.name)}
+                      </h3>
 
                       <ul className='game_theme_list_lower'>
                         {game.themes?.map(

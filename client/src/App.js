@@ -18,6 +18,7 @@ const SearchResultsIGDB = lazy(() =>
 );
 
 const code = new URLSearchParams(window.location.search).get('code');
+const spotifyURL = new URLSearchParams(window.location.search).get('token');
 
 function App() {
   const navigate = useNavigate();
@@ -31,11 +32,15 @@ function App() {
   const [notification, setNotification] = useState({ status: '', message: '' });
   const [currentGameOpen, setCurrentGameOpen] = useState(null);
   const [changingGameStatus, setChangingGameStatus] = useState(false);
+  const [spotifyToken, setSpotifyToken] = useState(null);
 
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
   const userEmail = localStorage.getItem('user');
   const userProfile = localStorage.getItem('profile');
+  const existingSpotifyToken = sessionStorage.getItem('spotify_token');
+
+  console.log(spotifyURL);
 
   let audio = new Audio(loginAudio);
   const twitchAccessToken = useTwitchAuth(code);
@@ -49,6 +54,22 @@ function App() {
     setProfileNotesData(request.data);
     return request.data;
   };
+
+  useEffect(() => {
+    if (!existingSpotifyToken && !spotifyURL) {
+      console.log('NONE');
+      return;
+    } else if (existingSpotifyToken) {
+      console.log('EXISTING');
+      setSpotifyToken(existingSpotifyToken);
+      return;
+    } else {
+      console.log('WHAT WE WANT');
+      sessionStorage.setItem('spotify_token', spotifyURL);
+      setSpotifyToken(spotifyURL);
+      window.history.pushState({}, null, '/');
+    }
+  }, [spotifyToken, existingSpotifyToken]);
 
   // Check to see which user is currently logged in and which profile is active
   useEffect(() => {
@@ -305,6 +326,7 @@ function App() {
               logoutUser={logoutHandler}
               gameStatus={changingGameStatus}
               resetGameStatus={() => setChangingGameStatus(false)}
+              spotifyToken={spotifyToken}
             />
           </Suspense>
         }

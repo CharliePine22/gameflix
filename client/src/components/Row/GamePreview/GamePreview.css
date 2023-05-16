@@ -59,7 +59,7 @@
   background-image: none;
   background-color: rgba(0, 0, 0, 0.4);
   position: absolute;
-  top: 32px;
+  top: 31px;
 }
 
 .game_preview__box {
@@ -154,7 +154,7 @@
 
 .psp_game_img,
 .ps2_game_img {
-  width: 100%;
+  width: 100.5%;
   position: absolute;
   top: -26px;
   border-radius: 0 4px 4px 0;
@@ -643,4 +643,3 @@
     top: 3px;
   }
 }
-

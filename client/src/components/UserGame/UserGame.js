@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './UserGame.css';
 import axios from 'axios';
 import { FiClock } from 'react-icons/fi';
@@ -19,7 +19,6 @@ const UserGame = ({
   game,
   activeProfile,
   closeStats,
-  setNotification,
   setCurrentGame,
   updateCollection,
   userNotes,
@@ -50,7 +49,7 @@ const UserGame = ({
   const [changingRating, setChangingRating] = useState(false);
   const [changingBanner, setChangingBanner] = useState(false);
   const [bannerLink, setBannerLink] = useState('');
-  // BACKLOG, CURRENTLY PLAYING, COMPLETED, STARTED, ABANDONED, 100%, NOT OWNED
+  // BACKLOG, CURRENTLY PLAYING, COMPLETED, STARTED, ABAND ONED, 100%, NOT OWNED
   const [backlogStatus, setBacklogStatus] = useState(game.status);
   const [changingBacklog, setChangingBacklog] = useState(false);
   // Hooks and Storage Variables
@@ -177,7 +176,6 @@ const UserGame = ({
     )
       createNewGameNote();
     else {
-      console.log(userNotes.notes_collection.filter((g) => g.id == game.id));
       setCurrentGameNotes(
         userNotes.notes_collection.filter((g) => g.id == game.id)[0]
       );
@@ -296,6 +294,30 @@ const UserGame = ({
       (game) => game.achieved == true || game.earned == true
     ).length;
     return numberAchieved + '/' + list.length;
+  };
+
+  const getSpotifyAlbum = async () => {
+    if (!spotifyToken) return null;
+    else {
+      try {
+        const request = await axios.get(`${baseURL}/app/spotify_album`, {
+          params: {
+            game: game.name,
+            token: spotifyToken,
+            baseURL,
+          },
+        });
+        if (request.data.status !== 'OK') {
+          console.log(request.data);
+        } else {
+          return request.data.tracks;
+        }
+      } catch (error) {
+        console.log(error);
+
+        return error;
+      }
+    }
   };
 
   // Convert steam minutes to numbers
@@ -662,14 +684,21 @@ const UserGame = ({
           <div className='music_icon_container'>
             <div className='stats_item' style={{ alignItems: 'center' }}>
               <h3>MUSIC</h3>
-              <FaMusic className='music_icon' />
+              <FaMusic
+                className='music_icon'
+                onClick={getSpotifyAlbum}
+                style={{ color: spotifyToken && '#1DB954' }}
+              />
             </div>
           </div>
         </div>
       </div>
 
       {/* GAME NEWS AND DATA */}
-      <div className='user_game__data_wrapper'>
+      <div
+        className='user_game__data_wrapper'
+        style={{ paddingBottom: spotifyToken && '36px' }}
+      >
         <div className='user_game__data'>
           {/* OWNED PLATFORMS */}
           {/* <div className='user_game__platforms'>

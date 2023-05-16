@@ -21,10 +21,10 @@ const UserCollection = ({
   pausePlayback,
   resumePlayback,
   spotifyToken,
-  setSelectedProfile,
-  removeGame,
+  updateGameStatus,
   updateCollection,
   userNotes,
+  trackUri,
 }) => {
   const [searchValue, setSearchValue] = useState('');
   const [searchList, setSearchList] = useState([]);
@@ -225,7 +225,7 @@ const UserCollection = ({
       currentlyAdjusting.id === currentGame.id
     )
       setCurrentGame(null);
-    removeGame(currentlyAdjusting);
+    updateGameStatus('REMOVE', currentlyAdjusting);
     setCurrentlyAdjusting(null);
   };
 

@@ -128,7 +128,6 @@ app.get('/', (req, res) => {
   // res.redirect(`/?${req.user.id}`);
   // res.redirect(`http://localhost:3000?${req.user.id}`);
   res.redirect(`${process.env.CLIENT_URL}?token=${req.query.access_token}`);
-  // res.redirect(`http://localhost:3000`);
 });
 
 app.get('/api/auth/steam', passport.authenticate('steam'), function (req, res) {

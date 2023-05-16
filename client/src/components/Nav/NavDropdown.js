@@ -19,6 +19,7 @@ import steamAuthBtn from '../../assets/images/steam-auth-btn.png';
 
 const NavDropdown = (props) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
+  const spotifyRedirect = process.env.REACT_APP_SPOTIFY_REDIRECT;
   const allProfiles = props.allProfiles;
   const existingToken = sessionStorage.getItem('spotify_token');
 

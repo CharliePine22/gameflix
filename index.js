@@ -127,6 +127,7 @@ app.listen(process.env.PORT || 3001, () =>
 app.get('/', (req, res) => {
   // res.redirect(`/?${req.user.id}`);
   // res.redirect(`http://localhost:3000?${req.user.id}`);
+  console.log(process.env.CLIENT_URL);
   res.redirect(`${process.env.CLIENT_URL}?token=${req.query.access_token}`);
 });
 

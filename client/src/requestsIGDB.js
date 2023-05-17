@@ -8,77 +8,77 @@ const requests = [
   {
     requestId: 'fetchAdventureTitles',
     genreId: 31,
-    title: 'ACTION/ADVENTURE GAMES',
+    title: 'ACTION/ADVENTURE',
   },
   {
     requestId: 'fetchArcadeTitles',
     genreId: 33,
-    title: 'ARCADE GAMES',
+    title: 'ARCADE',
   },
   {
     requestId: 'fetchMusicTitles',
     genreId: 7,
-    title: 'MUSIC GAMES',
+    title: 'MUSIC',
   },
   {
     requestId: 'fetchHackTitles',
     genreId: 25,
-    title: 'HACK/SLASH TITLES',
+    title: 'HACK/SLASH',
   },
   {
     requestId: 'fetchFightingTitles',
     genreId: 4,
-    title: 'FIGHTING GAMES',
+    title: 'FIGHTING',
   },
   {
     requestId: 'fetchIndieTitles',
     genreId: 32,
-    title: 'INDIE GAMES',
+    title: 'INDIE',
   },
   {
     requestId: 'fetchMassivelyMultiplayerTitles',
     genreId: 36,
-    title: 'MOBA GAMES',
+    title: 'MOBA',
   },
   {
     requestId: 'fetchPlatformerTitles',
     genreId: 8,
-    title: 'PLATFORMER GAMES',
+    title: 'PLATFORMER',
   },
   {
     requestId: 'fetchPuzzleTitles',
     genreId: 9,
-    title: 'PUZZLE GAMES',
+    title: 'PUZZLE',
   },
   {
     requestId: 'fetchRacingTitles',
     genreId: 10,
-    title: 'RACING GAMES',
+    title: 'RACING',
   },
   {
     requestId: 'fetchRPGTitles',
     genreId: 12,
-    title: 'RPG GAMES',
+    title: 'RPG',
   },
   {
     requestId: 'fetchShooterTitles',
     genreId: 5,
-    title: 'SHOOTER GAMES',
+    title: 'SHOOTER',
   },
   {
     requestId: 'fetchSimulationTitles',
     genreId: 13,
-    title: 'SIMULATION GAMES',
+    title: 'SIMULATION',
   },
   {
     requestId: 'fetchSportsTitles',
     genreId: 14,
-    title: 'SPORTS GAMES',
+    title: 'SPORTS',
   },
   {
     requestId: 'fetchStrategy',
     genreId: (11, 15),
-    title: 'STRATEGY GAMES',
+    title: 'STRATEGY',
   },
 ];
 

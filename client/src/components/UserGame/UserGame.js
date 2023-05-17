@@ -49,6 +49,7 @@ const UserGame = ({
   const [changingRating, setChangingRating] = useState(false);
   const [changingBanner, setChangingBanner] = useState(false);
   const [bannerLink, setBannerLink] = useState('');
+  const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
   // BACKLOG, CURRENTLY PLAYING, COMPLETED, STARTED, ABAND ONED, 100%, NOT OWNED
   const [backlogStatus, setBacklogStatus] = useState(game.status);
   const [changingBacklog, setChangingBacklog] = useState(false);
@@ -297,6 +298,7 @@ const UserGame = ({
   };
 
   const getSpotifyAlbum = async () => {
+    setViewingSoundtrack(true);
     if (!spotifyToken) return null;
     else {
       try {
@@ -687,7 +689,9 @@ const UserGame = ({
               <FaMusic
                 className='music_icon'
                 onClick={getSpotifyAlbum}
-                style={{ color: spotifyToken && '#1DB954' }}
+                style={{
+                  color: viewingSoundtrack && spotifyToken && '#1DB954',
+                }}
               />
             </div>
           </div>
@@ -897,6 +901,7 @@ const UserGame = ({
             gameNotes={currentGameNotes}
             updateNotes={updateProfileNotes}
           />
+          <div className='game_soundtrack__wrapper'></div>
         </div>
       </div>
       {spotifyToken && (

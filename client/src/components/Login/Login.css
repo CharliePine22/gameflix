@@ -288,33 +288,6 @@
   }
 }
 
-/* For smaller mobile devices, remove background images */
-@media screen and (max-width: 375px) {
-  .login {
-    background: black;
-  }
-  .login__background {
-    display: none;
-  }
-
-  .login__brand {
-    left: -90px;
-  }
-
-  .login__form_container {
-    background-color: rgba(0, 0, 0, 0.85);
-    border-radius: 4px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    margin-bottom: 0px;
-    width: 100%;
-    min-height: 560px;
-    padding: 10px 8px 10px;
-  }
-}
-
 @media screen and (max-width: 430px) {
   .login {
     width: 350px;
@@ -335,6 +308,22 @@
     min-height: 12rem;
     max-height: 12rem;
     width: 8rem;
+  }
+}
+
+/* For smaller mobile devices, remove background images */
+@media screen and (max-width: 375px) {
+  .login {
+    height: 100%;
+  }
+
+  .login__form_container {
+    min-height: 410px;
+    padding: 35px 25px 10px;
+  }
+
+  .login__form_wrapper {
+    width: 320px;
   }
 }
 

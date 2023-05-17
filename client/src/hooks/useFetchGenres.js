@@ -11,21 +11,6 @@ export default function useFetchGenres() {
 
   useEffect(() => {
     const fetchGenres = async () => {
-      const request = await axios.get(`${baseURL}/app/get_genres`);
-      const last_updated = new Date(request.data[0].last_updated);
-      console.log(last_updated);
-      if (currentDate > last_updated.setDate(last_updated.getDate() + 1)) {
-        return updateGenresAPI();
-      } else {
-        setGenreGamesList(request.data[0].genres_list);
-        setIsLoading(false);
-        return request.data;
-      }
-    };
-
-    const updateGenresAPI = async () => {
-      if (!existingToken) return;
-
       const genreTitles = await Promise.all(
         requestsIGDB.map((genre) => {
           return axios.post(`${baseURL}/app/game_genre`, {
@@ -36,10 +21,37 @@ export default function useFetchGenres() {
         })
       );
       const completeGenreList = genreTitles.map((genre) => genre.data);
-      updateGenresCollection(completeGenreList);
+      setGenreGamesList(completeGenreList);
       setIsLoading(false);
-      return completeGenreList;
+      return genreTitles;
+      // const request = await axios.get(`${baseURL}/app/get_genres`);
+      // const last_updated = new Date(request.data[0].last_updated);
+      // if (currentDate > last_updated.setDate(last_updated.getDate() + 1)) {
+      //   return updateGenresAPI();
+      // } else {
+      //   setGenreGamesList(request.data[0].genres_list);
+      //   setIsLoading(false);
+      //   return request.data;
+      // }
     };
+
+    // const updateGenresAPI = async () => {
+    //   if (!existingToken) return;
+
+    //   const genreTitles = await Promise.all(
+    //     requestsIGDB.map((genre) => {
+    //       return axios.post(`${baseURL}/app/game_genre`, {
+    //         token: existingToken,
+    //         genreId: genre.genreId,
+    //         genreTitle: genre.title,
+    //       });
+    //     })
+    //   );
+    //   const completeGenreList = genreTitles.map((genre) => genre.data);
+    //   updateGenresCollection(completeGenreList);
+    //   setIsLoading(false);
+    //   return completeGenreList;
+    // };
 
     fetchGenres();
   }, [existingToken]);

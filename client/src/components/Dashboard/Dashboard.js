@@ -40,6 +40,7 @@ const Dashboard = ({
   resetGameStatus,
   changeProfile,
   spotifyToken,
+  refreshSpotifyToken,
 }) => {
   const allGenres = useFetchGenres();
   const [displayNotification, setDisplayNotification] = useState(false);
@@ -146,6 +147,7 @@ const Dashboard = ({
             updateCollection={updateCollection}
             userNotes={userNotes}
             trackUri={currentTrack?.uri}
+            refreshSpotifyToken={refreshSpotifyToken}
           />
         </Suspense>
       );
@@ -246,6 +248,7 @@ const Dashboard = ({
             beginPlayback={(e) => setPlayAudio(true)}
             pausePlayback={(e) => setPlayAudio(false)}
             trackUri={currentTrack?.uri}
+            refreshSpotifyToken={refreshSpotifyToken}
           />
         )}
 

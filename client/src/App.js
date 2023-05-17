@@ -40,8 +40,6 @@ function App() {
   const userProfile = localStorage.getItem('profile');
   const existingSpotifyToken = sessionStorage.getItem('spotify_token');
 
-  console.log(spotifyURL);
-
   let audio = new Audio(loginAudio);
   const twitchAccessToken = useTwitchAuth(code);
 
@@ -55,6 +53,14 @@ function App() {
     return request.data;
   };
 
+  const refreshSpotifyToken = async (token) => {
+    const request = await axios.post(`${baseURL}/spotify/refresh_token`, {
+      token: token,
+    });
+    console.log(request);
+  };
+
+  // Check for Spotify Token
   useEffect(() => {
     if (!existingSpotifyToken && !spotifyURL) {
       console.log('NONE');
@@ -244,6 +250,7 @@ function App() {
     setLoggedUser(null);
     setSelectedProfile(null);
     localStorage.clear();
+    sessionStorage.clear();
   };
 
   // Loading screen for profile change
@@ -327,6 +334,7 @@ function App() {
               gameStatus={changingGameStatus}
               resetGameStatus={() => setChangingGameStatus(false)}
               spotifyToken={spotifyToken}
+              refreshSpotifyToken={(token) => refreshSpotifyToken(token)}
             />
           </Suspense>
         }

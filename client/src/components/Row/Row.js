@@ -49,7 +49,7 @@ function Row({
   const [playlistLoading, setPlaylistLoading] = useState(false);
 
   const genreTitle = genreDetails[0][0];
-  const genreList = genreDetails[0][1];
+  const genreList = genreDetails[0][1].slice(0, 30);
 
   const fetchGameOST = async (game) => {
     if (!spotifyToken) {
@@ -62,7 +62,7 @@ function Row({
     }
     try {
       setPlaylistLoading(true);
-      const request = await axios.get(`${baseURL}/app/spotify_album`, {
+      const request = await axios.get(`${baseURL}/spotify/spotify_album`, {
         params: {
           game: game.name,
           token: spotifyToken,
@@ -73,6 +73,7 @@ function Row({
         console.log(request.data);
         setPlaylistLoading(false);
       } else {
+        console.log(request);
         setCurrentGame(game.id);
         setCurrentPlaylist(request.data.tracks);
         setViewingSoundtrack(true);

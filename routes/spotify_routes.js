@@ -18,6 +18,12 @@ const generateRandomString = (length) => {
   return result;
 };
 
+const spotifyApi = new spotifyWebApi({
+  redirectUri: process.env.CLIENT_URL,
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+});
+
 router.get('/test_spotify', (req, res) => {
   var state = generateRandomString(16);
   res.redirect(
@@ -29,8 +35,6 @@ router.get('/spotify_redirect', async (req, res) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
 
-  console.log(req.body);
-
   if (state === null) {
     res.redirect(
       '/' +
@@ -39,8 +43,8 @@ router.get('/spotify_redirect', async (req, res) => {
         })
     );
   } else {
-    // res.redirect('/');
-    // return;
+    // const tokenRequest = await spotifyApi.authorizationCodeGrant(code);
+
     const spotifyHeaders = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
@@ -65,7 +69,8 @@ router.get('/spotify_redirect', async (req, res) => {
       })
       .then((response) => {
         // Handle the response here
-        console.log(response.data.access_token);
+        spotifyApi.setAccessToken(response.data.access_token);
+        spotifyApi.setRefreshToken(response.data.refresh_token);
         res.redirect(`/?access_token=${response.data.access_token}`);
       })
       .catch((error) => {
@@ -80,14 +85,17 @@ router.post('/spotify_authentication', async (req, res) => {
   const code = req.body.code;
   const baseUrl = req.body.baseURL;
 
-  const spotifyApi = new spotifyWebApi({
-    redirectUri: process.env.CLIENT_URL,
-    clientId: process.env.SPOTIFY_CLIENT_ID,
-    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  });
+  // const spotifyApi = new spotifyWebApi({
+  //   redirectUri: process.env.CLIENT_URL,
+  //   clientId: process.env.SPOTIFY_CLIENT_ID,
+  //   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  // });
 
   try {
     const tokenRequest = await spotifyApi.authorizationCodeGrant(code);
+    console.log(tokenRequest);
+    spotifyApi.setAccessToken(data.body['access_token']);
+    spotifyApi.setRefreshToken(data.body['refresh_token']);
     res.send({
       code: 200,
       status: 'OK',
@@ -101,15 +109,13 @@ router.post('/spotify_authentication', async (req, res) => {
 
 //* REFRESH AUTH TOKEN
 router.post('/refresh_token', async (req, res) => {
-  const refreshToken = req.body.refreshToken;
-  const baseUrl = req.body.baseURL;
+  const refreshToken = req.body.token;
 
-  const spotifyApi = new spotifyWebApi({
-    redirectUri: process.env.CLIENT_URL,
-    clientId: process.env.SPOTIFY_CLIENT_ID,
-    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-    refreshToken,
-  });
+  // const spotifyApi = new spotifyWebApi({
+  //   redirectUri: process.env.CLIENT_URL,
+  //   clientId: process.env.SPOTIFY_CLIENT_ID,
+  //   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  // });
 
   try {
     const request = await spotifyApi.refreshAccessToken();
@@ -119,9 +125,8 @@ router.post('/refresh_token', async (req, res) => {
       message: 'Token Refreshed!',
       body: request,
     });
-    console.log('Access Token has been refreshed!');
   } catch (error) {
-    res.json(error);
+    res.send(error);
   }
 });
 
@@ -160,17 +165,23 @@ router.get('/spotify_playlist', async (req, res) => {
 
 //* GET ALBUM ROUTE
 router.get('/spotify_album', async (req, res) => {
-  const baseUrl = req.body.baseURL;
-  const spotifyApi = new spotifyWebApi({
-    redirectUri: process.env.CLIENT_URL,
-    clientId: process.env.SPOTIFY_CLIENT_ID,
-    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  });
+  // const spotifyApi = new spotifyWebApi({
+  //   redirectUri: process.env.CLIENT_URL,
+  //   clientId: process.env.SPOTIFY_CLIENT_ID,
+  //   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  // });
   const game = req.query.game;
   const spotifyToken = req.query.token;
-  spotifyApi.setAccessToken(spotifyToken);
+  // spotifyApi.setAccessToken(spotifyToken);
 
   try {
+    // const request2 = await axios.get(
+    //   `https://api.spotify.com/v1/search?q=${game}&type=album`,
+    //   {
+    //     headers: { Authorization: 'Bearer ' + spotifyToken },
+    //   }
+    // );
+    // const albums = (request2.data.albums);
     const request = await spotifyApi.searchAlbums(game);
     const albumId = request.body.albums.items[0].id;
     const albumTracks = await spotifyApi.getAlbumTracks(albumId);
@@ -179,6 +190,7 @@ router.get('/spotify_album', async (req, res) => {
       status: 'OK',
       message: 'Tracks fetched',
       tracks: albumTracks.body.items,
+      albums: request.body.albums,
     });
   } catch (error) {
     res.send({

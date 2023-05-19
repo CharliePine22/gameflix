@@ -33,7 +33,7 @@ function App() {
   const [currentGameOpen, setCurrentGameOpen] = useState(null);
   const [changingGameStatus, setChangingGameStatus] = useState(false);
   const [spotifyToken, setSpotifyToken] = useState(null);
-
+  console.log(window.location.href);
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
   const userEmail = localStorage.getItem('user');
@@ -42,6 +42,10 @@ function App() {
 
   let audio = new Audio(loginAudio);
   const twitchAccessToken = useTwitchAuth(code);
+  if (window.location.href == 'https://gameflix.up.railway.app') {
+    console.log('WRONG');
+    // res.redirect('https://gameflixx.netlify.app');
+  }
 
   const getUserNotes = async (id) => {
     const request = await axios.get(`${baseURL}/notes/get_notes`, {

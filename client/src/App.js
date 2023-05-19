@@ -44,6 +44,7 @@ function App() {
   const twitchAccessToken = useTwitchAuth(code);
   if (window.location.href.split("/")[2] == "gameflix.up.railway.app") {
     const token_url = window.location.href.split("/")[3];
+    console.log(token_url);
     window.location.href = `https://gameflixx.netlify.app${token_url}`;
   }
 

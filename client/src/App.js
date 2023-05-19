@@ -18,7 +18,9 @@ const SearchResultsIGDB = lazy(() =>
 );
 
 const code = new URLSearchParams(window.location.search).get("code");
-const spotifyURL = new URLSearchParams(window.location.search).get("token");
+const spotifyURL = new URLSearchParams(window.location.search).get(
+  "access_token"
+);
 
 function App() {
   const navigate = useNavigate();
@@ -33,7 +35,6 @@ function App() {
   const [currentGameOpen, setCurrentGameOpen] = useState(null);
   const [changingGameStatus, setChangingGameStatus] = useState(false);
   const [spotifyToken, setSpotifyToken] = useState(null);
-  console.log(window.location.href);
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
   const userEmail = localStorage.getItem("user");

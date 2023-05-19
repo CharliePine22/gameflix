@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.fda9ad38.css",
-    "main.js": "/static/js/main.59ccc51d.js",
+    "main.js": "/static/js/main.237c2e79.js",
     "static/css/782.cb5207f3.chunk.css": "/static/css/782.cb5207f3.chunk.css",
     "static/js/782.f5e89d07.chunk.js": "/static/js/782.f5e89d07.chunk.js",
     "static/css/204.d29c7282.chunk.css": "/static/css/204.d29c7282.chunk.css",
@@ -127,7 +127,7 @@
     "static/media/nes-side-case.png": "/static/media/nes-side-case.db43b45d5b967fd59172.png",
     "index.html": "/index.html",
     "main.fda9ad38.css.map": "/static/css/main.fda9ad38.css.map",
-    "main.59ccc51d.js.map": "/static/js/main.59ccc51d.js.map",
+    "main.237c2e79.js.map": "/static/js/main.237c2e79.js.map",
     "782.cb5207f3.chunk.css.map": "/static/css/782.cb5207f3.chunk.css.map",
     "782.f5e89d07.chunk.js.map": "/static/js/782.f5e89d07.chunk.js.map",
     "204.d29c7282.chunk.css.map": "/static/css/204.d29c7282.chunk.css.map",
@@ -170,6 +170,6 @@
   },
   "entrypoints": [
     "static/css/main.fda9ad38.css",
-    "static/js/main.59ccc51d.js"
+    "static/js/main.237c2e79.js"
   ]
 }

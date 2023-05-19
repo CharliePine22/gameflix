@@ -182,8 +182,8 @@
   min-width: 13rem;
   object-fit: cover;
   height: 100%;
-  min-height: 315px;
-  max-height: 315px;
+  min-height: 330px;
+  max-height: 330px;
   transform-style: preserve-3d;
 }
 
@@ -368,7 +368,7 @@
   position: relative;
   font-size: 1.4rem;
   left: 4px;
-  bottom: 9px;
+  bottom: 2px;
   transform: translateY(0px);
   display: block;
   width: 0px;

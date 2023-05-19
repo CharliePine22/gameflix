@@ -1,14 +1,14 @@
-const spotifyWebApi = require('spotify-web-api-node');
-const express = require('express');
+const spotifyWebApi = require("spotify-web-api-node");
+const express = require("express");
 const router = express.Router();
-const querystring = require('querystring');
-const axios = require('axios');
-const url = require('url');
+const querystring = require("querystring");
+const axios = require("axios");
+const url = require("url");
 
 const generateRandomString = (length) => {
-  let result = '';
+  let result = "";
   const characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = characters.length;
   let counter = 0;
   while (counter < length) {
@@ -24,42 +24,42 @@ const spotifyApi = new spotifyWebApi({
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
 });
 
-router.get('/test_spotify', (req, res) => {
+router.get("/test_spotify", (req, res) => {
   var state = generateRandomString(16);
   res.redirect(
     `https://accounts.spotify.com/authorize?client_id=${process.env.SPOTIFY_CLIENT_ID}&state=${state}&response_type=code&redirect_uri=${process.env.SPOTIFY_REDIRECT}&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state`
   );
 });
 
-router.get('/spotify_redirect', async (req, res) => {
+router.get("/spotify_redirect", async (req, res) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
 
   if (state === null) {
     res.redirect(
-      '/' +
+      "/" +
         querystring.stringify({
-          error: 'state_mismatch',
+          error: "state_mismatch",
         })
     );
   } else {
     // const tokenRequest = await spotifyApi.authorizationCodeGrant(code);
 
     const spotifyHeaders = {
-      url: 'https://accounts.spotify.com/api/token',
+      url: "https://accounts.spotify.com/api/token",
       form: {
         code: code,
         redirect_uri: process.env.SPOTIFY_REDIRECT,
-        grant_type: 'authorization_code',
+        grant_type: "authorization_code",
       },
       headers: {
         Authorization:
-          'Basic ' +
+          "Basic " +
           new Buffer.from(
             process.env.SPOTIFY_CLIENT_ID +
-              ':' +
+              ":" +
               process.env.SPOTIFY_CLIENT_SECRET
-          ).toString('base64'),
+          ).toString("base64"),
         json: true,
       },
     };
@@ -81,25 +81,18 @@ router.get('/spotify_redirect', async (req, res) => {
 });
 
 //* AUTH ROUTE
-router.post('/spotify_authentication', async (req, res) => {
+router.post("/spotify_authentication", async (req, res) => {
   const code = req.body.code;
-  const baseUrl = req.body.baseURL;
-
-  // const spotifyApi = new spotifyWebApi({
-  //   redirectUri: process.env.CLIENT_URL,
-  //   clientId: process.env.SPOTIFY_CLIENT_ID,
-  //   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  // });
 
   try {
     const tokenRequest = await spotifyApi.authorizationCodeGrant(code);
     console.log(tokenRequest);
-    spotifyApi.setAccessToken(data.body['access_token']);
-    spotifyApi.setRefreshToken(data.body['refresh_token']);
+    spotifyApi.setAccessToken(data.body["access_token"]);
+    spotifyApi.setRefreshToken(data.body["refresh_token"]);
     res.send({
       code: 200,
-      status: 'OK',
-      message: 'Token fetched',
+      status: "OK",
+      message: "Token fetched",
       tokenRequest,
     });
   } catch (error) {
@@ -108,21 +101,16 @@ router.post('/spotify_authentication', async (req, res) => {
 });
 
 //* REFRESH AUTH TOKEN
-router.post('/refresh_token', async (req, res) => {
+router.post("/refresh_token", async (req, res) => {
   const refreshToken = req.body.token;
-
-  // const spotifyApi = new spotifyWebApi({
-  //   redirectUri: process.env.CLIENT_URL,
-  //   clientId: process.env.SPOTIFY_CLIENT_ID,
-  //   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  // });
-
+  console.log(spotifyApi.getRefreshToken());
   try {
     const request = await spotifyApi.refreshAccessToken();
+    console.log(request);
     res.send({
       code: 200,
-      status: 'OK',
-      message: 'Token Refreshed!',
+      status: "OK",
+      message: "Token Refreshed!",
       body: request,
     });
   } catch (error) {
@@ -131,7 +119,7 @@ router.post('/refresh_token', async (req, res) => {
 });
 
 //* GET PLAYLIST ROUTE
-router.get('/spotify_playlist', async (req, res) => {
+router.get("/spotify_playlist", async (req, res) => {
   const spotifyApi = new spotifyWebApi({
     redirectUri: process.env.CLIENT_URL,
     clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -149,53 +137,41 @@ router.get('/spotify_playlist', async (req, res) => {
     });
     res.send({
       code: 200,
-      status: 'OK',
-      message: 'Tracks fetched',
+      status: "OK",
+      message: "Tracks fetched",
       tracks: playlistTracks.body.items,
     });
   } catch (error) {
     res.send({
       code: 400,
-      status: 'ERROR',
-      message: 'Something went wrong, please try again!',
+      status: "ERROR",
+      message: "Something went wrong, please try again!",
       error,
     });
   }
 });
 
 //* GET ALBUM ROUTE
-router.get('/spotify_album', async (req, res) => {
-  // const spotifyApi = new spotifyWebApi({
-  //   redirectUri: process.env.CLIENT_URL,
-  //   clientId: process.env.SPOTIFY_CLIENT_ID,
-  //   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  // });
+router.get("/spotify_album", async (req, res) => {
   const game = req.query.game;
   const spotifyToken = req.query.token;
-  // spotifyApi.setAccessToken(spotifyToken);
+  spotifyApi.setAccessToken(spotifyToken);
 
   try {
-    // const request2 = await axios.get(
-    //   `https://api.spotify.com/v1/search?q=${game}&type=album`,
-    //   {
-    //     headers: { Authorization: 'Bearer ' + spotifyToken },
-    //   }
-    // );
-    // const albums = (request2.data.albums);
     const request = await spotifyApi.searchAlbums(game);
     const albumId = request.body.albums.items[0].id;
     const albumTracks = await spotifyApi.getAlbumTracks(albumId);
     res.send({
       code: 200,
-      status: 'OK',
-      message: 'Tracks fetched',
+      status: "OK",
+      message: "Tracks fetched",
       tracks: albumTracks.body.items,
       albums: request.body.albums,
     });
   } catch (error) {
     res.send({
       code: 400,
-      status: 'ERROR',
+      status: "ERROR",
       message: error,
     });
   }

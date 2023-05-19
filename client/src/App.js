@@ -45,7 +45,6 @@ function App() {
   const twitchAccessToken = useTwitchAuth(code);
   if (window.location.href.split("/")[2] == "gameflix.up.railway.app") {
     const token_url = window.location.href.split("/")[3];
-    console.log(token_url);
     window.location.href = `https://gameflixx.netlify.app${token_url}`;
   }
 
@@ -60,6 +59,7 @@ function App() {
   };
 
   const refreshSpotifyToken = async (token) => {
+    console.log("REFRESHING");
     const request = await axios.post(`${baseURL}/spotify/refresh_token`, {
       token: token,
     });
@@ -69,19 +69,18 @@ function App() {
   // Check for Spotify Token
   useEffect(() => {
     if (!existingSpotifyToken && !spotifyURL) {
-      console.log("NONE");
       return;
     } else if (existingSpotifyToken) {
-      console.log("EXISTING");
       setSpotifyToken(existingSpotifyToken);
       return;
     } else {
-      console.log("WHAT WE WANT");
       sessionStorage.setItem("spotify_token", spotifyURL);
       setSpotifyToken(spotifyURL);
       window.history.pushState({}, null, "/");
     }
   }, [spotifyToken, existingSpotifyToken]);
+
+  console.log(spotifyToken);
 
   // Check to see which user is currently logged in and which profile is active
   useEffect(() => {
@@ -255,8 +254,10 @@ function App() {
   const logoutHandler = () => {
     setLoggedUser(null);
     setSelectedProfile(null);
+    setSpotifyToken(null);
     localStorage.clear();
     sessionStorage.clear();
+    navigate("/login");
   };
 
   // Loading screen for profile change

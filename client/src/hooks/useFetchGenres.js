@@ -20,19 +20,20 @@ export default function useFetchGenres() {
           });
         })
       );
+
+      console.log(genreTitles);
       // const completeGenreList = genreTitles.map((genre) => genre.data);
       // setGenreGamesList(completeGenreList);
       // setIsLoading(false);
       // return genreTitles;
       const request = await axios.get(`${baseURL}/app/get_genres`);
-      const last_updated = new Date(request.data[0].last_updated);
-      if (currentDate > last_updated.setDate(last_updated.getDate() + 1)) {
-        return updateGenresAPI();
-      } else {
-        setGenreGamesList(request.data[0].genres_list);
-        setIsLoading(false);
-        return request.data;
-      }
+      // const last_updated = new Date(request.data[0].last_updated);
+      // if (currentDate > last_updated.setDate(last_updated.getDate() + 1)) {
+      //   return updateGenresAPI();
+      // } else {
+      setGenreGamesList(request.data[0].genres_list);
+      setIsLoading(false);
+      return request.data;
     };
 
     const updateGenresAPI = async () => {

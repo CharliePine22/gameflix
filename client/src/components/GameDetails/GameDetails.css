@@ -661,7 +661,7 @@
   }
 
   .game_details__container {
-    margin: 0 14px;
+    margin: 0 8px;
   }
 
   .game_details__container h2 {
@@ -764,21 +764,6 @@
 }
 
 @media screen and (max-width: 325px) {
-  .details_img {
-    width: 300px;
-    height: 275px;
-  }
-  .game_details__container h2 {
-    font-size: 2rem;
-  }
-  .game_details__esrb {
-    right: -118px;
-    height: 100px;
-    width: 75px;
-  }
-  .game_details__media {
-    margin-left: 13px;
-  }
   .game_details__screenshots {
     display: none;
   }

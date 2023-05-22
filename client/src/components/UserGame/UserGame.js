@@ -207,6 +207,7 @@ const UserGame = ({
     setRating(game.user_rating);
     setAchievements(game.achievements);
     setTrophies(game.trophies);
+    console.log(game);
     if (!steamID) {
       console.log('No steam id');
       return;
@@ -302,7 +303,7 @@ const UserGame = ({
     if (!spotifyToken) return null;
     else {
       try {
-        const request = await axios.get(`${baseURL}/app/spotify_album`, {
+        const request = await axios.get(`${baseURL}/spotify/spotify_album`, {
           params: {
             game: game.name,
             token: spotifyToken,
@@ -311,11 +312,13 @@ const UserGame = ({
         });
         if (request.data.status !== 'OK') {
           console.log(request.data);
+          return request.data;
         } else {
           return request.data.tracks;
         }
       } catch (error) {
         console.log(error);
+        return error;
 
         return error;
       }
@@ -325,6 +328,7 @@ const UserGame = ({
   // Convert steam minutes to numbers
   function padTo2Digits(num) {
     return num.toString().padStart(2, '0');
+    G;
   }
 
   function toHoursAndMinutes(totalMinutes) {
@@ -352,6 +356,7 @@ const UserGame = ({
       setChangingRating(false);
     } catch (error) {
       console.log(error);
+      return error;
     }
   };
 
@@ -373,6 +378,7 @@ const UserGame = ({
         setChangingPlaytime(false);
       } catch (error) {
         console.log(error);
+        return error;
       }
     }
   };

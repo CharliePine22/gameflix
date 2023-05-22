@@ -483,7 +483,7 @@
   }
 
   .row__blur_details {
-    justify-content: space-evenly;
+    justify-content: space-around;
   }
 
   .row__blur_details p {

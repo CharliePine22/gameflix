@@ -1,29 +1,29 @@
-import { useState, useEffect, memo, lazy, Suspense } from 'react';
+import { useState, useEffect, memo, lazy, Suspense } from "react";
 
 // Component Imports
-import Row from '../Row/Row';
-import Banner from '../Banner/Banner';
-import Nav from '../Nav/Nav';
-import MainRow from '../MainRow/MainRow';
-import TrendingRow from '../TrendingRow/TrendingRow';
-import NewReleases from '../NewReleases/NewReleases';
+import Row from "../Row/Row";
+import Banner from "../Banner/Banner";
+import Nav from "../Nav/Nav";
+import MainRow from "../MainRow/MainRow";
+import TrendingRow from "../TrendingRow/TrendingRow";
+import NewReleases from "../NewReleases/NewReleases";
 
 // File Imports
-import SpotifyPlayback from '../SpotifyPlayback/SpotifyPlayback';
-import useSpotifyAuth from '../../hooks/useSpotifyAuth';
-import useSteamAuth from '../../hooks/useSteamAuth';
-import useFetchGenres from '../../hooks/useFetchGenres';
-import { SlOptions } from 'react-icons/sl';
-import Placeholder from '../Placeholder/Placeholder';
+import SpotifyPlayback from "../SpotifyPlayback/SpotifyPlayback";
+import useSpotifyAuth from "../../hooks/useSpotifyAuth";
+import useSteamAuth from "../../hooks/useSteamAuth";
+import useFetchGenres from "../../hooks/useFetchGenres";
+import { SlOptions } from "react-icons/sl";
+import Placeholder from "../Placeholder/Placeholder";
 
-const GameDetails = lazy(() => import('../GameDetails/GameDetails'));
-const Notification = lazy(() => import('../Notification/Notification'));
+const GameDetails = lazy(() => import("../GameDetails/GameDetails"));
+const Notification = lazy(() => import("../Notification/Notification"));
 const UserCollection = lazy(() =>
-  import('../UserCollectionPage/UserCollection')
+  import("../UserCollectionPage/UserCollection")
 );
 
 const windowUrl = window.location.search;
-const id = windowUrl.split('?')[1];
+const id = windowUrl.split("?")[1];
 
 const Dashboard = ({
   currentUser,
@@ -44,7 +44,7 @@ const Dashboard = ({
 }) => {
   const allGenres = useFetchGenres();
   const [displayNotification, setDisplayNotification] = useState(false);
-  const [notification, setNotification] = useState({ status: '', message: '' });
+  const [notification, setNotification] = useState({ status: "", message: "" });
 
   // Spotify States
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -67,7 +67,7 @@ const Dashboard = ({
   // const steamCollection = useSteamAuth(id);
 
   useEffect(() => {
-    if (!currentGameOpen) document.body.style.overflow = 'auto';
+    if (!currentGameOpen) document.body.style.overflow = "auto";
   }, []);
 
   const resetGame = () => {
@@ -78,16 +78,12 @@ const Dashboard = ({
   const openGameWindow = (game) => {
     console.log(game);
     setCurrentGameOpen(game.id);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   const closeGameWindow = () => {
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
     setCurrentGameOpen(null);
-  };
-
-  const seeGameOptions = () => {
-    setViewingGameOptions(true);
   };
 
   const playTrack = (track) => {
@@ -95,7 +91,7 @@ const Dashboard = ({
   };
 
   const toProfileSelection = () => {
-    localStorage.removeItem('profile');
+    localStorage.removeItem("profile");
     window.location.reload();
   };
 
@@ -122,7 +118,7 @@ const Dashboard = ({
               notification={notification}
               displayNotification={displayNotification}
               hideNotification={() => {
-                setNotification({ message: '', status: '' });
+                setNotification({ message: "", status: "" });
               }}
             />
           </Suspense>
@@ -153,7 +149,7 @@ const Dashboard = ({
       );
 
     return (
-      <div className='App'>
+      <div className="App">
         <Nav
           currentUser={currentUser}
           activeProfile={currentProfile}
@@ -164,7 +160,7 @@ const Dashboard = ({
           selectProfile={selectProfile}
           spotifyToken={spotifyToken}
           twitchToken={twitchToken}
-          saveEdit={() => console.log('saving edit')}
+          saveEdit={() => console.log("saving edit")}
           updateCollection={updateCollection}
           currentCollection={currentCollection}
           viewCollection={() => setViewingCollection(true)}
@@ -172,7 +168,7 @@ const Dashboard = ({
 
         <Banner
           setGameDetails={(id) => setGameDetails(id)}
-          addGame={(game) => updateGameStatus('ADD', game)}
+          addGame={(game) => updateGameStatus("ADD", game)}
           activeProfile={currentProfile}
         />
         <MainRow
@@ -192,13 +188,13 @@ const Dashboard = ({
 
         {currentGameOpen && (
           <>
-            <h1 className='row__preview_close' onClick={closeGameWindow}>
+            <h1 className="row__preview_close" onClick={closeGameWindow}>
               X
             </h1>
           </>
         )}
         <div
-          className={`${currentGameOpen !== null ? 'game_preview__modal' : ''}`}
+          className={`${currentGameOpen !== null ? "game_preview__modal" : ""}`}
         />
 
         {allGenres.genreGamesList.length > 0 ? (
@@ -232,9 +228,9 @@ const Dashboard = ({
             />
           ))
         ) : (
-          <div className='row__loading_container'>
+          <div className="row__loading_container">
             {[...Array(10)].map((item, i) => (
-              <div key={i} className='row__placeholder__wrapper'>
+              <div key={i} className="row__placeholder__wrapper">
                 <Placeholder key={i} delay={i} />
               </div>
             ))}
@@ -256,7 +252,7 @@ const Dashboard = ({
           notification={notification}
           displayNotification={displayNotification}
           hideNotification={() => {
-            setNotification({ message: '', status: '' });
+            setNotification({ message: "", status: "" });
           }}
         />
       </div>

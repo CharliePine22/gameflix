@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import './UserGame.css';
-import axios from 'axios';
-import { FiClock } from 'react-icons/fi';
-import { FaMedal, FaMusic, FaAngleDown } from 'react-icons/fa';
-import useContextMenu from '../../hooks/useContextMenu';
-import UserGameNotes from './UserNotes';
-import SpotifyPlayback from '../SpotifyPlayback/SpotifyPlayback';
+import React, { useState, useEffect } from "react";
+import "./UserGame.css";
+import axios from "axios";
+import { FiClock } from "react-icons/fi";
+import { FaMedal, FaMusic, FaAngleDown } from "react-icons/fa";
+import useContextMenu from "../../hooks/useContextMenu";
+import UserGameNotes from "./UserNotes";
+import SpotifyPlayback from "../SpotifyPlayback/SpotifyPlayback";
 
 const today = new Date();
 const yyyy = today.getFullYear();
 let mm = today.getMonth() + 1; // Months start at 0!
 let dd = today.getDate();
-if (dd < 10) dd = '0' + dd;
-if (mm < 10) mm = '0' + mm;
-const formattedToday = mm + '/' + dd + '/' + yyyy;
+if (dd < 10) dd = "0" + dd;
+if (mm < 10) mm = "0" + mm;
+const formattedToday = mm + "/" + dd + "/" + yyyy;
 
 const UserGame = ({
   game,
@@ -27,6 +27,7 @@ const UserGame = ({
   playAudio,
   pausePlayback,
   beginPlayback,
+  playTrack,
 }) => {
   // RATING, PLAYTIME, ACHIEVEMENTS, SPOTIFY, NOTES, STATUS(COMPLETED, BACKLOG, ETC.), PLATFORMS OWNED
   const { anchorPoint, showBannerMenu, resetContext } = useContextMenu();
@@ -38,8 +39,8 @@ const UserGame = ({
   });
   const [achievements, setAchievements] = useState(game.achievements);
   const [trophies, setTrophies] = useState(game.trophies);
-  const [achievementFilter, setAchievementFilter] = useState('unlocked');
-  const [trophyFilter, setTrophyFilter] = useState('unlocked');
+  const [achievementFilter, setAchievementFilter] = useState("unlocked");
+  const [trophyFilter, setTrophyFilter] = useState("unlocked");
   const [currentGameNotes, setCurrentGameNotes] = useState(null);
   // Playtime States
   const [playtime, setPlaytime] = useState(Math.floor(game.playtime / 60));
@@ -48,15 +49,17 @@ const UserGame = ({
   const [rating, setRating] = useState(game.user_rating);
   const [changingRating, setChangingRating] = useState(false);
   const [changingBanner, setChangingBanner] = useState(false);
-  const [bannerLink, setBannerLink] = useState('');
+  const [bannerLink, setBannerLink] = useState("");
   const [viewingSoundtrack, setViewingSoundtrack] = useState(false);
+  const [gameOST, setGameOST] = useState([]);
+
   // BACKLOG, CURRENTLY PLAYING, COMPLETED, STARTED, ABAND ONED, 100%, NOT OWNED
   const [backlogStatus, setBacklogStatus] = useState(game.status);
   const [changingBacklog, setChangingBacklog] = useState(false);
   // Hooks and Storage Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
-  const steamID = localStorage.getItem('steamID');
-  const userEmail = localStorage.getItem('user');
+  const steamID = localStorage.getItem("steamID");
+  const userEmail = localStorage.getItem("user");
   const trophyPercentage = Math.floor(
     (trophies?.filter((game) => game.earned == true).length /
       trophies?.length) *
@@ -92,6 +95,14 @@ const UserGame = ({
     return request;
   };
 
+  const selectTrackHandler = (e, track) => {
+    e.stopPropagation();
+    if (currentTrack !== null && track.name == currentTrack.name) {
+      beginPlayback();
+    }
+    playTrack(track);
+  };
+
   const createNewGameNote = () => {
     // If user has no notes for any other games, create an empty array
     if (userNotes.notes_collection.length == 0) {
@@ -101,7 +112,7 @@ const UserGame = ({
           name: game.name,
           tabs: [
             {
-              tabName: 'Notes',
+              tabName: "Notes",
               notes: [
                 {
                   id: 0,
@@ -119,7 +130,7 @@ const UserGame = ({
         name: game.name,
         tabs: [
           {
-            tabName: 'Notes',
+            tabName: "Notes",
             notes: [
               {
                 id: 0,
@@ -138,7 +149,7 @@ const UserGame = ({
         name: game.name,
         tabs: [
           {
-            tabName: 'Notes',
+            tabName: "Notes",
             notes: [
               {
                 id: 0,
@@ -154,7 +165,7 @@ const UserGame = ({
         name: game.name,
         tabs: [
           {
-            tabName: 'Notes',
+            tabName: "Notes",
             notes: [
               {
                 id: 0,
@@ -190,26 +201,27 @@ const UserGame = ({
         setChangingBacklog(false);
       }
     };
-    window.addEventListener('keydown', handleEsc);
+    window.addEventListener("keydown", handleEsc);
 
     return () => {
-      window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener("keydown", handleEsc);
     };
   }, []);
 
   // Runs everytime game changes
   useEffect(() => {
+    setViewingSoundtrack(false);
     setChangingPlaytime(false);
     setChangingRating(false);
     setChangingBacklog(false);
-    setBacklogStatus(game.status || 'BACKLOG');
+    setBacklogStatus(game.status || "BACKLOG");
     setPlaytime(Math.floor(game.playtime / 60));
     setRating(game.user_rating);
     setAchievements(game.achievements);
     setTrophies(game.trophies);
     console.log(game);
     if (!steamID) {
-      console.log('No steam id');
+      console.log("No steam id");
       return;
     }
 
@@ -291,15 +303,16 @@ const UserGame = ({
   }, [game]);
 
   const getAchievementCount = (list) => {
-    if (!list) return 'N/A';
+    if (!list) return "N/A";
     const numberAchieved = list.filter(
       (game) => game.achieved == true || game.earned == true
     ).length;
-    return numberAchieved + '/' + list.length;
+    return numberAchieved + "/" + list.length;
   };
 
+  console.log(gameOST);
+
   const getSpotifyAlbum = async () => {
-    setViewingSoundtrack(true);
     if (!spotifyToken) return null;
     else {
       try {
@@ -310,11 +323,13 @@ const UserGame = ({
             baseURL,
           },
         });
-        if (request.data.status !== 'OK') {
-          console.log(request.data);
-          return request.data;
+        if (request.data.status !== "OK") {
+          console.log(request);
+          return;
         } else {
-          return request.data.tracks;
+          setGameOST(request.data.tracks);
+          setViewingSoundtrack(true);
+          return;
         }
       } catch (error) {
         console.log(error);
@@ -327,17 +342,21 @@ const UserGame = ({
 
   // Convert steam minutes to numbers
   function padTo2Digits(num) {
+<<<<<<< HEAD
     return num.toString().padStart(2, '0');
     G;
+=======
+    return num.toString().padStart(2, "0");
+>>>>>>> 690b9f99c910abcf9301b0c6c4bad64d1eed6a90
   }
 
   function toHoursAndMinutes(totalMinutes) {
-    if (totalMinutes <= 0 && game.type == 'steam') return 'Not Started';
-    else if (totalMinutes <= 0 && game.type !== 'steam') return 0 + ' hours';
+    if (totalMinutes <= 0 && game.type == "steam") return "Not Started";
+    else if (totalMinutes <= 0 && game.type !== "steam") return 0 + " hours";
     else {
       const minutes = totalMinutes % 60;
       const hours = Math.floor(totalMinutes / 60);
-      if (minutes == 0) return hours + ' hours';
+      if (minutes == 0) return hours + " hours";
       return `${hours}.${padTo2Digits(minutes)} hours`;
     }
   }
@@ -350,7 +369,7 @@ const UserGame = ({
         rating: rating,
         gameId: game.id,
       });
-      localStorage.setItem('profile', request.data.response.profile.name);
+      localStorage.setItem("profile", request.data.response.profile.name);
       setCurrentGame(request.data.response.game);
       updateCollection(request.data.response.profile.collection);
       setChangingRating(false);
@@ -372,7 +391,7 @@ const UserGame = ({
           gameId: game.id,
         });
 
-        localStorage.setItem('profile', request.data.response.profile.name);
+        localStorage.setItem("profile", request.data.response.profile.name);
         setCurrentGame(request.data.response.game);
         updateCollection(request.data.response.profile.collection);
         setChangingPlaytime(false);
@@ -392,7 +411,7 @@ const UserGame = ({
         gameId: game.id,
       });
 
-      localStorage.setItem('profile', request.data.response.profile.name);
+      localStorage.setItem("profile", request.data.response.profile.name);
 
       setCurrentGame(request.data.response.game);
       updateCollection(request.data.response.profile.collection);
@@ -415,10 +434,10 @@ const UserGame = ({
 
   // Determine if user is updating or canceling playtime change
   const determinePlaytimeAction = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       updatePlaytime();
     }
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       setChangingPlaytime(false);
       setPlaytime(Math.floor(game.playtime / 60));
     }
@@ -426,10 +445,10 @@ const UserGame = ({
 
   // Determine if user is updating or canceling playtime change
   const determineRatingAction = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       updateRatingHandler();
     }
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       setChangingRating(false);
       setRating(game.user_rating);
     }
@@ -442,7 +461,7 @@ const UserGame = ({
   };
 
   const updateBanner = async () => {
-    if (bannerLink.trim() == '') return;
+    if (bannerLink.trim() == "") return;
     try {
       const request = await axios.put(`${baseURL}/app/update_game_banner`, {
         email: userEmail,
@@ -450,11 +469,11 @@ const UserGame = ({
         url: bannerLink,
         gameId: game.id,
       });
-      localStorage.setItem('profile', request.data.response.profile.name);
+      localStorage.setItem("profile", request.data.response.profile.name);
       setCurrentGame(request.data.response.game);
       updateCollection(request.data.response.profile.collection);
       setChangingBanner(false);
-      setBannerLink('');
+      setBannerLink("");
       return request.data;
     } catch (error) {
       console.log(error);
@@ -463,23 +482,23 @@ const UserGame = ({
   };
 
   return (
-    <div className='user_game__wrapper'>
+    <div className="user_game__wrapper">
       {changingBanner && (
-        <div className='user_game__modal'>
-          <div className='modal_content'>
+        <div className="user_game__modal">
+          <div className="modal_content">
             <h2
               style={{
-                maxWidth: '75%',
-                textAlign: 'center',
-                marginBottom: '25px',
+                maxWidth: "75%",
+                textAlign: "center",
+                marginBottom: "25px",
               }}
             >
               Please enter the link to any image or gif below.
             </h2>
 
-            <div className='modal_form' style={{ width: '100%' }}>
+            <div className="modal_form" style={{ width: "100%" }}>
               <input
-                style={{ width: '80%' }}
+                style={{ width: "80%" }}
                 value={bannerLink}
                 onChange={(e) => setBannerLink(e.target.value)}
               />
@@ -489,196 +508,196 @@ const UserGame = ({
           </div>
         </div>
       )}
-      <div className='user_game__banner'>
+      <div className="user_game__banner">
         {showBannerMenu && (
           <ul
-            className='user_game__banner_context'
+            className="user_game__banner_context"
             style={{ top: anchorPoint.y + 5, left: anchorPoint.x }}
           >
-            <li className='banner_context__item' onClick={changeBannerHandler}>
+            <li className="banner_context__item" onClick={changeBannerHandler}>
               Set Custom Banner
             </li>
-            <li className='banner_context__item'>Set Custom Logo</li>
-            <li className='banner_context__item'>Set Default Image</li>
+            <li className="banner_context__item">Set Custom Logo</li>
+            <li className="banner_context__item">Set Default Image</li>
           </ul>
         )}
 
-        <div className='user_game__exit' onClick={closeStats}>
+        <div className="user_game__exit" onClick={closeStats}>
           X
         </div>
         <img
-          className='user_game_banner_img'
+          className="user_game_banner_img"
           src={
             game.banner_image ||
-            game.cover_image.replace('cover_big_2x', '1080p_2x')
+            game.cover_image.replace("cover_big_2x", "1080p_2x")
           }
         />
-        <div className='user_game__current_stats'>
+        <div className="user_game__current_stats">
           {/* PLAYTIME */}
-          <div className='playtime_container'>
-            <FiClock className='playtime_clock_icon' />
-            <div className='stats_item'>
-              <h3 style={{ color: changingPlaytime && '#9147ff' }}>
+          <div className="playtime_container">
+            <FiClock className="playtime_clock_icon" />
+            <div className="stats_item">
+              <h3 style={{ color: changingPlaytime && "#9147ff" }}>
                 PLAY TIME
               </h3>
               <span
-                style={{ display: changingPlaytime && 'none' }}
-                className='previous_playtime'
+                style={{ display: changingPlaytime && "none" }}
+                className="previous_playtime"
                 onClick={() => setChangingPlaytime(true)}
               >
                 {toHoursAndMinutes(game.playtime)}
               </span>
               <input
-                type='number'
+                type="number"
                 value={playtime}
-                min='0'
+                min="0"
                 onKeyDown={determinePlaytimeAction}
                 onChange={(e) => setPlaytime(e.target.value)}
                 className={`playtime_input ${
-                  changingPlaytime && 'playtime_focused'
+                  changingPlaytime && "playtime_focused"
                 }`}
               />
             </div>
           </div>
 
           {/* RATING */}
-          <div className='rating_container'>
-            <div className='stats_item'>
+          <div className="rating_container">
+            <div className="stats_item">
               <h3>RATING</h3>
               <span
                 onClick={() => setChangingRating(true)}
-                className='previous_rating'
-                style={{ display: changingRating && 'none' }}
+                className="previous_rating"
+                style={{ display: changingRating && "none" }}
               >
                 {game.user_rating || 0}%
               </span>
 
               <input
-                className='rating_input'
-                type='number'
-                min='0'
-                max='100'
+                className="rating_input"
+                type="number"
+                min="0"
+                max="100"
                 value={rating || 0}
                 onKeyDown={determineRatingAction}
                 onChange={(e) => setRating(e.target.value)}
                 style={{
-                  width: !changingRating && '0px',
-                  display: !changingRating && 'none',
+                  width: !changingRating && "0px",
+                  display: !changingRating && "none",
                 }}
               />
             </div>
           </div>
 
           {/* BACKLOG STATUS */}
-          <div className='achievement_count_container'>
-            <div className='stats_item'>
+          <div className="achievement_count_container">
+            <div className="stats_item">
               <h3>STATUS</h3>
               <button
                 onClick={() => setChangingBacklog(!changingBacklog)}
                 style={{
                   backgroundColor:
-                    backlogStatus == 'BACKLOG'
-                      ? 'dodgerblue'
-                      : backlogStatus == 'STARTED'
-                      ? 'aqua'
-                      : backlogStatus == 'FINISHED'
-                      ? 'green'
-                      : backlogStatus == 'PLAYING'
-                      ? 'pink'
-                      : backlogStatus == '100%'
-                      ? 'gold'
-                      : backlogStatus == 'ABANDONDED'
-                      ? 'red'
-                      : 'grey',
+                    backlogStatus == "BACKLOG"
+                      ? "dodgerblue"
+                      : backlogStatus == "STARTED"
+                      ? "aqua"
+                      : backlogStatus == "FINISHED"
+                      ? "green"
+                      : backlogStatus == "PLAYING"
+                      ? "pink"
+                      : backlogStatus == "100%"
+                      ? "gold"
+                      : backlogStatus == "ABANDONDED"
+                      ? "red"
+                      : "grey",
                 }}
-                className='status_btn'
+                className="status_btn"
               >
                 {backlogStatus}
               </button>
             </div>
             {changingBacklog && (
-              <div className='backlog_items'>
-                <ul className='backlog_items_list'>
+              <div className="backlog_items">
+                <ul className="backlog_items_list">
                   <li
                     style={{
-                      backgroundColor: 'BACKLOG' == game.status && '#9147ff',
-                      color: 'BACKLOG' == game.status && 'white',
+                      backgroundColor: "BACKLOG" == game.status && "#9147ff",
+                      color: "BACKLOG" == game.status && "white",
                     }}
-                    className='backlog_items_item'
+                    className="backlog_items_item"
                     onClick={() => {
-                      updateBacklogHandler('BACKLOG');
+                      updateBacklogHandler("BACKLOG");
                     }}
                   >
                     Backlog
                   </li>
                   <li
                     style={{
-                      backgroundColor: 'STARTED' == game.status && '#9147ff',
-                      color: 'STARTED' == game.status && 'white',
+                      backgroundColor: "STARTED" == game.status && "#9147ff",
+                      color: "STARTED" == game.status && "white",
                     }}
-                    className='backlog_items_item'
+                    className="backlog_items_item"
                     onClick={() => {
-                      updateBacklogHandler('STARTED');
+                      updateBacklogHandler("STARTED");
                     }}
                   >
                     Started
                   </li>
                   <li
                     style={{
-                      backgroundColor: 'PLAYING' == game.status && '#9147ff',
-                      color: 'PLAYING' == game.status && 'white',
+                      backgroundColor: "PLAYING" == game.status && "#9147ff",
+                      color: "PLAYING" == game.status && "white",
                     }}
-                    className='backlog_items_item'
+                    className="backlog_items_item"
                     onClick={() => {
-                      updateBacklogHandler('PLAYING');
+                      updateBacklogHandler("PLAYING");
                     }}
                   >
                     Currently Playing
                   </li>
                   <li
                     style={{
-                      backgroundColor: 'FINISHED' == game.status && '#9147ff',
-                      color: 'FINISHED' == game.status && 'white',
+                      backgroundColor: "FINISHED" == game.status && "#9147ff",
+                      color: "FINISHED" == game.status && "white",
                     }}
-                    className='backlog_items_item'
+                    className="backlog_items_item"
                     onClick={() => {
-                      updateBacklogHandler('FINISHED');
+                      updateBacklogHandler("FINISHED");
                     }}
                   >
                     Finished
                   </li>
                   <li
                     style={{
-                      backgroundColor: '100%' == game.status && '#9147ff',
-                      color: '100%' == game.status && 'white',
+                      backgroundColor: "100%" == game.status && "#9147ff",
+                      color: "100%" == game.status && "white",
                     }}
-                    className='backlog_items_item'
+                    className="backlog_items_item"
                     onClick={() => {
-                      updateBacklogHandler('100%');
+                      updateBacklogHandler("100%");
                     }}
                   >
                     100% Completed
                   </li>
                   <li
                     style={{
-                      backgroundColor: 'ABANDONDED' == game.status && '#9147ff',
-                      color: 'ABANDONDED' == game.status && 'white',
+                      backgroundColor: "ABANDONDED" == game.status && "#9147ff",
+                      color: "ABANDONDED" == game.status && "white",
                     }}
-                    className='backlog_items_item'
+                    className="backlog_items_item"
                     onClick={() => {
-                      updateBacklogHandler('ABANDONDED');
+                      updateBacklogHandler("ABANDONDED");
                     }}
                   >
                     Abandonded
                   </li>
                   <li
                     style={{
-                      backgroundColor: 'NOT OWNED' == game.status && '#9147ff',
-                      color: 'NOT OWNED' == game.status && 'white',
+                      backgroundColor: "NOT OWNED" == game.status && "#9147ff",
+                      color: "NOT OWNED" == game.status && "white",
                     }}
-                    className='backlog_items_item'
+                    className="backlog_items_item"
                     onClick={() => {
-                      updateBacklogHandler('NOT OWNED');
+                      updateBacklogHandler("NOT OWNED");
                     }}
                   >
                     Not Owned
@@ -689,14 +708,14 @@ const UserGame = ({
           </div>
 
           {/* SPOTIFY MUSIC */}
-          <div className='music_icon_container'>
-            <div className='stats_item' style={{ alignItems: 'center' }}>
+          <div className="music_icon_container">
+            <div className="stats_item" style={{ alignItems: "center" }}>
               <h3>MUSIC</h3>
               <FaMusic
-                className='music_icon'
+                className="music_icon"
                 onClick={getSpotifyAlbum}
                 style={{
-                  color: viewingSoundtrack && spotifyToken && '#1DB954',
+                  color: viewingSoundtrack && spotifyToken && "#1DB954",
                 }}
               />
             </div>
@@ -706,10 +725,10 @@ const UserGame = ({
 
       {/* GAME NEWS AND DATA */}
       <div
-        className='user_game__data_wrapper'
-        style={{ paddingBottom: spotifyToken && '36px' }}
+        className="user_game__data_wrapper"
+        style={{ paddingBottom: spotifyToken && "36px" }}
       >
-        <div className='user_game__data'>
+        <div className="user_game__data">
           {/* OWNED PLATFORMS */}
           {/* <div className='user_game__platforms'>
             <h4>Platforms Owned</h4>
@@ -720,22 +739,22 @@ const UserGame = ({
           {achievements && (
             <div
               className={`user_game__achievements_wrapper ${
-                !viewStatus.achievements && 'minimized'
+                !viewStatus.achievements && "minimized"
               }`}
             >
-              <div className='user_game__achievements'>
-                <div className='user_game__achievements_banner'>
+              <div className="user_game__achievements">
+                <div className="user_game__achievements_banner">
                   <FaAngleDown
                     style={{
                       transform: !viewStatus.achievements
-                        ? 'rotate(0)'
-                        : 'rotate(180deg)',
+                        ? "rotate(0)"
+                        : "rotate(180deg)",
                     }}
-                    className='user_game__minimize_icon'
-                    onClick={() => windowViewHandler('achievements')}
+                    className="user_game__minimize_icon"
+                    onClick={() => windowViewHandler("achievements")}
                   />
                   {achievementPercentage === 100 && (
-                    <FaMedal className='user_game__completion_medal' />
+                    <FaMedal className="user_game__completion_medal" />
                   )}
                   <h4>
                     <p>Achievements</p>
@@ -745,34 +764,34 @@ const UserGame = ({
                     {achievementPercentage}
                     %)
                   </p>
-                  <div className='user_game__achievements_progress_bar_container'>
+                  <div className="user_game__achievements_progress_bar_container">
                     <div
-                      className='user_game__achievements_progress_bar'
+                      className="user_game__achievements_progress_bar"
                       style={{
                         width: `${achievementPercentage}%`,
                         background: activeProfile.color,
                       }}
                     />
                   </div>
-                  <div className='user_game__achievements_actions'>
+                  <div className="user_game__achievements_actions">
                     <button
-                      className={achievementFilter == 'unlocked' && 'active'}
-                      onClick={() => setAchievementFilter('unlocked')}
+                      className={achievementFilter == "unlocked" && "active"}
+                      onClick={() => setAchievementFilter("unlocked")}
                     >
                       Unlocked
                     </button>
                     <button
-                      className={`${achievementFilter == 'locked' && 'active'}`}
-                      onClick={() => setAchievementFilter('locked')}
+                      className={`${achievementFilter == "locked" && "active"}`}
+                      onClick={() => setAchievementFilter("locked")}
                     >
                       In Progress
                     </button>
                   </div>
                 </div>
-                <ul className='user_game__achievements_list'>
+                <ul className="user_game__achievements_list">
                   {achievements
                     .filter((achievement) =>
-                      achievementFilter == 'unlocked'
+                      achievementFilter == "unlocked"
                         ? achievement.achieved
                         : !achievement.achieved
                     )
@@ -784,17 +803,17 @@ const UserGame = ({
                         : 0
                     )
                     .map((item) => (
-                      <li className='achievement_item'>
+                      <li className="achievement_item">
                         <div
-                          className='achievement_item_icon'
+                          className="achievement_item_icon"
                           style={{ border: `1px solid ${activeProfile.color}` }}
                         >
                           <img
-                            className='achievement_item_icon__img'
+                            className="achievement_item_icon__img"
                             src={item.achieved ? item.icon : item.icongray}
                           />
                         </div>
-                        <div className='achievement_item_headers'>
+                        <div className="achievement_item_headers">
                           <h4>{item.displayName}</h4>
                           {item.description && <p>{item.description}</p>}
                         </div>
@@ -808,26 +827,26 @@ const UserGame = ({
           {trophies && (
             <div
               className={`user_game__achievements_wrapper ${
-                !viewStatus.trophies && 'minimized'
+                !viewStatus.trophies && "minimized"
               }`}
             >
               <div
                 className={`user_game__achievements ${
-                  trophyPercentage == 100 && 'completed'
+                  trophyPercentage == 100 && "completed"
                 }`}
               >
-                <div className='user_game__achievements_banner'>
+                <div className="user_game__achievements_banner">
                   <FaAngleDown
                     style={{
                       transform: !viewStatus.trophies
-                        ? 'rotate(0)'
-                        : 'rotate(180deg)',
+                        ? "rotate(0)"
+                        : "rotate(180deg)",
                     }}
-                    className='user_game__minimize_icon'
-                    onClick={() => windowViewHandler('trophies')}
+                    className="user_game__minimize_icon"
+                    onClick={() => windowViewHandler("trophies")}
                   />
                   {trophyPercentage === 100 && (
-                    <FaMedal className='user_game__completion_medal' />
+                    <FaMedal className="user_game__completion_medal" />
                   )}
                   <h4>
                     <p>Trophies</p>
@@ -836,9 +855,9 @@ const UserGame = ({
                     You've unlocked {getAchievementCount(trophies)} (
                     {trophyPercentage}%)
                   </p>
-                  <div className='user_game__achievements_progress_bar_container'>
+                  <div className="user_game__achievements_progress_bar_container">
                     <div
-                      className='user_game__achievements_progress_bar'
+                      className="user_game__achievements_progress_bar"
                       style={{
                         width: `${trophyPercentage}%`,
                         background: activeProfile.color,
@@ -846,27 +865,27 @@ const UserGame = ({
                     />
                   </div>
 
-                  <div className='user_game__achievements_actions'>
+                  <div className="user_game__achievements_actions">
                     <button
-                      className={trophyFilter == 'unlocked' && 'active'}
-                      onClick={() => setTrophyFilter('unlocked')}
+                      className={trophyFilter == "unlocked" && "active"}
+                      onClick={() => setTrophyFilter("unlocked")}
                     >
                       Unlocked
                     </button>
                     {trophyPercentage < 100 && (
                       <button
-                        className={`${trophyFilter == 'locked' && 'active'}`}
-                        onClick={() => setTrophyFilter('locked')}
+                        className={`${trophyFilter == "locked" && "active"}`}
+                        onClick={() => setTrophyFilter("locked")}
                       >
                         In Progress
                       </button>
                     )}
                   </div>
                 </div>
-                <ul className='user_game__achievements_list'>
+                <ul className="user_game__achievements_list">
                   {trophies
                     .filter((trophy) =>
-                      trophyFilter == 'unlocked'
+                      trophyFilter == "unlocked"
                         ? trophy.earned
                         : !trophy.earned
                     )
@@ -878,19 +897,19 @@ const UserGame = ({
                         : 0
                     )
                     .map((item) => (
-                      <li className='achievement_item' key={item.trophyName}>
+                      <li className="achievement_item" key={item.trophyName}>
                         <div
-                          className='achievement_item_icon'
+                          className="achievement_item_icon"
                           style={{ border: `1px solid ${activeProfile.color}` }}
                         >
                           <img
                             className={`achievement_item_icon__img ${
-                              !item.earned && 'greyscale'
+                              !item.earned && "greyscale"
                             }`}
                             src={item.trophyIconUrl}
                           />
                         </div>
-                        <div className='achievement_item_headers'>
+                        <div className="achievement_item_headers">
                           <h4>{item.trophyName}</h4>
                           {item.trophyDetail && <p>{item.trophyDetail}</p>}
                         </div>
@@ -907,10 +926,28 @@ const UserGame = ({
             gameNotes={currentGameNotes}
             updateNotes={updateProfileNotes}
           />
-          <div className='game_soundtrack__wrapper'></div>
+          {spotifyToken && viewingSoundtrack && (
+            <div className="user_game__soundtrack_wrapper">
+              <div className="user_game__soundtrack_header">
+                <h3>Spotify Game Album</h3>
+              </div>
+              <div className="user_game__soundtrack_playlist">
+                <ul>
+                  {gameOST.map((song) => (
+                    <li
+                      key={song.trackUri}
+                      onClick={(e) => selectTrackHandler(e, song)}
+                    >
+                      {song.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-      {spotifyToken && (
+      {spotifyToken && viewingSoundtrack && (
         <SpotifyPlayback
           spotifyToken={spotifyToken}
           playAudio={playAudio}

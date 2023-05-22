@@ -140,7 +140,7 @@
 @media screen and (min-width: 1400px) {
   .banner,
   .banner__loading {
-    min-height: 728px;
+    min-height: 625px;
   }
 
   .banner__contents {

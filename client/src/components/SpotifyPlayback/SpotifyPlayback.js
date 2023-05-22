@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import SpotifyPlayer from 'react-spotify-web-playback';
-import SpotifyWebApi from 'spotify-web-api-node';
-import './SpotifyPlayback.css';
+import React, { useEffect } from "react";
+import SpotifyPlayer from "react-spotify-web-playback";
+import SpotifyWebApi from "spotify-web-api-node";
+import "./SpotifyPlayback.css";
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
@@ -26,12 +26,12 @@ const SpotifyPlayback = ({
   if (!spotifyToken) return;
   return (
     <>
-      <div className='playback_container'>
+      <div className="playback_container">
         <SpotifyPlayer
           token={spotifyToken}
           callback={(state) => {
             if (state.error) {
-              console.log('ERROR');
+              console.log("ERROR");
               refreshSpotifyToken(spotifyToken);
             }
             if (!state.isPlaying) pausePlayback();
@@ -39,11 +39,11 @@ const SpotifyPlayback = ({
           uris={trackUri ? [trackUri] : []}
           play={playAudio}
           styles={{
-            color: 'white',
-            bgColor: 'rgba(0,0,0,0.9)',
+            color: "white",
+            bgColor: "rgba(0,0,0,0.9)",
             // sliderColor: activeProfile.color,
-            trackArtistColor: 'white',
-            // trackNameColor: activeProfile.color,
+            trackArtistColor: "white",
+            trackNameColor: "white",
           }}
         />
       </div>

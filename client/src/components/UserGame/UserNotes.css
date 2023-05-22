@@ -172,7 +172,7 @@
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   outline: 0;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   background: transparent;
   color: white;
   position: absolute;
@@ -191,7 +191,7 @@
 .user_notes__notes_wrapper {
   height: 265px;
   position: relative;
-  border-top: 1px solid black;
+  border-top: 1px solid white;
 }
 
 .user_notes__notes::-webkit-scrollbar {
@@ -222,7 +222,7 @@
   list-style: none;
   overflow-x: scroll;
   position: absolute;
-  bottom: -1px;
+  bottom: 0px;
 }
 
 .user_notes__tabs::-webkit-scrollbar {
@@ -263,7 +263,7 @@
   max-height: 460px;
   background: #222;
   border: 2px solid white;
-  margin-right: 4px;
+  margin: 0 10px;
   position: relative;
   overflow: hidden;
   animation: maximizeNotesViewDesktop 500ms cubic-bezier(0.075, 0.82, 0.165, 1)

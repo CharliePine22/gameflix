@@ -360,7 +360,7 @@
   .user_notes__wrapper {
     max-width: none;
     width: 94%;
-    margin: 0px 15px;
+    margin: 0 15px 15px;
     animation: maximizeNotesView 500ms cubic-bezier(0.075, 0.82, 0.165, 1)
       forwards;
   }

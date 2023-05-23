@@ -14,6 +14,9 @@ function Banner({ setGameDetails, addGame, activeProfile }) {
       </div>
     );
   }
+  if (!bannerGame.isLoading && bannerGame.currentGame == '') {
+    bannerGame.displayNewBanner();
+  }
   const hasArt = bannerGame.currentGame?.artworks !== undefined;
 
   // Don't allow user to add game if already in collection

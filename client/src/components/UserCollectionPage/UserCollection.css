@@ -4,13 +4,13 @@
   position: absolute;
   background: #9147ff;
   border-radius: 3px;
-  padding: 5px 4px;
+  padding: 4px;
   bottom: -8px;
   left: 42px;
   min-width: 65px;
   width: 50%;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   box-shadow: 0px 4px 6px black;
   user-select: none;
 }
@@ -48,8 +48,7 @@
 }
 
 .list_item:hover {
-  transform: translate3d(0, 0, 0) scale(1.1);
-  transform: rotateX(10deg);
+  transform: rotateX(7deg);
   box-shadow: 4.8px 7.6px 2.6px hsl(0deg 0% 0% / 35%);
 }
 
@@ -69,9 +68,12 @@
   min-width: 26px;
   max-width: 26px;
   border-radius: 50%;
-  padding: 6px 3px;
+  padding: 10px 10px;
   background-color: green;
-  left: 50px;
+  left: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .spotlight_container {
@@ -447,8 +449,8 @@
   position: relative;
   transition: all 300ms;
   z-index: -1;
-  max-width: 12rem;
-  min-width: 12rem;
+  max-width: 12.7rem;
+  min-width: 12.7rem;
   height: 100%;
   min-height: 320px;
   max-height: 320px;
@@ -498,7 +500,7 @@
 .user_collection__search_icon {
   height: 100%;
   position: absolute;
-  left: 15px;
+  left: 18px;
   color: white;
 }
 
@@ -702,7 +704,7 @@
   .filter_stat {
     left: 28px;
     bottom: -6px;
-    padding: 4px;
+    font-size: 0.95rem;
   }
 
   .rating_stat {

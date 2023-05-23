@@ -1,25 +1,25 @@
-import { useState, useEffect, lazy, Suspense } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import "./App.css";
-import loginAudio from "./assets/sounds/success.wav";
-import useTwitchAuth from "./hooks/useTwitchAuth";
-import axios from "axios";
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import './App.css';
+import loginAudio from './assets/sounds/success.wav';
+import useTwitchAuth from './hooks/useTwitchAuth';
+import axios from 'axios';
 
 // Component Imports
 const ProfilesPage = lazy(() =>
-  import("./components/Login/Profiles/ProfilesPage")
+  import('./components/Login/Profiles/ProfilesPage')
 );
-const Dashboard = lazy(() => import("./components/Dashboard/Dashboard"));
+const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
 const Authentication = lazy(() =>
-  import("./components/Authentication/Authentication")
+  import('./components/Authentication/Authentication')
 );
 const SearchResultsIGDB = lazy(() =>
-  import("./components/SearchResults/SearchResultsIGDB")
+  import('./components/SearchResults/SearchResultsIGDB')
 );
 
-const code = new URLSearchParams(window.location.search).get("code");
+const code = new URLSearchParams(window.location.search).get('code');
 const spotifyURL = new URLSearchParams(window.location.search).get(
-  "access_token"
+  'access_token'
 );
 
 function App() {
@@ -31,20 +31,20 @@ function App() {
   const [profileCollection, setProfileCollection] = useState([]);
   const [profileNotesData, setProfileNotesData] = useState(null);
   const [displayNotification, setDisplayNotification] = useState(false);
-  const [notification, setNotification] = useState({ status: "", message: "" });
+  const [notification, setNotification] = useState({ status: '', message: '' });
   const [currentGameOpen, setCurrentGameOpen] = useState(null);
   const [changingGameStatus, setChangingGameStatus] = useState(false);
   const [spotifyToken, setSpotifyToken] = useState(null);
   // Local Variables
   const baseURL = process.env.REACT_APP_BASE_URL;
-  const userEmail = localStorage.getItem("user");
-  const userProfile = localStorage.getItem("profile");
-  const existingSpotifyToken = sessionStorage.getItem("spotify_token");
+  const userEmail = localStorage.getItem('user');
+  const userProfile = localStorage.getItem('profile');
+  const existingSpotifyToken = sessionStorage.getItem('spotify_token');
 
   let audio = new Audio(loginAudio);
   const twitchAccessToken = useTwitchAuth(code);
-  if (window.location.href.split("/")[2] == "gameflix.up.railway.app") {
-    const token_url = window.location.href.split("/")[3];
+  if (window.location.href.split('/')[2] == 'gameflix.up.railway.app') {
+    const token_url = window.location.href.split('/')[3];
     window.location.href = `https://gameflixx.netlify.app${token_url}`;
   }
 
@@ -59,7 +59,7 @@ function App() {
   };
 
   const refreshSpotifyToken = async (token) => {
-    console.log("REFRESHING");
+    console.log('REFRESHING');
     const request = await axios.post(`${baseURL}/spotify/refresh_token`, {
       token: token,
     });
@@ -74,9 +74,9 @@ function App() {
       setSpotifyToken(existingSpotifyToken);
       return;
     } else {
-      sessionStorage.setItem("spotify_token", spotifyURL);
+      sessionStorage.setItem('spotify_token', spotifyURL);
       setSpotifyToken(spotifyURL);
-      window.history.pushState({}, null, "/");
+      window.history.pushState({}, null, '/');
     }
   }, [spotifyToken, existingSpotifyToken]);
 
@@ -84,9 +84,9 @@ function App() {
 
   // Check to see which user is currently logged in and which profile is active
   useEffect(() => {
-    if (!userEmail) navigate("/login");
+    if (!userEmail) navigate('/login');
     const updateUser = async () => {
-      if (!userEmail) navigate("/login");
+      if (!userEmail) navigate('/login');
       try {
         const request = await axios.get(`${baseURL}/app/get_user`, {
           params: {
@@ -98,7 +98,7 @@ function App() {
         return result;
       } catch (error) {
         console.log(error);
-        window.location.reload();
+        navigate('/login');
       }
     };
     updateUser();
@@ -137,12 +137,12 @@ function App() {
 
   const updateGameStatus = async (action, game) => {
     setChangingGameStatus(true);
-    if (action == "ADD") {
+    if (action == 'ADD') {
       const exists = profileCollection.some((item) => item.id === game.id);
       if (exists) {
         setNotification({
           message: `${game.name} is already in your collection!`,
-          status: "ERROR",
+          status: 'ERROR',
         });
         setDisplayNotification(true);
         return;
@@ -156,8 +156,8 @@ function App() {
           imageURL: `//images.igdb.com/igdb/image/upload/t_1080p_2x/${game.cover.image_id}.jpg`,
           playtime: 0,
           user_rating: 0,
-          origin: "gameflix",
-          status: "BACKLOG",
+          origin: 'gameflix',
+          status: 'BACKLOG',
         });
 
         const filteredProfile = request.data.response.profiles.filter((obj) => {
@@ -169,18 +169,18 @@ function App() {
         );
         setNotification({
           message: `${game.name} sucessfully added to your collection!`,
-          status: "SUCCESS",
+          status: 'SUCCESS',
         });
         setDisplayNotification(true);
-        setChangingGameStatus("success");
+        setChangingGameStatus('success');
         return;
       } catch (error) {
         setNotification({
           message: `Unable to add ${game.name} to your collection!`,
-          status: "ERROR",
+          status: 'ERROR',
         });
         setDisplayNotification(true);
-        setChangingGameStatus("error");
+        setChangingGameStatus('error');
         return error;
       }
     } else {
@@ -191,7 +191,7 @@ function App() {
           game: game.id,
         });
 
-        localStorage.setItem("user", request.data.response.email);
+        localStorage.setItem('user', request.data.response.email);
         const filteredProfile = request.data.response.profiles.filter((obj) => {
           return obj.name === selectedProfile.name;
         });
@@ -201,19 +201,19 @@ function App() {
 
         setNotification({
           message: `${game.name} sucessfully removed from your collection!`,
-          status: "SUCCESS",
+          status: 'SUCCESS',
         });
         setDisplayNotification(true);
-        setChangingGameStatus("success");
+        setChangingGameStatus('success');
         return;
       } catch (error) {
         console.log(error);
         setNotification({
           message: `Unable to remove ${game.name} from your collection!`,
-          status: "ERROR",
+          status: 'ERROR',
         });
         setDisplayNotification(true);
-        setChangingGameStatus("error");
+        setChangingGameStatus('error');
         return error;
       }
     }
@@ -221,16 +221,16 @@ function App() {
 
   // Login user if verification succeeds.
   const loginAuthentication = (user) => {
-    localStorage.setItem("user", user.email);
+    localStorage.setItem('user', user.email);
     setLoggedUser(user);
     audio.play();
-    navigate("/", { replace: true });
+    navigate('/', { replace: true });
   };
 
   const changeProfile = (user) => {
     setChangingUser(true);
     // setSelectedProfile(user.name);
-    localStorage.setItem("profile", user.name);
+    localStorage.setItem('profile', user.name);
     setTimeout(() => {
       setChangingUser(false);
     }, 2000);
@@ -238,16 +238,16 @@ function App() {
 
   const openGameWindow = (game) => {
     setCurrentGameOpen(game.id);
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
   };
 
   const closeGameWindow = () => {
-    document.body.style.overflow = "auto";
+    document.body.style.overflow = 'auto';
     setCurrentGameOpen(null);
   };
 
   const closeSearchResults = () => {
-    navigate("/");
+    navigate('/');
   };
 
   // Logout the user
@@ -257,18 +257,18 @@ function App() {
     setSpotifyToken(null);
     localStorage.clear();
     sessionStorage.clear();
-    navigate("/login");
+    navigate('/login');
   };
 
   // Loading screen for profile change
   if (changingUser) {
     return (
-      <div className="loading_profile__container">
+      <div className='loading_profile__container'>
         <div
-          className="loading_profile"
-          style={{ "--color-theme": selectedProfile.color }}
+          className='loading_profile'
+          style={{ '--color-theme': selectedProfile.color }}
         >
-          <img src={selectedProfile.avatar} alt="current user avatar" />
+          <img src={selectedProfile.avatar} alt='current user avatar' />
         </div>
       </div>
     );
@@ -288,7 +288,7 @@ function App() {
   return (
     <Routes>
       <Route
-        path="/login"
+        path='/login'
         element={
           <Suspense fallback={<>...</>}>
             <Authentication onLogin={loginAuthentication} />
@@ -296,7 +296,7 @@ function App() {
         }
       />
       <Route
-        path="/search"
+        path='/search'
         element={
           <Suspense fallback={<>...</>}>
             <SearchResultsIGDB
@@ -317,7 +317,7 @@ function App() {
         }
       />
       <Route
-        path="/"
+        path='/'
         element={
           <Suspense fallback={<>...</>}>
             <Dashboard

@@ -397,31 +397,36 @@ const GameDetails = ({
                     <h4 className='game_details__title'>Platforms</h4>
                     <ul className='platforms_list'>
                       {gameDetails.platforms?.map((platform, i) => {
-                        // if (platform.category == 1 || platform.category == 5) {
-                        if (
-                          platform.name !== 'Super Famicom' &&
-                          platform.name !== 'Family Computer' &&
-                          platform.name !== 'Nintendo DSi' &&
-                          platform.name !== 'Family Computer Disk System'
-                        ) {
-                          return (
-                            <li
-                              key={platform.id}
-                              className='platform'
-                              alt='platform'
-                            >
-                              {displayConsoleIcons(
-                                platform.abbreviation || platform.name
-                              )}
-                              <p>{platform.abbreviation || platform.name}</p>
-                            </li>
-                          );
+                        if (platform.category !== 6) {
+                          if (
+                            platform.name !== 'Super Famicom' &&
+                            platform.name !== 'Family Computer' &&
+                            platform.name !== 'Nintendo DSi' &&
+                            platform.name !== 'Family Computer Disk System' &&
+                            platform.name !== 'Windows Phone' &&
+                            platform.name !== 'BlackBerry OS' &&
+                            platform.name !== 'Legacy Mobile Device' &&
+                            platform.name !== 'Palm OS'
+                          ) {
+                            return (
+                              <li
+                                key={platform.id}
+                                className='platform'
+                                alt='platform'
+                              >
+                                {displayConsoleIcons(
+                                  platform.abbreviation || platform.name
+                                )}
+                                <p>{platform.abbreviation || platform.name}</p>
+                              </li>
+                            );
+                          }
                         }
-                        // }
                       })}
                     </ul>
                   </div>
                 )}
+                {/* GAME RATING */}
                 {gameDetails.rating && (
                   <div className='game_details__rating'>
                     <h4 className='game_details__title'>Rating</h4>
